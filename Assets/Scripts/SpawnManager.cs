@@ -6,12 +6,12 @@ public class SpawnManager : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public GameObject player;
+    public GameObject map;
+    private float offset = 2.0f;
     private float startDelay = 2.0f;
     private float spawnInterval = 0.1f;
-    private float xMin = -30.0f;
-    private float xMax = 30.0f;
-    private float yMin = -30.0f;
-    private float yMax = 30.0f;
+    private Vector3 min;
+    private Vector3 max;
     // Start is called before the first frame update
     void Start()
     {
@@ -26,7 +26,9 @@ public class SpawnManager : MonoBehaviour
 
     void spawnEnemy()
     {
-        GameObject enemy = Instantiate(enemyPrefab, new Vector3(Random.Range(xMin, xMax), Random.Range(yMin, yMax), 0), new Quaternion());
+        min = map.transform.position - map.transform.lossyScale / 2;
+        max = map.transform.position + map.transform.lossyScale / 2;
+        GameObject enemy = Instantiate(enemyPrefab, new Vector3(Random.Range(min.x + offset, max.x - offset), Random.Range(min.y + offset, max.y - offset), 0), new Quaternion());
         enemy.GetComponent<DirectlyMoveToward>().target = player;
         enemy.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
     }

@@ -4,26 +4,28 @@ using UnityEngine;
 
 public class DestroyOutOfBounds : MonoBehaviour
 {
-    private float xMin = -50.0f;
-    private float xMax = 50.0f;
-    private float yMin = -50.0f;
-    private float yMax = 50.0f;
+    public GameObject map;
+    private float offset = 15.0f;
+    private Vector3 min;
+    private Vector3 max;
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (transform.position.x < xMin)
+        min = map.transform.position - map.transform.lossyScale / 2;
+        max = map.transform.position + map.transform.lossyScale / 2;
+        if (transform.position.x < min.x - offset)
             Destroy(gameObject);
-        if (transform.position.x > xMax)
+        if (transform.position.x > max.x + offset)
             Destroy(gameObject);
-        if (transform.position.y < yMin)
+        if (transform.position.y < min.y - offset)
             Destroy(gameObject);
-        if (transform.position.y > yMax)
+        if (transform.position.y > max.y + offset)
             Destroy(gameObject);
     }
 }
