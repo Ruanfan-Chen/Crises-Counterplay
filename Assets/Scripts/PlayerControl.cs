@@ -21,8 +21,8 @@ public class PlayerControl : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        horizontalInput = Input.GetAxis("Horizontal");
-        verticalInput = Input.GetAxis("Vertical");
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
         transform.Translate(speed
             * Time.deltaTime
             * (Mathf.Abs(horizontalInput) > Mathf.Abs(verticalInput) ? Mathf.Abs(horizontalInput) : Mathf.Abs(verticalInput))
