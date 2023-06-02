@@ -201,7 +201,7 @@ Transform:
   m_GameObject: {fileID: 327310014}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 113.673, y: 58.967583, z: 1}
+  m_LocalScale: {x: 120, y: 60, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -285,7 +285,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 519420028}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -16.67}
+  m_LocalPosition: {x: 0, y: 0, z: -50}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -301,7 +301,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 519420028}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fd7863a895aa2bd49b2552aca9ab46db, type: 3}
+  m_Script: {fileID: 11500000, guid: da00aa1d6268050479dd769ad159430b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1713116184}
@@ -336,6 +336,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyPrefab: {fileID: 6230283339830946825, guid: 6ff90ddb86aef42499f76a8260264ad7, type: 3}
   player: {fileID: 1713116184}
+  map: {fileID: 327310014}
 --- !u!4 &546386223
 Transform:
   m_ObjectHideFlags: 0
@@ -378,6 +379,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6196927971659858435, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 327310014}
     - target: {fileID: 9082281178327163815, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -476,6 +481,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6e57e7da5e5cfd479b677b3b4d154f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  map: {fileID: 327310014}
 --- !u!1001 &1800646810
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -503,6 +509,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6196927971659858435, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 327310014}
     - target: {fileID: 9082281178327163815, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -577,6 +587,10 @@ PrefabInstance:
       propertyPath: m_Color.r
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6196927971659858435, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: map
+      value: 
+      objectReference: {fileID: 327310014}
     - target: {fileID: 9082281178327163815, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_RootOrder
       value: 0
