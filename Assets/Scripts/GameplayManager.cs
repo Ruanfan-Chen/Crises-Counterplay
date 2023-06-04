@@ -7,7 +7,7 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour
 {
     public TextMeshProUGUI textMesh;
-    public float maxTime = 45.0f;
+    [SerializeField] private float maxTime = 45.0f;
     private float timer = 0.0f;
     // Start is called before the first frame update
     void Start()
