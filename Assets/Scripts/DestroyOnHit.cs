@@ -4,23 +4,23 @@ using UnityEngine;
 
 public class DestroyOnHit : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
+    public GameObject projectilePrefabRingOnDeath;
+    public GameObject projectilePrefabOnDeath;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (GetComponent<Faction>().GetHostility() != collision.GetComponentInParent<Faction>().GetHostility())
         {
+            Vector3 position = transform.position;
             Destroy(collision);
             Destroy(gameObject);
+            if (projectilePrefabOnDeath) {
+                GetComponent<EnemyLaunch>().LaunchProjectile(projectilePrefabOnDeath);
+            }
+            if (projectilePrefabRingOnDeath) {
+                GetComponent<EnemyLaunch>().LaunchProjectileRing(projectilePrefabRingOnDeath, Random.Range(4, 9));
+            }
         }
     }
+
+
 }
