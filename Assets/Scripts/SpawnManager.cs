@@ -29,7 +29,16 @@ public class SpawnManager : MonoBehaviour
         min = map.transform.position - map.transform.lossyScale / 2;
         max = map.transform.position + map.transform.lossyScale / 2;
         GameObject enemy = Instantiate(enemyPrefab, new Vector3(Random.Range(min.x - offset, max.x + offset), Random.Range(min.y - offset, max.y + offset), 0), new Quaternion());
-        enemy.GetComponent<DirectlyMoveToward>().target = player;
-        enemy.GetComponent<SpriteRenderer>().color = new Color(Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f), Random.Range(0.0f, 1.0f));
+        enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        switch (Random.Range(0, 2))
+        {
+            case 0:
+                enemy.AddComponent<AimlesslyMove>();
+                break;
+            case 1:
+                enemy.AddComponent<DirectlyMoveToward>();
+                enemy.GetComponent<DirectlyMoveToward>().target = player;
+                break;
+        }
     }
 }
