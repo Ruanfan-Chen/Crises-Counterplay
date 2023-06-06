@@ -25,10 +25,7 @@ public class PlayerControl : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         min = map.transform.position - map.transform.lossyScale / 2;
         max = map.transform.position + map.transform.lossyScale / 2;
-        transform.Translate(speed
-            * Time.deltaTime
-            * (Mathf.Abs(horizontalInput) > Mathf.Abs(verticalInput) ? Mathf.Abs(horizontalInput) : Mathf.Abs(verticalInput))
-            * new Vector3(horizontalInput, verticalInput).normalized);
+        transform.Translate(speed * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized);
         if (transform.position.x < min.x - offset)
             transform.position = new Vector3(min.x - offset, transform.position.y, transform.position.z);
         if (transform.position.x > max.x + offset)
