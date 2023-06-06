@@ -26,5 +26,6 @@ public class CharacterLaunch : MonoBehaviour
         GameObject projectile = Instantiate(projectilePrefab, transform.position, transform.rotation * Quaternion.Euler(0, 0, Random.Range(-angleOfLaunch / 2, angleOfLaunch / 2)));
         projectile.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         projectile.GetComponent<DestroyOutOfBounds>().map = map;
+        projectile.GetComponent<Faction>().SetHostility(false);
     }
 }
