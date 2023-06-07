@@ -5,7 +5,17 @@ using UnityEngine;
 public class CharacterInventory : MonoBehaviour
 {
     public HashSet<int> passiveItems = new HashSet<int>();
-    public int activeItem = 0;
+    private int activeItem = 0;
+
+    public int GetActiveItem()
+    {
+        return activeItem;
+    }
+
+    public void SetActiveItem(int value)
+    {
+        activeItem = value;
+    }
 
     // Start is called before the first frame update
     void Start()
