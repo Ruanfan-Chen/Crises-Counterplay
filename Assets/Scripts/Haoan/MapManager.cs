@@ -72,7 +72,7 @@ public class MapManager : MonoBehaviour
                 }
                 break;
             case Shape.Circle:
-                float radius = transform.localScale.x - offset;
+                float radius = transform.localScale.x/2 - offset;
                 float distance = Vector3.Distance(transform.position, pos);
                 if (distance <= radius)
                 {
