@@ -16,7 +16,7 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnEnemy", startDelay, spawnInterval);
+        InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);
     }
 
     // Update is called once per frame
@@ -25,7 +25,7 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    void spawnEnemy()
+    void SpawnEnemy()
     {
         min = map.transform.position - map.transform.lossyScale / 2;
         max = map.transform.position + map.transform.lossyScale / 2;
