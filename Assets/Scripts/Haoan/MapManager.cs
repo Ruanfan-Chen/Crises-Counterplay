@@ -11,17 +11,18 @@ public class MapManager : MonoBehaviour
     [SerializeField] private Color m_mapColor = new Color(0.3584906f, 0.3315237f, 0.2113742f);
     private SpriteRenderer m_spriteRenderer;
 
-    enum Shape { 
+    public enum Shape { 
         Rectangle,
         Circle,
         Triangle
     };
+
     void Start()
     {
-        int index = Random.Range(0, m_spriteArray.Length-1);
+        //int index = Random.Range(0, m_spriteArray.Length-1);
         //int index = 1;
-        Shape randomShape = (Shape)index;
-        CreateMap(randomShape);
+        //Shape randomShape = (Shape)index;
+        CreateMap(Shape.Rectangle);
     }
 
     // Update is called once per frame
@@ -30,10 +31,14 @@ public class MapManager : MonoBehaviour
         
     }
 
-    void CreateMap(Shape shape)
+    public void CreateMap(Shape shape)
     {
         m_shape = shape;
-        m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        if (!m_spriteRenderer)
+        {
+            m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        }
         m_spriteRenderer.color = m_mapColor;
         transform.position = new Vector3(0.0f,0.0f,0.5f);
         switch (shape)
@@ -72,7 +77,7 @@ public class MapManager : MonoBehaviour
                 }
                 break;
             case Shape.Circle:
-                float radius = transform.localScale.x - offset;
+                float radius = transform.localScale.x/2 - offset;
                 float distance = Vector3.Distance(transform.position, pos);
                 if (distance <= radius)
                 {
