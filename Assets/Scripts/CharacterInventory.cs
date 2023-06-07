@@ -4,8 +4,13 @@ using UnityEngine;
 
 public class CharacterInventory : MonoBehaviour
 {
-    public HashSet<int> passiveItems = new HashSet<int>();
+    private HashSet<int> passiveItems = new HashSet<int>();
     private int activeItem = 0;
+
+    public HashSet<int> GetPassiveItems()
+    {
+        return passiveItems;
+    }
 
     public int GetActiveItem()
     {
