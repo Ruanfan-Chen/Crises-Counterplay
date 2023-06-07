@@ -4,9 +4,31 @@ using UnityEngine;
 
 public class CharacterAttribute : MonoBehaviour
 {
+    private float health;
+    private float maxHealth;
     private float moveSpeed;
     private float projectileSpeed;
     private float attackInterval;
+
+    public float GetHealth()
+    {
+        return health;
+    }
+
+    public void SetHealth(float value)
+    {
+        health = value;
+    }
+
+    public float GetMaxHealth()
+    {
+        return maxHealth;
+    }
+
+    public void SetMaxHealth(float value)
+    {
+        maxHealth = value;
+    }
 
     public float GetMoveSpeed()
     {
