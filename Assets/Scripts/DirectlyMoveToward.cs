@@ -9,12 +9,16 @@ public class DirectlyMoveToward : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(speed * Time.deltaTime * (target.transform.position - transform.position).normalized);
+        Vector3 displacement = target.transform.position - transform.position;
+        if (speed * Time.deltaTime < displacement.magnitude)
+            transform.Translate(speed * Time.deltaTime * displacement.normalized);
+        else
+            transform.Translate(displacement);
     }
 }

@@ -4,12 +4,13 @@ using UnityEngine;
 
 public class EnemyLaunch : MonoBehaviour
 {
-    public GameObject map;
+    public GameObject gameplayManager;
+
     public void LaunchProjectile(GameObject projectilePrefab, Vector3 targetPos)
     {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(Vector3.forward, targetPos - transform.position));
         projectile.GetComponent<SpriteRenderer>().color = Color.black;
-        projectile.GetComponent<DestroyOutOfBounds>().map = map;
+        projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameplayManager;
         projectile.GetComponent<Faction>().SetHostility(true);
     }
 

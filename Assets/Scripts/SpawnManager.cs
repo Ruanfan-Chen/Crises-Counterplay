@@ -7,16 +7,13 @@ public class SpawnManager : MonoBehaviour
     public GameObject enemyPrefab;
     public GameObject enemyProjectilePrefab;
     public GameObject player;
-    public GameObject map;
-    private float offset = -2.0f;
+    private float offset = 2.0f;
     private float startDelay = 2.0f;
     private float spawnInterval = 0.3f;
-    private Vector3 min;
-    private Vector3 max;
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("spawnEnemy", startDelay, spawnInterval);
+        InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);
     }
 
     // Update is called once per frame
@@ -25,14 +22,17 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    void spawnEnemy()
+    void SpawnEnemy()
     {
-        min = map.transform.position - map.transform.lossyScale / 2;
-        max = map.transform.position + map.transform.lossyScale / 2;
-        GameObject enemy = Instantiate(enemyPrefab, new Vector3(Random.Range(min.x - offset, max.x + offset), Random.Range(min.y - offset, max.y + offset), 0), new Quaternion());
+        Vector3 position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
+        while (!GetComponent<MapManager>().IsInMap(position))
+        {
+            position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
+        }
+        GameObject enemy = Instantiate(enemyPrefab, position, new Quaternion());
         enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         enemy.GetComponent<Faction>().SetHostility(true);
-        enemy.GetComponent<EnemyLaunch>().map = map;
+        enemy.GetComponent<EnemyLaunch>().gameplayManager = gameObject;
         switch (Random.Range(0, 2))
         {
             case 0:

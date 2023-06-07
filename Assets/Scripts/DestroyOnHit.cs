@@ -8,9 +8,8 @@ public class DestroyOnHit : MonoBehaviour
     public GameObject projectilePrefabOnDeath;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GetComponent<Faction>().GetHostility() != collision.GetComponentInParent<Faction>().GetHostility())
+        if (!GetComponent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
         {
-            Vector3 position = transform.position;
             Destroy(collision);
             Destroy(gameObject);
             if (projectilePrefabOnDeath) {
