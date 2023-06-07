@@ -2312,6 +2312,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1713116185}
   - component: {fileID: 1713116186}
+  - component: {fileID: 1713116187}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -2350,6 +2351,21 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameplayManager: {fileID: 1151485478}
+--- !u!114 &1713116187
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1713116184}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 29762a662011dfa4a8cfe1a261e55bdc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  characterL: {fileID: 559359874}
+  characterU: {fileID: 676170972}
+  characterR: {fileID: 2016223226}
 --- !u!1 &1773054428
 GameObject:
   m_ObjectHideFlags: 0
@@ -2781,6 +2797,10 @@ PrefabInstance:
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterU
+      objectReference: {fileID: 0}
+    - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5319176157177071087, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Color.b
