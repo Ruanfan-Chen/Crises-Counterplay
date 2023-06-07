@@ -16,7 +16,7 @@ public class Faction : MonoBehaviour
         hostility = value;
     }
 
-    public bool isFriendly(Faction faction)
+    public bool IsFriendly(Faction faction)
     {
         return hostility == faction.GetHostility();
     }

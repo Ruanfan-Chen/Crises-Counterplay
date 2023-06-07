@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class PlayerControl : MonoBehaviour
 {
-    public GameObject map;
-    private float offset = -2.0f;
+    public GameObject gameplayManager;
+    private float offset = 2.0f;
     private float speed = 5.0f;
     private float horizontalInput;
     private float verticalInput;
@@ -23,16 +23,9 @@ public class PlayerControl : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        min = map.transform.position - map.transform.lossyScale / 2;
-        max = map.transform.position + map.transform.lossyScale / 2;
-        transform.Translate(speed * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized);
-        if (transform.position.x < min.x - offset)
-            transform.position = new Vector3(min.x - offset, transform.position.y, transform.position.z);
-        if (transform.position.x > max.x + offset)
-            transform.position = new Vector3(max.x + offset, transform.position.y, transform.position.z);
-        if (transform.position.y < min.y - offset)
-            transform.position = new Vector3(transform.position.x, min.y - offset, transform.position.z);
-        if (transform.position.y > max.y + offset)
-            transform.position = new Vector3(transform.position.x, max.y + offset, transform.position.z);
+        Vector3 displacement = speed * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized;
+        Vector3 newPos = transform.position + displacement;
+        if (gameplayManager.GetComponent<MapManager>().IsInMap(newPos, offset))
+            transform.Translate(displacement);
     }
 }

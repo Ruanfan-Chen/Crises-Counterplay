@@ -4,12 +4,23 @@ using UnityEngine;
 
 public class EnemyLaunch : MonoBehaviour
 {
-    public GameObject map;
+    private System.Func<Vector3, float, bool> isInMap;
+
+    public System.Func<Vector3, float, bool> GetIsInMap()
+    {
+        return isInMap;
+    }
+
+    public void SetIsInMap(System.Func<Vector3, float, bool> value)
+    {
+        isInMap = value;
+    }
+
     public void LaunchProjectile(GameObject projectilePrefab, Vector3 targetPos)
     {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(Vector3.forward, targetPos - transform.position));
         projectile.GetComponent<SpriteRenderer>().color = Color.black;
-        projectile.GetComponent<DestroyOutOfBounds>().map = map;
+        projectile.GetComponent<DestroyOutOfBounds>().SetIsInMap(GetIsInMap());
         projectile.GetComponent<Faction>().SetHostility(true);
     }
 
