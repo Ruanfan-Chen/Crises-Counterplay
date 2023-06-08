@@ -20,7 +20,9 @@ public class Bar : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        float width = m_attribute.GetHealth() / m_attribute.GetMaxHealth() * m_maxWidth;
+        float hp = m_attribute.GetHealth();
+        hp = Mathf.Clamp(hp, 0.0f, m_attribute.GetMaxHealth());
+        float width = hp / m_attribute.GetMaxHealth() * m_maxWidth;
         m_rectTransform.sizeDelta = new Vector2(width, m_rectTransform.sizeDelta.y);
     }
 }

@@ -18,6 +18,11 @@ public class GameplayManager : MonoBehaviour
     private int m_levelNum = 1;
     private Item m_item;
 
+    delegate void PositionAction();
+    PositionAction m_actionJack;
+    PositionAction m_actionKing;
+    PositionAction m_actionLord;
+
     struct Item
     {
         public string m_name;
@@ -102,7 +107,12 @@ public class GameplayManager : MonoBehaviour
 
     public void ItemButtonOnClick()
     {
-
+        PlayerCharacterPositioning pcp = m_player.GetComponent<PlayerCharacterPositioning>();
+        GameObject jack = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, 120));
+        GameObject king = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, 0));
+        GameObject lord = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, -120));
+        m_actionJack = delegate () {
+        };
     }
 
     public void JackOnClick()
