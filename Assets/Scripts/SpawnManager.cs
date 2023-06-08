@@ -45,12 +45,14 @@ public class SpawnManager : MonoBehaviour
         enemy.GetComponent<Faction>().SetHostility(true);
         enemy.GetComponent<LaunchProjectile>().gameplayManager = gameObject;
         enemy.tag = "Disposable";
-        switch (Random.Range(0, 2))
+        switch (Random.Range(0, 3))
         {
             case 0:
-                enemy.AddComponent<AimlesslyMove>();
                 break;
             case 1:
+                enemy.AddComponent<AimlesslyMove>();
+                break;
+            case 2:
                 enemy.AddComponent<DirectlyMoveToward>();
                 enemy.GetComponent<DirectlyMoveToward>().target = player;
                 break;
@@ -71,21 +73,20 @@ public class SpawnManager : MonoBehaviour
                 enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
                 break;
         }
-        switch (Random.Range(0, 4))
+        switch (Random.Range(0, 2))
         {
             case 0:
                 break;
             case 1:
-                enemy.GetComponent<DestroyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
-                enemy.GetComponent<DestroyOnHit>().projectilePrefabRingOnDeath = null;
+                enemy.GetComponent<EnemyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
                 break;
-            case 2:
-                enemy.GetComponent<DestroyOnHit>().projectilePrefabOnDeath = null;
-                enemy.GetComponent<DestroyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
+        }
+        switch (Random.Range(0, 2))
+        {
+            case 0:
                 break;
-            case 3:
-                enemy.GetComponent<DestroyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
-                enemy.GetComponent<DestroyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
+            case 1:
+                enemy.GetComponent<EnemyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
                 break;
         }
     }

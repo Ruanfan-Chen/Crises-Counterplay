@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class CharacterAttribute : MonoBehaviour
 {
-    private float health;
-    private float maxHealth;
-    private float moveSpeed;
+    private float health = 100.0f;
+    private float maxHealth = 100.0f;
     private float projectileSpeed = 10.0f;
     private float attackInterval = 0.5f;
 
@@ -32,12 +31,12 @@ public class CharacterAttribute : MonoBehaviour
 
     public float GetMoveSpeed()
     {
-        return moveSpeed;
+        return GetComponentInParent<PlayerControl>().GetSpeed();
     }
 
     public void SetMoveSpeed(float value)
     {
-        moveSpeed = value;
+        GetComponentInParent<PlayerControl>().SetSpeed(value);
     }
 
     public float GetProjectileSpeed()
@@ -60,15 +59,21 @@ public class CharacterAttribute : MonoBehaviour
         attackInterval = value;
     }
 
+    public void TakeDmg(float value)
+    {
+        health-=value;
+        Debug.Log(health);
+    }
+
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 }

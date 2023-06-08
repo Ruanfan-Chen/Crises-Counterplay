@@ -7,7 +7,7 @@ public class PlayerCharacterPositioning : MonoBehaviour
     public GameObject characterL;
     public GameObject characterU;
     public GameObject characterR;
-    private float triRadius = 1.0f;
+    private float triRadius = 0.7f;
     private float angularVelocity = 180.0f;
     Quaternion rotationBias = Quaternion.Euler(0, 0, 0);
     private Vector3 basePositionL;
