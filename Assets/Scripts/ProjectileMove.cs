@@ -4,7 +4,18 @@ using UnityEngine;
 
 public class ProjectileMove : MonoBehaviour
 {
-    private float speed = 20.0f;
+    private float speed;
+
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    public void SetSpeed(float value)
+    {
+        speed = value;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -14,6 +25,6 @@ public class ProjectileMove : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        transform.Translate(speed * Time.deltaTime * Vector3.up);
+        transform.Translate(GetSpeed() * Time.deltaTime * Vector3.up);
     }
 }

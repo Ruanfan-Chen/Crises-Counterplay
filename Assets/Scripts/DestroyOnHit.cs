@@ -6,17 +6,20 @@ public class DestroyOnHit : MonoBehaviour
 {
     public GameObject projectilePrefabRingOnDeath;
     public GameObject projectilePrefabOnDeath;
+    private float projectileSpeed = 5.0f;
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (!GetComponent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()) && !collision.isTrigger)
         {
             Destroy(collision);
             Destroy(gameObject);
-            if (projectilePrefabOnDeath) {
-                GetComponent<LaunchProjectile>().LaunchProjectileAtRandom(projectilePrefabOnDeath);
+            if (projectilePrefabOnDeath)
+            {
+                GetComponent<LaunchProjectile>().LaunchProjectileAtRandom(projectilePrefabOnDeath, projectileSpeed);
             }
-            if (projectilePrefabRingOnDeath) {
-                GetComponent<LaunchProjectile>().LaunchProjectileRing(projectilePrefabRingOnDeath, Random.Range(4, 9));
+            if (projectilePrefabRingOnDeath)
+            {
+                GetComponent<LaunchProjectile>().LaunchProjectileRing(projectilePrefabRingOnDeath, projectileSpeed, Random.Range(4, 9));
             }
         }
     }

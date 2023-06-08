@@ -6,7 +6,6 @@ public class CharacterLaunch : MonoBehaviour
 {
     public GameObject projectilePrefab;
     private float attackTimer;
-    private float attackInterval = 0.6f;
     // Start is called before the first frame update
     void Start()
     {
@@ -23,8 +22,8 @@ public class CharacterLaunch : MonoBehaviour
     {
         if (attackTimer <= 0 && collision.GetComponent<DestroyOnHit>() && !GetComponent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
         {
-            GetComponent<LaunchProjectile>().Launch(projectilePrefab, collision.transform.position);
-            attackTimer = attackInterval;
+            GetComponent<LaunchProjectile>().Launch(projectilePrefab, GetComponent<CharacterAttribute>().GetProjectileSpeed(), collision.transform.position);
+            attackTimer = GetComponent<CharacterAttribute>().GetAttackInterval();
         }
     }
 }

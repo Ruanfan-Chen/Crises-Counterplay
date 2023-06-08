@@ -54,7 +54,7 @@ public class CharacterInventory : MonoBehaviour
         switch (activeItem)
         {
             case 1:
-                GetComponent<LaunchProjectile>().LaunchProjectileRing(GetComponent<CharacterLaunch>().projectilePrefab, 10);
+                GetComponent<LaunchProjectile>().LaunchProjectileRing(GetComponent<CharacterLaunch>().projectilePrefab, GetComponent<CharacterAttribute>().GetProjectileSpeed(), 10);
                 break;
             case 2:
                 StartCoroutine(GetComponentInParent<PlayerCharacterPositioning>().Rotate(Quaternion.Euler(0, 0, 120)));
