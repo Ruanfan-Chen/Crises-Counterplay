@@ -5,7 +5,6 @@ using UnityEngine;
 public class CharacterLaunch : MonoBehaviour
 {
     public GameObject projectilePrefab;
-    public GameObject gameplayManager;
     private float startDelay = 2.0f;
     private float attackInterval = 0.2f;
     private float angleOfLaunch = 90.0f;

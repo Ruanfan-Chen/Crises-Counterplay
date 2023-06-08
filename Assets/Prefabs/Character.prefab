@@ -75,6 +75,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d7c6b8da210e4e4eaba19d5c49f249e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  footprintPrefab: {fileID: 1230923118597313163, guid: 6ba0620ce73294c4ab027a2e2862fa49, type: 3}
+  activeItem: 0
 --- !u!114 &-7777089298053490636
 MonoBehaviour:
   m_ObjectHideFlags: 0
