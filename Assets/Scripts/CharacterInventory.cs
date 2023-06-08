@@ -40,5 +40,10 @@ public class CharacterInventory : MonoBehaviour
 
     public void ActivateItem() {
         Debug.Log("Item " + activeItem + " is activated.");
+        switch (activeItem) {
+            case 2:
+                StartCoroutine(GetComponentInParent<PlayerCharacterPositioning>().Rotate(Quaternion.Euler(0, 0, 120)));
+                break;
+        }
     }
 }
