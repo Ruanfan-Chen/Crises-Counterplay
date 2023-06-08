@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class CharacterAttribute : MonoBehaviour
 {
-    private float health = 100.0f;
+    [SerializeField] private float health = 100.0f;
     private float maxHealth = 100.0f;
     private float projectileSpeed = 10.0f;
     private float attackInterval = 0.5f;

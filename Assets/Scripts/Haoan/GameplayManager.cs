@@ -16,10 +16,19 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private float m_maxTime = 45.0f;
     private float m_timer = 0.0f;
     private int m_levelNum = 1;
+    private Item m_item;
+
+    struct Item
+    {
+        public string m_name;
+        public int m_index;
+        public bool m_active;
+    }
     // Start is called before the first frame update
     void Start()
     {
         levelText.text = "Level " + m_levelNum.ToString();
+        m_item = new Item();
     }
 
     // Update is called once per frame
@@ -39,6 +48,17 @@ public class GameplayManager : MonoBehaviour
     {
         m_gameplayPanel.SetActive(false);
         m_shopPanel.SetActive(true);
+        GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
+
+        //randomly choose an item
+        int index = Random.Range(0, 3);
+        Item item = new Item();
+        item.m_name = "Active Item "+ index.ToString();
+        item.m_index = index;
+        item.m_active = true;
+        m_item = item;
+
+        itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
     }
 
     void CloseShop()
@@ -50,6 +70,13 @@ public class GameplayManager : MonoBehaviour
         levelText.text = "Level " + m_levelNum.ToString();
         ResetGame();
     }
+
+    void PositionPage()
+    {
+        m_shopPanel.SetActive(false);
+        m_positionPanel.SetActive(true);
+    }
+
 
     void ResetGame()
     {
@@ -71,5 +98,25 @@ public class GameplayManager : MonoBehaviour
     {
         m_characters[1].SetActive(true);
         CloseShop();
+    }
+
+    public void ItemButtonOnClick()
+    {
+
+    }
+
+    public void JackOnClick()
+    {
+
+    }
+
+    public void KingOnClick()
+    {
+
+    }
+
+    public void LordOnClick()
+    {
+
     }
 }
