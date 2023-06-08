@@ -40,7 +40,7 @@ public class CharacterInventory : MonoBehaviour
     {
         if (passiveItems.Contains(1) && (transform.position - lastFootprintPos).magnitude > stepSize)
         {
-            GameObject footprint = Instantiate(footprintPrefab, transform.position, transform.rotation);
+            GameObject footprint = Instantiate(footprintPrefab, transform.position + Vector3.forward * 0.5f, transform.rotation);
             footprint.GetComponent<DestroyOutOfTime>().SetTimer(5.0f);
             footprint.GetComponent<DestroyOutOfTime>().Activate();
             footprint.GetComponent<Faction>().SetHostility(false);
