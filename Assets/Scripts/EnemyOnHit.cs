@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DestroyOnHit : MonoBehaviour
+public class EnemyOnHit : MonoBehaviour
 {
     public GameObject projectilePrefabRingOnDeath;
     public GameObject projectilePrefabOnDeath;
@@ -23,6 +23,4 @@ public class DestroyOnHit : MonoBehaviour
             }
         }
     }
-
-
 }

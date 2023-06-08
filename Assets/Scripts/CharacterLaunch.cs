@@ -20,7 +20,7 @@ public class CharacterLaunch : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (attackTimer <= 0 && collision.GetComponent<DestroyOnHit>() && !GetComponent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
+        if (attackTimer <= 0 && collision.GetComponent<EnemyOnHit>() && !GetComponent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
         {
             GetComponent<LaunchProjectile>().Launch(projectilePrefab, GetComponent<CharacterAttribute>().GetProjectileSpeed(), collision.transform.position);
             attackTimer = GetComponent<CharacterAttribute>().GetAttackInterval();
