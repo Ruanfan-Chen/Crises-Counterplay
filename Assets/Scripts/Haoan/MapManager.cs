@@ -58,9 +58,9 @@ public class MapManager : MonoBehaviour
     /// <param name="pos"></param>
     /// <param name="offset"></param>
     /// <returns>Returns the result.</returns>
-    public bool IsInMap(Vector3 pos, float offset = 0.0f)
+    public Vector3 PosInMap(Vector3 pos, float offset = 0.0f)
     {
-        bool returnVal = true;
+        Vector3 returnVal = pos;
         switch (m_shape)
         {
             case Shape.Rectangle:
@@ -68,23 +68,19 @@ public class MapManager : MonoBehaviour
                 Vector3 max = transform.position + transform.localScale / 2;
                 if(pos.x < min.x + offset)
                 {
-                    returnVal = false;
-                    pos.x = min.x + offset;
+                    returnVal.x = min.x + offset;
                 }
                 else if(pos.x > max.x - offset)
                 {
-                    returnVal = false;
-                    pos.x = max.x - offset;
+                    returnVal.x = max.x - offset;
                 }
                 if(pos.y < min.y + offset)
                 {
-                    returnVal = false;
-                    pos.y = min.y + offset;
+                    returnVal.y = min.y + offset;
                 }
                 else if(pos.y > max.y - offset)
                 {
-                    returnVal = false;
-                    pos.y = max.y - offset;
+                    returnVal.y = max.y - offset;
                 }
                 break;
             case Shape.Circle:
@@ -94,10 +90,9 @@ public class MapManager : MonoBehaviour
                 float distance = Vector3.Distance(origin, pos);
                 if (distance > radius)
                 {
-                    returnVal = false;
                     float angle = Mathf.Atan2(pos.y, pos.x);
-                    pos.x = radius * Mathf.Cos(angle);
-                    pos.y = radius * Mathf.Sin(angle);
+                    returnVal.x = radius * Mathf.Cos(angle);
+                    returnVal.y = radius * Mathf.Sin(angle);
                 }
                 break;
             case Shape.Triangle:
