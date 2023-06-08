@@ -1760,6 +1760,10 @@ PrefabInstance:
       propertyPath: gameplayManager
       value: 
       objectReference: {fileID: 1151485478}
+    - target: {fileID: 253904035502590753, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: activeItem
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterR
@@ -2503,6 +2507,10 @@ PrefabInstance:
       propertyPath: gameplayManager
       value: 
       objectReference: {fileID: 1151485478}
+    - target: {fileID: 253904035502590753, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: activeItem
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterL
@@ -2806,6 +2814,10 @@ PrefabInstance:
       propertyPath: gameplayManager
       value: 
       objectReference: {fileID: 1151485478}
+    - target: {fileID: 253904035502590753, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: activeItem
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterU

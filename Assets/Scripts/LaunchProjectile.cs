@@ -17,7 +17,7 @@ public class LaunchProjectile : MonoBehaviour
             projectile.GetComponent<SpriteRenderer>().color = Color.black;
         else
             projectile.GetComponent<SpriteRenderer>().color = Color.white;
-        projectile.tag = "Projectile";
+        projectile.tag = "Disposable";
     }
     public void Launch(GameObject projectilePrefab, Vector3 targetPos)
     {
