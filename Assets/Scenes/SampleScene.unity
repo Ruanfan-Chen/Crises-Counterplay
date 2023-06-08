@@ -1756,13 +1756,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1713116185}
     m_Modifications:
+    - target: {fileID: -7777089298053490636, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485478}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterR
       objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5319176157177071087, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Color.b
@@ -2495,13 +2499,17 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1713116185}
     m_Modifications:
+    - target: {fileID: -7777089298053490636, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485478}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterL
       objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5319176157177071087, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Color.b
@@ -2794,6 +2802,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1713116185}
     m_Modifications:
+    - target: {fileID: -7777089298053490636, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485478}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterU

@@ -13,10 +13,10 @@ public class DestroyOnHit : MonoBehaviour
             Destroy(collision);
             Destroy(gameObject);
             if (projectilePrefabOnDeath) {
-                GetComponent<EnemyLaunch>().LaunchProjectile(projectilePrefabOnDeath);
+                GetComponent<LaunchProjectile>().LaunchProjectileAtRandom(projectilePrefabOnDeath);
             }
             if (projectilePrefabRingOnDeath) {
-                GetComponent<EnemyLaunch>().LaunchProjectileRing(projectilePrefabRingOnDeath, Random.Range(4, 9));
+                GetComponent<LaunchProjectile>().LaunchProjectileRing(projectilePrefabRingOnDeath, Random.Range(4, 9));
             }
         }
     }

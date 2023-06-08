@@ -9,7 +9,6 @@ public class PlayerCharacterPositioning : MonoBehaviour
     public GameObject characterR;
     private float triRadius = 1.0f;
     private float angularVelocity = 180.0f;
-    private Vector3 positionBias = Vector3.zero;
     Quaternion rotationBias = Quaternion.Euler(0, 0, 0);
     private Vector3 basePositionL;
     private Vector3 basePositionU;
@@ -28,11 +27,8 @@ public class PlayerCharacterPositioning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CenterCharacters();
-    }
 
-    void CenterCharacters()
-    {
+        Vector3 positionBias;
         Vector3 activeCharacterPositionSum = Vector3.zero;
         int activeCharacterCount = 0;
         if (characterL.activeSelf)
@@ -54,11 +50,11 @@ public class PlayerCharacterPositioning : MonoBehaviour
             positionBias = -activeCharacterPositionSum / activeCharacterCount;
         else
             positionBias = Vector3.zero;
-        characterL.transform.position = basePositionL + positionBias;
+        characterL.transform.position = transform.position + rotationBias * (basePositionL + positionBias);
         characterL.transform.rotation = baseRotationL * rotationBias;
-        characterU.transform.position = basePositionU + positionBias;
+        characterU.transform.position = transform.position + rotationBias * (basePositionU + positionBias);
         characterU.transform.rotation = baseRotationU * rotationBias;
-        characterR.transform.position = basePositionR + positionBias;
+        characterR.transform.position = transform.position + rotationBias * (basePositionR + positionBias);
         characterR.transform.rotation = baseRotationR * rotationBias;
     }
 

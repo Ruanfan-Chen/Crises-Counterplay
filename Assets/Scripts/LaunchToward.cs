@@ -22,8 +22,8 @@ public class LaunchToward : MonoBehaviour
     void LaunchProjectile()
     {
         if (targetGameObj)
-            GetComponent<EnemyLaunch>().LaunchProjectile(projectilePrefab, targetGameObj.transform.position);
+            GetComponent<LaunchProjectile>().Launch(projectilePrefab, targetGameObj.transform.position);
         else
-            GetComponent<EnemyLaunch>().LaunchProjectile(projectilePrefab);
+            GetComponent<LaunchProjectile>().LaunchProjectileAtRandom(projectilePrefab);
     }
 }

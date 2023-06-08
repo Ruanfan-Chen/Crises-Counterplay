@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Faction : MonoBehaviour
 {
-    private bool hostility;
+    private bool hostility= false;
 
     public bool GetHostility()
     {
