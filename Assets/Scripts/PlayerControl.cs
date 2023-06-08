@@ -26,9 +26,9 @@ public class PlayerControl : MonoBehaviour
         if (gameplayManager.GetComponent<MapManager>().IsInMap(newPos, offset))
             transform.Translate(displacement);
         if (Input.GetKeyDown(KeyCode.J))
-            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(-1).GetComponent<CharacterInventory>().ActivateItem();
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(1).GetComponent<CharacterInventory>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.K))
-            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(-1).GetComponent<CharacterInventory>().ActivateItem();
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(0).GetComponent<CharacterInventory>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.L))
             GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(-1).GetComponent<CharacterInventory>().ActivateItem();
     }

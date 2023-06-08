@@ -8,14 +8,15 @@ public class PlayerCharacterPositioning : MonoBehaviour
     public GameObject characterU;
     public GameObject characterR;
     private float triRadius = 1.0f;
+    private float angularVelocity = 180.0f;
     private Vector3 positionBias = Vector3.zero;
     Quaternion rotationBias = Quaternion.Euler(0, 0, 0);
     private Vector3 basePositionL;
     private Vector3 basePositionU;
     private Vector3 basePositionR;
-    private Quaternion baseRotationL = Quaternion.Euler(0, 0, -120);
+    private Quaternion baseRotationL = Quaternion.Euler(0, 0, 120);
     private Quaternion baseRotationU = Quaternion.Euler(0, 0, 0);
-    private Quaternion baseRotationR = Quaternion.Euler(0, 0, 120);
+    private Quaternion baseRotationR = Quaternion.Euler(0, 0, -120);
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +28,11 @@ public class PlayerCharacterPositioning : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        CenterCharacters();
+    }
 
+    void CenterCharacters()
+    {
         Vector3 activeCharacterPositionSum = Vector3.zero;
         int activeCharacterCount = 0;
         if (characterL.activeSelf)
@@ -72,5 +77,17 @@ public class PlayerCharacterPositioning : MonoBehaviour
     public GameObject GetClosestCharacter(float bias)
     {
         return GetClosestCharacter(Quaternion.Euler(0, 0, 120 * bias));
+    }
+
+    public IEnumerator Rotate(Quaternion rotation)
+    {
+        Quaternion a = rotationBias;
+        Quaternion b = rotationBias * rotation;
+        for (float t = 0; t <= 1; t += angularVelocity * Time.deltaTime / Quaternion.Angle(a, b))
+        {
+            rotationBias = Quaternion.Slerp(a, b, t);
+            yield return null;
+        }
+        rotationBias = b;
     }
 }
