@@ -8,9 +8,15 @@ public class CharacterOnHit : MonoBehaviour
     {
         if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
         {
-            GetComponent<CharacterAttribute>().TakeDmg(25.0f * Time.deltaTime);
+
             if (collision.GetComponent<ProjectileMove>())
+            {
+
+                GetComponent<CharacterAttribute>().TakeDmg(25.0f);
                 Destroy(collision.gameObject);
+            }
+            else
+                GetComponent<CharacterAttribute>().TakeDmg(25.0f * Time.deltaTime);
         }
     }
 }
