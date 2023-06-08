@@ -57,6 +57,14 @@ public class GameplayManager : MonoBehaviour
         MapManager mm = gameObject.GetComponent<MapManager>();
         mm.CreateMap(MapManager.Shape.Circle);
         Time.timeScale = 1.0f;
+        m_timer = 0.0f;
+        GameObject disposable = GameObject.Find("disposable");
+        Debug.Log(disposable == null);
+        if(disposable)
+        {
+            Debug.Log("destroy");
+            Destroy(disposable);
+        }
     }
 
     public void CharacterButtonOnClick()
@@ -64,6 +72,4 @@ public class GameplayManager : MonoBehaviour
         m_characters[1].SetActive(true);
         CloseShop();
     }
-
-
 }

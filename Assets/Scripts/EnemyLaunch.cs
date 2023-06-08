@@ -9,6 +9,15 @@ public class EnemyLaunch : MonoBehaviour
     public void LaunchProjectile(GameObject projectilePrefab, Vector3 targetPos)
     {
         GameObject projectile = Instantiate(projectilePrefab, transform.position, Quaternion.LookRotation(Vector3.forward, targetPos - transform.position));
+        
+        //to organize enemies and projectiles
+        GameObject disposable = GameObject.Find("disposable");
+        if (!disposable)
+        {
+            disposable = new GameObject("disposable");
+        }
+        projectile.transform.SetParent(disposable.transform);
+
         projectile.GetComponent<SpriteRenderer>().color = Color.black;
         projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameplayManager;
         projectile.GetComponent<Faction>().SetHostility(true);

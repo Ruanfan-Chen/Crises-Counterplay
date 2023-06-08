@@ -1700,7 +1700,7 @@ MonoBehaviour:
   m_gameplayPanel: {fileID: 1965057401}
   m_shopPanel: {fileID: 432010352}
   m_positionPanel: {fileID: 1235466728}
-  m_maxTime: 50
+  m_maxTime: 3
 --- !u!4 &1151485480
 Transform:
   m_ObjectHideFlags: 0
@@ -1780,6 +1780,10 @@ PrefabInstance:
       propertyPath: map
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6196927971659858435, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485478}
     - target: {fileID: 9082281178327163815, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_RootOrder
       value: 2
@@ -2503,6 +2507,10 @@ PrefabInstance:
       propertyPath: map
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 6196927971659858435, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485478}
     - target: {fileID: 9082281178327163815, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_RootOrder
       value: 1

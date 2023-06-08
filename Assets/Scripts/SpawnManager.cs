@@ -30,6 +30,17 @@ public class SpawnManager : MonoBehaviour
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
         }
         GameObject enemy = Instantiate(enemyPrefab, position, new Quaternion());
+
+        //to organize enemies and projectiles
+        GameObject disposable = GameObject.Find("disposable");
+        if(!disposable)
+        {
+            disposable = new GameObject("disposable");
+        }
+        enemy.transform.SetParent(disposable.transform);
+
+
+
         enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         enemy.GetComponent<Faction>().SetHostility(true);
         enemy.GetComponent<EnemyLaunch>().gameplayManager = gameObject;
