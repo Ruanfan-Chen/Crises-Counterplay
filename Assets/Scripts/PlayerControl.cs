@@ -25,8 +25,7 @@ public class PlayerControl : MonoBehaviour
         verticalInput = Input.GetAxisRaw("Vertical");
         Vector3 displacement = speed * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized;
         Vector3 newPos = transform.position + displacement;
-        if (gameplayManager.GetComponent<MapManager>().IsInMap(newPos, offset))
-            transform.Translate(displacement);
+        transform.position = gameplayManager.GetComponent<MapManager>().PosInMap(newPos, offset);
         if (Input.GetKeyDown(KeyCode.J))
             GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(1).GetComponent<CharacterInventory>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.K))

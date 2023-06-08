@@ -15,7 +15,7 @@ public class DestroyOutOfBounds : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameplayManager.GetComponent<MapManager>().IsInMap(transform.position, offset))
+        if (gameplayManager.GetComponent<MapManager>().PosInMap(transform.position, offset) != transform.position)
             Destroy(gameObject);
     }
 }

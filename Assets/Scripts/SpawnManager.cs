@@ -25,7 +25,7 @@ public class SpawnManager : MonoBehaviour
     void SpawnEnemy()
     {
         Vector3 position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        while (!GetComponent<MapManager>().IsInMap(position, offset))
+        while (GetComponent<MapManager>().PosInMap(position, offset) != position)
         {
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
         }
