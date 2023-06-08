@@ -9,9 +9,9 @@ public class EnemyOnHit : MonoBehaviour
     private float projectileSpeed = 5.0f;
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (!GetComponent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()) && !collision.isTrigger)
+        if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
         {
-            Destroy(collision);
+            Destroy(collision.gameObject);
             Destroy(gameObject);
             if (projectilePrefabOnDeath)
             {
