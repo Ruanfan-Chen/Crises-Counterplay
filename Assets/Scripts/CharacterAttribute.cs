@@ -7,8 +7,8 @@ public class CharacterAttribute : MonoBehaviour
     private float health;
     private float maxHealth;
     private float moveSpeed;
-    private float projectileSpeed;
-    private float attackInterval;
+    private float projectileSpeed = 10.0f;
+    private float attackInterval = 0.5f;
 
     public float GetHealth()
     {

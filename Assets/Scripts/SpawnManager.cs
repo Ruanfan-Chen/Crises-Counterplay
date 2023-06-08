@@ -43,7 +43,8 @@ public class SpawnManager : MonoBehaviour
 
         enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         enemy.GetComponent<Faction>().SetHostility(true);
-        enemy.GetComponent<EnemyLaunch>().gameplayManager = gameObject;
+        enemy.GetComponent<LaunchProjectile>().gameplayManager = gameObject;
+        enemy.tag = "Disposable";
         switch (Random.Range(0, 2))
         {
             case 0:

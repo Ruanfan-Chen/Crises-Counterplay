@@ -7,6 +7,8 @@ public class PlayerControl : MonoBehaviour
     public GameObject gameplayManager;
     private float offset = 2.0f;
     private float speed = 5.0f;
+    private float dashSpeed = 50.0f;
+    private float dashDistance = 10.0f;
     private float horizontalInput;
     private float verticalInput;
 
@@ -25,5 +27,25 @@ public class PlayerControl : MonoBehaviour
         Vector3 newPos = transform.position + displacement;
         if (gameplayManager.GetComponent<MapManager>().IsInMap(newPos, offset))
             transform.Translate(displacement);
+        if (Input.GetKeyDown(KeyCode.J))
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(1).GetComponent<CharacterInventory>().ActivateItem();
+        if (Input.GetKeyDown(KeyCode.K))
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(0).GetComponent<CharacterInventory>().ActivateItem();
+        if (Input.GetKeyDown(KeyCode.L))
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(-1).GetComponent<CharacterInventory>().ActivateItem();
+    }
+
+    public IEnumerator Dash()
+    {
+        horizontalInput = Input.GetAxisRaw("Horizontal");
+        verticalInput = Input.GetAxisRaw("Vertical");
+        float displacement = 0;
+        while (displacement + dashSpeed * Time.deltaTime <= dashDistance)
+        {
+            transform.position += dashSpeed * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized;
+            displacement += dashSpeed * Time.deltaTime;
+            yield return null;
+        }
+        transform.position += (dashDistance - displacement) * new Vector3(horizontalInput, verticalInput).normalized;
     }
 }

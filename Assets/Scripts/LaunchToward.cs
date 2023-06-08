@@ -8,6 +8,7 @@ public class LaunchToward : MonoBehaviour
     public GameObject projectilePrefab;
     private float startDelay = 2.0f;
     private float attackInterval = 2.0f;
+    private float projectileSpeed = 5.0f;
     // Start is called before the first frame update
     void Start()
     {
@@ -22,8 +23,8 @@ public class LaunchToward : MonoBehaviour
     void LaunchProjectile()
     {
         if (targetGameObj)
-            GetComponent<EnemyLaunch>().LaunchProjectile(projectilePrefab, targetGameObj.transform.position);
+            GetComponent<LaunchProjectile>().Launch(projectilePrefab, projectileSpeed, targetGameObj.transform.position);
         else
-            GetComponent<EnemyLaunch>().LaunchProjectile(projectilePrefab);
+            GetComponent<LaunchProjectile>().LaunchProjectileAtRandom(projectilePrefab, projectileSpeed);
     }
 }
