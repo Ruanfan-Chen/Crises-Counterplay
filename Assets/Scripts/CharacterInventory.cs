@@ -37,4 +37,8 @@ public class CharacterInventory : MonoBehaviour
     {
 
     }
+
+    public void ActivateItem() {
+        Debug.Log("Item " + activeItem + " is activated.");
+    }
 }

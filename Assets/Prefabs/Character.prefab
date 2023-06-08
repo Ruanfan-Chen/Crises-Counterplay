@@ -10,6 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 9082281178327163815}
   - component: {fileID: 6196927971659858435}
+  - component: {fileID: 2867442189195603037}
+  - component: {fileID: 253904035502590753}
   m_Layer: 0
   m_Name: Character
   m_TagString: Untagged
@@ -46,6 +48,31 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   projectilePrefab: {fileID: 8441805378274828763, guid: ce0e7e97aed66674aa8ca777ba27a497, type: 3}
+  gameplayManager: {fileID: 0}
+--- !u!114 &2867442189195603037
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2637130711552437442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6049c13e31aad814cb0d8cabc888e74c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &253904035502590753
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2637130711552437442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d7c6b8da210e4e4eaba19d5c49f249e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &5642362503640582333
 GameObject:
   m_ObjectHideFlags: 0
