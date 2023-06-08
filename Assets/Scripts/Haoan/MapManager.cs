@@ -19,10 +19,7 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        //int index = Random.Range(0, m_spriteArray.Length-1);
-        //int index = 1;
-        //Shape randomShape = (Shape)index;
-        CreateMap(Shape.Rectangle);
+        CreateMap(Shape.Circle);
     }
 
     // Update is called once per frame
@@ -63,29 +60,44 @@ public class MapManager : MonoBehaviour
     /// <returns>Returns the result.</returns>
     public bool IsInMap(Vector3 pos, float offset = 0.0f)
     {
-        bool returnVal = false;
+        bool returnVal = true;
         switch (m_shape)
         {
             case Shape.Rectangle:
                 Vector3 min = transform.position - transform.localScale / 2;
                 Vector3 max = transform.position + transform.localScale / 2;
-                if (transform.position.x < min.x + offset || transform.position.x > max.x - offset || transform.position.y < min.y + offset || transform.position.y > max.y - offset)
-                    returnVal = false;
-                else
+                if(pos.x < min.x + offset)
                 {
-                    returnVal = true;
+                    returnVal = false;
+                    pos.x = min.x + offset;
+                }
+                else if(pos.x > max.x - offset)
+                {
+                    returnVal = false;
+                    pos.x = max.x - offset;
+                }
+                if(pos.y < min.y + offset)
+                {
+                    returnVal = false;
+                    pos.y = min.y + offset;
+                }
+                else if(pos.y > max.y - offset)
+                {
+                    returnVal = false;
+                    pos.y = max.y - offset;
                 }
                 break;
             case Shape.Circle:
                 float radius = transform.localScale.x/2 - offset;
-                float distance = Vector3.Distance(transform.position, pos);
-                if (distance <= radius)
-                {
-                    returnVal = true;
-                }
-                else
+                Vector3 origin = transform.position;
+                origin.z = 0.0f;
+                float distance = Vector3.Distance(origin, pos);
+                if (distance > radius)
                 {
                     returnVal = false;
+                    float angle = Mathf.Atan2(pos.y, pos.x);
+                    pos.x = radius * Mathf.Cos(angle);
+                    pos.y = radius * Mathf.Sin(angle);
                 }
                 break;
             case Shape.Triangle:
