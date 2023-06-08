@@ -12,6 +12,16 @@ public class PlayerControl : MonoBehaviour
     private float horizontalInput;
     private float verticalInput;
 
+    public float GetSpeed()
+    {
+        return speed;
+    }
+
+    public void SetSpeed(float value)
+    {
+        speed = value;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,7 +33,7 @@ public class PlayerControl : MonoBehaviour
     {
         horizontalInput = Input.GetAxisRaw("Horizontal");
         verticalInput = Input.GetAxisRaw("Vertical");
-        Vector3 displacement = speed * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized;
+        Vector3 displacement = GetSpeed() * Time.deltaTime * new Vector3(horizontalInput, verticalInput).normalized;
         Vector3 newPos = transform.position + displacement;
         transform.position = gameplayManager.GetComponent<MapManager>().PosInMap(newPos, offset);
         if (Input.GetKeyDown(KeyCode.J))
