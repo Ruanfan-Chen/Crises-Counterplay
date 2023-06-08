@@ -12,6 +12,7 @@ public class EnemyLaunch : MonoBehaviour
         projectile.GetComponent<SpriteRenderer>().color = Color.black;
         projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameplayManager;
         projectile.GetComponent<Faction>().SetHostility(true);
+        projectile.tag = "Projectile";
     }
 
     public void LaunchProjectile(GameObject projectilePrefab)

@@ -27,5 +27,6 @@ public class CharacterLaunch : MonoBehaviour
         projectile.GetComponent<SpriteRenderer>().color = Color.white;
         projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameplayManager;
         projectile.GetComponent<Faction>().SetHostility(false);
+        projectile.tag = "Projectile";
     }
 }
