@@ -32,7 +32,7 @@ public class CharacterInventory : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        passiveItems.Add(1);
+        //passiveItems.Add(1);
     }
 
     // Update is called once per frame
@@ -44,6 +44,7 @@ public class CharacterInventory : MonoBehaviour
             footprint.GetComponent<DestroyOutOfTime>().SetTimer(5.0f);
             footprint.GetComponent<DestroyOutOfTime>().Activate();
             footprint.GetComponent<Faction>().SetHostility(false);
+            footprint.tag = "Disposable";
             lastFootprintPos = footprint.transform.position;
         }
     }
