@@ -62,7 +62,6 @@ public class CharacterAttribute : MonoBehaviour
     public void TakeDmg(float value)
     {
         health-=value;
-        Debug.Log(health);
     }
 
     // Start is called before the first frame update

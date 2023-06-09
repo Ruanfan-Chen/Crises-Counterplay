@@ -6,7 +6,7 @@ public class CharacterInventory : MonoBehaviour
 {
     public GameObject footprintPrefab;
     private HashSet<int> passiveItems = new HashSet<int>();
-    private int activeItem = 0;
+    [SerializeField] private int activeItem;
     private Vector3 lastFootprintPos = Vector3.zero;
     private float stepSize = 1.0f;
 
@@ -54,7 +54,7 @@ public class CharacterInventory : MonoBehaviour
         switch (activeItem)
         {
             case 1:
-                GetComponent<LaunchProjectile>().LaunchProjectileRing(GetComponent<CharacterLaunch>().projectilePrefab, GetComponent<CharacterAttribute>().GetProjectileSpeed(), 10);
+                GetComponent<LaunchProjectile>().LaunchProjectileRing(GetComponentInChildren<CharacterLaunch>().projectilePrefab, GetComponent<CharacterAttribute>().GetProjectileSpeed(), 10);
                 break;
             case 2:
                 StartCoroutine(GetComponentInParent<PlayerCharacterPositioning>().Rotate(Quaternion.Euler(0, 0, 120)));
