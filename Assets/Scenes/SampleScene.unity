@@ -1700,7 +1700,7 @@ MonoBehaviour:
   m_gameplayPanel: {fileID: 1965057401}
   m_shopPanel: {fileID: 432010352}
   m_positionPanel: {fileID: 1235466728}
-  m_maxTime: 50
+  m_maxTime: 30
 --- !u!4 &1151485480
 Transform:
   m_ObjectHideFlags: 0

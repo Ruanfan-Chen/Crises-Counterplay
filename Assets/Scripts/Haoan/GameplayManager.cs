@@ -102,6 +102,7 @@ public class GameplayManager : MonoBehaviour
     public void CharacterButtonOnClick()
     {
         m_characters[1].SetActive(true);
+        m_characters[2].SetActive(true);
         CloseShop();
     }
 
