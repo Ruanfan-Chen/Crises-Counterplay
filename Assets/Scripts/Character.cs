@@ -11,6 +11,8 @@ public class Character : MonoBehaviour
     private float attackInterval = 0.5f;
     private List<Component> passiveItems = new();
     private Component activeItem = null;
+    private bool hostility;
+
     public float GetHealth()
     {
         return health;
@@ -95,7 +97,17 @@ public class Character : MonoBehaviour
         return passiveItems;
     }
 
-    public void ActivateItem() {
+    public void ActivateItem()
+    {
         ((IItem)activeItem).Activate();
+    }
+    public bool GetHostility()
+    {
+        return hostility;
+    }
+
+    public void SetHostility(bool value)
+    {
+        hostility = value;
     }
 }
