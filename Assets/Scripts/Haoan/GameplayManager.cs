@@ -90,13 +90,8 @@ public class GameplayManager : MonoBehaviour
         mm.CreateMap(MapManager.Shape.Circle);
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
-        GameObject disposable = GameObject.Find("disposable");
-        Debug.Log(disposable == null);
-        if(disposable)
-        {
-            Debug.Log("destroy");
-            Destroy(disposable);
-        }
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("disposable"))
+            Destroy(o);
     }
 
     public void CharacterButtonOnClick()
