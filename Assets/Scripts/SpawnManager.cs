@@ -90,4 +90,33 @@ public class SpawnManager : MonoBehaviour
                 break;
         }
     }
+
+    public void SpawnProjectile(GameObject projectilePrefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
+    {
+        GameObject projectile = Instantiate(projectilePrefab, position, rotation);
+        projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameObject;
+        projectile.GetComponent<ProjectileMove>().SetSpeed(speed);
+        projectile.GetComponent<Faction>().SetHostility(hostility);
+        projectile.GetComponent<SpriteRenderer>().color = color;
+        projectile.tag = "Disposable";
+    }
+    public void SpawnProjectile(GameObject projectilePrefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
+    {
+        SpawnProjectile(projectilePrefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed,hostility,color);
+    }
+
+    public void SpawnProjectile(GameObject projectilePrefab, Vector3 position, float theta, float speed, bool hostility, Color color)
+    {
+        SpawnProjectile(projectilePrefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility, color);
+    }
+
+    public void SpawnProjectileRing(GameObject projectilePrefab, Vector3 position, float speed, bool hostility, Color color, int count)
+    {
+        float thetaBase = Random.Range(-Mathf.PI, Mathf.PI);
+        for (int i = 0; i < count; i++)
+        {
+            float theta = thetaBase + 2 * Mathf.PI / count * i;
+            SpawnProjectile(projectilePrefab, position, theta, speed, hostility, color);
+        }
+    }
 }
