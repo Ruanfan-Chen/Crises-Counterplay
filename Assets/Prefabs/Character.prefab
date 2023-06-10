@@ -187,7 +187,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 9082281178327163815}
-  - component: {fileID: 2867442189195603037}
+  - component: {fileID: 6345411127375515699}
   - component: {fileID: 253904035502590753}
   - component: {fileID: -7777089298053490636}
   - component: {fileID: 1092972112900842339}
@@ -218,7 +218,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2867442189195603037
+--- !u!114 &6345411127375515699
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -227,10 +227,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 2637130711552437442}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6049c13e31aad814cb0d8cabc888e74c, type: 3}
+  m_Script: {fileID: 11500000, guid: 7954d41c6eceb734890107746cb55b40, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  health: 100
+  gameplayManager: {fileID: 0}
 --- !u!114 &253904035502590753
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -244,6 +244,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   footprintPrefab: {fileID: 1230923118597313163, guid: 6ba0620ce73294c4ab027a2e2862fa49, type: 3}
+  activeItem: 0
 --- !u!114 &-7777089298053490636
 MonoBehaviour:
   m_ObjectHideFlags: 0
