@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    void SpawnEnemy()
+    GameObject SpawnEnemy()
     {
         Vector3 position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
         while (GetComponent<MapManager>().PosInMap(position, offset) != position)
@@ -89,9 +89,10 @@ public class SpawnManager : MonoBehaviour
                 enemy.GetComponent<EnemyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
                 break;
         }
+        return enemy;
     }
 
-    public void SpawnProjectile(GameObject projectilePrefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
     {
         GameObject projectile = Instantiate(projectilePrefab, position, rotation);
         projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameObject;
@@ -99,24 +100,27 @@ public class SpawnManager : MonoBehaviour
         projectile.GetComponent<Faction>().SetHostility(hostility);
         projectile.GetComponent<SpriteRenderer>().color = color;
         projectile.tag = "Disposable";
+        return projectile;
     }
-    public void SpawnProjectile(GameObject projectilePrefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
     {
-        SpawnProjectile(projectilePrefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed,hostility,color);
-    }
-
-    public void SpawnProjectile(GameObject projectilePrefab, Vector3 position, float theta, float speed, bool hostility, Color color)
-    {
-        SpawnProjectile(projectilePrefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility, color);
+        return SpawnProjectile(projectilePrefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed,hostility,color);
     }
 
-    public void SpawnProjectileRing(GameObject projectilePrefab, Vector3 position, float speed, bool hostility, Color color, int count)
+    public GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 position, float theta, float speed, bool hostility, Color color)
     {
+        return SpawnProjectile(projectilePrefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility, color);
+    }
+
+    public List<GameObject> SpawnProjectileRing(GameObject projectilePrefab, Vector3 position, float speed, bool hostility, Color color, int count)
+    {
+        List<GameObject> projectileList = new();
         float thetaBase = Random.Range(-Mathf.PI, Mathf.PI);
         for (int i = 0; i < count; i++)
         {
             float theta = thetaBase + 2 * Mathf.PI / count * i;
-            SpawnProjectile(projectilePrefab, position, theta, speed, hostility, color);
+            projectileList.Add(SpawnProjectile(projectilePrefab, position, theta, speed, hostility, color));
         }
+        return projectileList;
     }
 }
