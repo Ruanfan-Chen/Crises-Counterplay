@@ -37,11 +37,11 @@ public class PlayerControl : MonoBehaviour
         Vector3 newPos = transform.position + displacement;
         transform.position = gameplayManager.GetComponent<MapManager>().PosInMap(newPos, offset);
         if (Input.GetKeyDown(KeyCode.J))
-            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(1).GetComponent<CharacterInventory>().ActivateItem();
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(1).GetComponent<Character>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.K))
-            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(0).GetComponent<CharacterInventory>().ActivateItem();
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(0).GetComponent<Character>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.L))
-            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(-1).GetComponent<CharacterInventory>().ActivateItem();
+            GetComponent<PlayerCharacterPositioning>().GetClosestCharacter(-1).GetComponent<Character>().ActivateItem();
     }
 
     public IEnumerator Dash()
