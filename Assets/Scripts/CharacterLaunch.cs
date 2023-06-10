@@ -22,8 +22,8 @@ public class CharacterLaunch : MonoBehaviour
     {
         if (attackTimer <= 0 && collision.GetComponent<EnemyOnHit>() && !GetComponentInParent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
         {
-            GetComponentInParent<LaunchProjectile>().Launch(projectilePrefab, GetComponentInParent<CharacterAttribute>().GetProjectileSpeed(), collision.transform.position);
-            attackTimer = GetComponentInParent<CharacterAttribute>().GetAttackInterval();
+            GetComponentInParent<LaunchProjectile>().Launch(projectilePrefab, GetComponentInParent<Character>().GetProjectileSpeed(), collision.transform.position);
+            attackTimer = GetComponentInParent<Character>().GetAttackInterval();
         }
     }
 }
