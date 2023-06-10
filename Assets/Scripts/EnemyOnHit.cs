@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class EnemyOnHit : MonoBehaviour
 {
-    public GameObject projectilePrefabRingOnDeath;
     public GameObject projectilePrefabOnDeath;
+    public GameObject projectilePrefabRingOnDeath;
     private float projectileSpeed = 5.0f;
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -15,11 +15,15 @@ public class EnemyOnHit : MonoBehaviour
             Destroy(gameObject);
             if (projectilePrefabOnDeath)
             {
-                GetComponent<LaunchProjectile>().LaunchProjectileAtRandom(projectilePrefabOnDeath, projectileSpeed);
+                /*
+                 Launch Projectile here
+                 */
             }
             if (projectilePrefabRingOnDeath)
             {
-                GetComponent<LaunchProjectile>().LaunchProjectileRing(projectilePrefabRingOnDeath, projectileSpeed, Random.Range(4, 9));
+                /*
+                 Launch Projectile here
+                 */
             }
         }
     }

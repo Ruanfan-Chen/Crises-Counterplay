@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CharacterLaunch : MonoBehaviour
 {
-    public GameObject projectilePrefab;
     private float attackTimer;
     // Start is called before the first frame update
     void Start()
@@ -22,7 +21,9 @@ public class CharacterLaunch : MonoBehaviour
     {
         if (attackTimer <= 0 && collision.GetComponent<EnemyOnHit>() && !GetComponentInParent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
         {
-            GetComponentInParent<LaunchProjectile>().Launch(projectilePrefab, GetComponentInParent<Character>().GetProjectileSpeed(), collision.transform.position);
+            /*
+             Launch Projectile here
+             */
             attackTimer = GetComponentInParent<Character>().GetAttackInterval();
         }
     }
