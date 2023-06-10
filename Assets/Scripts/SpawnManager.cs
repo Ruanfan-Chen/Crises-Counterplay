@@ -22,29 +22,23 @@ public class SpawnManager : MonoBehaviour
 
     }
 
-    GameObject SpawnEnemy()
+    public GameObject SpawnEnemy(GameObject prefab, Vector3 position, Quaternion rotation, Color color)
     {
-        Vector3 position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        while (GetComponent<MapManager>().PosInMap(position, offset) != position)
+        GameObject enemy = Instantiate(prefab, position, rotation);
+        enemy.GetComponent<SpriteRenderer>().color = color;
+        enemy.GetComponent<Faction>().SetHostility(true);
+        enemy.tag = "Disposable";
+        return enemy;
+    }
+
+    public GameObject SpawnEnemy()
+    {
+        Vector3 position;
+        do
         {
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        }
-        GameObject enemy = Instantiate(enemyPrefab, position, new Quaternion());
-
-        //to organize enemies and projectiles
-        GameObject disposable = GameObject.Find("disposable");
-        if(!disposable)
-        {
-            disposable = new GameObject("disposable");
-        }
-        enemy.transform.SetParent(disposable.transform);
-
-
-
-        enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        enemy.GetComponent<Faction>().SetHostility(true);
-        enemy.GetComponent<LaunchProjectile>().gameplayManager = gameObject;
-        enemy.tag = "Disposable";
+        } while (!GetComponent<MapManager>().IsInMap(position, offset));
+        GameObject enemy = SpawnEnemy(enemyPrefab, position, new Quaternion(), Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f));
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -92,9 +86,9 @@ public class SpawnManager : MonoBehaviour
         return enemy;
     }
 
-    public GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
     {
-        GameObject projectile = Instantiate(projectilePrefab, position, rotation);
+        GameObject projectile = Instantiate(prefab, position, rotation);
         projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameObject;
         projectile.GetComponent<ProjectileMove>().SetSpeed(speed);
         projectile.GetComponent<Faction>().SetHostility(hostility);
@@ -102,24 +96,24 @@ public class SpawnManager : MonoBehaviour
         projectile.tag = "Disposable";
         return projectile;
     }
-    public GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
     {
-        return SpawnProjectile(projectilePrefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed,hostility,color);
+        return SpawnProjectile(prefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed, hostility, color);
     }
 
-    public GameObject SpawnProjectile(GameObject projectilePrefab, Vector3 position, float theta, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, float theta, float speed, bool hostility, Color color)
     {
-        return SpawnProjectile(projectilePrefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility, color);
+        return SpawnProjectile(prefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility, color);
     }
 
-    public List<GameObject> SpawnProjectileRing(GameObject projectilePrefab, Vector3 position, float speed, bool hostility, Color color, int count)
+    public List<GameObject> SpawnProjectileRing(GameObject prefab, Vector3 position, float speed, bool hostility, Color color, int count)
     {
         List<GameObject> projectileList = new();
         float thetaBase = Random.Range(-Mathf.PI, Mathf.PI);
         for (int i = 0; i < count; i++)
         {
             float theta = thetaBase + 2 * Mathf.PI / count * i;
-            projectileList.Add(SpawnProjectile(projectilePrefab, position, theta, speed, hostility, color));
+            projectileList.Add(SpawnProjectile(prefab, position, theta, speed, hostility, color));
         }
         return projectileList;
     }
