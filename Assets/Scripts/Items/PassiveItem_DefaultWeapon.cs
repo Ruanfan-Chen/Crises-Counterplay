@@ -2,9 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Radar : MonoBehaviour
+public class PassiveItem_DefaultWeapon : MonoBehaviour
 {
-    // Start is called before the first frame update
+    private float angleOfAttack = 120.0f;
+    private float range = 20.0f;
     void Start()
     {
         
