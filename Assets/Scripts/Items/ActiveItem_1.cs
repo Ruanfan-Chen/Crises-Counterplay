@@ -5,6 +5,7 @@ using UnityEngine;
 public class ActiveItem_1 : MonoBehaviour, IItem
 {
     private float angularVelocity = 180.0f;
+    private float angularDisplacement = 120.0f;
     public void Activate()
     {
         StartCoroutine(RotatePlayer());
@@ -12,13 +13,13 @@ public class ActiveItem_1 : MonoBehaviour, IItem
 
     IEnumerator RotatePlayer()
     {
-        float angularDisplacement = 0.0f;
-        while (angularDisplacement + angularVelocity * Time.deltaTime <= 120.0f)
+        float cumulativeAD = 0.0f;
+        while (cumulativeAD + angularVelocity * Time.deltaTime <= angularDisplacement)
         {
-            angularDisplacement += angularVelocity * Time.deltaTime;
+            cumulativeAD += angularVelocity * Time.deltaTime;
             GetComponentInParent<Player>().Rotate(Quaternion.Euler(0, 0, angularVelocity * Time.deltaTime));
             yield return null;
         }
-        GetComponentInParent<Player>().Rotate(Quaternion.Euler(0, 0, 120.0f - angularDisplacement));
+        GetComponentInParent<Player>().Rotate(Quaternion.Euler(0, 0, angularDisplacement - cumulativeAD));
     }
 }
