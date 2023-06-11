@@ -15,6 +15,11 @@ public class Player : MonoBehaviour
 
     public void SetMoveSpeed(float value) { speed = value; }
 
+    // Start is called before the first frame update
+    void Start()
+    {
+        GetComponent<ConstraintInsideOfMap>().SetOffset(1.5f);
+    }
     // Update is called once per frame
     void Update()
     {

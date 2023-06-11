@@ -16,12 +16,6 @@ public class SpawnManager : MonoBehaviour
         InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
     public GameObject SpawnEnemy(GameObject prefab, Vector3 position, Quaternion rotation, Color color)
     {
         GameObject enemy = Instantiate(prefab, position, rotation);

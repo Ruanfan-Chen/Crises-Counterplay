@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class DestroyOutOfTime : MonoBehaviour
 {
-    private float timer;
+    private float timer = 0.0f;
     private bool active = false;
 
     public float GetTimer() { return timer; }

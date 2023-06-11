@@ -18,6 +18,7 @@ public class Projectile : MonoBehaviour
     void Start()
     {
         gameObject.tag = "Disposable";
+        GetComponent<DestroyOutOfBounds>().SetOffset(-15.0f);
     }
 
     // Update is called once per frame

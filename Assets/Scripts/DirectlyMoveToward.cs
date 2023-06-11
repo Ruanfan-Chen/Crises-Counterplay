@@ -5,12 +5,7 @@ using UnityEngine;
 public class DirectlyMoveToward : MonoBehaviour
 {
     public GameObject target;
-    private float speed = 3.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
+    private float speed = 2.5f;
 
     // Update is called once per frame
     void Update()
