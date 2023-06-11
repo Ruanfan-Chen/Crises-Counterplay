@@ -4,24 +4,12 @@ using UnityEngine;
 
 public class DestroyOutOfTime : MonoBehaviour
 {
-    private float timer = 5.0f;
+    private float timer;
     private bool active = false;
 
-    public float GetTimer()
-    {
-        return timer;
-    }
+    public float GetTimer() { return timer; }
 
-    public void SetTimer(float value)
-    {
-        timer = value;
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    public void SetTimer(float value) { timer = value; }
 
     // Update is called once per frame
     void Update()
@@ -34,12 +22,7 @@ public class DestroyOutOfTime : MonoBehaviour
         }
     }
 
-    public void Activate() {
-        active = true;
-    }
+    public void Activate() { active = true; }
 
-    public void Deactivate()
-    {
-        active = false;
-    }
+    public void Deactivate() { active = false; }
 }

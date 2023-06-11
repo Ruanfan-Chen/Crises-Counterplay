@@ -71,4 +71,19 @@ public class Character : MonoBehaviour
     public bool GetHostility() { return hostility; }
 
     public void SetHostility(bool value) { hostility = value; }
+
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        /*if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
+        {
+            if (collision.GetComponent<ProjectileMove>())
+            {
+
+                GetComponent<Character>().ReceiveDmg(25.0f);
+                Destroy(collision.gameObject);
+            }
+            else
+                GetComponent<Character>().ReceiveDmg(25.0f * Time.deltaTime);
+        }*/
+    }
 }
