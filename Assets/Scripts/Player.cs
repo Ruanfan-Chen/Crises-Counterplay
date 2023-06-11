@@ -7,7 +7,6 @@ public class Player : MonoBehaviour
     public GameObject[] characters;
     private float moveSpeed = 5.0f;
     private float triRadius = 0.7f;
-    private float angularVelocity = 180.0f;
     Quaternion rotationBias = Quaternion.Euler(0, 0, 0);
 
     public float GetMoveSpeed() { return moveSpeed; }
@@ -72,4 +71,6 @@ public class Player : MonoBehaviour
     {
         return GetClosestCharacter(GetBaseRotation(bias));
     }
+
+    public void Rotate(Quaternion rotation) { rotationBias *= rotation; }
 }

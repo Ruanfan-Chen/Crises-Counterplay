@@ -89,4 +89,9 @@ public class Character : MonoBehaviour
                 GetComponent<Character>().ReceiveDmg(25.0f * Time.deltaTime);
         }*/
     }
+
+    private void Start()
+    {
+        //SetActiveItem(typeof(ActiveItem_1));
+    }
 }
