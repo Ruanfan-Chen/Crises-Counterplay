@@ -30,7 +30,7 @@ public class SpawnManager : MonoBehaviour
         do
         {
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        } while (!GetComponent<MapManager>().IsInMap(position, offset));
+        } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position-player.transform.position).magnitude <= offset);
         GameObject enemy = SpawnEnemy(enemyPrefab, position, new Quaternion(), Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f));
         switch (Random.Range(0, 3))
         {
