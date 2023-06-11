@@ -19,8 +19,7 @@ public class Player : MonoBehaviour
     void Update()
     {
         // Move Player
-        Vector3 displacement = GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        transform.Translate(displacement);
+        transform.Translate(GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
         // Calculate Characters transform
         Vector3 positionBias = Vector3.zero;
         Vector3 activeCharacterPositionSum = Vector3.zero;

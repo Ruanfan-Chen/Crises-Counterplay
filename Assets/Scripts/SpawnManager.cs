@@ -72,7 +72,7 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.GetComponent<EnemyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
+                //enemy.GetComponent<EnemyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
                 break;
         }
         switch (Random.Range(0, 2))
@@ -80,7 +80,7 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.GetComponent<EnemyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
+                //enemy.GetComponent<EnemyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
                 break;
         }
         return enemy;

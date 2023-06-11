@@ -10,11 +10,9 @@ GameObject:
   m_Component:
   - component: {fileID: 411846831210968223}
   - component: {fileID: 2985322781627778624}
-  - component: {fileID: 1632650109152894029}
-  - component: {fileID: 6964055611074229735}
-  - component: {fileID: -5060831501831574414}
+  - component: {fileID: 1885467381284092547}
   - component: {fileID: -3093536332256711841}
-  - component: {fileID: 1128892553649528246}
+  - component: {fileID: 3750545958797834843}
   - component: {fileID: 1405297605503463404}
   m_Layer: 0
   m_Name: Enemy
@@ -90,7 +88,7 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &1632650109152894029
+--- !u!58 &1885467381284092547
 CircleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -106,32 +104,6 @@ CircleCollider2D:
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
   m_Radius: 0.5
---- !u!114 &6964055611074229735
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6230283339830946825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5b7300a8289313b4480333c856b5622f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &-5060831501831574414
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6230283339830946825}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d715c8adb08d81a4db31f71b09d94c7a, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  projectilePrefabOnDeath: {fileID: 0}
-  projectilePrefabRingOnDeath: {fileID: 0}
 --- !u!50 &-3093536332256711841
 Rigidbody2D:
   serializedVersion: 4
@@ -153,22 +125,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!58 &1128892553649528246
-CircleCollider2D:
+--- !u!114 &3750545958797834843
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6230283339830946825}
   m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7bd43e1342c9d4041a59223954b53402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!114 &1405297605503463404
 MonoBehaviour:
   m_ObjectHideFlags: 0
