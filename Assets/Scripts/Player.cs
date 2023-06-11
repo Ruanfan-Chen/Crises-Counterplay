@@ -20,7 +20,7 @@ public class Player : MonoBehaviour
     {
         // Move Player
         Vector3 displacement = GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        transform.position = GameObject.Find("GameplayManager").GetComponent<MapManager>().PosInMap(transform.position + displacement, offset);
+        transform.Translate(displacement);
         // Calculate Characters transform
         Vector3 positionBias = Vector3.zero;
         Vector3 activeCharacterPositionSum = Vector3.zero;
@@ -48,7 +48,6 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.L))
             GetClosestCharacter(2).GetComponent<Character>().ActivateItem();
     }
-
     Quaternion GetBaseRotation(float i) { return Quaternion.Euler(0, 0, i * 120); }
 
     Vector3 GetBasePosition(float i) { return GetBaseRotation(i) * Vector3.up * triRadius; }
