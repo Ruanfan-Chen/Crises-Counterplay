@@ -19,12 +19,9 @@ public class CharacterLaunch : MonoBehaviour
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (attackTimer <= 0 && collision.GetComponent<EnemyOnHit>() && !GetComponentInParent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
+        /*if (attackTimer <= 0 && collision.GetComponent<EnemyOnHit>() && !GetComponentInParent<Faction>().IsFriendly(collision.GetComponentInParent<Faction>()))
         {
-            /*
-             Launch Projectile here
-             */
-            attackTimer = GetComponentInParent<Character>().GetAttackInterval();
-        }
+        attackTimer = GetComponentInParent<Character>().GetAttackInterval();
+        }*/
     }
 }

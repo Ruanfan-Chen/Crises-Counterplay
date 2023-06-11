@@ -4,18 +4,16 @@ using UnityEngine;
 
 public class DestroyOutOfBounds : MonoBehaviour
 {
-    internal GameObject gameplayManager;
     private float offset = -15.0f;
-    // Start is called before the first frame update
-    void Start()
-    {
 
-    }
+    public float GetOffset() { return offset; }
+
+    public void SetOffset(float value) { offset = value; }
 
     // Update is called once per frame
     void Update()
     {
-        if (gameplayManager.GetComponent<MapManager>().PosInMap(transform.position, offset) != transform.position)
+        if (!GameObject.Find("GameplayManager").GetComponent<MapManager>().IsInMap(transform.position, GetOffset()))
             Destroy(gameObject);
     }
 }

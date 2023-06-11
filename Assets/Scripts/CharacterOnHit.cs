@@ -6,7 +6,7 @@ public class CharacterOnHit : MonoBehaviour
 {
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
+        /*if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
         {
             if (collision.GetComponent<ProjectileMove>())
             {
@@ -16,6 +16,6 @@ public class CharacterOnHit : MonoBehaviour
             }
             else
                 GetComponent<Character>().ReceiveDmg(25.0f * Time.deltaTime);
-        }
+        }*/
     }
 }

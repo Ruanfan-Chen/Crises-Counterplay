@@ -89,11 +89,9 @@ public class SpawnManager : MonoBehaviour
     public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
     {
         GameObject projectile = Instantiate(prefab, position, rotation);
-        projectile.GetComponent<DestroyOutOfBounds>().gameplayManager = gameObject;
-        projectile.GetComponent<ProjectileMove>().SetSpeed(speed);
-        projectile.GetComponent<Faction>().SetHostility(hostility);
+        projectile.GetComponent<Projectile>().SetSpeed(speed);
+        projectile.GetComponent<Projectile>().SetHostility(hostility);
         projectile.GetComponent<SpriteRenderer>().color = color;
-        projectile.tag = "Disposable";
         return projectile;
     }
     public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
