@@ -21,8 +21,9 @@ public class PassiveItem_0 : MonoBehaviour, IItem
         if ((transform.position - prevPos).magnitude >= stepsize)
         {
             GameObject footprint = (GameObject)Instantiate(Resources.Load("Footprint"), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
-            footprint.GetComponent<DestroyOutOfTime>().SetTimer(5.0f);
-            footprint.GetComponent<DestroyOutOfTime>().Activate();
+            DestroyOutOfTime timer = footprint.AddComponent<DestroyOutOfTime>();
+            timer.SetTimer(5.0f);
+            timer.Activate();
             prevPos = transform.position;
             stepsize = Random.Range(minStepsize, maxStepsize);
         }
