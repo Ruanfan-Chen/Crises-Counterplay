@@ -188,7 +188,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9082281178327163815}
   - component: {fileID: 980437409878018244}
-  - component: {fileID: 7582851617337075881}
   - component: {fileID: 6345411127375515699}
   m_Layer: 0
   m_Name: Character
@@ -266,22 +265,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &7582851617337075881
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2637130711552437442}
-  m_Enabled: 1
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!114 &6345411127375515699
 MonoBehaviour:
   m_ObjectHideFlags: 0
