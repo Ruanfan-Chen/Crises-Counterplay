@@ -26,7 +26,6 @@ public class SpawnManager : MonoBehaviour
     {
         GameObject enemy = Instantiate(prefab, position, rotation);
         enemy.GetComponent<SpriteRenderer>().color = color;
-        enemy.GetComponent<Faction>().SetHostility(true);
         enemy.tag = "Disposable";
         return enemy;
     }
@@ -57,14 +56,14 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.AddComponent<LaunchToward>();
-                enemy.GetComponent<LaunchToward>().targetGameObj = player;
-                enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
+                //enemy.AddComponent<LaunchToward>();
+                //enemy.GetComponent<LaunchToward>().targetGameObj = player;
+                //enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
                 break;
             case 2:
-                enemy.AddComponent<LaunchToward>();
-                enemy.GetComponent<LaunchToward>().targetGameObj = null;
-                enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
+                //enemy.AddComponent<LaunchToward>();
+                //enemy.GetComponent<LaunchToward>().targetGameObj = null;
+                //enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
                 break;
         }
         switch (Random.Range(0, 2))
