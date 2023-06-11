@@ -103,10 +103,10 @@ public class GameplayManager : MonoBehaviour
 
     public void ItemButtonOnClick()
     {
-        PlayerCharacterPositioning pcp = m_player.GetComponent<PlayerCharacterPositioning>();
-        GameObject jack = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, 120));
-        GameObject king = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, 0));
-        GameObject lord = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, -120));
+        Player player = m_player.GetComponent<Player>();
+        GameObject jack = player.GetClosestCharacter(1);
+        GameObject king = player.GetClosestCharacter(0);
+        GameObject lord = player.GetClosestCharacter(2);
         m_actionJack = delegate () {
         };
     }
