@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public GameObject enemyProjectilePrefab;
     public GameObject player;
     private float offset = 2.0f;
     private float startDelay = 2.0f;

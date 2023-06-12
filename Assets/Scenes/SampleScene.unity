@@ -1746,8 +1746,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14018b946cf3f64ea0dcd46edc5f800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 6230283339830946825, guid: 6ff90ddb86aef42499f76a8260264ad7, type: 3}
-  enemyProjectilePrefab: {fileID: 8441805378274828763, guid: ce0e7e97aed66674aa8ca777ba27a497, type: 3}
   player: {fileID: 1713116184}
 --- !u!1001 &1164548938
 PrefabInstance:

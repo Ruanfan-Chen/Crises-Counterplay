@@ -7,6 +7,8 @@ public class Projectile : MonoBehaviour
     private static string prefabPath = "Prefabs/Projectile";
     private float speed;
     private bool hostility;
+    private GameObject source;
+
     public float GetSpeed() { return speed; }
 
     public void SetSpeed(float value) { speed = value; }
@@ -14,6 +16,14 @@ public class Projectile : MonoBehaviour
     public bool GetHostility() { return hostility; }
 
     public void SetHostility(bool value) { hostility = value; }
+
+    public Color GetColor() { return GetComponent<SpriteRenderer>().color; }
+
+    public void SetColor(Color value) { GetComponent<SpriteRenderer>().color = value; }
+
+    public GameObject GetSource() { return source; }
+
+    public void SetSource(GameObject value) { source = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -46,7 +56,7 @@ public class Projectile : MonoBehaviour
     {
         List<GameObject> projectileList = new();
         for (int i = 0; i < count; i++)
-            projectileList.Add(Instantiate(position, theta + 360 * i / count ));
+            projectileList.Add(Instantiate(position, theta + 360 * i / count));
         return projectileList;
     }
 }

@@ -17,7 +17,7 @@ public class PassiveItem_0 : PassiveItem
     }
 
     // Update is called once per frame
-    void Update()
+    void LateUpdate()
     {
         if ((transform.position - prevPos).magnitude >= stepsize)
         {

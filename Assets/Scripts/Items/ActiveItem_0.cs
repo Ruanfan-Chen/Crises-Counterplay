@@ -8,6 +8,8 @@ public class ActiveItem_0 : ActiveItem
     {
         Character character = GetComponent<Character>();
         List<GameObject> ring = Projectile.InstantiateRing(transform.position, 0, 10);
-        //modify
+        foreach (GameObject projectile in ring)
+            foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                modifier.Modify(projectile);
     }
 }

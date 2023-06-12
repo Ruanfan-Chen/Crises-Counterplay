@@ -2,17 +2,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour
+public class Character : MonoBehaviour, IProjectileModifier
 {
     private float health = 100.0f;
     private float maxHealth = 100.0f;
     private float projectileSpeed = 10.0f;
     private float range = 10.0f;
-    private float angleOfVisioon = 120.0f;
+    private float angleOfView = 120.0f;
     private float attackInterval = 0.5f;
     private List<Component> passiveItems = new();
     private Component activeItem = null;
-    private bool hostility = false;
 
 
     public float GetHealth() { return health; }
@@ -41,9 +40,9 @@ public class Character : MonoBehaviour
 
     public void SetRange(float value) { range = value; }
 
-    public float GetAngleOfVisioon() { return angleOfVisioon; }
+    public float GetAngleOfView() { return angleOfView; }
 
-    public void SetAngleOfVisioon(float value) { angleOfVisioon = value; }
+    public void SetAngleOfView(float value) { angleOfView = value; }
 
     public float GetAttackInterval() { return attackInterval; }
 
@@ -89,9 +88,6 @@ public class Character : MonoBehaviour
     {
         GetComponent<ActiveItem>().Activate();
     }
-    public bool GetHostility() { return hostility; }
-
-    public void SetHostility(bool value) { hostility = value; }
 
     private void OnTriggerStay2D(Collider2D collision)
     {
@@ -106,5 +102,19 @@ public class Character : MonoBehaviour
             else
                 GetComponent<Character>().ReceiveDmg(25.0f * Time.deltaTime);
         }*/
+    }
+
+    void IProjectileModifier.Modify(GameObject projectile)
+    {
+        projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
+        projectile.GetComponent<Projectile>().SetHostility(false);
+        projectile.GetComponent<Projectile>().SetColor(GetComponent<SpriteRenderer>().color);
+        projectile.GetComponent<Projectile>().SetSource(gameObject);
+    }
+
+    void Start()
+    {
+        GiveItem(typeof(ActiveItem_1));
+        GiveItem(typeof(PassiveItem_DefaultWeapon));
     }
 }
