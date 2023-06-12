@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour
 {
+    private static string prefabPath = "Prefabs/Enemy";
     private float contactDPS = 25.00f;
 
     public float GetContactDPS() { return contactDPS; }
@@ -42,5 +43,10 @@ public class Enemy : MonoBehaviour
                  
             }
         }*/
+    }
+
+    public static GameObject Instantiate(Vector3 position, Quaternion rotation)
+    {
+        return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
     }
 }

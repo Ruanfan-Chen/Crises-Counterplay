@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PassiveItem_0 : MonoBehaviour, IItem
 {
+    private static string prefabPath = "Prefabs/Footprint";
     private Vector3 prevPos;
     private float stepsize;
     private float minStepsize = 0.5f;
@@ -20,7 +21,7 @@ public class PassiveItem_0 : MonoBehaviour, IItem
     {
         if ((transform.position - prevPos).magnitude >= stepsize)
         {
-            GameObject footprint = (GameObject)Instantiate(Resources.Load("Prefabs/Footprint"), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
+            GameObject footprint = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
             DestroyOutOfTime timer = footprint.AddComponent<DestroyOutOfTime>();
             timer.SetTimer(5.0f);
             timer.Activate();

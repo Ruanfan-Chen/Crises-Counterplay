@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
-    public GameObject projectilePrefab;
     private float health = 100.0f;
     private float maxHealth = 100.0f;
     private float projectileSpeed = 10.0f;
@@ -101,7 +100,7 @@ public class Character : MonoBehaviour
         }*/
     }
 
-    private void Start()
+    void Start()
     {
         //SetActiveItem(typeof(ActiveItem_1));
     }

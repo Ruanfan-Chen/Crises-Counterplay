@@ -13,25 +13,17 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);
+        InvokeRepeating("SpawnRandomEnemy", startDelay, spawnInterval);
     }
 
-    public GameObject SpawnEnemy(GameObject prefab, Vector3 position, Quaternion rotation, Color color)
-    {
-        GameObject enemy = Instantiate(prefab, position, rotation);
-        enemy.GetComponent<SpriteRenderer>().color = color;
-        enemy.tag = "Disposable";
-        return enemy;
-    }
-
-    public GameObject SpawnEnemy()
+    public GameObject SpawnRandomEnemy()
     {
         Vector3 position;
         do
         {
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
         } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position-player.transform.position).magnitude <= offset);
-        GameObject enemy = SpawnEnemy(enemyPrefab, position, new Quaternion(), Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f));
+        GameObject enemy = Enemy.Instantiate(position, new Quaternion());
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -77,34 +69,5 @@ public class SpawnManager : MonoBehaviour
                 break;
         }
         return enemy;
-    }
-
-    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Quaternion rotation, float speed, bool hostility)
-    {
-        GameObject projectile = Instantiate(prefab, position, rotation);
-        projectile.GetComponent<Projectile>().SetSpeed(speed);
-        projectile.GetComponent<Projectile>().SetHostility(hostility);
-        return projectile;
-    }
-    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Vector3 lookAt, float speed, bool hostility)
-    {
-        return SpawnProjectile(prefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed, hostility);
-    }
-
-    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, float theta, float speed, bool hostility)
-    {
-        return SpawnProjectile(prefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility);
-    }
-
-    public List<GameObject> SpawnProjectileRing(GameObject prefab, Vector3 position, float speed, bool hostility, int count)
-    {
-        List<GameObject> projectileList = new();
-        float thetaBase = Random.Range(-Mathf.PI, Mathf.PI);
-        for (int i = 0; i < count; i++)
-        {
-            float theta = thetaBase + 2 * Mathf.PI / count * i;
-            projectileList.Add(SpawnProjectile(prefab, position, theta, speed, hostility));
-        }
-        return projectileList;
     }
 }
