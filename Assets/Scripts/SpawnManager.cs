@@ -79,32 +79,31 @@ public class SpawnManager : MonoBehaviour
         return enemy;
     }
 
-    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Quaternion rotation, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Quaternion rotation, float speed, bool hostility)
     {
         GameObject projectile = Instantiate(prefab, position, rotation);
         projectile.GetComponent<Projectile>().SetSpeed(speed);
         projectile.GetComponent<Projectile>().SetHostility(hostility);
-        projectile.GetComponent<SpriteRenderer>().color = color;
         return projectile;
     }
-    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Vector3 lookAt, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, Vector3 lookAt, float speed, bool hostility)
     {
-        return SpawnProjectile(prefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed, hostility, color);
+        return SpawnProjectile(prefab, position, Quaternion.LookRotation(Vector3.forward, lookAt - position), speed, hostility);
     }
 
-    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, float theta, float speed, bool hostility, Color color)
+    public GameObject SpawnProjectile(GameObject prefab, Vector3 position, float theta, float speed, bool hostility)
     {
-        return SpawnProjectile(prefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility, color);
+        return SpawnProjectile(prefab, position, position + new Vector3(Mathf.Cos(theta), Mathf.Sin(theta)), speed, hostility);
     }
 
-    public List<GameObject> SpawnProjectileRing(GameObject prefab, Vector3 position, float speed, bool hostility, Color color, int count)
+    public List<GameObject> SpawnProjectileRing(GameObject prefab, Vector3 position, float speed, bool hostility, int count)
     {
         List<GameObject> projectileList = new();
         float thetaBase = Random.Range(-Mathf.PI, Mathf.PI);
         for (int i = 0; i < count; i++)
         {
             float theta = thetaBase + 2 * Mathf.PI / count * i;
-            projectileList.Add(SpawnProjectile(prefab, position, theta, speed, hostility, color));
+            projectileList.Add(SpawnProjectile(prefab, position, theta, speed, hostility));
         }
         return projectileList;
     }
