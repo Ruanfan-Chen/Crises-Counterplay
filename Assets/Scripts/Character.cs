@@ -110,11 +110,13 @@ public class Character : MonoBehaviour, IProjectileModifier
         projectile.GetComponent<Projectile>().SetHostility(false);
         projectile.GetComponent<Projectile>().SetColor(GetComponent<SpriteRenderer>().color);
         projectile.GetComponent<Projectile>().SetSource(gameObject);
+        DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
+        timer.SetTimer(range / projectileSpeed);
+        timer.Activate();
     }
 
     void Start()
     {
-        GiveItem(typeof(ActiveItem_1));
         GiveItem(typeof(PassiveItem_DefaultWeapon));
     }
 }
