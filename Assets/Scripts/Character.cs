@@ -4,9 +4,12 @@ using UnityEngine;
 
 public class Character : MonoBehaviour
 {
+    public GameObject projectilePrefab;
     private float health = 100.0f;
     private float maxHealth = 100.0f;
     private float projectileSpeed = 10.0f;
+    private float range = 10.0f;
+    private float angleOfVisioon = 120.0f;
     private float attackInterval = 0.5f;
     private List<Component> passiveItems = new();
     private Component activeItem = null;
@@ -33,6 +36,14 @@ public class Character : MonoBehaviour
     public float GetProjectileSpeed() { return projectileSpeed; }
 
     public void SetProjectileSpeed(float value) { projectileSpeed = value; }
+
+    public float GetRange() { return range; }
+
+    public void SetRange(float value) { range = value; }
+
+    public float GetAngleOfVisioon() { return angleOfVisioon; }
+
+    public void SetAngleOfVisioon(float value) { angleOfVisioon = value; }
 
     public float GetAttackInterval() { return attackInterval; }
 
