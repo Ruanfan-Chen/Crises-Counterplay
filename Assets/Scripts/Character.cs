@@ -14,6 +14,7 @@ public class Character : MonoBehaviour
     private Component activeItem = null;
     private bool hostility = false;
 
+
     public float GetHealth() { return health; }
 
     public void SetHealth(float value) { health = value; }
@@ -50,36 +51,43 @@ public class Character : MonoBehaviour
 
     public void ReceiveDmg(float value) { health -= value; }
     public List<Component> GetPassiveItems() { return passiveItems; }
-    public void RemovePassiveItem(Component item)
-    {
-        passiveItems.Remove(item);
-        Destroy(item);
-    }
-    public void AddPassiveItem(System.Type item)
-    {
-        passiveItems.Add(gameObject.AddComponent(item));
-    }
     public Component GetActiveItem() { return activeItem; }
-
-    public void RemoveActiveItem()
+    public bool RemoveItem(Component item)
     {
-        if (activeItem)
+        if (activeItem == item)
         {
-            Destroy(activeItem);
             activeItem = null;
+            Destroy(item);
+            return true;
         }
+        if (passiveItems.Remove(item))
+        {
+            Destroy(item);
+            return true;
+        }
+        return false;
     }
-    public void SetActiveItem(System.Type item)
+    public Component GiveItem(System.Type item)
     {
-        RemoveActiveItem();
-        activeItem = gameObject.AddComponent(item);
+        if (typeof(ActiveItem).IsAssignableFrom(item))
+        {
+            Component newComponent = gameObject.AddComponent(item);
+            if (activeItem) RemoveItem(activeItem);
+            activeItem = newComponent;
+            return newComponent;
+        }
+        if (typeof(PassiveItem).IsAssignableFrom(item))
+        {
+            Component newComponent = gameObject.AddComponent(item);
+            passiveItems.Add(newComponent);
+            return newComponent;
+        }
+        return null;
+
     }
     public void ActivateItem()
     {
-        if (activeItem)
-        {
-            ((IItem)activeItem).Activate();
-        }
+        GetComponent<ActiveItem>().Activate();
     }
     public bool GetHostility() { return hostility; }
 
@@ -98,10 +106,5 @@ public class Character : MonoBehaviour
             else
                 GetComponent<Character>().ReceiveDmg(25.0f * Time.deltaTime);
         }*/
-    }
-
-    void Start()
-    {
-        //SetActiveItem(typeof(ActiveItem_1));
     }
 }

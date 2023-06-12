@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveItem_0 : MonoBehaviour, IItem
+public class PassiveItem_0 : PassiveItem
 {
     private static string prefabPath = "Prefabs/Footprint";
     private Vector3 prevPos;

@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveItem_2 : MonoBehaviour, IItem
+public class ActiveItem_2 : ActiveItem
 {
     private float dashSpeed = 50.0f;
     private float displacement = 10.0f;
-    public void Activate()
+    public override void Activate()
     {
         StartCoroutine(Dash());
     }

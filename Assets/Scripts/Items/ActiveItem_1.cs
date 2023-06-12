@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ActiveItem_1 : MonoBehaviour, IItem
+public class ActiveItem_1 : ActiveItem
 {
     private float angularVelocity = 180.0f;
     private float angularDisplacement = 120.0f;
-    public void Activate()
+    public override void Activate()
     {
         StartCoroutine(RotatePlayer());
     }
