@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Character : MonoBehaviour, IProjectileModifier
+public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     private float health = 100.0f;
     private float maxHealth = 100.0f;
@@ -48,7 +48,7 @@ public class Character : MonoBehaviour, IProjectileModifier
 
     public void SetAttackInterval(float value) { attackInterval = value; }
 
-    public void ReceiveDmg(float value) { health -= value; }
+    public void ReceiveDamage(Damage damage) { health -= damage.GetValue(); }
     public List<Component> GetPassiveItems() { return passiveItems; }
     public Component GetActiveItem() { return activeItem; }
     public bool RemoveItem(Component item)
@@ -88,7 +88,7 @@ public class Character : MonoBehaviour, IProjectileModifier
     {
         GetComponent<ActiveItem>().Activate();
     }
-
+    public bool GetHostility() { return false; }
     private void OnTriggerStay2D(Collider2D collision)
     {
         /*if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
