@@ -17,7 +17,7 @@ public class ActiveItem_2 : MonoBehaviour, IItem
         while (cumulativeDisplacement + dashSpeed * Time.deltaTime <= displacement)
         {
             cumulativeDisplacement += dashSpeed * Time.deltaTime;
-            GetComponentInParent<Player>().transform.Translate(transform.rotation * Vector3.up * dashSpeed * Time.deltaTime);
+            GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * (transform.rotation * Vector3.up));
             yield return null;
         }
         GetComponentInParent<Player>().transform.Translate(transform.rotation * Vector3.up * (displacement - cumulativeDisplacement));
