@@ -8,6 +8,7 @@ public class Projectile : MonoBehaviour
     private float speed;
     private bool hostility;
     private GameObject source;
+    private float damage;
 
     public float GetSpeed() { return speed; }
 
@@ -24,6 +25,10 @@ public class Projectile : MonoBehaviour
     public GameObject GetSource() { return source; }
 
     public void SetSource(GameObject value) { source = value; }
+
+    public float GetDamage() { return damage; }
+
+    public void SetDamage(float value)    {        damage = value;    }
 
     // Start is called before the first frame update
     void Start()

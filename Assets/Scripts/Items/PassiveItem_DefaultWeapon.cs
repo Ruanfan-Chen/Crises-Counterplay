@@ -20,6 +20,7 @@ public class PassiveItem_DefaultWeapon : PassiveItem
         viewScript = view.AddComponent<viewBehavior>();
         viewTrigger = view.AddComponent<PolygonCollider2D>();
         viewTrigger.isTrigger = true;
+        view.AddComponent<Rigidbody2D>().isKinematic = true;
         UpdateCollider(0.0f, 0.0f);
         UpdateAttackInterval(0.0f);
     }
@@ -76,7 +77,7 @@ public class PassiveItem_DefaultWeapon : PassiveItem
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (timer > 0 || collision.isTrigger) return;
+            if (timer > 0) return;
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null && damageable.GetHostility() != GetComponentInParent<Character>().GetHostility())
             {

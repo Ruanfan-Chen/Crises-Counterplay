@@ -6,13 +6,13 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     private float health = 100.0f;
     private float maxHealth = 100.0f;
+    private float damage = 1.0f;
     private float projectileSpeed = 10.0f;
     private float range = 10.0f;
     private float angleOfView = 120.0f;
     private float attackInterval = 0.5f;
     private List<Component> passiveItems = new();
     private Component activeItem = null;
-
 
     public float GetHealth() { return health; }
 
@@ -21,6 +21,10 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public float GetMaxHealth() { return maxHealth; }
 
     public void SetMaxHealth(float value) { maxHealth = value; }
+
+    public float GetDamage() { return damage; }
+
+    public void SetDamage(float value) { damage = value; }
 
     public float GetMoveSpeed()
     {
@@ -106,10 +110,12 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void IProjectileModifier.Modify(GameObject projectile)
     {
-        projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
-        projectile.GetComponent<Projectile>().SetHostility(false);
-        projectile.GetComponent<Projectile>().SetColor(GetComponent<SpriteRenderer>().color);
-        projectile.GetComponent<Projectile>().SetSource(gameObject);
+        Projectile script = projectile.GetComponent<Projectile>();
+        script.SetSpeed(projectileSpeed);
+        script.SetHostility(false);
+        script.SetColor(GetComponent<SpriteRenderer>().color);
+        script.SetSource(gameObject);
+        script.SetDamage(damage);
         DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
         timer.SetTimer(range / projectileSpeed);
         timer.Activate();
