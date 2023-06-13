@@ -5,11 +5,16 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 {
     private static string prefabPath = "Prefabs/Enemy";
+    private float moveSpeed = 2.5f;
     private bool hostility = true;
     private float contactDPS = 25.00f;
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = 20.0f;
+
+    public float GetMoveSpeed() { return moveSpeed; }
+
+    public void SetMoveSpeed(float value) { moveSpeed = value; }
 
     public bool GetHostility() { return hostility; }
 

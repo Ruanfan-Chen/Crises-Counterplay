@@ -20,8 +20,9 @@ public class SpawnManager : MonoBehaviour
         do
         {
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position-player.transform.position).magnitude <= offset);
+        } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, new Quaternion());
+        enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -31,7 +32,7 @@ public class SpawnManager : MonoBehaviour
                 break;
             case 2:
                 enemy.AddComponent<DirectlyMoveToward>();
-                enemy.GetComponent<DirectlyMoveToward>().target = player;
+                enemy.GetComponent<DirectlyMoveToward>().SetTarget(player);
                 break;
         }
 
@@ -42,12 +43,10 @@ public class SpawnManager : MonoBehaviour
             case 1:
                 //enemy.AddComponent<LaunchToward>();
                 //enemy.GetComponent<LaunchToward>().targetGameObj = player;
-                //enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
                 break;
             case 2:
                 //enemy.AddComponent<LaunchToward>();
                 //enemy.GetComponent<LaunchToward>().targetGameObj = null;
-                //enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
                 break;
         }
         switch (Random.Range(0, 2))
@@ -68,4 +67,75 @@ public class SpawnManager : MonoBehaviour
         }
         return enemy;
     }
+
+
+    private class AimlesslyMove : MonoBehaviour
+    {
+        private float timer;
+        private Vector3 direction;
+        private float minHaltTime = 0.5f;
+        private float maxHaltTime = 1.5f;
+        private float minMoveDistance = 2.5f;
+        private float maxMoveDistance = 5.0f;
+
+        private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            Halt(0);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            timer -= Time.deltaTime;
+            transform.Translate(GetSpeed() * Time.deltaTime * direction);
+            if (timer <= 0)
+            {
+                if (direction.magnitude == 0)
+                {
+                    float theta = Random.Range(0.0f, 2 * Mathf.PI);
+                    Move(Random.Range(minMoveDistance, maxMoveDistance) * new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0));
+                }
+                else
+                    Halt(Random.Range(minHaltTime, maxHaltTime));
+            }
+        }
+        void Halt(float seconds)
+        {
+            timer = seconds;
+            direction = Vector3.zero;
+        }
+
+        void Move(Vector3 displacement)
+        {
+            timer = displacement.magnitude / GetSpeed();
+            direction = displacement.normalized;
+        }
+    }
+
+    private class DirectlyMoveToward : MonoBehaviour
+    {
+        private GameObject target;
+
+        private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
+
+        public GameObject GetTarget() { return target; }
+
+        public void SetTarget(GameObject value) { target = value; }
+
+        // Update is called once per frame
+        void Update()
+        {
+            Vector3 displacement = target.transform.position - transform.position;
+            float speed = GetSpeed();
+            if (speed * Time.deltaTime < displacement.magnitude)
+                transform.Translate(speed * Time.deltaTime * displacement.normalized);
+            else
+                transform.Translate(displacement);
+        }
+    }
+
+
 }
