@@ -2,11 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour, IDamageable
+public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 {
     private static string prefabPath = "Prefabs/Enemy";
     private bool hostility = true;
     private float contactDPS = 25.00f;
+    private float projectileSpeed = 2.5f;
+    private float damage = 25.0f;
+    private float range = 20.0f;
 
     public bool GetHostility() { return hostility; }
 
@@ -37,5 +40,18 @@ public class Enemy : MonoBehaviour, IDamageable
     public static GameObject Instantiate(Vector3 position, Quaternion rotation)
     {
         return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+    }
+
+    public void Modify(GameObject projectile)
+    {
+        Projectile script = projectile.GetComponent<Projectile>();
+        script.SetSpeed(projectileSpeed);
+        script.SetHostility(true);
+        script.SetColor(Color.black);
+        script.SetSource(gameObject);
+        script.SetDamage(damage);
+        DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
+        timer.SetTimer(range / projectileSpeed);
+        timer.Activate();
     }
 }
