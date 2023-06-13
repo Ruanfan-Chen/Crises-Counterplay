@@ -90,7 +90,7 @@ public class GameplayManager : MonoBehaviour
         mm.CreateMap(MapManager.Shape.Circle);
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
-        foreach (GameObject o in GameObject.FindGameObjectsWithTag("disposable"))
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
             Destroy(o);
     }
 

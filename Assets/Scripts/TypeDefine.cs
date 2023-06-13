@@ -31,6 +31,14 @@ public class Damage
     private IDamageable target;
     private float value;
 
+    public Damage(GameObject source, GameObject medium, IDamageable target, float value)
+    {
+        this.source = source;
+        this.medium = medium;
+        this.target = target;
+        this.value = value;
+    }
+
     public GameObject GetSource() { return source; }
 
     public void SetSource(GameObject value) { source = value; }

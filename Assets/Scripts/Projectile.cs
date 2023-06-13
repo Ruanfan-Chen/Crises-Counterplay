@@ -43,6 +43,16 @@ public class Projectile : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * Vector3.up);
     }
 
+    private void OnTriggerEnter2D(Collider2D other)
+    {
+        IDamageable damageable = other.GetComponent<IDamageable>();
+        if (damageable != null && damageable.GetHostility() != hostility)
+        {
+            new Damage(source, gameObject, damageable, damage).Apply();
+            Destroy(gameObject);
+        }
+    }
+
     public static GameObject Instantiate(Vector3 position, Quaternion rotation)
     {
         return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);

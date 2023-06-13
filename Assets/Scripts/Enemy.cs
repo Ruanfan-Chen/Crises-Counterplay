@@ -25,25 +25,13 @@ public class Enemy : MonoBehaviour, IDamageable
         GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        /*if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
+        IDamageable damageable = collision.GetComponent<IDamageable>();
+        if (damageable != null && damageable.GetHostility() != hostility)
         {
-            Destroy(collision.gameObject);
-            Destroy(gameObject);
-            if (projectilePrefabOnDeath)
-            {
-                
-                 Launch Projectile here
-                 
-            }
-            if (projectilePrefabRingOnDeath)
-            {
-                
-                 Launch Projectile here
-                 
-            }
-        }*/
+            new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+        }
     }
 
     public static GameObject Instantiate(Vector3 position, Quaternion rotation)
