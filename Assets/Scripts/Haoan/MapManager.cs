@@ -11,7 +11,8 @@ public class MapManager : MonoBehaviour
     [SerializeField] private Color m_mapColor = new Color(0.3584906f, 0.3315237f, 0.2113742f);
     private SpriteRenderer m_spriteRenderer;
 
-    public enum Shape { 
+    public enum Shape
+    {
         Rectangle,
         Circle,
         Triangle
@@ -25,7 +26,7 @@ public class MapManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public void CreateMap(Shape shape)
@@ -37,10 +38,10 @@ public class MapManager : MonoBehaviour
             m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
         }
         m_spriteRenderer.color = m_mapColor;
-        transform.position = new Vector3(0.0f,0.0f,0.5f);
+        transform.position = new Vector3(0.0f, 0.0f, 0.5f);
         switch (shape)
         {
-            case Shape.Rectangle:                
+            case Shape.Rectangle:
                 m_spriteRenderer.sprite = m_spriteArray[0];
                 transform.localScale = new Vector3(120.0f, 60.0f, 1.0f);
                 break;
@@ -66,25 +67,25 @@ public class MapManager : MonoBehaviour
             case Shape.Rectangle:
                 Vector3 min = transform.position - transform.localScale / 2;
                 Vector3 max = transform.position + transform.localScale / 2;
-                if(pos.x < min.x + offset)
+                if (pos.x < min.x + offset)
                 {
                     returnVal.x = min.x + offset;
                 }
-                else if(pos.x > max.x - offset)
+                else if (pos.x > max.x - offset)
                 {
                     returnVal.x = max.x - offset;
                 }
-                if(pos.y < min.y + offset)
+                if (pos.y < min.y + offset)
                 {
                     returnVal.y = min.y + offset;
                 }
-                else if(pos.y > max.y - offset)
+                else if (pos.y > max.y - offset)
                 {
                     returnVal.y = max.y - offset;
                 }
                 break;
             case Shape.Circle:
-                float radius = transform.localScale.x/2 - offset;
+                float radius = transform.localScale.x / 2 - offset;
                 Vector3 origin = transform.position;
                 origin.z = 0.0f;
                 float distance = Vector3.Distance(origin, pos);
@@ -99,5 +100,10 @@ public class MapManager : MonoBehaviour
                 break;
         }
         return returnVal;
+    }
+
+    public bool IsInMap(Vector3 pos, float offset = 0.0f)
+    {
+        return pos == PosInMap(pos, offset);
     }
 }

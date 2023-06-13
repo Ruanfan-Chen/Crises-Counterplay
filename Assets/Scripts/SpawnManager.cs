@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
-    public GameObject enemyPrefab;
-    public GameObject enemyProjectilePrefab;
     public GameObject player;
     private float offset = 2.0f;
     private float startDelay = 2.0f;
@@ -13,38 +11,18 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnEnemy", startDelay, spawnInterval);
+        InvokeRepeating("SpawnRandomEnemy", startDelay, spawnInterval);
     }
 
-    // Update is called once per frame
-    void Update()
+    public GameObject SpawnRandomEnemy()
     {
-
-    }
-
-    void SpawnEnemy()
-    {
-        Vector3 position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        while (GetComponent<MapManager>().PosInMap(position, offset) != position)
+        Vector3 position;
+        do
         {
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        }
-        GameObject enemy = Instantiate(enemyPrefab, position, new Quaternion());
-
-        //to organize enemies and projectiles
-        GameObject disposable = GameObject.Find("disposable");
-        if(!disposable)
-        {
-            disposable = new GameObject("disposable");
-        }
-        enemy.transform.SetParent(disposable.transform);
-
-
-
+        } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
+        GameObject enemy = Enemy.Instantiate(position, new Quaternion());
         enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        enemy.GetComponent<Faction>().SetHostility(true);
-        enemy.GetComponent<LaunchProjectile>().gameplayManager = gameObject;
-        enemy.tag = "Disposable";
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -54,7 +32,7 @@ public class SpawnManager : MonoBehaviour
                 break;
             case 2:
                 enemy.AddComponent<DirectlyMoveToward>();
-                enemy.GetComponent<DirectlyMoveToward>().target = player;
+                enemy.GetComponent<DirectlyMoveToward>().SetTarget(player);
                 break;
         }
 
@@ -63,14 +41,11 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.AddComponent<LaunchToward>();
-                enemy.GetComponent<LaunchToward>().targetGameObj = player;
-                enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
+                enemy.AddComponent<RandomlyAttack>();
                 break;
             case 2:
-                enemy.AddComponent<LaunchToward>();
-                enemy.GetComponent<LaunchToward>().targetGameObj = null;
-                enemy.GetComponent<LaunchToward>().projectilePrefab = enemyProjectilePrefab;
+                enemy.AddComponent<FocusedAttack>();
+                enemy.GetComponent<FocusedAttack>().SetTarget(player);
                 break;
         }
         switch (Random.Range(0, 2))
@@ -78,7 +53,7 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.GetComponent<EnemyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
+                enemy.AddComponent<RandomAttackOnDeath>();
                 break;
         }
         switch (Random.Range(0, 2))
@@ -86,8 +61,144 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.GetComponent<EnemyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
+                enemy.AddComponent<RingAttackOnDeath>(); 
                 break;
+        }
+        return enemy;
+    }
+
+
+    private class AimlesslyMove : MonoBehaviour
+    {
+        private float timer;
+        private Vector3 direction;
+        private float minHaltTime = 0.5f;
+        private float maxHaltTime = 1.5f;
+        private float minMoveDistance = 2.5f;
+        private float maxMoveDistance = 5.0f;
+
+        private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
+
+        // Start is called before the first frame update
+        void Start()
+        {
+            Halt(0);
+        }
+
+        // Update is called once per frame
+        void Update()
+        {
+            timer -= Time.deltaTime;
+            transform.Translate(GetSpeed() * Time.deltaTime * direction);
+            if (timer <= 0)
+            {
+                if (direction.magnitude == 0)
+                {
+                    float theta = Random.Range(0.0f, 2 * Mathf.PI);
+                    Move(Random.Range(minMoveDistance, maxMoveDistance) * new Vector3(Mathf.Cos(theta), Mathf.Sin(theta), 0));
+                }
+                else
+                    Halt(Random.Range(minHaltTime, maxHaltTime));
+            }
+        }
+        void Halt(float seconds)
+        {
+            timer = seconds;
+            direction = Vector3.zero;
+        }
+
+        void Move(Vector3 displacement)
+        {
+            timer = displacement.magnitude / GetSpeed();
+            direction = displacement.normalized;
+        }
+    }
+
+    private class DirectlyMoveToward : MonoBehaviour
+    {
+        private GameObject target;
+
+        private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
+
+        public GameObject GetTarget() { return target; }
+
+        public void SetTarget(GameObject value) { target = value; }
+
+        // Update is called once per frame
+        void Update()
+        {
+            Vector3 displacement = target.transform.position - transform.position;
+            float speed = GetSpeed();
+            if (speed * Time.deltaTime < displacement.magnitude)
+                transform.Translate(speed * Time.deltaTime * displacement.normalized);
+            else
+                transform.Translate(displacement);
+        }
+    }
+
+    private class RandomlyAttack : MonoBehaviour
+    {
+        private float minAttackInterval = 1.0f;
+        private float maxAttackInterval = 3.0f;
+        private float timer = 0.0f;
+
+        void Update()
+        {
+            if (timer > 0)
+                timer -= Time.deltaTime;
+            else
+            {
+                GameObject projectile = Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f));
+                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                    modifier.Modify(projectile);
+                timer = Random.Range(minAttackInterval, maxAttackInterval);
+            }
+        }
+    }
+
+    private class FocusedAttack : MonoBehaviour
+    {
+        private GameObject target;
+        private float minAttackInterval = 1.0f;
+        private float maxAttackInterval = 3.0f;
+        private float timer = 0.0f;
+
+        public GameObject GetTarget() { return target; }
+
+        public void SetTarget(GameObject value) { target = value; }
+
+        void Update()
+        {
+            if (timer > 0)
+                timer -= Time.deltaTime;
+            else
+            {
+                GameObject projectile = Projectile.Instantiate(transform.position, target.transform.position);
+                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                    modifier.Modify(projectile);
+                timer = Random.Range(minAttackInterval, maxAttackInterval);
+            }
+        }
+    }
+
+    private class RandomAttackOnDeath : MonoBehaviour, IOnDeathEffect
+    {
+        void IOnDeathEffect.OnDeath()
+        {
+            GameObject projectile = Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f));
+            foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                modifier.Modify(projectile);
+        }
+    }
+
+    private class RingAttackOnDeath : MonoBehaviour, IOnDeathEffect
+    {
+        void IOnDeathEffect.OnDeath()
+        {
+            List<GameObject> projectiles = Projectile.InstantiateRing(transform.position, 0, 6);
+            foreach (GameObject projectile in projectiles)
+                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                modifier.Modify(projectile);
         }
     }
 }

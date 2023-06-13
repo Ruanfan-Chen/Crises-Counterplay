@@ -90,13 +90,8 @@ public class GameplayManager : MonoBehaviour
         mm.CreateMap(MapManager.Shape.Circle);
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
-        GameObject disposable = GameObject.Find("disposable");
-        Debug.Log(disposable == null);
-        if(disposable)
-        {
-            Debug.Log("destroy");
-            Destroy(disposable);
-        }
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
+            Destroy(o);
     }
 
     public void CharacterButtonOnClick()
@@ -108,10 +103,10 @@ public class GameplayManager : MonoBehaviour
 
     public void ItemButtonOnClick()
     {
-        PlayerCharacterPositioning pcp = m_player.GetComponent<PlayerCharacterPositioning>();
-        GameObject jack = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, 120));
-        GameObject king = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, 0));
-        GameObject lord = pcp.GetClosestCharacter(Quaternion.Euler(0, 0, -120));
+        Player player = m_player.GetComponent<Player>();
+        GameObject jack = player.GetClosestCharacter(1);
+        GameObject king = player.GetClosestCharacter(0);
+        GameObject lord = player.GetClosestCharacter(2);
         m_actionJack = delegate () {
         };
     }
