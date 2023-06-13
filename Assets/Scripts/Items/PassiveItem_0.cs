@@ -22,11 +22,37 @@ public class PassiveItem_0 : PassiveItem
         if ((transform.position - prevPos).magnitude >= stepsize)
         {
             GameObject footprint = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
+            Footprint script = footprint.AddComponent<Footprint>();
+            script.SetContactDPS(GetComponent<Character>().GetDamage() * 0.5f);
+            script.SetHostility(GetComponent<Character>().GetHostility());
             DestroyOutOfTime timer = footprint.AddComponent<DestroyOutOfTime>();
             timer.SetTimer(5.0f);
             timer.Activate();
             prevPos = transform.position;
             stepsize = Random.Range(minStepsize, maxStepsize);
+        }
+    }
+
+    private class Footprint : MonoBehaviour
+    {
+        private float contactDPS;
+        private bool hostility;
+
+        public float GetContactDPS() { return contactDPS; }
+
+        public void SetContactDPS(float value) { contactDPS = value; }
+
+        public bool GetHostility() { return hostility; }
+
+        public void SetHostility(bool value) { hostility = value; }
+
+        private void OnTriggerStay2D(Collider2D collision)
+        {
+            IDamageable damageable = collision.GetComponent<IDamageable>();
+            if (damageable != null && damageable.GetHostility() != hostility)
+            {
+                new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+            }
         }
     }
 }
