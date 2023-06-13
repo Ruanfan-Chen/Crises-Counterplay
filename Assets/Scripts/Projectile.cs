@@ -28,7 +28,7 @@ public class Projectile : MonoBehaviour
 
     public float GetDamage() { return damage; }
 
-    public void SetDamage(float value)    {        damage = value;    }
+    public void SetDamage(float value) { damage = value; }
 
     // Start is called before the first frame update
     void Start()
@@ -53,25 +53,28 @@ public class Projectile : MonoBehaviour
         }
     }
 
-    public static GameObject Instantiate(Vector3 position, Quaternion rotation)
+    public static GameObject Instantiate(Vector3 position, Quaternion rotation, IProjectileModifier[] modifiers)
     {
-        return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        GameObject projectile = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        foreach (IProjectileModifier modifier in modifiers)
+            modifier.Modify(projectile);
+        return projectile;
     }
 
-    public static GameObject Instantiate(Vector3 position, Vector3 lookAt)
+    public static GameObject Instantiate(Vector3 position, Vector3 lookAt, IProjectileModifier[] modifiers)
     {
-        return Instantiate(position, Quaternion.LookRotation(Vector3.forward, lookAt - position));
+        return Instantiate(position, Quaternion.LookRotation(Vector3.forward, lookAt - position), modifiers);
     }
-    public static GameObject Instantiate(Vector3 position, float theta)
+    public static GameObject Instantiate(Vector3 position, float theta, IProjectileModifier[] modifiers)
     {
-        return Instantiate(position, Quaternion.Euler(0, 0, theta));
+        return Instantiate(position, Quaternion.Euler(0, 0, theta), modifiers);
     }
 
-    public static List<GameObject> InstantiateRing(Vector3 position, float theta, int count)
+    public static List<GameObject> InstantiateRing(Vector3 position, float theta, IProjectileModifier[] modifiers, int count)
     {
         List<GameObject> projectileList = new();
         for (int i = 0; i < count; i++)
-            projectileList.Add(Instantiate(position, theta + 360 * i / count));
+            projectileList.Add(Instantiate(position, theta + 360 * i / count, modifiers));
         return projectileList;
     }
 }

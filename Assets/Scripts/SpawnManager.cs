@@ -61,7 +61,7 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                enemy.AddComponent<RingAttackOnDeath>(); 
+                enemy.AddComponent<RingAttackOnDeath>();
                 break;
         }
         return enemy;
@@ -148,9 +148,7 @@ public class SpawnManager : MonoBehaviour
                 timer -= Time.deltaTime;
             else
             {
-                GameObject projectile = Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f));
-                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
-                    modifier.Modify(projectile);
+                Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f), GetComponents<IProjectileModifier>());
                 timer = Random.Range(minAttackInterval, maxAttackInterval);
             }
         }
@@ -173,9 +171,7 @@ public class SpawnManager : MonoBehaviour
                 timer -= Time.deltaTime;
             else
             {
-                GameObject projectile = Projectile.Instantiate(transform.position, target.transform.position);
-                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
-                    modifier.Modify(projectile);
+                Projectile.Instantiate(transform.position, target.transform.position, GetComponents<IProjectileModifier>());
                 timer = Random.Range(minAttackInterval, maxAttackInterval);
             }
         }
@@ -185,9 +181,7 @@ public class SpawnManager : MonoBehaviour
     {
         void IOnDeathEffect.OnDeath()
         {
-            GameObject projectile = Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f));
-            foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
-                modifier.Modify(projectile);
+            Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f), GetComponents<IProjectileModifier>());
         }
     }
 
@@ -195,10 +189,7 @@ public class SpawnManager : MonoBehaviour
     {
         void IOnDeathEffect.OnDeath()
         {
-            List<GameObject> projectiles = Projectile.InstantiateRing(transform.position, 0, 6);
-            foreach (GameObject projectile in projectiles)
-                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
-                modifier.Modify(projectile);
+            Projectile.InstantiateRing(transform.position, 0, GetComponents<IProjectileModifier>(), 6);
         }
     }
 }

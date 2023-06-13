@@ -81,9 +81,7 @@ public class PassiveItem_DefaultWeapon : PassiveItem
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null && damageable.GetHostility() != GetComponentInParent<Character>().GetHostility())
             {
-                GameObject projectile = Projectile.Instantiate(transform.position, collision.transform.position);
-                foreach (IProjectileModifier modifier in GetComponentsInParent<IProjectileModifier>())
-                    modifier.Modify(projectile);
+                Projectile.Instantiate(transform.position, collision.transform.position, GetComponentsInParent<IProjectileModifier>());
                 timer = attackInterval;
             }
         }
