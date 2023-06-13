@@ -17,6 +17,7 @@ public class PassiveItem_DefaultWeapon : PassiveItem
     {
         view = new GameObject("DefaultWeaponView");
         view.transform.SetParent(gameObject.transform);
+        view.transform.SetLocalPositionAndRotation(Vector3.zero, new Quaternion());
         viewScript = view.AddComponent<viewBehavior>();
         viewTrigger = view.AddComponent<PolygonCollider2D>();
         viewTrigger.isTrigger = true;
@@ -42,7 +43,6 @@ public class PassiveItem_DefaultWeapon : PassiveItem
 
     private void UpdateCollider(float newRange, float newAngleOfView)
     {
-        Quaternion orientation = transform.rotation;
         List<Vector2> points = new();
         points.Add(Vector2.zero);
         for (float i = 0; i <= interpolationDensity; i++)
