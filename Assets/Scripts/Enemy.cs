@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,7 +25,14 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void SetContactDPS(float value) { contactDPS = value; }
 
-    public void ReceiveDamage(Damage damage) { Destroy(gameObject); }
+    public void ReceiveDamage(Damage damage) { Die(); }
+
+    private void Die()
+    {
+        foreach (IOnDeathEffect component in GetComponents<IOnDeathEffect>())
+            component.OnDeath();
+        Destroy(gameObject);
+    }
 
     // Start is called before the first frame update
     void Start()

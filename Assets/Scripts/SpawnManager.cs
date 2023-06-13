@@ -41,12 +41,11 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                //enemy.AddComponent<LaunchToward>();
-                //enemy.GetComponent<LaunchToward>().targetGameObj = player;
+                enemy.AddComponent<RandomlyAttack>();
                 break;
             case 2:
-                //enemy.AddComponent<LaunchToward>();
-                //enemy.GetComponent<LaunchToward>().targetGameObj = null;
+                enemy.AddComponent<FocusedAttack>();
+                enemy.GetComponent<FocusedAttack>().SetTarget(player);
                 break;
         }
         switch (Random.Range(0, 2))
@@ -54,7 +53,7 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                //enemy.GetComponent<EnemyOnHit>().projectilePrefabOnDeath = enemyProjectilePrefab;
+                enemy.AddComponent<RandomAttackOnDeath>();
                 break;
         }
         switch (Random.Range(0, 2))
@@ -62,7 +61,7 @@ public class SpawnManager : MonoBehaviour
             case 0:
                 break;
             case 1:
-                //enemy.GetComponent<EnemyOnHit>().projectilePrefabRingOnDeath = enemyProjectilePrefab;
+                enemy.AddComponent<RingAttackOnDeath>(); 
                 break;
         }
         return enemy;
@@ -137,5 +136,69 @@ public class SpawnManager : MonoBehaviour
         }
     }
 
+    private class RandomlyAttack : MonoBehaviour
+    {
+        private float minAttackInterval = 1.0f;
+        private float maxAttackInterval = 3.0f;
+        private float timer = 0.0f;
 
+        void Update()
+        {
+            if (timer > 0)
+                timer -= Time.deltaTime;
+            else
+            {
+                GameObject projectile = Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f));
+                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                    modifier.Modify(projectile);
+                timer = Random.Range(minAttackInterval, maxAttackInterval);
+            }
+        }
+    }
+
+    private class FocusedAttack : MonoBehaviour
+    {
+        private GameObject target;
+        private float minAttackInterval = 1.0f;
+        private float maxAttackInterval = 3.0f;
+        private float timer = 0.0f;
+
+        public GameObject GetTarget() { return target; }
+
+        public void SetTarget(GameObject value) { target = value; }
+
+        void Update()
+        {
+            if (timer > 0)
+                timer -= Time.deltaTime;
+            else
+            {
+                GameObject projectile = Projectile.Instantiate(transform.position, target.transform.position);
+                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                    modifier.Modify(projectile);
+                timer = Random.Range(minAttackInterval, maxAttackInterval);
+            }
+        }
+    }
+
+    private class RandomAttackOnDeath : MonoBehaviour, IOnDeathEffect
+    {
+        void IOnDeathEffect.OnDeath()
+        {
+            GameObject projectile = Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f));
+            foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                modifier.Modify(projectile);
+        }
+    }
+
+    private class RingAttackOnDeath : MonoBehaviour, IOnDeathEffect
+    {
+        void IOnDeathEffect.OnDeath()
+        {
+            List<GameObject> projectiles = Projectile.InstantiateRing(transform.position, 0, 6);
+            foreach (GameObject projectile in projectiles)
+                foreach (IProjectileModifier modifier in GetComponents<IProjectileModifier>())
+                modifier.Modify(projectile);
+        }
+    }
 }

@@ -24,6 +24,10 @@ public interface IDamageable
     void ReceiveDamage(Damage damage);
 }
 
+public interface IOnDeathEffect {
+    void OnDeath();
+}
+
 public class Damage
 {
     private GameObject source;
