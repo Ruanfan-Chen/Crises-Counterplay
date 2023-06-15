@@ -341,7 +341,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 73825037}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1151485479}
+        m_TargetAssemblyTypeName: GameplayManager, Assembly-CSharp
+        m_MethodName: LordOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &73825037
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -666,7 +678,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 405358835}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1151485479}
+        m_TargetAssemblyTypeName: GameplayManager, Assembly-CSharp
+        m_MethodName: ItemButtonOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &405358835
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1485,7 +1509,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 898647731}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1151485479}
+        m_TargetAssemblyTypeName: GameplayManager, Assembly-CSharp
+        m_MethodName: JackOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &898647731
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1700,7 +1736,7 @@ MonoBehaviour:
   m_gameplayPanel: {fileID: 1965057401}
   m_shopPanel: {fileID: 432010352}
   m_positionPanel: {fileID: 1235466728}
-  m_maxTime: 30
+  m_maxTime: 5
 --- !u!4 &1151485480
 Transform:
   m_ObjectHideFlags: 0
@@ -1768,7 +1804,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
@@ -1908,7 +1944,19 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 1221243614}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 1151485479}
+        m_TargetAssemblyTypeName: GameplayManager, Assembly-CSharp
+        m_MethodName: KingOnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &1221243614
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2503,7 +2551,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
