@@ -11,7 +11,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float contactDPS = 25.00f;
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
-    private float range = 20.0f;
+    private float range = 10.0f;
 
     public float GetMoveSpeed() { return moveSpeed; }
 
@@ -24,6 +24,18 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     public float GetContactDPS() { return contactDPS; }
 
     public void SetContactDPS(float value) { contactDPS = value; }
+
+    public float GetRange() { return range; }
+
+    public void SetRange(float value) { range = value; }
+
+    public float GetDamage() { return damage; }
+
+    public void SetDamage(float value) { damage = value; }
+
+    public float GetProjectileSpeed() { return projectileSpeed; }
+
+    public void SetProjectileSpeed(float value) { projectileSpeed = value; }
 
     public void ReceiveDamage(Damage damage) { Die(); }
 

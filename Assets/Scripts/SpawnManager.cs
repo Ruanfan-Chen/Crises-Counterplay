@@ -23,7 +23,7 @@ public class SpawnManager : MonoBehaviour
         } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, new Quaternion());
         enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
-        switch (Random.Range(0, 3))
+        switch (Random.Range(0, 4))
         {
             case 0:
                 break;
@@ -33,6 +33,10 @@ public class SpawnManager : MonoBehaviour
             case 2:
                 enemy.AddComponent<DirectlyMoveToward>();
                 enemy.GetComponent<DirectlyMoveToward>().SetTarget(player);
+                break;
+            case 3:
+                enemy.AddComponent<MoveInCircle>();
+                enemy.GetComponent<MoveInCircle>().SetCenter(player);
                 break;
         }
 
@@ -133,6 +137,24 @@ public class SpawnManager : MonoBehaviour
                 transform.Translate(speed * Time.deltaTime * displacement.normalized);
             else
                 transform.Translate(displacement);
+        }
+    }
+
+    private class MoveInCircle : MonoBehaviour
+    {
+        private GameObject center;
+
+        private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
+        public GameObject GetCenter() { return center; }
+
+        public void SetCenter(GameObject value) { center = value; }
+
+        public float GetRange() { return GetComponent<Enemy>().GetRange(); }
+
+        void Update()
+        {
+            Vector3 relativePos = transform.position - center.transform.position;
+            transform.Translate(GetSpeed() * Time.deltaTime * (Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, GetRange()) * Mathf.Rad2Deg) * relativePos.normalized));
         }
     }
 
