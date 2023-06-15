@@ -55,12 +55,10 @@ public class GameplayManager : MonoBehaviour
         m_shopPanel.SetActive(true);
         GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
 
-        //randomly choose an item
-        int index = Random.Range(0, 3);
         Item item = new Item();
-        item.m_name = "Active Item "+ index.ToString();
-        item.m_index = index;
-        item.m_active = true;
+        item.m_name = "Passive Item 1";
+        item.m_index = 1;
+        item.m_active = false;
         m_item = item;
 
         itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
@@ -108,21 +106,64 @@ public class GameplayManager : MonoBehaviour
         GameObject king = player.GetClosestCharacter(0);
         GameObject lord = player.GetClosestCharacter(2);
         m_actionJack = delegate () {
+            if (jack)
+            {
+                Character character = jack.GetComponent<Character>();
+                if (character)
+                {
+                    character.GiveItem(typeof(PassiveItem_0));
+                }
+            }
         };
+        m_actionKing = delegate ()
+        {
+            if (king)
+            {
+                Character character = king.GetComponent<Character>();
+                if (character)
+                {
+                    character.GiveItem(typeof(PassiveItem_0));
+                }
+            }
+        };
+        m_actionLord = delegate ()
+        {
+            if (lord)
+            {
+                Character character = lord.GetComponent<Character>();
+                if (character)
+                {
+                    character.GiveItem(typeof(PassiveItem_0));
+                }
+            }
+        };
+        PositionPage();
     }
 
     public void JackOnClick()
     {
-
+        if (m_actionJack != null)
+        {
+            m_actionJack();
+        }
+        CloseShop();
     }
 
     public void KingOnClick()
     {
-
+        if(m_actionLord != null)
+        {
+            m_actionKing();
+        }
+        CloseShop();
     }
 
     public void LordOnClick()
     {
-
+        if(m_actionLord != null)
+        {
+            m_actionLord();
+        }
+        CloseShop();
     }
 }
