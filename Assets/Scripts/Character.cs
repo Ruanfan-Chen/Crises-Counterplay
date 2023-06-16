@@ -6,7 +6,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     private float health = 100.0f;
     private float maxHealth = 100.0f;
-    private float damage = 1.0f;
+    private float damage = 25.0f;
     private float projectileSpeed = 10.0f;
     private float range = 10.0f;
     private float angleOfView = 120.0f;

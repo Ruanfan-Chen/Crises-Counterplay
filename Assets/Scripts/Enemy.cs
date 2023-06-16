@@ -6,12 +6,22 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 {
     private static string prefabPath = "Prefabs/Enemy";
+    private float health = 50.0f;
+    private float maxHealth = 50.0f;
     private float moveSpeed = 2.5f;
     private bool hostility = true;
     private float contactDPS = 25.00f;
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = 10.0f;
+
+    public float GetHealth() { return health; }
+
+    public void SetHealth(float value) { health = value; }
+
+    public float GetMaxHealth() { return maxHealth; }
+
+    public void SetMaxHealth(float value) { maxHealth = value; }
 
     public float GetMoveSpeed() { return moveSpeed; }
 
@@ -37,7 +47,10 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void SetProjectileSpeed(float value) { projectileSpeed = value; }
 
-    public void ReceiveDamage(Damage damage) { Die(); }
+    public void ReceiveDamage(Damage damage) {
+        health -= damage.GetValue();
+        if (health <= 0) Die();
+    }
 
     private void Die()
     {
