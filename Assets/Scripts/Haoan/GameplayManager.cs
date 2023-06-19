@@ -15,7 +15,8 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameObject m_positionPanel;
     [SerializeField] private float m_maxTime = 45.0f;
     private float m_timer = 0.0f;
-    private int m_levelNum = 1;
+    [SerializeField] private int m_levelNum = 1;
+    private MapManager m_mapManager;
     private Item m_item;
 
     delegate void PositionAction();
@@ -32,7 +33,10 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         levelText.text = "Level " + m_levelNum.ToString();
+        m_mapManager = gameObject.GetComponent<MapManager>();
+        m_mapManager.LoadLevel(m_levelNum);
         m_item = new Item();
     }
 
@@ -84,12 +88,13 @@ public class GameplayManager : MonoBehaviour
     void ResetGame()
     {
         m_player.transform.position = Vector3.zero;
-        MapManager mm = gameObject.GetComponent<MapManager>();
-        mm.CreateMap(MapManager.Shape.Circle);
+        m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
         foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
+        {
             Destroy(o);
+        }
     }
 
     public void CharacterButtonOnClick()

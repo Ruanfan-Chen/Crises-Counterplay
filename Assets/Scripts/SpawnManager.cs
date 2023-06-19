@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    [Tooltip("A switch to turn enemy spawn on and off for testing and debugging.")]
+    [SerializeField] private bool isSpawn = true;
     public GameObject player;
     private float offset = 2.0f;
     private float startDelay = 2.0f;
@@ -11,7 +13,10 @@ public class SpawnManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        InvokeRepeating("SpawnRandomEnemy", startDelay, spawnInterval);
+        if (isSpawn)
+        {
+            InvokeRepeating("SpawnRandomEnemy", startDelay, spawnInterval);
+        }
     }
 
     public GameObject SpawnRandomEnemy()

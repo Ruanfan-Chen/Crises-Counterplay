@@ -1737,6 +1737,7 @@ MonoBehaviour:
   m_shopPanel: {fileID: 432010352}
   m_positionPanel: {fileID: 1235466728}
   m_maxTime: 5
+  m_levelNum: 1
 --- !u!4 &1151485480
 Transform:
   m_ObjectHideFlags: 0
@@ -1770,6 +1771,9 @@ MonoBehaviour:
   - {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   - {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
   m_mapColor: {r: 0.3584906, g: 0.3315237, b: 0.2113742, a: 1}
+  m_elementArray:
+  - {fileID: 6071611030961794286, guid: d46bf549b3f47d74a9283246b4677aa8, type: 3}
+  - {fileID: 2560507934675709148, guid: 3584093f1a7fa6e489ee5fb87215013f, type: 3}
 --- !u!114 &1151485482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1782,6 +1786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d14018b946cf3f64ea0dcd46edc5f800, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  isSpawn: 0
   player: {fileID: 1713116184}
 --- !u!1001 &1164548938
 PrefabInstance:
@@ -1804,7 +1809,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
@@ -2551,7 +2556,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
@@ -2832,6 +2837,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1713116185}
     m_Modifications:
+    - target: {fileID: -9117969259955646852, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: m_IsTrigger
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 980437409878018244, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Color.b
       value: 0
@@ -2847,6 +2856,10 @@ PrefabInstance:
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterU
+      objectReference: {fileID: 0}
+    - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: health
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab

@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
-    private float health = 100.0f;
+    [SerializeField]private float health = 100.0f;
     private float maxHealth = 100.0f;
     private float damage = 1.0f;
     private float projectileSpeed = 10.0f;
@@ -52,7 +52,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetAttackInterval(float value) { attackInterval = value; }
 
-    public void ReceiveDamage(Damage damage) { health -= damage.GetValue(); }
+    public void ReceiveDamage(Damage damage) { health -= damage.GetValue(); health = Mathf.Clamp(health, 0.0f, maxHealth); }
     public List<Component> GetPassiveItems() { return passiveItems; }
     public Component GetActiveItem() { return activeItem; }
     public bool RemoveItem(Component item)
