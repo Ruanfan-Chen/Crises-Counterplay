@@ -69,12 +69,12 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void Modify(GameObject projectile)
     {
+        projectile.AddComponent<Projectile.DamageOnCollision>().SetDamage(damage);
         Projectile script = projectile.GetComponent<Projectile>();
         script.SetSpeed(projectileSpeed);
         script.SetHostility(true);
         script.SetColor(Color.black);
         script.SetSource(gameObject);
-        script.SetDamage(damage);
         DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
         timer.SetTimer(range / projectileSpeed);
         timer.Activate();

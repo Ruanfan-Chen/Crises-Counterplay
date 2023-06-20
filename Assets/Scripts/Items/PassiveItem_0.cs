@@ -9,6 +9,7 @@ public class PassiveItem_0 : PassiveItem
     private float stepsize;
     private float minStepsize = 0.5f;
     private float maxStepsize = 3.0f;
+    private float contactDPS = 25.0f;
 
     // Start is called before the first frame update
     void Start()
@@ -23,7 +24,7 @@ public class PassiveItem_0 : PassiveItem
         {
             GameObject footprint = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
             Footprint script = footprint.AddComponent<Footprint>();
-            script.SetContactDPS(GetComponent<Character>().GetDamage() * 0.5f);
+            script.SetContactDPS(contactDPS);
             script.SetHostility(GetComponent<Character>().GetHostility());
             DestroyOutOfTime timer = footprint.AddComponent<DestroyOutOfTime>();
             timer.SetTimer(5.0f);

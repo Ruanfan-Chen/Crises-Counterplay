@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
-    [SerializeField]private float health = 100.0f;
+    [SerializeField] private float health = 100.0f;
     private float maxHealth = 100.0f;
-    private float damage = 1.0f;
-    private float projectileSpeed = 10.0f;
-    private float range = 10.0f;
-    private float angleOfView = 120.0f;
-    private float attackInterval = 0.5f;
-    private List<Component> passiveItems = new();
-    private Component activeItem = null;
+    private List<PassiveItem> passiveItems = new();
+    private ActiveItem activeItem = null;
 
     public float GetHealth() { return health; }
 
@@ -21,10 +16,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public float GetMaxHealth() { return maxHealth; }
 
     public void SetMaxHealth(float value) { maxHealth = value; }
-
-    public float GetDamage() { return damage; }
-
-    public void SetDamage(float value) { damage = value; }
 
     public float GetMoveSpeed()
     {
@@ -35,26 +26,9 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     {
         GetComponentInParent<Player>().SetMoveSpeed(value);
     }
-
-    public float GetProjectileSpeed() { return projectileSpeed; }
-
-    public void SetProjectileSpeed(float value) { projectileSpeed = value; }
-
-    public float GetRange() { return range; }
-
-    public void SetRange(float value) { range = value; }
-
-    public float GetAngleOfView() { return angleOfView; }
-
-    public void SetAngleOfView(float value) { angleOfView = value; }
-
-    public float GetAttackInterval() { return attackInterval; }
-
-    public void SetAttackInterval(float value) { attackInterval = value; }
-
     public void ReceiveDamage(Damage damage) { health -= damage.GetValue(); health = Mathf.Clamp(health, 0.0f, maxHealth); }
-    public List<Component> GetPassiveItems() { return passiveItems; }
-    public Component GetActiveItem() { return activeItem; }
+    public List<PassiveItem> GetPassiveItems() { return passiveItems; }
+    public ActiveItem GetActiveItem() { return activeItem; }
     public bool RemoveItem(Component item)
     {
         if (activeItem == item)
@@ -63,7 +37,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
             Destroy(item);
             return true;
         }
-        if (passiveItems.Remove(item))
+        else if (passiveItems.Remove((PassiveItem)item))
         {
             Destroy(item);
             return true;
@@ -74,14 +48,14 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     {
         if (typeof(ActiveItem).IsAssignableFrom(item))
         {
-            Component newComponent = gameObject.AddComponent(item);
             if (activeItem) RemoveItem(activeItem);
+            ActiveItem newComponent = (ActiveItem)gameObject.AddComponent(item);
             activeItem = newComponent;
             return newComponent;
         }
         if (typeof(PassiveItem).IsAssignableFrom(item))
         {
-            Component newComponent = gameObject.AddComponent(item);
+            PassiveItem newComponent = (PassiveItem)gameObject.AddComponent(item);
             passiveItems.Add(newComponent);
             return newComponent;
         }
@@ -111,18 +85,13 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     void IProjectileModifier.Modify(GameObject projectile)
     {
         Projectile script = projectile.GetComponent<Projectile>();
-        script.SetSpeed(projectileSpeed);
         script.SetHostility(false);
         script.SetColor(GetComponent<SpriteRenderer>().color);
         script.SetSource(gameObject);
-        script.SetDamage(damage);
-        DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
-        timer.SetTimer(range / projectileSpeed);
-        timer.Activate();
     }
 
     void Start()
     {
-        GiveItem(typeof(PassiveItem_DefaultWeapon));
+        GiveItem(typeof(PassiveItem_Weapon_1));
     }
 }
