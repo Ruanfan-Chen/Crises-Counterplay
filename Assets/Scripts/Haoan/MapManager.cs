@@ -75,6 +75,10 @@ public class MapManager : MonoBehaviour
             spring.transform.position = new Vector3(0.0f, -27.5f, 0.0f);
             spring.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
         }
+        else
+        {
+            LoadLevel(2);
+        }
     }
     /// <summary>
     /// This function will take in a position and an offset with default value of 0.0f and return true if it's within a boundary or return false if it's out of a boundary.

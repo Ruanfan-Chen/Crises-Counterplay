@@ -1736,7 +1736,7 @@ MonoBehaviour:
   m_gameplayPanel: {fileID: 1965057401}
   m_shopPanel: {fileID: 432010352}
   m_positionPanel: {fileID: 1235466728}
-  m_maxTime: 500
+  m_maxTime: 35
   m_levelNum: 1
 --- !u!4 &1151485480
 Transform:
@@ -1787,6 +1787,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 1713116184}
+  offset: 2
+  startDelay: 2
+  spawnInterval: 1
 --- !u!1001 &1164548938
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1810,6 +1813,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485479}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
       value: 
@@ -2558,6 +2565,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485479}
+    - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
       value: 
       objectReference: {fileID: 8441805378274828763, guid: ce0e7e97aed66674aa8ca777ba27a497, type: 3}
@@ -2857,9 +2868,9 @@ PrefabInstance:
       value: CharacterU
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
-      propertyPath: health
-      value: 100
-      objectReference: {fileID: 0}
+      propertyPath: gameplayManager
+      value: 
+      objectReference: {fileID: 1151485479}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: projectilePrefab
       value: 

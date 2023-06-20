@@ -5,6 +5,7 @@ using UnityEngine;
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     [SerializeField] private float health = 100.0f;
+    [SerializeField] private GameplayManager gameplayManager;
     private float maxHealth = 100.0f;
     private List<PassiveItem> passiveItems = new();
     private ActiveItem activeItem = null;
@@ -26,7 +27,15 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     {
         GetComponentInParent<Player>().SetMoveSpeed(value);
     }
-    public void ReceiveDamage(Damage damage) { health -= damage.GetValue(); health = Mathf.Clamp(health, 0.0f, maxHealth); }
+    public void ReceiveDamage(Damage damage)
+    {
+        health -= damage.GetValue();
+        health = Mathf.Clamp(health, 0.0f, maxHealth);
+        if(health <= 0.0f)
+        {
+            gameplayManager.ResetGame(1);
+        }
+    }
     public List<PassiveItem> GetPassiveItems() { return passiveItems; }
     public ActiveItem GetActiveItem() { return activeItem; }
     public bool RemoveItem(Component item)
