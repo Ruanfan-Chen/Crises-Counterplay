@@ -135,11 +135,26 @@ public class GameplayManager : MonoBehaviour
         ResetGame();
     }
 
+    public void AttributeButtonOnClick()
+    {
+        CloseShop();
+    }
+
     public void CharacterButtonOnClick()
     {
-        m_characters[1].SetActive(true);
-        Player player = m_player.GetComponent<Player>();
-        m_jack = player.GetClosestCharacter(1);
+        if(m_levelNum == 1)
+        {
+            m_characters[1].SetActive(true);
+            Player player = m_player.GetComponent<Player>();
+            m_jack = player.GetClosestCharacter(1);
+            
+        }
+        else if(m_levelNum == 2)
+        {
+            m_characters[2].SetActive(true);
+            Player player = m_player.GetComponent<Player>();
+            m_lord = player.GetClosestCharacter(2);
+        }
         CloseShop();
     }
 
