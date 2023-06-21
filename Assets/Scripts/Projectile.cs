@@ -8,7 +8,6 @@ public class Projectile : MonoBehaviour
     private float speed;
     private bool hostility;
     private GameObject source;
-    private float damage;
 
     public float GetSpeed() { return speed; }
 
@@ -26,10 +25,6 @@ public class Projectile : MonoBehaviour
 
     public void SetSource(GameObject value) { source = value; }
 
-    public float GetDamage() { return damage; }
-
-    public void SetDamage(float value) { damage = value; }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -41,16 +36,6 @@ public class Projectile : MonoBehaviour
     void Update()
     {
         transform.Translate(speed * Time.deltaTime * Vector3.up);
-    }
-
-    private void OnTriggerEnter2D(Collider2D other)
-    {
-        IDamageable damageable = other.GetComponent<IDamageable>();
-        if (damageable != null && damageable.GetHostility() != hostility)
-        {
-            new Damage(source, gameObject, damageable, damage).Apply();
-            Destroy(gameObject);
-        }
     }
 
     public static GameObject Instantiate(Vector3 position, Quaternion rotation, IProjectileModifier[] modifiers)
@@ -76,5 +61,29 @@ public class Projectile : MonoBehaviour
         for (int i = 0; i < count; i++)
             projectileList.Add(Instantiate(position, theta + 360 * i / count, modifiers));
         return projectileList;
+    }
+
+    public class DamageOnCollision : MonoBehaviour {
+        private float damage;
+
+        public DamageOnCollision(float damage)
+        {
+            this.damage = damage;
+        }
+
+        public float GetDamage() { return damage; }
+
+        public void SetDamage(float value) { damage = value; }
+
+        private void OnTriggerEnter2D(Collider2D other)
+        {
+            Projectile script = GetComponent<Projectile>();
+            IDamageable damageable = other.GetComponent<IDamageable>();
+            if (damageable != null && damageable.GetHostility() != script.GetHostility())
+            {
+                new Damage(script.GetSource(), gameObject, damageable, damage).Apply();
+                Destroy(gameObject);
+            }
+        }
     }
 }

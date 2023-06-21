@@ -47,7 +47,8 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void SetProjectileSpeed(float value) { projectileSpeed = value; }
 
-    public void ReceiveDamage(Damage damage) {
+    public void ReceiveDamage(Damage damage)
+    {
         health -= damage.GetValue();
         if (health <= 0) Die();
     }
@@ -82,12 +83,12 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void Modify(GameObject projectile)
     {
+        projectile.AddComponent<Projectile.DamageOnCollision>().SetDamage(damage);
         Projectile script = projectile.GetComponent<Projectile>();
         script.SetSpeed(projectileSpeed);
         script.SetHostility(true);
         script.SetColor(Color.black);
         script.SetSource(gameObject);
-        script.SetDamage(damage);
         DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
         timer.SetTimer(range / projectileSpeed);
         timer.Activate();

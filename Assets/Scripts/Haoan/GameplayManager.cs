@@ -14,8 +14,13 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameObject m_shopPanel;
     [SerializeField] private GameObject m_positionPanel;
     [SerializeField] private float m_maxTime = 45.0f;
+    [SerializeField] private int m_levelNum = 1;
     private float m_timer = 0.0f;
-    private int m_levelNum = 1;
+    private MapManager m_mapManager;
+    private GameObject m_jack;
+    private GameObject m_king;
+    private GameObject m_lord;
+
     private Item m_item;
 
     delegate void PositionAction();
@@ -32,8 +37,12 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        
         levelText.text = "Level " + m_levelNum.ToString();
-        m_item = new Item();
+        m_mapManager = gameObject.GetComponent<MapManager>();
+        m_mapManager.LoadLevel(m_levelNum);
+        Player player = m_player.GetComponent<Player>();
+        m_king = player.GetClosestCharacter(0);
     }
 
     // Update is called once per frame
@@ -81,34 +90,80 @@ public class GameplayManager : MonoBehaviour
     }
 
 
-    void ResetGame()
+    public void ResetGame()
     {
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
+        {
+            Destroy(o);
+        }
+
         m_player.transform.position = Vector3.zero;
-        MapManager mm = gameObject.GetComponent<MapManager>();
-        mm.CreateMap(MapManager.Shape.Circle);
+        m_mapManager.LoadLevel(m_levelNum);
+        
+        if (m_jack)
+        {
+            Character character = m_jack.GetComponent<Character>();
+            if (character)
+            {
+                character.SetHealth(character.GetMaxHealth());
+            }
+        }
+        if (m_king)
+        {
+            Character character = m_king.GetComponent<Character>();
+            if (character)
+            {
+                character.SetHealth(character.GetMaxHealth());
+            }
+        }
+        if (m_lord)
+        {
+            Character character = m_lord.GetComponent<Character>();
+            if (character)
+            {
+                character.SetHealth(character.GetMaxHealth());
+            }
+        }
+
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
-        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
-            Destroy(o);
+    }
+
+    public void ResetGame(int levelNum)
+    {
+        m_levelNum = levelNum;
+        ResetGame();
+    }
+
+    public void AttributeButtonOnClick()
+    {
+        CloseShop();
     }
 
     public void CharacterButtonOnClick()
     {
-        m_characters[1].SetActive(true);
-        m_characters[2].SetActive(true);
+        if(m_levelNum == 1)
+        {
+            m_characters[1].SetActive(true);
+            Player player = m_player.GetComponent<Player>();
+            m_jack = player.GetClosestCharacter(1);
+            
+        }
+        else if(m_levelNum == 2)
+        {
+            m_characters[2].SetActive(true);
+            Player player = m_player.GetComponent<Player>();
+            m_lord = player.GetClosestCharacter(2);
+        }
         CloseShop();
     }
 
     public void ItemButtonOnClick()
     {
-        Player player = m_player.GetComponent<Player>();
-        GameObject jack = player.GetClosestCharacter(1);
-        GameObject king = player.GetClosestCharacter(0);
-        GameObject lord = player.GetClosestCharacter(2);
         m_actionJack = delegate () {
-            if (jack)
+            if (m_jack)
             {
-                Character character = jack.GetComponent<Character>();
+                Character character = m_jack.GetComponent<Character>();
                 if (character)
                 {
                     character.GiveItem(typeof(PassiveItem_0));
@@ -117,9 +172,9 @@ public class GameplayManager : MonoBehaviour
         };
         m_actionKing = delegate ()
         {
-            if (king)
+            if (m_king)
             {
-                Character character = king.GetComponent<Character>();
+                Character character = m_king.GetComponent<Character>();
                 if (character)
                 {
                     character.GiveItem(typeof(PassiveItem_0));
@@ -128,9 +183,9 @@ public class GameplayManager : MonoBehaviour
         };
         m_actionLord = delegate ()
         {
-            if (lord)
+            if (m_lord)
             {
-                Character character = lord.GetComponent<Character>();
+                Character character = m_lord.GetComponent<Character>();
                 if (character)
                 {
                     character.GiveItem(typeof(PassiveItem_0));

@@ -9,6 +9,7 @@ public class MapManager : MonoBehaviour
     [SerializeField] private Shape m_shape;
     [SerializeField] private Sprite[] m_spriteArray;
     [SerializeField] private Color m_mapColor = new Color(0.3584906f, 0.3315237f, 0.2113742f);
+    [SerializeField] private GameObject[] m_elementArray;
     private SpriteRenderer m_spriteRenderer;
 
     public enum Shape
@@ -20,7 +21,7 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        CreateMap(Shape.Circle);
+
     }
 
     // Update is called once per frame
@@ -51,6 +52,32 @@ public class MapManager : MonoBehaviour
                 break;
             case Shape.Triangle:
                 break;
+        }
+    }
+
+    public void LoadLevel(int levelNum)
+    {
+        if(levelNum == 1)
+        {
+            CreateMap(Shape.Rectangle);
+            GameObject lava = Instantiate(m_elementArray[0]);
+            lava.transform.position = new Vector3(0.0f, 27.5f, 0.0f);
+            lava.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
+            
+        }
+        else if(levelNum == 2)
+        {
+            CreateMap(Shape.Rectangle);
+            GameObject lava = Instantiate(m_elementArray[0]);
+            lava.transform.position = new Vector3(0.0f, 27.5f, 0.0f);
+            lava.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
+            GameObject spring = Instantiate(m_elementArray[1]);
+            spring.transform.position = new Vector3(0.0f, -27.5f, 0.0f);
+            spring.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
+        }
+        else
+        {
+            LoadLevel(2);
         }
     }
     /// <summary>

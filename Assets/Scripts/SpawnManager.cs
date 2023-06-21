@@ -5,9 +5,9 @@ using UnityEngine;
 public class SpawnManager : MonoBehaviour
 {
     public GameObject player;
-    private float offset = 2.0f;
-    private float startDelay = 2.0f;
-    private float spawnInterval = 0.3f;
+    [SerializeField] private float offset = 2.0f;
+    [SerializeField] private float startDelay = 2.0f;
+    [SerializeField] private float spawnInterval = 0.3f;
     // Start is called before the first frame update
     void Start()
     {

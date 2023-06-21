@@ -21,6 +21,8 @@ public interface IDamageable
 {
     bool GetHostility();
 
+    public Coroutine StartCoroutine(IEnumerator routine);
+
     void ReceiveDamage(Damage damage);
 }
 
