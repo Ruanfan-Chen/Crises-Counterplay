@@ -23,7 +23,6 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void SetMaxHealth(float value) { maxHealth = value; }
 
-
     public float GetMoveSpeed() { return moveSpeed; }
 
     public void SetMoveSpeed(float value) { moveSpeed = value; }

@@ -10,6 +10,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     private List<PassiveItem> passiveItems = new();
     private ActiveItem activeItem = null;
 
+
     public float GetHealth() { return health; }
 
     public void SetHealth(float value) { health = value; }
