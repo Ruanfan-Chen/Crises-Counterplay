@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
+public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 {
     private GameObject view;
     private ViewBehavior viewScript;
