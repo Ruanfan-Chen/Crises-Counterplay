@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
+public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 {
     private GameObject view;
     private ViewBehavior viewScript;
@@ -32,7 +32,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
 
     public void SetAttackInterval(float value) { viewScript.SetAttackInterval(value); }
 
-    void Start()
+    void OnEnable()
     {
         view = new GameObject("WeaponView");
         view.transform.SetParent(gameObject.transform);
@@ -42,6 +42,13 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
         UpdateCollider();
+    }
+    void OnDisable()
+    {
+        Destroy(view);
+        view = null;
+        viewScript = null;
+        viewTrigger = null;
     }
 
     private void UpdateCollider()
@@ -55,17 +62,12 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
         viewTrigger.SetPath(0, points);
     }
 
-    private void OnDestroy()
-    {
-        Destroy(view);
-    }
-
     void IProjectileModifier.Modify(GameObject projectile)
     {
         projectile.AddComponent<Projectile.DamageOnCollision>().SetDamage(damage);
         projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
         DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
-        timer.SetTimer(range/projectileSpeed);
+        timer.SetTimer(range / projectileSpeed);
         timer.Activate();
     }
 

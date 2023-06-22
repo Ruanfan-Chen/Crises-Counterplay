@@ -77,20 +77,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         GetComponent<ActiveItem>().Activate();
     }
     public bool GetHostility() { return false; }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        /*if (!collision.isTrigger && !GetComponent<Faction>().IsFriendly(collision.GetComponent<Faction>()))
-        {
-            if (collision.GetComponent<ProjectileMove>())
-            {
-
-                GetComponent<Character>().ReceiveDmg(25.0f);
-                Destroy(collision.gameObject);
-            }
-            else
-                GetComponent<Character>().ReceiveDmg(25.0f * Time.deltaTime);
-        }*/
-    }
 
     void IProjectileModifier.Modify(GameObject projectile)
     {
@@ -102,6 +88,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GiveItem(typeof(PassiveItem_Weapon_1));
+        GiveItem(typeof(PassiveItem_Weapon_3));
     }
 }

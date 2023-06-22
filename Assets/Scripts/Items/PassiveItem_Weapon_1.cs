@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier
+public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier, IWeapon
 {
     private GameObject view;
     private ViewBehavior viewScript;
@@ -14,6 +14,10 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier
     private float projectileSpeed = 10.0f;
     private float angleOfView = 120.0f;
     private int interpolationDensity = 4;
+
+    public float GetDamage() { return 0.0f; }
+
+    public void SetDamage(float value) { }
 
     public float GetKnockbackDistance() { return knockbackDistance; }
 
@@ -38,7 +42,7 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier
 
     public void SetAttackInterval(float value) { viewScript.SetAttackInterval(value); }
 
-    void Start()
+    void OnEnable()
     {
         view = new GameObject("WeaponView");
         view.transform.SetParent(gameObject.transform);
@@ -50,6 +54,14 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier
         UpdateCollider();
     }
 
+    private void OnDisable()
+    {
+        Destroy(view);
+        view = null;
+        viewScript = null;
+        viewTrigger = null;
+    }
+
     private void UpdateCollider()
     {
         List<Vector2> points = new();
@@ -59,11 +71,6 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier
             points.Add(range * (Quaternion.Euler(0, 0, (i / interpolationDensity - 0.5f) * angleOfView) * Vector3.up));
         }
         viewTrigger.SetPath(0, points);
-    }
-
-    private void OnDestroy()
-    {
-        Destroy(view);
     }
 
     void IProjectileModifier.Modify(GameObject projectile)
