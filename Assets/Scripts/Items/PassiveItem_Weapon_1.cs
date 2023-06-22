@@ -42,7 +42,7 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier, IWeapon
 
     public void SetAttackInterval(float value) { viewScript.SetAttackInterval(value); }
 
-    void Start()
+    void OnEnable()
     {
         view = new GameObject("WeaponView");
         view.transform.SetParent(gameObject.transform);
@@ -52,6 +52,14 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier, IWeapon
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
         UpdateCollider();
+    }
+
+    private void OnDisable()
+    {
+        Destroy(view);
+        view = null;
+        viewScript = null;
+        viewTrigger = null;
     }
 
     private void UpdateCollider()
