@@ -55,11 +55,6 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
         viewTrigger.SetPath(0, points);
     }
 
-    private void OnDestroy()
-    {
-        Destroy(view);
-    }
-
     void IProjectileModifier.Modify(GameObject projectile)
     {
         projectile.AddComponent<Projectile.DamageOnCollision>().SetDamage(damage);

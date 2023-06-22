@@ -65,11 +65,6 @@ public class PassiveItem_Weapon_1 : PassiveItem, IProjectileModifier, IWeapon
         viewTrigger.SetPath(0, points);
     }
 
-    private void OnDestroy()
-    {
-        Destroy(view);
-    }
-
     void IProjectileModifier.Modify(GameObject projectile)
     {
         KnockbackOnCollision script = projectile.AddComponent<KnockbackOnCollision>();
