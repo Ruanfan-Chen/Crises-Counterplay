@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -12,6 +13,19 @@ public class MapManager : MonoBehaviour
     [SerializeField] private GameObject[] m_elementArray;
     private SpriteRenderer m_spriteRenderer;
 
+    private float m_timer;
+
+    // event will occur within [m_event_intervl_min, m_event_intervl_max] after last occurance
+    public float m_event_intervl_min = 5.0f; // min time (in seconds) after last event occurred
+
+    public float m_event_intervl_max = 9.0f; // max time (in seconds) after last event occurred
+
+    private float m_event_next_occurance;
+
+    private int m_level;
+
+    private System.Random rnd = new System.Random();
+
     public enum Shape
     {
         Rectangle,
@@ -21,14 +35,15 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-
+        // m_event_next_occurance = m_event_intervl_min + (float)((m_event_intervl_max - m_event_intervl_min) * rnd.NextDouble());
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        checkAndGenerateEvent(m_timer);
     }
+
 
     public void CreateMap(Shape shape)
     {
@@ -57,15 +72,21 @@ public class MapManager : MonoBehaviour
 
     public void LoadLevel(int levelNum)
     {
-        if(levelNum == 1)
+        m_level = levelNum;
+        // Update event interval; m_level >= 1
+        m_event_intervl_max = Math.Max(1.0f, m_event_intervl_max - (m_level - 1.0f));
+        m_event_intervl_min = Math.Max(1.0f, m_event_intervl_min - (m_level - 1.0f));
+        Debug.Log("m_event_intervl_min = " + m_event_intervl_min + ", m_event_intervl_max = " + m_event_intervl_max);
+        initEventsGenerator();
+        if (levelNum == 1)
         {
             CreateMap(Shape.Rectangle);
             GameObject lava = Instantiate(m_elementArray[0]);
             lava.transform.position = new Vector3(0.0f, 27.5f, 0.0f);
             lava.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
-            
+
         }
-        else if(levelNum == 2)
+        else if (levelNum == 2)
         {
             CreateMap(Shape.Rectangle);
             GameObject lava = Instantiate(m_elementArray[0]);
@@ -132,5 +153,28 @@ public class MapManager : MonoBehaviour
     public bool IsInMap(Vector3 pos, float offset = 0.0f)
     {
         return pos == PosInMap(pos, offset);
+    }
+
+    public void setTimer(float t)
+    {
+        m_timer = t;
+    }
+
+    private void checkAndGenerateEvent(float t)
+    {
+        if (Math.Abs(t - m_event_next_occurance) < 0.1)
+        {
+            // trigger event
+            Debug.Log("!!! event occurs at t = " + t);
+            // update next occurace
+            m_event_next_occurance = t + m_event_intervl_min + (float)((m_event_intervl_max - m_event_intervl_min) * rnd.NextDouble());
+            Debug.Log("m_event_next_occurance = " + m_event_next_occurance);
+        }
+    }
+
+    public void initEventsGenerator()
+    {
+        m_event_next_occurance = m_event_intervl_min + (float)((m_event_intervl_max - m_event_intervl_min) * rnd.NextDouble());
+        Debug.Log("m_event_next_occurance = " + m_event_next_occurance);
     }
 }

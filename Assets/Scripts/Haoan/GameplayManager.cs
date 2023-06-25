@@ -37,7 +37,7 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
         m_mapManager.LoadLevel(m_levelNum);
@@ -50,12 +50,13 @@ public class GameplayManager : MonoBehaviour
     {
         m_timer += Time.deltaTime;
         float timeLeft = m_maxTime - m_timer;
-        timerText.text = Mathf.Round(timeLeft).ToString()+"s";
+        timerText.text = Mathf.Round(timeLeft).ToString() + "s";
         if (timeLeft <= 0)
         {
             Time.timeScale = 0.0f;
             Shop();
         }
+        m_mapManager.setTimer(m_timer);
     }
 
     void Shop()
@@ -99,7 +100,7 @@ public class GameplayManager : MonoBehaviour
 
         m_player.transform.position = Vector3.zero;
         m_mapManager.LoadLevel(m_levelNum);
-        
+
         if (m_jack)
         {
             Character character = m_jack.GetComponent<Character>();
@@ -142,14 +143,14 @@ public class GameplayManager : MonoBehaviour
 
     public void CharacterButtonOnClick()
     {
-        if(m_levelNum == 1)
+        if (m_levelNum == 1)
         {
             m_characters[1].SetActive(true);
             Player player = m_player.GetComponent<Player>();
             m_jack = player.GetClosestCharacter(1);
-            
+
         }
-        else if(m_levelNum == 2)
+        else if (m_levelNum == 2)
         {
             m_characters[2].SetActive(true);
             Player player = m_player.GetComponent<Player>();
@@ -160,7 +161,8 @@ public class GameplayManager : MonoBehaviour
 
     public void ItemButtonOnClick()
     {
-        m_actionJack = delegate () {
+        m_actionJack = delegate ()
+        {
             if (m_jack)
             {
                 Character character = m_jack.GetComponent<Character>();
@@ -206,7 +208,7 @@ public class GameplayManager : MonoBehaviour
 
     public void KingOnClick()
     {
-        if(m_actionLord != null)
+        if (m_actionLord != null)
         {
             m_actionKing();
         }
@@ -215,7 +217,7 @@ public class GameplayManager : MonoBehaviour
 
     public void LordOnClick()
     {
-        if(m_actionLord != null)
+        if (m_actionLord != null)
         {
             m_actionLord();
         }
