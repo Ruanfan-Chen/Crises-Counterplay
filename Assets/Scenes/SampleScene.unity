@@ -1736,7 +1736,7 @@ MonoBehaviour:
   m_gameplayPanel: {fileID: 1965057401}
   m_shopPanel: {fileID: 432010352}
   m_positionPanel: {fileID: 1235466728}
-  m_maxTime: 45
+  m_maxTime: 30
   m_levelNum: 1
 --- !u!4 &1151485480
 Transform:
@@ -1767,10 +1767,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_shape: 0
   m_spriteArray:
-  - {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  - {fileID: 21300000, guid: bb87efd8125e54b4291caf5821589bfd, type: 3}
   - {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   - {fileID: 7482667652216324306, guid: 75f5f34dc1b5347e0b8351032682f224, type: 3}
-  m_mapColor: {r: 0.3584906, g: 0.3315237, b: 0.2113742, a: 1}
+  m_mapColor: {r: 1, g: 1, b: 1, a: 1}
   m_elementArray:
   - {fileID: 6071611030961794286, guid: d46bf549b3f47d74a9283246b4677aa8, type: 3}
   - {fileID: 2560507934675709148, guid: 3584093f1a7fa6e489ee5fb87215013f, type: 3}
@@ -1789,7 +1789,7 @@ MonoBehaviour:
   player: {fileID: 1713116184}
   offset: 2
   startDelay: 2
-  spawnInterval: 1
+  spawnInterval: 0.3
 --- !u!1001 &1164548938
 PrefabInstance:
   m_ObjectHideFlags: 0

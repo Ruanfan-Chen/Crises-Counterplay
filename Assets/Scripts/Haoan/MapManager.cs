@@ -44,7 +44,7 @@ public class MapManager : MonoBehaviour
         {
             case Shape.Rectangle:
                 m_spriteRenderer.sprite = m_spriteArray[0];
-                transform.localScale = new Vector3(120.0f, 60.0f, 1.0f);
+                transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
                 break;
             case Shape.Circle:
                 m_spriteRenderer.sprite = m_spriteArray[1];
@@ -63,7 +63,7 @@ public class MapManager : MonoBehaviour
             GameObject lava = Instantiate(m_elementArray[0]);
             lava.transform.position = new Vector3(0.0f, 27.5f, 0.0f);
             lava.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
-            
+
         }
         else if(levelNum == 2)
         {
@@ -92,8 +92,8 @@ public class MapManager : MonoBehaviour
         switch (m_shape)
         {
             case Shape.Rectangle:
-                Vector3 min = transform.position - transform.localScale / 2;
-                Vector3 max = transform.position + transform.localScale / 2;
+                Vector3 min = transform.position - new Vector3(120.0f, 60.0f, 1.0f) / 2;
+                Vector3 max = transform.position + new Vector3(120.0f, 60.0f, 1.0f) / 2;
                 if (pos.x < min.x + offset)
                 {
                     returnVal.x = min.x + offset;
