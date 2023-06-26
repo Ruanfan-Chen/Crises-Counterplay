@@ -88,6 +88,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GiveItem(typeof(PassiveItem_Weapon_3));
+        GiveItem(typeof(PassiveItem_Weapon_0));
     }
 }

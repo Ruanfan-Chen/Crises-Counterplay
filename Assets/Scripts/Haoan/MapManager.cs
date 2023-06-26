@@ -60,20 +60,10 @@ public class MapManager : MonoBehaviour
         if(levelNum == 1)
         {
             CreateMap(Shape.Rectangle);
-            GameObject lava = Instantiate(m_elementArray[0]);
-            lava.transform.position = new Vector3(0.0f, 27.5f, 0.0f);
-            lava.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
-
         }
         else if(levelNum == 2)
         {
             CreateMap(Shape.Rectangle);
-            GameObject lava = Instantiate(m_elementArray[0]);
-            lava.transform.position = new Vector3(0.0f, 27.5f, 0.0f);
-            lava.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
-            GameObject spring = Instantiate(m_elementArray[1]);
-            spring.transform.position = new Vector3(0.0f, -27.5f, 0.0f);
-            spring.transform.localScale = new Vector3(120.0f, 5.0f, 1.0f);
         }
         else
         {
