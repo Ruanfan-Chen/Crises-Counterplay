@@ -14,6 +14,11 @@ public class Vehicle : MonoBehaviour
     public static float traceDuration = 2.0f;
     private Vector3 targetPos;
     private float contactDPS = 200.0f;
+    private bool hostility = true;
+
+    public bool GetHostility() { return hostility; }
+
+    public void SetHostility(bool value) { hostility = value; }
 
     void Start()
     {
@@ -126,7 +131,7 @@ public class Vehicle : MonoBehaviour
     private void OnTriggerStay2D(Collider2D collision)
     {
         IDamageable damageable = collision.GetComponent<IDamageable>();
-        if (damageable != null)
+        if (damageable != null && damageable.GetHostility() != hostility)
         {
             new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
         }
