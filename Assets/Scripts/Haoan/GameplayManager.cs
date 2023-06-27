@@ -64,6 +64,7 @@ public class GameplayManager : MonoBehaviour
         if (timeLeft <= 0)
         {
             Time.timeScale = 0.0f;
+            m_timer = 0.0f;
             Shop();
         }
     }
@@ -145,7 +146,6 @@ public class GameplayManager : MonoBehaviour
         m_mapManager.LoadLevel(m_levelNum);
 
         Time.timeScale = 1.0f;
-        m_timer = 0.0f;
     }
 
     public void ResetGame(int levelNum)
