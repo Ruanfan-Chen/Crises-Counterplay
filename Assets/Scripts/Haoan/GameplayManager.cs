@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
+using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
 
@@ -116,9 +117,8 @@ public class GameplayManager : MonoBehaviour
         }
         else if(m_levelNum == 4)
         {
+            m_shopPanel.SetActive(false);
             m_completePanel.SetActive(true);
-            Time.timeScale = 0.0f;
-            CloseShop();
         }
     }
 
@@ -127,13 +127,14 @@ public class GameplayManager : MonoBehaviour
         m_gameplayPanel.SetActive(true);
         m_shopPanel.SetActive(false);
         m_levelNum++;
-        levelText.text = "Level " + m_levelNum.ToString();
         ResetGame();
     }
 
 
     public void ResetGame()
     {
+        levelText.text = "Level " + m_levelNum.ToString();
+
         foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
         {
             Destroy(o);
@@ -148,8 +149,16 @@ public class GameplayManager : MonoBehaviour
 
     public void ResetGame(int levelNum)
     {
-        m_levelNum = levelNum;
-        ResetGame();
+        if(levelNum == 1)
+        {
+            Scene scene = SceneManager.GetActiveScene();
+            SceneManager.LoadScene(scene.name);
+        }
+        else
+        {
+            m_levelNum = levelNum;
+            ResetGame();
+        }
     }
 
     public int GetLevelNum()
