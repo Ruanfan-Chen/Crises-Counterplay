@@ -5,19 +5,30 @@ using UnityEngine;
 
 public class MapManager : MonoBehaviour
 {
+    [SerializeField] private int m_widthNum;
+    [SerializeField] private int m_heightNum;
+    int m_gridSize = 16;
+    int m_xLower;
+    int m_yLower;
+    int m_xUpper;
+    int m_yUpper;
+    Vector2 m_size;
 
+    [SerializeField] GameObject m_floorPrefab;
+    [SerializeField] private GameObject m_player;
     [SerializeField] private Shape m_shape;
     [SerializeField] private Sprite[] m_spriteArray;
     [SerializeField] private Color m_mapColor = new Color(0.3584906f, 0.3315237f, 0.2113742f);
     [SerializeField] private GameObject[] m_elementArray;
+    [SerializeField] private float m_startDelay;
     private SpriteRenderer m_spriteRenderer;
 
     private float vehicleTimer = float.PositiveInfinity;
 
     // event will occur within [m_event_intervl_min, m_event_intervl_max] after last occurance
-    public float m_event_intervl_min = 5.0f; // min time (in seconds) after last event occurred
+    public float m_event_intervl_min = 0.5f; // min time (in seconds) after last event occurred
 
-    public float m_event_intervl_max = 9.0f; // max time (in seconds) after last event occurred
+    public float m_event_intervl_max = 3.0f; // max time (in seconds) after last event occurred
 
     private int m_level;
 
@@ -31,6 +42,10 @@ public class MapManager : MonoBehaviour
     void Start()
     {
         // m_event_next_occurance = m_event_intervl_min + (float)((m_event_intervl_max - m_event_intervl_min) * rnd.NextDouble());
+        m_xLower = -m_widthNum * m_gridSize;
+        m_xUpper = m_widthNum * m_gridSize;
+        m_yLower = -m_heightNum * m_gridSize;
+        m_yUpper = m_heightNum * m_gridSize;
     }
 
     // Update is called once per frame
@@ -39,7 +54,11 @@ public class MapManager : MonoBehaviour
         vehicleTimer -= Time.deltaTime;
         if (vehicleTimer <= 0)
         {
-            Vehicle.Instantiate(GetRandomPointOnEdge(), GetRandomPointOnEdge());
+            float length = 2.24f * 30.0f;
+            Vector3 startPos = GetRandomPointOnEdge();
+            Vector3 targetPos = startPos + (m_player.transform.position - startPos).normalized * length;
+
+            Vehicle.Instantiate(startPos, targetPos);
             vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max);
         }
     }
@@ -60,10 +79,24 @@ public class MapManager : MonoBehaviour
             case Shape.Rectangle:
                 m_spriteRenderer.sprite = m_spriteArray[0];
                 transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
+                m_size = new Vector2(60.7f, 30.4f);
+
+                //create the map by tiling
+                /*if(transform.childCount == 0)
+                {
+                    for (int y = -m_heightNum * m_gridSize; y < m_heightNum * m_gridSize; y += m_gridSize)
+                    {
+                        for (int x = -m_widthNum * m_gridSize; x < m_widthNum * m_gridSize; x += m_gridSize)
+                        {
+                            GameObject floor = Instantiate(m_floorPrefab);
+                            floor.transform.SetParent(transform);
+                            floor.transform.localPosition = new Vector3(x, y, 0);
+                        }
+                    }
+                    m_size = new Vector2(m_gridSize * m_widthNum * 2, m_gridSize * m_heightNum * 2);
+                }*/
                 break;
             case Shape.Circle:
-                m_spriteRenderer.sprite = m_spriteArray[1];
-                transform.localScale = new Vector3(80.0f, 80.0f, 1.0f);
                 break;
             case Shape.Triangle:
                 break;
@@ -77,7 +110,7 @@ public class MapManager : MonoBehaviour
         m_event_intervl_max = Mathf.Max(1.0f, m_event_intervl_max - (m_level - 1.0f));
         m_event_intervl_min = Mathf.Max(1.0f, m_event_intervl_min - (m_level - 1.0f));
         //Debug.Log("m_event_intervl_min = " + m_event_intervl_min + ", m_event_intervl_max = " + m_event_intervl_max);
-        vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max);
+        vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max) + m_startDelay;
         if (levelNum == 1)
         {
             CreateMap(Shape.Rectangle);
@@ -103,8 +136,8 @@ public class MapManager : MonoBehaviour
         switch (m_shape)
         {
             case Shape.Rectangle:
-                Vector3 min = transform.position - new Vector3(120.0f, 60.0f, 1.0f) / 2;
-                Vector3 max = transform.position + new Vector3(120.0f, 60.0f, 1.0f) / 2;
+                Vector3 min = transform.position - new Vector3(m_size.x, m_size.y, 1.0f) / 2;
+                Vector3 max = transform.position + new Vector3(m_size.x, m_size.y, 1.0f) / 2;
                 if (pos.x < min.x + offset)
                 {
                     returnVal.x = min.x + offset;
@@ -147,7 +180,7 @@ public class MapManager : MonoBehaviour
 
     public Vector2 GetMapScale()
     {
-        return new Vector2(120.0f, 60.0f);
+        return m_size;
     }
 
     public Vector3 GetRandomPointOnEdge()
