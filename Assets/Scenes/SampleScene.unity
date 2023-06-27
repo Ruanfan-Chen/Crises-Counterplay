@@ -1669,8 +1669,8 @@ MonoBehaviour:
   m_player: {fileID: 1713116184}
   m_gameplayPanel: {fileID: 1965057401}
   m_shopPanel: {fileID: 432010352}
-  m_startPanel: {fileID: 859860410}
-  m_completePanel: {fileID: 1692158496}
+  m_startPanel: {fileID: 0}
+  m_completePanel: {fileID: 0}
   m_activeK: {fileID: 111763160}
   m_maxTime: 10
   m_levelNum: 1
