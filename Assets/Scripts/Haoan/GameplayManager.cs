@@ -9,10 +9,10 @@ public class GameplayManager : MonoBehaviour
     public TextMeshProUGUI timerText;
     public TextMeshProUGUI levelText;
     [SerializeField] private GameObject m_player;
-    [SerializeField] private GameObject[] m_characters;
+    private Character m_character;
     [SerializeField] private GameObject m_gameplayPanel;
     [SerializeField] private GameObject m_shopPanel;
-    [SerializeField] private GameObject m_positionPanel;
+    [SerializeField] private GameObject m_activeK;
     [SerializeField] private float m_maxTime = 45.0f;
     [SerializeField] private int m_levelNum = 1;
     private float m_timer = 0.0f;
@@ -43,6 +43,7 @@ public class GameplayManager : MonoBehaviour
         m_mapManager.LoadLevel(m_levelNum);
         Player player = m_player.GetComponent<Player>();
         m_king = player.GetClosestCharacter(0);
+        m_character = m_king.GetComponent<Character>();
     }
 
     // Update is called once per frame
@@ -64,10 +65,11 @@ public class GameplayManager : MonoBehaviour
         m_shopPanel.SetActive(true);
         GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
 
+        //select random item
         Item item = new Item();
-        item.m_name = "Passive Item 1";
-        item.m_index = 1;
-        item.m_active = false;
+        item.m_name = "Dash";
+        item.m_index = 2;
+        item.m_active = true;
         m_item = item;
 
         itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
@@ -77,16 +79,9 @@ public class GameplayManager : MonoBehaviour
     {
         m_gameplayPanel.SetActive(true);
         m_shopPanel.SetActive(false);
-        m_positionPanel.SetActive(false);
         m_levelNum++;
         levelText.text = "Level " + m_levelNum.ToString();
         ResetGame();
-    }
-
-    void PositionPage()
-    {
-        m_shopPanel.SetActive(false);
-        m_positionPanel.SetActive(true);
     }
 
 
@@ -99,31 +94,6 @@ public class GameplayManager : MonoBehaviour
 
         m_player.transform.position = Vector3.zero;
         m_mapManager.LoadLevel(m_levelNum);
-        
-        if (m_jack)
-        {
-            Character character = m_jack.GetComponent<Character>();
-            if (character)
-            {
-                character.SetHealth(character.GetMaxHealth());
-            }
-        }
-        if (m_king)
-        {
-            Character character = m_king.GetComponent<Character>();
-            if (character)
-            {
-                character.SetHealth(character.GetMaxHealth());
-            }
-        }
-        if (m_lord)
-        {
-            Character character = m_lord.GetComponent<Character>();
-            if (character)
-            {
-                character.SetHealth(character.GetMaxHealth());
-            }
-        }
 
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
@@ -135,89 +105,35 @@ public class GameplayManager : MonoBehaviour
         ResetGame();
     }
 
-    public void AttributeButtonOnClick()
-    {
-        CloseShop();
-    }
+    //public void AttributeButtonOnClick()
+    //{
+    //    CloseShop();
+    //}
 
-    public void CharacterButtonOnClick()
-    {
-        if(m_levelNum == 1)
-        {
-            m_characters[1].SetActive(true);
-            Player player = m_player.GetComponent<Player>();
-            m_jack = player.GetClosestCharacter(1);
+    //public void CharacterButtonOnClick()
+    //{
+    //    if(m_levelNum == 1)
+    //    {
+    //        m_characters[1].SetActive(true);
+    //        Player player = m_player.GetComponent<Player>();
+    //        m_jack = player.GetClosestCharacter(1);
             
-        }
-        else if(m_levelNum == 2)
-        {
-            m_characters[2].SetActive(true);
-            Player player = m_player.GetComponent<Player>();
-            m_lord = player.GetClosestCharacter(2);
-        }
-        CloseShop();
-    }
+    //    }
+    //    else if(m_levelNum == 2)
+    //    {
+    //        m_characters[2].SetActive(true);
+    //        Player player = m_player.GetComponent<Player>();
+    //        m_lord = player.GetClosestCharacter(2);
+    //    }
+    //    CloseShop();
+    //}
 
     public void ItemButtonOnClick()
     {
-        m_actionJack = delegate () {
-            if (m_jack)
-            {
-                Character character = m_jack.GetComponent<Character>();
-                if (character)
-                {
-                    character.GiveItem(typeof(PassiveItem_0));
-                }
-            }
-        };
-        m_actionKing = delegate ()
+        if (m_character)
         {
-            if (m_king)
-            {
-                Character character = m_king.GetComponent<Character>();
-                if (character)
-                {
-                    character.GiveItem(typeof(PassiveItem_0));
-                }
-            }
-        };
-        m_actionLord = delegate ()
-        {
-            if (m_lord)
-            {
-                Character character = m_lord.GetComponent<Character>();
-                if (character)
-                {
-                    character.GiveItem(typeof(PassiveItem_0));
-                }
-            }
-        };
-        PositionPage();
-    }
-
-    public void JackOnClick()
-    {
-        if (m_actionJack != null)
-        {
-            m_actionJack();
-        }
-        CloseShop();
-    }
-
-    public void KingOnClick()
-    {
-        if(m_actionLord != null)
-        {
-            m_actionKing();
-        }
-        CloseShop();
-    }
-
-    public void LordOnClick()
-    {
-        if(m_actionLord != null)
-        {
-            m_actionLord();
+            m_character.GiveItem(typeof(ActiveItem_2));
+            m_activeK.SetActive(true);
         }
         CloseShop();
     }
