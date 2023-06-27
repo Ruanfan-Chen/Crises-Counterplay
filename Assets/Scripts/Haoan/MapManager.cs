@@ -165,10 +165,12 @@ public class MapManager : MonoBehaviour
         if (Math.Abs(t - m_event_next_occurance) < 0.1)
         {
             // trigger event
+            Vehicle.Instantiate();
             Debug.Log("!!! event occurs at t = " + t);
             // update next occurace
             m_event_next_occurance = t + m_event_intervl_min + (float)((m_event_intervl_max - m_event_intervl_min) * rnd.NextDouble());
             Debug.Log("m_event_next_occurance = " + m_event_next_occurance);
+
         }
     }
 

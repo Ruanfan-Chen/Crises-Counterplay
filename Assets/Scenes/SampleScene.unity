@@ -1774,6 +1774,8 @@ MonoBehaviour:
   m_elementArray:
   - {fileID: 6071611030961794286, guid: d46bf549b3f47d74a9283246b4677aa8, type: 3}
   - {fileID: 2560507934675709148, guid: 3584093f1a7fa6e489ee5fb87215013f, type: 3}
+  m_event_intervl_min: 5
+  m_event_intervl_max: 9
 --- !u!114 &1151485482
 MonoBehaviour:
   m_ObjectHideFlags: 0
