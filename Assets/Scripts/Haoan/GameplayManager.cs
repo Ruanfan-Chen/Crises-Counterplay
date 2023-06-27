@@ -19,7 +19,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private float m_maxTime = 45.0f;
     [SerializeField] private int m_levelNum = 1;
 
-   
+
     private float m_timer = 0.0f;
     private MapManager m_mapManager;
     private GameObject m_jack;
@@ -74,12 +74,12 @@ public class GameplayManager : MonoBehaviour
         m_shopPanel.SetActive(true);
         GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
 
-        if(m_levelNum == 1)
+        if (m_levelNum == 1)
         {
             gameObject.GetComponent<SpawnManager>().enabled = true;
             CloseShop();
         }
-        else if(m_levelNum == 2)
+        else if (m_levelNum == 2)
         {
             //select random item
             Item item = new Item();
@@ -97,7 +97,7 @@ public class GameplayManager : MonoBehaviour
                 }
             };
         }
-        else if(m_levelNum == 3)
+        else if (m_levelNum == 3)
         {
             //select random item
             Item item = new Item();
@@ -115,7 +115,7 @@ public class GameplayManager : MonoBehaviour
             };
 
         }
-        else if(m_levelNum == 4)
+        else if (m_levelNum == 4)
         {
             m_shopPanel.SetActive(false);
             m_completePanel.SetActive(true);
@@ -149,10 +149,11 @@ public class GameplayManager : MonoBehaviour
 
     public void ResetGame(int levelNum)
     {
-        if(levelNum == 1)
+        if (levelNum == 1)
         {
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
+            GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
         }
         else
         {
@@ -178,7 +179,7 @@ public class GameplayManager : MonoBehaviour
     //        m_characters[1].SetActive(true);
     //        Player player = m_player.GetComponent<Player>();
     //        m_jack = player.GetClosestCharacter(1);
-            
+
     //    }
     //    else if(m_levelNum == 2)
     //    {
@@ -191,7 +192,7 @@ public class GameplayManager : MonoBehaviour
 
     public void ItemButtonOnClick()
     {
-        
+
         if (m_actionItem != null)
         {
             m_actionItem();
@@ -201,7 +202,7 @@ public class GameplayManager : MonoBehaviour
 
     public void StartButtonOnClick()
     {
-        
+
         m_startPanel.SetActive(false);
         Time.timeScale = 1.0f;
     }

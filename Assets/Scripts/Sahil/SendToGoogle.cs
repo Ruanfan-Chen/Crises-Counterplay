@@ -7,23 +7,15 @@ public class SendToGoogle : MonoBehaviour
 
     private string URL = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSf2kGtw3hJ3SFHG_DOrPxSWfZJdaQ1ZrBrBjZY0Yp2CHEV1zA/formResponse";
     private long sessionID;
-    private int levelCount;
-    private int APitem;
-    private int playerSelection;
 
     private void Start()
     {
         // Assign sessionID to identify playtests
         sessionID = DateTime.Now.Ticks;
-        Send();
     }
 
-    public void Send()
+    public void Send(int levelCount, int APitem, int playerSelection)
     {
-        // Assign variables
-        levelCount = GetComponent<GameplayManager>().GetLevelNum();
-        APitem = UnityEngine.Random.Range(0, 5);
-        playerSelection = UnityEngine.Random.Range(0, 10);
         StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), playerSelection.ToString(), APitem.ToString()));
     }
 
