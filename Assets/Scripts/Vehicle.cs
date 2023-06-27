@@ -13,6 +13,8 @@ public class Vehicle : MonoBehaviour
     public static float traceLength = 1000.0f;
     public static float traceDuration = 2.0f;
     private Vector3 targetPos;
+    private float contactDPS = 200.0f;
+
     void Start()
     {
         gameObject.tag = "Disposable";
@@ -121,7 +123,12 @@ public class Vehicle : MonoBehaviour
         targetPos = value;
     }
 
-
-
-
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        IDamageable damageable = collision.GetComponent<IDamageable>();
+        if (damageable != null)
+        {
+            new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+        }
+    }
 }

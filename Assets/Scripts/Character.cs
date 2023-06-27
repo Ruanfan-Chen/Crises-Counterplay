@@ -74,7 +74,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     }
     public void ActivateItem()
     {
-        GetComponent<ActiveItem>().Activate();
+        if (activeItem)
+            activeItem.Activate();
     }
     public bool GetHostility() { return false; }
 
