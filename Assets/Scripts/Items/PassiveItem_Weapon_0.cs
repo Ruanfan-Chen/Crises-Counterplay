@@ -10,7 +10,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
     private float damage = 25.0f;
     private float range = 10.0f;
     private float projectileSpeed = 10.0f;
-    private float angleOfView = 120.0f;
+    private float angleOfView = 360.0f;
     private int interpolationDensity = 4;
 
     public float GetDamage() { return damage; }

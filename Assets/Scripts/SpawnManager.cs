@@ -22,7 +22,7 @@ public class SpawnManager : MonoBehaviour
             position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
         } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, new Quaternion());
-        enemy.GetComponent<SpriteRenderer>().color = Random.ColorHSV(0.0f, 1.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f);
+        enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
         switch (Random.Range(0, 4))
         {
             case 0:
@@ -52,20 +52,17 @@ public class SpawnManager : MonoBehaviour
                 enemy.GetComponent<FocusedAttack>().SetTarget(player);
                 break;
         }
-        switch (Random.Range(0, 2))
+        switch (Random.Range(0, 3))
         {
             case 0:
                 break;
             case 1:
                 enemy.AddComponent<RandomAttackOnDeath>();
+                enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.5f, 0.0f, 1.0f);
                 break;
-        }
-        switch (Random.Range(0, 2))
-        {
-            case 0:
-                break;
-            case 1:
+            case 2:
                 enemy.AddComponent<RingAttackOnDeath>();
+                enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                 break;
         }
         return enemy;
@@ -211,7 +208,7 @@ public class SpawnManager : MonoBehaviour
     {
         void IOnDeathEffect.OnDeath()
         {
-            Projectile.InstantiateRing(transform.position, 0, GetComponents<IProjectileModifier>(), 6);
+            Projectile.InstantiateRing(transform.position, Random.Range(0.0f, 360.0f), GetComponents<IProjectileModifier>(), 6);
         }
     }
 }

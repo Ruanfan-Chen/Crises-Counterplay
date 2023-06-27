@@ -27,7 +27,7 @@ public class Player : MonoBehaviour
         Vector3 positionBias = Vector3.zero;
         Vector3 activeCharacterPositionSum = Vector3.zero;
         int activeCharacterCount = 0;
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             if (characters[i].activeSelf)
             {
@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         if (activeCharacterCount > 0)
             positionBias = -activeCharacterPositionSum / activeCharacterCount;
         // Move Characters
-        for (int i = 0; i < 3; i++)
+        for (int i = 0; i < 1; i++)
         {
             characters[i].transform.position = transform.position + rotationBias * (GetBasePosition(i) + positionBias);
             characters[i].transform.rotation = rotationBias * GetBaseRotation(i);
@@ -58,12 +58,8 @@ public class Player : MonoBehaviour
     {
         float[] angles = new float[3];
         angles[0] = Quaternion.Angle(characters[0].transform.rotation, rotation);
-        angles[1] = Quaternion.Angle(characters[1].transform.rotation, rotation);
-        angles[2] = Quaternion.Angle(characters[2].transform.rotation, rotation);
         float minAngle = Mathf.Min(angles);
         if (minAngle == angles[0]) return characters[0];
-        if (minAngle == angles[1]) return characters[1];
-        if (minAngle == angles[2]) return characters[2];
         return null;
     }
 

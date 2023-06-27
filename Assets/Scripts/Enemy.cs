@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float contactDPS = 25.00f;
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
-    private float range = 10.0f;
+    private float range = float.PositiveInfinity;
 
     public float GetHealth() { return health; }
 
@@ -87,7 +87,6 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         Projectile script = projectile.GetComponent<Projectile>();
         script.SetSpeed(projectileSpeed);
         script.SetHostility(true);
-        script.SetColor(Color.black);
         script.SetSource(gameObject);
         DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
         timer.SetTimer(range / projectileSpeed);
