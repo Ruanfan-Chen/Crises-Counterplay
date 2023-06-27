@@ -23,7 +23,7 @@ public class SendToGoogle : MonoBehaviour
         public void Send()
         {
             // Assign variables
-            levelCount= gameplayManager.totalLevel();
+            levelCount= gameplayManager.GetLevelNum();
             APitem= UnityEngine.Random.Range(0, 5);
             playerSelection = UnityEngine.Random.Range(0, 10);
             StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(),playerSelection.ToString(),APitem.ToString()));

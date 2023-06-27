@@ -16,7 +16,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private float m_maxTime = 45.0f;
     [SerializeField] private int m_levelNum = 1;
 
-    public int totalLev = 1;
+   
     private float m_timer = 0.0f;
     private MapManager m_mapManager;
     private GameObject m_jack;
@@ -107,10 +107,9 @@ public class GameplayManager : MonoBehaviour
         ResetGame();
     }
 
-    public int totalLevel()
+    public int GetLevelNum()
     {
-        totalLev = m_levelNum
-        return totalLev;
+        return m_levelNum;
     }
 
     //public void AttributeButtonOnClick()
