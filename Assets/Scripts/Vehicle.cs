@@ -15,7 +15,7 @@ public class Vehicle : MonoBehaviour
     private Vector3 targetPos;
     void Start()
     {
-
+        gameObject.tag = "Disposable";
     }
 
     // Update is called once per frame
@@ -68,14 +68,14 @@ public class Vehicle : MonoBehaviour
         Vector3 targetPos = new Vector3(targetX, targetY, 0);
         Vector3 dir = new Vector3(dirX, dirY, 0);
         //Debug.Log("dirX =" + dirX + ", dirY =" + dirY);
-        GameObject vehiclePrefab = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, dir));
+        GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, dir));
 
-        float width = vehiclePrefab.transform.localScale.x;
+        float width = vehicle.transform.localScale.x;
 
         Vehicle.drawTraces(x, y, dir, width);
-        Vehicle script = vehiclePrefab.AddComponent<Vehicle>();
+        Vehicle script = vehicle.AddComponent<Vehicle>();
         script.SetTargetPos(targetPos);
-        return vehiclePrefab;
+        return vehicle;
     }
 
     private static void drawTraces(float startX, float startY, Vector3 dirVector, float vehicleWidth)
