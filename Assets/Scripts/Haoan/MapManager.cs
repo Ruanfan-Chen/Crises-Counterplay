@@ -123,4 +123,9 @@ public class MapManager : MonoBehaviour
     {
         return pos == PosInMap(pos, offset);
     }
+
+    public Vector2 GetMapTransform()
+    {
+        return new Vector2(120.0f, 60.0f);
+    }
 }
