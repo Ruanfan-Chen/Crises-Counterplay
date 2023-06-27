@@ -11,6 +11,8 @@ public class SendToGoogle : MonoBehaviour
         private int APitem;
         private int playerSelection;
 
+        private GameplayManager gameplayManager;
+
         private void Awake()
         {
         // Assign sessionID to identify playtests
@@ -21,11 +23,11 @@ public class SendToGoogle : MonoBehaviour
         public void Send()
         {
             // Assign variables
-            levelCount= UnityEngine.Random.Range(0, 30);
+            levelCount= gameplayManager.totalLevel();
             APitem= UnityEngine.Random.Range(0, 5);
             playerSelection = UnityEngine.Random.Range(0, 10);
             StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(),playerSelection.ToString(),APitem.ToString()));
-        }
+        
 
         private IEnumerator Post(string sessionID, string levelCount, string playerSelection, string APitem)
         {
