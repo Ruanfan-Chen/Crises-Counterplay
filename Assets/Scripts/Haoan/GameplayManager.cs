@@ -60,7 +60,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_timer += Time.deltaTime;
         float timeLeft = m_maxTime - m_timer;
-        timerText.text = Mathf.Round(timeLeft).ToString()+"s";
+        timerText.text = Mathf.Round(timeLeft).ToString() + "s";
         if (timeLeft <= 0)
         {
             Time.timeScale = 0.0f;

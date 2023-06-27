@@ -12,6 +12,17 @@ public class MapManager : MonoBehaviour
     [SerializeField] private GameObject[] m_elementArray;
     private SpriteRenderer m_spriteRenderer;
 
+    private float vehicleTimer = float.PositiveInfinity;
+
+    // event will occur within [m_event_intervl_min, m_event_intervl_max] after last occurance
+    public float m_event_intervl_min = 5.0f; // min time (in seconds) after last event occurred
+
+    public float m_event_intervl_max = 9.0f; // max time (in seconds) after last event occurred
+
+    private int m_level;
+
+    private System.Random rnd = new System.Random();
+
     public enum Shape
     {
         Rectangle,
@@ -21,14 +32,20 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-
+        // m_event_next_occurance = m_event_intervl_min + (float)((m_event_intervl_max - m_event_intervl_min) * rnd.NextDouble());
     }
 
     // Update is called once per frame
     void Update()
     {
-
+        vehicleTimer -= Time.deltaTime;
+        if (vehicleTimer <= 0)
+        {
+            Vehicle.Instantiate();
+            vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max);
+        }
     }
+
 
     public void CreateMap(Shape shape)
     {
@@ -57,11 +74,17 @@ public class MapManager : MonoBehaviour
 
     public void LoadLevel(int levelNum)
     {
-        if(levelNum == 1)
+        m_level = levelNum;
+        // Update event interval; m_level >= 1
+        m_event_intervl_max = Mathf.Max(1.0f, m_event_intervl_max - (m_level - 1.0f));
+        m_event_intervl_min = Mathf.Max(1.0f, m_event_intervl_min - (m_level - 1.0f));
+        //Debug.Log("m_event_intervl_min = " + m_event_intervl_min + ", m_event_intervl_max = " + m_event_intervl_max);
+        vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max);
+        if (levelNum == 1)
         {
             CreateMap(Shape.Rectangle);
         }
-        else if(levelNum == 2)
+        else if (levelNum == 2)
         {
             CreateMap(Shape.Rectangle);
         }
