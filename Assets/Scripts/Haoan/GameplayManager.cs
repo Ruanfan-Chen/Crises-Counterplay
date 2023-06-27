@@ -117,6 +117,7 @@ public class GameplayManager : MonoBehaviour
         }
         else if (m_levelNum == 4)
         {
+            GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
             m_shopPanel.SetActive(false);
             m_completePanel.SetActive(true);
         }
@@ -151,9 +152,10 @@ public class GameplayManager : MonoBehaviour
     {
         if (levelNum == 1)
         {
+
+            GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
             Scene scene = SceneManager.GetActiveScene();
             SceneManager.LoadScene(scene.name);
-            GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
         }
         else
         {
