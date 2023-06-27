@@ -13,7 +13,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float contactDPS = 25.00f;
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
-    private float range = 10.0f;
+    private float range = float.PositiveInfinity;
 
     public float GetHealth() { return health; }
 
