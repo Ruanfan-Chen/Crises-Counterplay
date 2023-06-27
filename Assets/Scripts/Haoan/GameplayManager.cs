@@ -99,6 +99,7 @@ public class GameplayManager : MonoBehaviour
 
         Time.timeScale = 1.0f;
         m_timer = 0.0f;
+        
     }
 
     public void ResetGame(int levelNum)
