@@ -21,8 +21,6 @@ public class MapManager : MonoBehaviour
 
     private int m_level;
 
-    private System.Random rnd = new System.Random();
-
     public enum Shape
     {
         Rectangle,
@@ -41,7 +39,7 @@ public class MapManager : MonoBehaviour
         vehicleTimer -= Time.deltaTime;
         if (vehicleTimer <= 0)
         {
-            Vehicle.Instantiate();
+            Vehicle.Instantiate(GetRandomPointOnEdge(), GetRandomPointOnEdge());
             vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max);
         }
     }
@@ -147,8 +145,22 @@ public class MapManager : MonoBehaviour
         return pos == PosInMap(pos, offset);
     }
 
-    public Vector2 GetMapTransform()
+    public Vector2 GetMapScale()
     {
         return new Vector2(120.0f, 60.0f);
+    }
+
+    public Vector3 GetRandomPointOnEdge()
+    {
+        Vector2 mapScale = GetMapScale();
+        float r = Random.Range(0.0f, (mapScale.x + mapScale.y) * 2);
+        if (r < mapScale.x)
+            return new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), -mapScale.y / 2);
+        else if (r < mapScale.x + mapScale.y)
+            return new Vector3(-mapScale.x / 2, Random.Range(-mapScale.y / 2, mapScale.y / 2));
+        else if (r < mapScale.x * 2 + mapScale.y)
+            return new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), mapScale.y / 2);
+        else
+            return new Vector3(mapScale.x / 2, Random.Range(-mapScale.y / 2, mapScale.y / 2));
     }
 }

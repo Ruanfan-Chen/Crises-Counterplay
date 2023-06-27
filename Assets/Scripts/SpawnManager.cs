@@ -17,10 +17,12 @@ public class SpawnManager : MonoBehaviour
     public GameObject SpawnRandomEnemy()
     {
         Vector3 position;
+        MapManager mapManager = GetComponent<MapManager>();
+        Vector2 mapScale = mapManager.GetMapScale();
         do
         {
-            position = new Vector3(Random.Range(-120, 120), Random.Range(-120, 120), 0);
-        } while (!GetComponent<MapManager>().IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
+            position = new Vector3(Random.Range(-mapScale.x/2, mapScale.x/2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
+        } while (!mapManager.IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, new Quaternion());
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
         switch (Random.Range(0, 4))
