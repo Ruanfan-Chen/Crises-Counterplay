@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
 public class PassiveItem_0 : PassiveItem
 {
     private static string prefabPath = "Prefabs/Footprint";
@@ -10,13 +9,15 @@ public class PassiveItem_0 : PassiveItem
     private float minStepsize = 0.5f;
     private float maxStepsize = 3.0f;
     private float contactDPS = 25.0f;
-
+    // maximun duration (if do 0 damage ro enemies)
+    private float maxDuration = 10.0f;
+    // maximun total Damage to enemies
+    private float maxDamage = 250.0f;
     // Start is called before the first frame update
     void Start()
     {
         prevPos = transform.position;
     }
-
     // Update is called once per frame
     void LateUpdate()
     {
@@ -26,41 +27,28 @@ public class PassiveItem_0 : PassiveItem
             Footprint script = footprint.AddComponent<Footprint>();
             script.SetContactDPS(contactDPS);
             script.SetHostility(GetComponent<Character>().GetHostility());
-            DestroyOutOfTime timer = footprint.AddComponent<DestroyOutOfTime>();
-            timer.SetTimer(5.0f);
-            timer.Activate();
+            script.SetMaxDamage(maxDamage);
+            script.SetMaxDuration(maxDuration);
             prevPos = transform.position;
             stepsize = Random.Range(minStepsize, maxStepsize);
         }
     }
-
     private class Footprint : MonoBehaviour
     {
         private float alpha = 1.0f;
-        // maximun duration (if do 0 damage ro enemies)
         private float maxDuration;
-        // maximun total Damage to enemies
         private float maxDamage;
         private float contactDPS;
         private bool hostility;
-        
 
         public float GetContactDPS() { return contactDPS; }
-
         public void SetContactDPS(float value) { contactDPS = value; }
-
         public bool GetHostility() { return hostility; }
-
         public void SetHostility(bool value) { hostility = value; }
-
         public float GetMaxDuration() { return maxDuration; }
-
         public void SetMaxDuration(float value) { maxDuration = value; }
-
         public float GetMaxDamage() { return maxDamage; }
-
         public void SetMaxDamage(float value) { maxDamage = value; }
-
         void Start()
         {
             gameObject.tag = "Disposable";
@@ -76,7 +64,6 @@ public class PassiveItem_0 : PassiveItem
             else
                 Destroy(gameObject);
         }
-
         private void OnTriggerStay2D(Collider2D collision)
         {
             IDamageable damageable = collision.GetComponent<IDamageable>();
