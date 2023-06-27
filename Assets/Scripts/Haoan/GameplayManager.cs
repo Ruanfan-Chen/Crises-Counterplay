@@ -12,6 +12,8 @@ public class GameplayManager : MonoBehaviour
     private Character m_character;
     [SerializeField] private GameObject m_gameplayPanel;
     [SerializeField] private GameObject m_shopPanel;
+    [SerializeField] private GameObject m_startPanel;
+    [SerializeField] private GameObject m_completePanel;
     [SerializeField] private GameObject m_activeK;
     [SerializeField] private float m_maxTime = 45.0f;
     [SerializeField] private int m_levelNum = 1;
@@ -23,12 +25,15 @@ public class GameplayManager : MonoBehaviour
     private GameObject m_king;
     private GameObject m_lord;
 
-    private Item m_item;
+    private List<Item> m_item;
 
     delegate void PositionAction();
     PositionAction m_actionJack;
     PositionAction m_actionKing;
     PositionAction m_actionLord;
+
+    delegate void ItemAction();
+    ItemAction m_actionItem;
 
     struct Item
     {
@@ -39,13 +44,14 @@ public class GameplayManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
         levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        m_mapManager.LoadLevel(m_levelNum);
         Player player = m_player.GetComponent<Player>();
         m_king = player.GetClosestCharacter(0);
         m_character = m_king.GetComponent<Character>();
+        m_mapManager.LoadLevel(m_levelNum);
+        Time.timeScale = 0.0f;
     }
 
     // Update is called once per frame
@@ -67,14 +73,53 @@ public class GameplayManager : MonoBehaviour
         m_shopPanel.SetActive(true);
         GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
 
-        //select random item
-        Item item = new Item();
-        item.m_name = "Dash";
-        item.m_index = 2;
-        item.m_active = true;
-        m_item = item;
+        if(m_levelNum == 1)
+        {
+            gameObject.GetComponent<SpawnManager>().enabled = true;
+            CloseShop();
+        }
+        else if(m_levelNum == 2)
+        {
+            //select random item
+            Item item = new Item();
+            item.m_name = "Dash";
+            item.m_index = 2;
+            item.m_active = true;
 
-        itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+            itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+            m_actionItem = delegate ()
+            {
+                if (m_character)
+                {
+                    m_character.GiveItem(typeof(ActiveItem_2));
+                    m_activeK.SetActive(true);
+                }
+            };
+        }
+        else if(m_levelNum == 3)
+        {
+            //select random item
+            Item item = new Item();
+            item.m_name = "Toxic Footprint";
+            item.m_index = 0;
+            item.m_active = false;
+
+            itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+            m_actionItem = delegate ()
+            {
+                if (m_character)
+                {
+                    m_character.GiveItem(typeof(PassiveItem_0));
+                }
+            };
+
+        }
+        else if(m_levelNum == 4)
+        {
+            m_completePanel.SetActive(true);
+            Time.timeScale = 0.0f;
+            CloseShop();
+        }
     }
 
     void CloseShop()
@@ -137,11 +182,18 @@ public class GameplayManager : MonoBehaviour
 
     public void ItemButtonOnClick()
     {
-        if (m_character)
+        
+        if (m_actionItem != null)
         {
-            m_character.GiveItem(typeof(ActiveItem_2));
-            m_activeK.SetActive(true);
+            m_actionItem();
         }
         CloseShop();
+    }
+
+    public void StartButtonOnClick()
+    {
+        
+        m_startPanel.SetActive(false);
+        Time.timeScale = 1.0f;
     }
 }
