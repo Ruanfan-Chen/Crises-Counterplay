@@ -37,7 +37,7 @@ public class Vehicle : MonoBehaviour
         float y = 0.0f;
         System.Random rnd = new System.Random();
         int n = rnd.Next(1, 8);
-        Debug.Log("n = " + n);
+        //Debug.Log("n = " + n);
         // select starting from x = +/-60 or y = +/-30
         if (n % 2 == 1)
         {
@@ -67,7 +67,7 @@ public class Vehicle : MonoBehaviour
         }
         Vector3 targetPos = new Vector3(targetX, targetY, 0);
         Vector3 dir = new Vector3(dirX, dirY, 0);
-        Debug.Log("dirX =" + dirX + ", dirY =" + dirY);
+        //Debug.Log("dirX =" + dirX + ", dirY =" + dirY);
         GameObject vehiclePrefab = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, dir));
 
         float width = vehiclePrefab.transform.localScale.x;
@@ -93,7 +93,7 @@ public class Vehicle : MonoBehaviour
             x1 = Math.Min(60, startX + vehicleWidth / 2);
             x2 = Math.Max(-60, startX - vehicleWidth / 2);
         }
-        Debug.Log("x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2);
+        //Debug.Log("x1 = " + x1 + ", y1 = " + y1 + ", x2 = " + x2 + ", y2 = " + y2);
         Vector3 traceStartVector1 = new Vector3(x1, y1, 0);
         Vector3 traceEndVector1 = traceStartVector1 + dirVector * Vehicle.traceLength;
         Vector3 traceStartVector2 = new Vector3(x2, y2, 0);
@@ -102,12 +102,12 @@ public class Vehicle : MonoBehaviour
         LineDrawer lineDrawer1 = new LineDrawer();
         lineDrawer1.DrawLineInGameView(traceStartVector1, traceEndVector1, Color.green);
         lineDrawer1.Destroy(traceDuration);
-        Debug.Log("Drew lines from p1 = " + traceStartVector1);
+        //Debug.Log("Drew lines from p1 = " + traceStartVector1);
 
         LineDrawer lineDrawer2 = new LineDrawer();
         lineDrawer2.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);
         lineDrawer2.Destroy(traceDuration);
-        Debug.Log("Drew lines from p2 = " + traceStartVector2);
+        //Debug.Log("Drew lines from p2 = " + traceStartVector2);
 
         // lineDrawer.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);
 

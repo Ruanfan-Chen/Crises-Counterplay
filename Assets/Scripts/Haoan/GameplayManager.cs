@@ -56,7 +56,6 @@ public class GameplayManager : MonoBehaviour
             Time.timeScale = 0.0f;
             Shop();
         }
-        m_mapManager.setTimer(m_timer);
     }
 
     void Shop()
