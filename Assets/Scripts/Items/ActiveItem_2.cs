@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class ActiveItem_2 : ActiveItem
@@ -12,7 +13,16 @@ public class ActiveItem_2 : ActiveItem
     private float displacement = 10.0f;
     private float timer = 0.0f;
     private float cooldown = 3.0f;
+    [SerializeField]private TextMeshProUGUI timerText;
 
+    private void Start()
+    {
+        GameObject cooldown = GameObject.Find("Cooldown");
+        if (cooldown != null)
+        {
+            timerText = cooldown.GetComponent<TextMeshProUGUI>();
+        }
+    }
 
     void OnEnable()
     {
@@ -28,6 +38,8 @@ public class ActiveItem_2 : ActiveItem
     void Update()
     {
         timer -= Time.deltaTime;
+        float val = Mathf.Clamp(timer, 0.0f, cooldown);
+        timerText.text = Mathf.Round(val).ToString() + "s";
     }
     public override void Activate()
     {

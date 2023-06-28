@@ -71,16 +71,17 @@ public class GameplayManager : MonoBehaviour
 
     void Shop()
     {
+        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
+        {
+            Destroy(o);
+        }
+        m_player.transform.position = Vector3.zero;
+
         m_gameplayPanel.SetActive(false);
         m_shopPanel.SetActive(true);
         GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
 
         if (m_levelNum == 1)
-        {
-            gameObject.GetComponent<SpawnManager>().enabled = true;
-            CloseShop();
-        }
-        else if (m_levelNum == 2)
         {
             //select random item
             Item item = new Item();
@@ -97,6 +98,11 @@ public class GameplayManager : MonoBehaviour
                     m_activeK.SetActive(true);
                 }
             };
+        }
+        else if (m_levelNum == 2)
+        {
+            gameObject.GetComponent<SpawnManager>().enabled = true;
+            CloseShop();
         }
         else if (m_levelNum == 3)
         {
@@ -136,13 +142,6 @@ public class GameplayManager : MonoBehaviour
     public void ResetGame()
     {
         levelText.text = "Level " + m_levelNum.ToString();
-
-        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
-        {
-            Destroy(o);
-        }
-
-        m_player.transform.position = Vector3.zero;
         m_mapManager.LoadLevel(m_levelNum);
 
         Time.timeScale = 1.0f;

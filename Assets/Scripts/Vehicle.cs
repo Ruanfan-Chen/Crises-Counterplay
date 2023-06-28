@@ -7,7 +7,7 @@ public class Vehicle : MonoBehaviour
     // Start is called before the first frame update
 
     private static string prefabPath = "Prefabs/Vehicle";
-    public float speed = 15.0f;
+    public float speed = 30.0f;
     public static float traceDuration = 2.0f;
     private float contactDPS = 200.0f;
     private bool hostility = true;
