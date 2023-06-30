@@ -59,12 +59,23 @@ public class ActiveItem_2 : ActiveItem
         {
             cumulativeDisplacement += dashSpeed * Time.deltaTime;
             GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * direction);
-            foreach (GameObject vehicle in viewScript.GetCurrentCollsions()) {
+            foreach (GameObject vehicle in viewScript.GetCurrentCollsions())
+            {
                 vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
+                //vehicle.transform.forward = direction;
                 vehicle.GetComponent<Vehicle>().SetHostility(false);
             };
             yield return null;
         }
+        //cumulativeDisplacement += dashSpeed * Time.deltaTime;
+        //GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * direction);
+        //foreach (GameObject vehicle in viewScript.GetCurrentCollsions())
+        //{
+        //    vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
+        //    //vehicle.transform.forward = direction;
+        //    vehicle.GetComponent<Vehicle>().SetHostility(false);
+        //};
+        //yield return null;
         GetComponentInParent<Player>().transform.Translate((displacement - cumulativeDisplacement) * direction);
     }
 

@@ -27,7 +27,6 @@ public class MapManager : MonoBehaviour
 
     // event will occur within [m_event_intervl_min, m_event_intervl_max] after last occurance
     public float m_event_intervl_min = 0.5f; // min time (in seconds) after last event occurred
-
     public float m_event_intervl_max = 3.0f; // max time (in seconds) after last event occurred
 
     private int m_level;
@@ -107,8 +106,8 @@ public class MapManager : MonoBehaviour
     {
         m_level = levelNum;
         // Update event interval; m_level >= 1
-        m_event_intervl_max = Mathf.Max(1.0f, m_event_intervl_max - (m_level - 1.0f));
-        m_event_intervl_min = Mathf.Max(1.0f, m_event_intervl_min - (m_level - 1.0f));
+        //m_event_intervl_max = Mathf.Max(1.0f, m_event_intervl_max - (m_level - 1.0f));
+        //m_event_intervl_min = Mathf.Max(1.0f, m_event_intervl_min - (m_level - 1.0f));
         //Debug.Log("m_event_intervl_min = " + m_event_intervl_min + ", m_event_intervl_max = " + m_event_intervl_max);
         vehicleTimer = Random.Range(m_event_intervl_min, m_event_intervl_max) + m_startDelay;
         if (levelNum == 1)

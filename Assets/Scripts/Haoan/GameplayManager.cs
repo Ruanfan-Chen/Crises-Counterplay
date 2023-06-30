@@ -51,6 +51,7 @@ public class GameplayManager : MonoBehaviour
         Player player = m_player.GetComponent<Player>();
         m_king = player.GetClosestCharacter(0);
         m_character = m_king.GetComponent<Character>();
+        LoadLevel(m_levelNum);
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
     }
@@ -206,5 +207,34 @@ public class GameplayManager : MonoBehaviour
 
         m_startPanel.SetActive(false);
         Time.timeScale = 1.0f;
+    }
+
+    void LoadLevel(int levelNum)
+    {
+        if(levelNum == 1)
+        {
+            //do nothing
+        }
+        else if(levelNum == 2)
+        {
+            if (m_character)
+            {
+                m_character.GiveItem(typeof(ActiveItem_2));
+                m_activeK.SetActive(true);
+            }
+        }
+        else if(levelNum == 3)
+        {
+            LoadLevel(2);
+            gameObject.GetComponent<SpawnManager>().enabled = true;
+        }
+        else if(levelNum == 4)
+        {
+            LoadLevel(3);
+            if (m_character)
+            {
+                m_character.GiveItem(typeof(PassiveItem_0));
+            }
+        }
     }
 }
