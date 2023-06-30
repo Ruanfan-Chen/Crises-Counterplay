@@ -6,14 +6,18 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     [SerializeField] private float health = 100.0f;
     [SerializeField] private GameplayManager gameplayManager;
+    [SerializeField] private bool m_invincible = false;
     private float maxHealth = 100.0f;
     private List<PassiveItem> passiveItems = new();
     private ActiveItem activeItem = null;
 
 
+
     public float GetHealth() { return health; }
 
     public void SetHealth(float value) { health = value; }
+
+    public void SetInvincible(bool invincible) { m_invincible=invincible; }
 
     public float GetMaxHealth() { return maxHealth; }
 
@@ -30,8 +34,12 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     }
     public void ReceiveDamage(Damage damage)
     {
-        health -= damage.GetValue();
-        health = Mathf.Clamp(health, 0.0f, maxHealth);
+        if (!m_invincible)
+        {
+            health -= damage.GetValue();
+            health = Mathf.Clamp(health, 0.0f, maxHealth);
+        }
+        
         if(health <= 0.0f)
         {
             gameplayManager.ResetGame(1);

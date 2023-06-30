@@ -5,7 +5,7 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     public GameObject[] characters;
-    private float moveSpeed = 5.0f;
+    [SerializeField]private float moveSpeed = 10.0f;
     private float triRadius = 0.7f;
     Quaternion rotationBias = Quaternion.Euler(0, 0, 0);
 

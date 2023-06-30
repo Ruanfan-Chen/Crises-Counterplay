@@ -1808,8 +1808,8 @@ MonoBehaviour:
   m_startPanel: {fileID: 859860410}
   m_completePanel: {fileID: 1692158496}
   m_activeK: {fileID: 111763160}
-  m_maxTime: 30
-  m_levelNum: 1
+  m_maxTime: 45
+  m_levelNum: 3
 --- !u!4 &1151485480
 Transform:
   m_ObjectHideFlags: 0
@@ -1869,7 +1869,6 @@ MonoBehaviour:
   offset: 2
   startDelay: 2
   spawnInterval: 1
-  m_maxEnemy: 45
 --- !u!114 &1151485483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2142,6 +2141,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characters:
   - {fileID: 676170972}
+  moveSpeed: 7.5
 --- !u!114 &1713116187
 MonoBehaviour:
   m_ObjectHideFlags: 0

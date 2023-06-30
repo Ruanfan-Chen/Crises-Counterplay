@@ -8,10 +8,10 @@ public class Vehicle : MonoBehaviour
 
     private static string prefabPath = "Prefabs/Vehicle";
     public float speed = 30.0f;
-    public static float traceDuration = 2.0f;
+    public static float traceDuration = 2.5f;
     private float contactDPS = 200.0f;
     private bool hostility = true;
-    private static float delay = 1.0f;
+    private static float delay = 1.25f;
 
     public bool GetHostility() { return hostility; }
 
@@ -51,12 +51,12 @@ public class Vehicle : MonoBehaviour
         Vector3 bias = Quaternion.Euler(0, 0, 90) * (targetPos - startPos).normalized * vehicleWidth / 2;
 
         LineDrawer lineDrawer1 = new LineDrawer();
-        lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
+        lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.red);
         lineDrawer1.Destroy(traceDuration);
         //Debug.Log("Drew lines from p1 = " + traceStartVector1);
 
         LineDrawer lineDrawer2 = new LineDrawer();
-        lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
+        lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.red);
         lineDrawer2.Destroy(traceDuration);
         //Debug.Log("Drew lines from p2 = " + traceStartVector2);
 
@@ -73,6 +73,10 @@ public class Vehicle : MonoBehaviour
         if (damageable != null && damageable.GetHostility() != hostility)
         {
             new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+        }
+        if(collision.gameObject.tag == "Disposable" && damageable.GetHostility() == false)
+        {
+            Destroy(collision.gameObject);
         }
     }
 }

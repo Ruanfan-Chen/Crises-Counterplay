@@ -55,6 +55,7 @@ public class ActiveItem_2 : ActiveItem
     {
         float cumulativeDisplacement = 0.0f;
         Vector3 direction = (targetPos - transform.position).normalized;
+        gameObject.GetComponent<Character>().SetInvincible(true);
         while (cumulativeDisplacement + dashSpeed * Time.deltaTime <= displacement)
         {
             cumulativeDisplacement += dashSpeed * Time.deltaTime;
@@ -70,6 +71,7 @@ public class ActiveItem_2 : ActiveItem
             yield return null;
         }
         GetComponentInParent<Player>().transform.Translate((displacement - cumulativeDisplacement) * direction);
+        gameObject.GetComponent<Character>().SetInvincible(false);
     }
 
     private class ViewBehavior : MonoBehaviour
