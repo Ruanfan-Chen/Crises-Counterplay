@@ -94,7 +94,8 @@ public class ActiveItem_3 : ActiveItem
 
         void Update()
         {
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Vector3.up);
+            Vector3 relativePos = transform.position - center.transform.position;
+            transform.rotation = Quaternion.LookRotation(Vector3.forward, Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, orbitRadius) * Mathf.Rad2Deg) * relativePos.normalized);
         }
     }
 }
