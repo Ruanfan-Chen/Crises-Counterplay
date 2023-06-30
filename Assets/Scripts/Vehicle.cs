@@ -11,6 +11,7 @@ public class Vehicle : MonoBehaviour
     public static float traceDuration = 2.0f;
     private float contactDPS = 200.0f;
     private bool hostility = true;
+    private static float delay = 1.0f;
 
     public bool GetHostility() { return hostility; }
 
@@ -35,10 +36,22 @@ public class Vehicle : MonoBehaviour
         float width = vehicle.transform.localScale.x;
 
         drawTraces(startPos, targetPos, width);
-        vehicle.AddComponent<Vehicle>();
+        vehicle.AddComponent<Vehicle>().DelayedActivate();
         vehicle.AddComponent<DestroyOutOfBounds>();
         return vehicle;
     }
+
+    public void DelayedActivate()
+    {
+        gameObject.SetActive(false);
+        StartCoroutine(DelayedActivateRoutine());
+    }
+    IEnumerator DelayedActivateRoutine()
+    {
+        yield return new WaitForSeconds(delay);
+        gameObject.SetActive(true);
+    }
+
 
     private static void drawTraces(Vector3 startPos, Vector3 targetPos, float vehicleWidth)
     {

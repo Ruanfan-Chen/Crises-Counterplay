@@ -13,7 +13,7 @@ public class ActiveItem_2 : ActiveItem
     private float displacement = 10.0f;
     private float timer = 0.0f;
     private float cooldown = 3.0f;
-    [SerializeField]private TextMeshProUGUI timerText;
+    [SerializeField] private TextMeshProUGUI timerText;
 
     private void Start()
     {
@@ -59,9 +59,13 @@ public class ActiveItem_2 : ActiveItem
         {
             cumulativeDisplacement += dashSpeed * Time.deltaTime;
             GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * direction);
-            foreach (GameObject vehicle in viewScript.GetCurrentCollsions()) {
-                vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
-                vehicle.GetComponent<Vehicle>().SetHostility(false);
+            foreach (GameObject vehicle in viewScript.GetCurrentCollsions())
+            {
+                if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
+                {
+                    vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
+                    vehicle.GetComponent<Vehicle>().SetHostility(false);
+                }
             };
             yield return null;
         }
