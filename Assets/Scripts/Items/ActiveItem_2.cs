@@ -61,7 +61,7 @@ public class ActiveItem_2 : ActiveItem
             GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * direction);
             foreach (GameObject vehicle in viewScript.GetCurrentCollsions())
             {
-                if (vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
+                if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
                 {
 
                     vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, direction);
