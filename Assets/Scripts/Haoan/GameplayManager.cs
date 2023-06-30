@@ -94,7 +94,7 @@ public class GameplayManager : MonoBehaviour
             {
                 if (m_character)
                 {
-                    m_character.GiveItem(typeof(ActiveItem_2));
+                    m_character.GiveItem(typeof(ActiveItem_3));
                     m_activeK.SetActive(true);
                 }
             };
