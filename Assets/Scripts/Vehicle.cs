@@ -20,7 +20,11 @@ public class Vehicle : MonoBehaviour
     void Start()
     {
         gameObject.tag = "Disposable";
+        gameObject.SetActive(false);
+        Invoke("activateGameObject", delay);
     }
+
+    void activateGameObject() { gameObject.SetActive(true); }
 
     // Update is called once per frame
     void Update()
@@ -36,20 +40,9 @@ public class Vehicle : MonoBehaviour
         float width = vehicle.transform.localScale.x;
 
         drawTraces(startPos, targetPos, width);
-        vehicle.AddComponent<Vehicle>().DelayedActivate();
+        vehicle.AddComponent<Vehicle>();
         vehicle.AddComponent<DestroyOutOfBounds>();
         return vehicle;
-    }
-
-    public void DelayedActivate()
-    {
-        gameObject.SetActive(false);
-        StartCoroutine(DelayedActivateRoutine());
-    }
-    IEnumerator DelayedActivateRoutine()
-    {
-        yield return new WaitForSeconds(delay);
-        gameObject.SetActive(true);
     }
 
 
