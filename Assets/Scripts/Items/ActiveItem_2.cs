@@ -44,7 +44,7 @@ public class ActiveItem_2 : ActiveItem
     }
     public override void Activate()
     {
-        List<GameObject> targets = viewScript.GetCurrentCollsions();
+        List<GameObject> targets = viewScript.GetCurrentCollisions();
         if (targets.Count > 0 && timer <= 0.0f)
         {
             StartCoroutine(Dash((targets[0].transform.position - transform.position).normalized * dashDistance));
@@ -59,19 +59,19 @@ public class ActiveItem_2 : ActiveItem
 
     private class ViewBehavior : MonoBehaviour
     {
-        private List<GameObject> currentCollsions = new();
+        private List<GameObject> currentCollisions = new();
 
-        public List<GameObject> GetCurrentCollsions() { return currentCollsions; }
+        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.GetComponent<Vehicle>() != null)
-                currentCollsions.Add(collision.gameObject);
+                currentCollisions.Add(collision.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            currentCollsions.Remove(collision.gameObject);
+            currentCollisions.Remove(collision.gameObject);
         }
     }
 }
