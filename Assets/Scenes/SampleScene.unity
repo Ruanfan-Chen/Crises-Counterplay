@@ -1893,12 +1893,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_player: {fileID: 1713116184}
   m_startDelay: 2
-  m_event_interval_min: 2.5
-  m_event_interval_max: 5
-  m_vehicle_trace_duration: 2
-  m_vehicle_start_delay: 1
-  m_vehicle_speed: 30
-  m_vehicle_contactDPS: 200
+  m_eventIntervalMin: 3
+  m_eventIntervalMax: 6
+  m_vehicleTraceDuration: 2
+  m_vehicleStartDelay: 4
+  m_vehicleSpeed: 30
+  m_vehicleContactDPS: 200
 --- !u!1 &1424135789
 GameObject:
   m_ObjectHideFlags: 0
