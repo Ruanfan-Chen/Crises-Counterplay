@@ -4,9 +4,13 @@ using UnityEngine;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
-    [SerializeField] private float health = 100.0f;
+    [SerializeField] private float health;
     [SerializeField] private GameplayManager gameplayManager;
-    private float maxHealth = 100.0f;
+    private static float invDurationOnDmg = 3.0f;
+    private static float knockbackDurationOnDmg = 0.5f;
+    private static float knockbackDistanceOnDmg = 3.0f;
+    private static float initialKnockbackSpeedOnDmg = 50.0f;
+    [SerializeField] private float maxHealth;
     private List<PassiveItem> passiveItems = new();
     private ActiveItem activeItem = null;
 
@@ -30,11 +34,22 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     }
     public void ReceiveDamage(Damage damage)
     {
+        if (GetComponent<Invulnerable>()) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
-        if(health <= 0.0f)
+        if (health <= 0.0f)
         {
             gameplayManager.ResetGame(1);
+        }
+        else
+        {
+            Vector3 sourcePos = transform.position;
+            if (damage.GetSource())
+                sourcePos = damage.GetSource().transform.position;
+            if (damage.GetMedium())
+                sourcePos = damage.GetMedium().transform.position;
+            StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
+            StartCoroutine(Utility.ForcedMovement(transform.parent, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
         }
     }
     public List<PassiveItem> GetPassiveItems() { return passiveItems; }

@@ -7,32 +7,32 @@ using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
 {
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI levelText;
-    [SerializeField] private GameObject m_player;
-    private Character m_character;
+    [Header("UI elements")]
+    [SerializeField] private TextMeshProUGUI m_timerText;
+    [SerializeField] private TextMeshProUGUI m_levelText;
     [SerializeField] private GameObject m_gameplayPanel;
     [SerializeField] private GameObject m_shopPanel;
     [SerializeField] private GameObject m_startPanel;
     [SerializeField] private GameObject m_completePanel;
+    [Tooltip("UI element that shows the active skill invoked by K key.")]
     [SerializeField] private GameObject m_activeK;
+
+    [Space(10)]
+    [Header("Player and Character")]
+    [SerializeField] private GameObject m_player;
+    private GameObject m_characterObject;
+    private Character m_character;
+
+    [Space(10)]
+    [Header("Gameplay and level")]
     [SerializeField] private float m_maxTime = 45.0f;
+    [Tooltip("Start level, it can be any number other than 1 if configured.")]
+    [Range(1,4)]
     [SerializeField] private int m_levelNum = 1;
-
-
     private float m_timer = 0.0f;
     private MapManager m_mapManager;
-    private GameObject m_jack;
-    private GameObject m_king;
-    private GameObject m_lord;
-
-    private List<Item> m_item;
-
-    delegate void PositionAction();
-    PositionAction m_actionJack;
-    PositionAction m_actionKing;
-    PositionAction m_actionLord;
-
+    
+    //delegate for dynamic button action assignment
     delegate void ItemAction();
     ItemAction m_actionItem;
 
@@ -42,15 +42,16 @@ public class GameplayManager : MonoBehaviour
         public int m_index;
         public bool m_active;
     }
+
     // Start is called before the first frame update
     void Start()
     {
-
-        levelText.text = "Level " + m_levelNum.ToString();
+        m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
         Player player = m_player.GetComponent<Player>();
-        m_king = player.GetClosestCharacter(0);
-        m_character = m_king.GetComponent<Character>();
+        m_characterObject = player.GetClosestCharacter(0);
+        m_character = m_characterObject.GetComponent<Character>();
+        LoadLevel(m_levelNum);
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
     }
@@ -60,32 +61,33 @@ public class GameplayManager : MonoBehaviour
     {
         m_timer += Time.deltaTime;
         float timeLeft = m_maxTime - m_timer;
-        timerText.text = Mathf.Round(timeLeft).ToString() + "s";
+        m_timerText.text = Mathf.Round(timeLeft).ToString() + "s";
         if (timeLeft <= 0)
         {
             Time.timeScale = 0.0f;
             m_timer = 0.0f;
+
+            foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
+            {
+                Destroy(o);
+            }
+
             Shop();
         }
     }
 
     void Shop()
     {
-        foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
-        {
-            Destroy(o);
-        }
         m_player.transform.position = Vector3.zero;
-
         m_gameplayPanel.SetActive(false);
         m_shopPanel.SetActive(true);
-        GameObject itemButton = m_shopPanel.transform.GetChild(2).gameObject;
+        GameObject itemButton = m_shopPanel.transform.GetChild(1).gameObject;
 
+        //show items based on the level
         if (m_levelNum == 1)
         {
-            //select random item
             Item item = new Item();
-            item.m_name = "Dash";
+            item.m_name = "Trainbound";
             item.m_index = 2;
             item.m_active = true;
 
@@ -101,12 +103,11 @@ public class GameplayManager : MonoBehaviour
         }
         else if (m_levelNum == 2)
         {
-            gameObject.GetComponent<SpawnManager>().enabled = true;
+            gameObject.GetComponent<EnemySpawn>().enabled = true;
             CloseShop();
         }
         else if (m_levelNum == 3)
         {
-            //select random item
             Item item = new Item();
             item.m_name = "Toxic Footprint";
             item.m_index = 0;
@@ -141,7 +142,7 @@ public class GameplayManager : MonoBehaviour
 
     public void ResetGame()
     {
-        levelText.text = "Level " + m_levelNum.ToString();
+        m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager.LoadLevel(m_levelNum);
 
         Time.timeScale = 1.0f;
@@ -159,6 +160,7 @@ public class GameplayManager : MonoBehaviour
         else
         {
             m_levelNum = levelNum;
+            LoadLevel(m_levelNum);
             ResetGame();
         }
     }
@@ -167,29 +169,6 @@ public class GameplayManager : MonoBehaviour
     {
         return m_levelNum;
     }
-
-    //public void AttributeButtonOnClick()
-    //{
-    //    CloseShop();
-    //}
-
-    //public void CharacterButtonOnClick()
-    //{
-    //    if(m_levelNum == 1)
-    //    {
-    //        m_characters[1].SetActive(true);
-    //        Player player = m_player.GetComponent<Player>();
-    //        m_jack = player.GetClosestCharacter(1);
-
-    //    }
-    //    else if(m_levelNum == 2)
-    //    {
-    //        m_characters[2].SetActive(true);
-    //        Player player = m_player.GetComponent<Player>();
-    //        m_lord = player.GetClosestCharacter(2);
-    //    }
-    //    CloseShop();
-    //}
 
     public void ItemButtonOnClick()
     {
@@ -203,8 +182,36 @@ public class GameplayManager : MonoBehaviour
 
     public void StartButtonOnClick()
     {
-
         m_startPanel.SetActive(false);
         Time.timeScale = 1.0f;
+    }
+
+    void LoadLevel(int levelNum)
+    {
+        if (levelNum == 1)
+        {
+            //do nothing
+        }
+        else if (levelNum == 2)
+        {
+            if (m_character)
+            {
+                m_character.GiveItem(typeof(ActiveItem_2));
+                m_activeK.SetActive(true);
+            }
+        }
+        else if (levelNum == 3)
+        {
+            LoadLevel(2);
+            gameObject.GetComponent<EnemySpawn>().enabled = true;
+        }
+        else if (levelNum == 4)
+        {
+            LoadLevel(3);
+            if (m_character)
+            {
+                m_character.GiveItem(typeof(PassiveItem_0));
+            }
+        }
     }
 }

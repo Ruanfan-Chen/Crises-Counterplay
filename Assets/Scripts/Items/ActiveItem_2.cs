@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,8 +10,9 @@ public class ActiveItem_2 : ActiveItem
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
     private float viewRadius = 10.0f;
-    private float dashSpeed = 50.0f;
-    private float displacement = 10.0f;
+    private float initialDashSpeed = 50.0f;
+    private float dashDistance = 5.0f;
+    private float dashDuration = 0.5f;
     private float timer = 0.0f;
     private float cooldown = 3.0f;
     [SerializeField] private TextMeshProUGUI timerText;
@@ -30,6 +32,7 @@ public class ActiveItem_2 : ActiveItem
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, new Quaternion());
         viewScript = view.AddComponent<ViewBehavior>();
+        viewScript.SetRepelVehicle(false);
         viewTrigger = view.AddComponent<CircleCollider2D>();
         viewTrigger.radius = viewRadius;
         viewTrigger.isTrigger = true;
@@ -43,50 +46,58 @@ public class ActiveItem_2 : ActiveItem
     }
     public override void Activate()
     {
-        List<GameObject> targets = viewScript.GetCurrentCollsions();
+        List<GameObject> targets = viewScript.GetCurrentCollisions();
         if (targets.Count > 0 && timer <= 0.0f)
         {
-            StartCoroutine(Dash(targets[0].transform.position));
+            StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), dashDuration));
+            StartCoroutine(RepelVehicles(dashDuration));
+            StartCoroutine(Utility.ForcedMovement(transform.parent, (targets[0].transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
             timer = cooldown;
         }
     }
 
-    IEnumerator Dash(Vector3 targetPos)
+    private IEnumerator RepelVehicles(float duration)
     {
-        float cumulativeDisplacement = 0.0f;
-        Vector3 direction = (targetPos - transform.position).normalized;
-        while (cumulativeDisplacement + dashSpeed * Time.deltaTime <= displacement)
-        {
-            cumulativeDisplacement += dashSpeed * Time.deltaTime;
-            GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * direction);
-            foreach (GameObject vehicle in viewScript.GetCurrentCollsions())
-            {
-                if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
-                {
-                    vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
-                    vehicle.GetComponent<Vehicle>().SetHostility(false);
-                }
-            };
-            yield return null;
-        }
-        GetComponentInParent<Player>().transform.Translate((displacement - cumulativeDisplacement) * direction);
+        viewScript.SetRepelVehicle(true);
+        yield return new WaitForSeconds(duration);
+        viewScript.SetRepelVehicle(false);
     }
 
     private class ViewBehavior : MonoBehaviour
     {
-        private List<GameObject> currentCollsions = new();
+        private List<GameObject> currentCollisions = new();
+        private bool repelVehicle;
 
-        public List<GameObject> GetCurrentCollsions() { return currentCollsions; }
+        public bool GetRepelVehicle() { return repelVehicle; }
+
+        public void SetRepelVehicle(bool value) { repelVehicle = value; }
+
+        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.GetComponent<Vehicle>() != null)
-                currentCollsions.Add(collision.gameObject);
+                currentCollisions.Add(collision.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            currentCollsions.Remove(collision.gameObject);
+            currentCollisions.Remove(collision.gameObject);
+        }
+
+        void Update()
+        {
+            if (repelVehicle)
+            {
+                foreach (GameObject vehicle in currentCollisions)
+                {
+                    if (vehicle.GetComponent<Vehicle>().GetHostility())
+                    {
+                        vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
+                        vehicle.GetComponent<Vehicle>().SetHostility(false);
+                    }
+                };
+            }
         }
     }
 }

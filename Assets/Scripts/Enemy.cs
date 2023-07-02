@@ -10,7 +10,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float maxHealth = 50.0f;
     private float moveSpeed = 2.5f;
     private bool hostility = true;
-    private float contactDPS = 25.00f;
+    private float contactDamage = 25.0f;
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = float.PositiveInfinity;
@@ -31,9 +31,9 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public void SetHostility(bool value) { hostility = value; }
 
-    public float GetContactDPS() { return contactDPS; }
+    public float GetContactDamage() { return contactDamage; }
 
-    public void SetContactDPS(float value) { contactDPS = value; }
+    public void SetContactDamage(float value) { contactDamage = value; }
 
     public float GetRange() { return range; }
 
@@ -67,12 +67,12 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         IDamageable damageable = collision.GetComponent<IDamageable>();
         if (damageable != null && damageable.GetHostility() != hostility)
         {
-            new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+            new Damage(gameObject, null, damageable, contactDamage).Apply();
         }
     }
 
