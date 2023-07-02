@@ -1752,7 +1752,7 @@ MonoBehaviour:
   m_vehicleTraceDuration: 2
   m_vehicleStartDelay: 4
   m_vehicleSpeed: 30
-  m_vehicleContactDPS: 200
+  m_vehicleContactDamage: 50
   m_electricFieldRadius: 5
   m_electricFieldDuration: 5
   m_electricFieldDamage: 25

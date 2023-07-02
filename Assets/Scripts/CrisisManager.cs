@@ -13,7 +13,7 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_vehicleTraceDuration;
     [SerializeField] private float m_vehicleStartDelay;
     [SerializeField] private float m_vehicleSpeed;
-    [SerializeField] private float m_vehicleContactDPS;
+    [SerializeField] private float m_vehicleContactDamage;
     [SerializeField] private float m_electricFieldRadius;
     [SerializeField] private float m_electricFieldDuration;
     [SerializeField] private float m_electricFieldDamage;
@@ -45,7 +45,7 @@ public class CrisisManager : MonoBehaviour
         Vector3 startPos = GetComponent<MapManager>().GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (m_player.transform.position - startPos).normalized * length;
 
-        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, m_vehicleSpeed, m_vehicleContactDPS, true));
+        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, m_vehicleSpeed, m_vehicleContactDamage, true));
     }
 
     void SpawnElectricField()

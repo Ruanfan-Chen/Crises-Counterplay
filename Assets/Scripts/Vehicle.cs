@@ -8,16 +8,16 @@ public class Vehicle : MonoBehaviour
 
     private static string prefabPath = "Prefabs/Vehicle";
     [SerializeField] private float speed;
-    [SerializeField] private float contactDPS;
+    [SerializeField] private float contactDamage;
     [SerializeField] private bool hostility;
 
     public float GetSpeed() { return speed; }
 
     public void SetSpeed(float value) { speed = value; }
 
-    public float GetContactDPS() { return contactDPS; }
+    public float GetContactDamage() { return contactDamage; }
 
-    public void SetContactDPS(float value) { contactDPS = value; }
+    public void SetContactDamage(float value) { contactDamage = value; }
 
     public bool GetHostility() { return hostility; }
 
@@ -34,14 +34,14 @@ public class Vehicle : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * Vector3.up);
     }
 
-    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float vehicleDelay, float speed, float contactDPS, bool hostility)
+    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float vehicleDelay, float speed, float contactDamage, bool hostility)
     {
         drawTraces(startPos, targetPos, Resources.Load<GameObject>(prefabPath).transform.lossyScale.x, traceDuration);
         yield return new WaitForSeconds(vehicleDelay);
         GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
         Vehicle script = vehicle.GetComponent<Vehicle>();
         script.SetSpeed(speed);
-        script.SetContactDPS(contactDPS);
+        script.SetContactDamage(contactDamage);
         script.SetHostility(hostility);
         vehicle.AddComponent<DestroyOutOfBounds>();
     }
@@ -68,12 +68,12 @@ public class Vehicle : MonoBehaviour
 
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    private void OnTriggerEnter2D(Collider2D collision)
     {
         IDamageable damageable = collision.GetComponent<IDamageable>();
         if (damageable != null && damageable.GetHostility() != hostility)
         {
-            new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+            new Damage(gameObject, null, damageable, contactDamage).Apply();
         }
     }
 }
