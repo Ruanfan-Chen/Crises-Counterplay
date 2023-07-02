@@ -34,10 +34,10 @@ public class Vehicle : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * Vector3.up);
     }
 
-    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float vehicleDelay, float speed, float contactDamage, bool hostility)
+    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float delay, float speed, float contactDamage, bool hostility)
     {
         drawTraces(startPos, targetPos, Resources.Load<GameObject>(prefabPath).transform.lossyScale.x, traceDuration);
-        yield return new WaitForSeconds(vehicleDelay);
+        yield return new WaitForSeconds(delay);
         GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
         Vehicle script = vehicle.GetComponent<Vehicle>();
         script.SetSpeed(speed);

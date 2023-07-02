@@ -14,6 +14,8 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_vehicleStartDelay;
     [SerializeField] private float m_vehicleSpeed;
     [SerializeField] private float m_vehicleContactDamage;
+    [SerializeField] private float m_electricFieldTraceDuration;
+    [SerializeField] private float m_electricFieldStartDelay;
     [SerializeField] private float m_electricFieldRadius;
     [SerializeField] private float m_electricFieldDuration;
     [SerializeField] private float m_electricFieldDamage;
@@ -52,7 +54,7 @@ public class CrisisManager : MonoBehaviour
     {
         Vector2 mapScale = GetComponent<MapManager>().GetMapScale();
         Vector3 position = new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
-        ElectricField.Instantiate(m_player.GetComponent<Player>().GetClosestCharacter(0), position, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage);
+        StartCoroutine(ElectricField.Instantiate(m_player.GetComponent<Player>().GetClosestCharacter(0), position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 
     void SpawnTidalWave()
