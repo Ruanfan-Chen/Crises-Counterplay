@@ -18,7 +18,9 @@ public class ElectricField : MonoBehaviour
         
     }
 
-    public static GameObject Instantiate(Vector3 position, float radius, float duration) {
-        return null;
+    public static GameObject Instantiate(Vector3 position) {
+        GameObject electricField = Instantiate(Resources.Load<GameObject>(prefabPath), position, Quaternion.identity);
+        electricField.AddComponent<ElectricField>();
+        return electricField;
     }
 }
