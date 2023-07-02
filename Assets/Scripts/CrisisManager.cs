@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class CrisisManager : MonoBehaviour
 {
@@ -13,6 +14,9 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_vehicleStartDelay;
     [SerializeField] private float m_vehicleSpeed;
     [SerializeField] private float m_vehicleContactDPS;
+    [SerializeField] private float m_electricFieldRadius;
+    [SerializeField] private float m_electricFieldDuration;
+    [SerializeField] private float m_electricFieldDamage;
     private float eventTimer;
 
     void Start()
@@ -30,7 +34,7 @@ public class CrisisManager : MonoBehaviour
         eventTimer -= Time.deltaTime;
         if (eventTimer <= 0)
         {
-            SpawnVehicle();
+            SpawnElectricField();
             eventTimer = Random.Range(m_eventIntervalMin, m_eventIntervalMax);
         }
     }
@@ -46,7 +50,9 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-
+        Vector2 mapScale = GetComponent<MapManager>().GetMapScale();
+        Vector3 position = new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
+        ElectricField.Instantiate(m_player.GetComponent<Player>().GetClosestCharacter(0), position, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage);
     }
 
     void SpawnTidalWave()

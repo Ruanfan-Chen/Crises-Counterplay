@@ -1899,6 +1899,9 @@ MonoBehaviour:
   m_vehicleStartDelay: 4
   m_vehicleSpeed: 30
   m_vehicleContactDPS: 200
+  m_electricFieldRadius: 5
+  m_electricFieldDuration: 5
+  m_electricFieldDamage: 25
 --- !u!1 &1424135789
 GameObject:
   m_ObjectHideFlags: 0
