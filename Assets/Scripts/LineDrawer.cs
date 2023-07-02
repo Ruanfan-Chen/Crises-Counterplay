@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System;
 
 public class LineDrawer
 {
@@ -52,9 +51,24 @@ public class LineDrawer
         //Set line count which is 2
         lineRenderer.positionCount = 2;
 
-        //Set the postion of both two lines
+        //Set the position of both two lines
         lineRenderer.SetPosition(0, start);
         lineRenderer.SetPosition(1, end);
+    }
+
+    public static List<LineDrawer> DrawCircleInGameView(Vector3 center, float radius, Color color)
+    {
+        int interpolationDensity = 12;
+        List<LineDrawer> drawers = new List<LineDrawer>();
+        for (int i = 0; i < interpolationDensity; i++)
+        {
+            Vector3 startPos = center + Quaternion.Euler(0.0f, 0.0f, 360 * i / interpolationDensity) * Vector3.up * radius;
+            Vector3 endPos = center + Quaternion.Euler(0.0f, 0.0f, 360 * (i + 1) / interpolationDensity) * Vector3.up * radius;
+            LineDrawer lineDrawer = new();
+            lineDrawer.DrawLineInGameView(startPos, endPos, color);
+            drawers.Add(lineDrawer);
+        }
+        return drawers;
     }
 
     public void Destroy()

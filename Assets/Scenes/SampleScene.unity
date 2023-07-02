@@ -1752,7 +1752,12 @@ MonoBehaviour:
   m_vehicleTraceDuration: 2
   m_vehicleStartDelay: 4
   m_vehicleSpeed: 30
-  m_vehicleContactDPS: 200
+  m_vehicleContactDamage: 50
+  m_electricFieldTraceDuration: 2
+  m_electricFieldStartDelay: 2
+  m_electricFieldRadius: 5
+  m_electricFieldDuration: 5
+  m_electricFieldDamage: 25
 --- !u!1 &1424135789
 GameObject:
   m_ObjectHideFlags: 0
@@ -2265,6 +2270,10 @@ PrefabInstance:
     - target: {fileID: 2637130711552437442, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: m_Name
       value: CharacterU
+      objectReference: {fileID: 0}
+    - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: maxHealth
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: gameplayManager
