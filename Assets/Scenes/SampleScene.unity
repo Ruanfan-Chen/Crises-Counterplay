@@ -1781,6 +1781,7 @@ GameObject:
   - component: {fileID: 1151485481}
   - component: {fileID: 1151485482}
   - component: {fileID: 1151485483}
+  - component: {fileID: 1151485484}
   m_Layer: 0
   m_Name: GameplayManager
   m_TagString: Untagged
@@ -1850,9 +1851,6 @@ MonoBehaviour:
   m_elementArray:
   - {fileID: 6071611030961794286, guid: d46bf549b3f47d74a9283246b4677aa8, type: 3}
   - {fileID: 2560507934675709148, guid: 3584093f1a7fa6e489ee5fb87215013f, type: 3}
-  m_startDelay: 3
-  m_event_intervl_min: 0.5
-  m_event_intervl_max: 3
 --- !u!114 &1151485482
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1869,7 +1867,6 @@ MonoBehaviour:
   offset: 2
   startDelay: 2
   spawnInterval: 1
-  m_maxEnemy: 45
 --- !u!114 &1151485483
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1882,6 +1879,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1d4d5da99ab694425a1f1fc9655a3b99, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1151485484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1151485478}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 99fb00b90fd40144980b0897f3fbd61a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_startDelay: 2
+  m_event_intervl_min: 1
+  m_event_intervl_max: 3
+  m_player: {fileID: 1713116184}
 --- !u!1 &1424135789
 GameObject:
   m_ObjectHideFlags: 0
