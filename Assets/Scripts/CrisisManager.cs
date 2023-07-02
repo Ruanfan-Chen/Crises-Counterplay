@@ -31,15 +31,17 @@ public class CrisisManager : MonoBehaviour
         }
     }
 
-    void SpawnVehicle() {
+    void SpawnVehicle()
+    {
         float length = 2.24f * 30.0f;
         Vector3 startPos = GetComponent<MapManager>().GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (m_player.transform.position - startPos).normalized * length;
 
-        Vehicle.Instantiate(startPos, targetPos);
+        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, 2.0f, 1.0f));
     }
 
-    void SpawnElectricField() {
+    void SpawnElectricField()
+    {
 
     }
 

@@ -1892,8 +1892,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_startDelay: 2
-  m_event_intervl_min: 1
-  m_event_intervl_max: 3
+  m_event_interval_min: 2.5
+  m_event_interval_max: 5
   m_player: {fileID: 1713116184}
 --- !u!1 &1424135789
 GameObject:
