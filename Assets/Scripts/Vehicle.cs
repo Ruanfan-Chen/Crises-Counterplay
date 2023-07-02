@@ -7,11 +7,17 @@ public class Vehicle : MonoBehaviour
     // Start is called before the first frame update
 
     private static string prefabPath = "Prefabs/Vehicle";
-    public float speed = 30.0f;
-    public static float traceDuration = 2.0f;
-    private float contactDPS = 200.0f;
-    private bool hostility = true;
-    private static float delay = 1.0f;
+    [SerializeField] private float speed;
+    [SerializeField] private float contactDPS;
+    [SerializeField] private bool hostility;
+
+    public float GetSpeed() { return speed; }
+
+    public void SetSpeed(float value) { speed = value; }
+
+    public float GetContactDPS() { return contactDPS; }
+
+    public void SetContactDPS(float value) { contactDPS = value; }
 
     public bool GetHostility() { return hostility; }
 
@@ -20,11 +26,7 @@ public class Vehicle : MonoBehaviour
     void Start()
     {
         gameObject.tag = "Disposable";
-        gameObject.SetActive(false);
-        Invoke("activateGameObject", delay);
     }
-
-    void activateGameObject() { gameObject.SetActive(true); }
 
     // Update is called once per frame
     void Update()
@@ -32,32 +34,31 @@ public class Vehicle : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * Vector3.up);
     }
 
-    public static GameObject Instantiate(Vector3 startPos, Vector3 targetPos)
+    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float vehicleDelay, float speed, float contactDPS, bool hostility)
     {
-        Vector3 dir = targetPos - startPos;
-        GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, dir));
-
-        float width = vehicle.transform.localScale.x;
-
-        drawTraces(startPos, targetPos, width);
-        vehicle.AddComponent<Vehicle>();
+        drawTraces(startPos, targetPos, Resources.Load<GameObject>(prefabPath).transform.lossyScale.x, traceDuration);
+        yield return new WaitForSeconds(vehicleDelay);
+        GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
+        Vehicle script = vehicle.AddComponent<Vehicle>();
+        script.SetSpeed(speed);
+        script.SetContactDPS(contactDPS);
+        script.SetHostility(hostility);
         vehicle.AddComponent<DestroyOutOfBounds>();
-        return vehicle;
     }
 
 
-    private static void drawTraces(Vector3 startPos, Vector3 targetPos, float vehicleWidth)
+    private static void drawTraces(Vector3 startPos, Vector3 targetPos, float vehicleWidth, float duration)
     {
         Vector3 bias = Quaternion.Euler(0, 0, 90) * (targetPos - startPos).normalized * vehicleWidth / 2;
 
         LineDrawer lineDrawer1 = new LineDrawer();
         lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
-        lineDrawer1.Destroy(traceDuration);
+        lineDrawer1.Destroy(duration);
         //Debug.Log("Drew lines from p1 = " + traceStartVector1);
 
         LineDrawer lineDrawer2 = new LineDrawer();
         lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
-        lineDrawer2.Destroy(traceDuration);
+        lineDrawer2.Destroy(duration);
         //Debug.Log("Drew lines from p2 = " + traceStartVector2);
 
         // lineDrawer.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);

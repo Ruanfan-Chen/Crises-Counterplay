@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class CrisisManager : MonoBehaviour
 {
+    [SerializeField] private GameObject m_player;
     [SerializeField] private float m_startDelay;
     // event will occur within [m_event_interval_min, m_event_interval_max] after last occurrence
     [SerializeField] private float m_event_interval_min; // min time (in seconds) after occurrence event occurred
-    [SerializeField] private float m_event_interval_max; // max time (in seconds) after last event occurred
-    [SerializeField] private GameObject m_player;
+    [SerializeField] private float m_event_interval_max; // max time (in seconds) after last event occurred    
+    [SerializeField] private float m_vehicle_trace_duration;
+    [SerializeField] private float m_vehicle_start_delay;
+    [SerializeField] private float m_vehicle_speed;
+    [SerializeField] private float m_vehicle_contactDPS;
     private float eventTimer;
 
     void Start()
@@ -31,15 +35,17 @@ public class CrisisManager : MonoBehaviour
         }
     }
 
-    void SpawnVehicle() {
+    void SpawnVehicle()
+    {
         float length = 2.24f * 30.0f;
         Vector3 startPos = GetComponent<MapManager>().GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (m_player.transform.position - startPos).normalized * length;
 
-        Vehicle.Instantiate(startPos, targetPos);
+        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicle_trace_duration, m_vehicle_start_delay, m_vehicle_speed, m_vehicle_contactDPS, true));
     }
 
-    void SpawnElectricField() {
+    void SpawnElectricField()
+    {
 
     }
 
