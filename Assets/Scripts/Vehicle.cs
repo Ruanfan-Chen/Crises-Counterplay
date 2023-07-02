@@ -39,7 +39,7 @@ public class Vehicle : MonoBehaviour
         drawTraces(startPos, targetPos, Resources.Load<GameObject>(prefabPath).transform.lossyScale.x, traceDuration);
         yield return new WaitForSeconds(vehicleDelay);
         GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
-        Vehicle script = vehicle.AddComponent<Vehicle>();
+        Vehicle script = vehicle.GetComponent<Vehicle>();
         script.SetSpeed(speed);
         script.SetContactDPS(contactDPS);
         script.SetHostility(hostility);
