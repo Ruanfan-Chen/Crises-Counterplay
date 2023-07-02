@@ -101,7 +101,7 @@ public class GameplayManager : MonoBehaviour
         }
         else if (m_levelNum == 2)
         {
-            gameObject.GetComponent<SpawnManager>().enabled = true;
+            gameObject.GetComponent<EnemySpawn>().enabled = true;
             CloseShop();
         }
         else if (m_levelNum == 3)

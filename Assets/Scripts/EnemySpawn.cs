@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SpawnManager : MonoBehaviour
+public class EnemySpawn : MonoBehaviour
 {
     public GameObject player;
     [SerializeField] private float offset = 2.0f;
