@@ -27,11 +27,11 @@ public class GameplayManager : MonoBehaviour
     [Header("Gameplay and level")]
     [SerializeField] private float m_maxTime = 45.0f;
     [Tooltip("Start level, it can be any number other than 1 if configured.")]
-    [Range(1,4)]
+    [Range(1, 4)]
     [SerializeField] private int m_levelNum = 1;
     private float m_timer = 0.0f;
     private MapManager m_mapManager;
-    
+
     //delegate for dynamic button action assignment
     delegate void ItemAction();
     ItemAction m_actionItem;
@@ -62,6 +62,11 @@ public class GameplayManager : MonoBehaviour
         m_timer += Time.deltaTime;
         float timeLeft = m_maxTime - m_timer;
         m_timerText.text = Mathf.Round(timeLeft).ToString() + "s";
+        if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
+        {
+            ResetGame(1);
+            return;
+        }
         if (timeLeft <= 0)
         {
             Time.timeScale = 0.0f;
@@ -74,6 +79,7 @@ public class GameplayManager : MonoBehaviour
 
             Shop();
         }
+
     }
 
     void Shop()
