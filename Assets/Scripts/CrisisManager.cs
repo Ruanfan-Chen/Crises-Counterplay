@@ -5,19 +5,19 @@ using UnityEngine;
 public class CrisisManager : MonoBehaviour
 {
     [SerializeField] private float m_startDelay;
-    // event will occur within [m_event_intervl_min, m_event_intervl_max] after last occurance
-    [SerializeField] private float m_event_intervl_min; // min time (in seconds) after last event occurred
-    [SerializeField] private float m_event_intervl_max; // max time (in seconds) after last event occurred
+    // event will occur within [m_event_interval_min, m_event_interval_max] after last occurrence
+    [SerializeField] private float m_event_interval_min; // min time (in seconds) after occurrence event occurred
+    [SerializeField] private float m_event_interval_max; // max time (in seconds) after last event occurred
     [SerializeField] private GameObject m_player;
     private float eventTimer;
 
     void Start()
     {
         // Update event interval; m_level >= 1
-        //m_event_intervl_max = Mathf.Max(1.0f, m_event_intervl_max - (m_level - 1.0f));
-        //m_event_intervl_min = Mathf.Max(1.0f, m_event_intervl_min - (m_level - 1.0f));
-        //Debug.Log("m_event_intervl_min = " + m_event_intervl_min + ", m_event_intervl_max = " + m_event_intervl_max);
-        eventTimer = Random.Range(m_event_intervl_min, m_event_intervl_max) + m_startDelay;
+        //m_event_interval_max = Mathf.Max(1.0f, m_event_interval_max - (m_level - 1.0f));
+        //m_event_interval_min = Mathf.Max(1.0f, m_event_interval_min - (m_level - 1.0f));
+        //Debug.Log("m_event_interval_min = " + m_event_interval_min + ", m_event_interval_max = " + m_event_interval_max);
+        eventTimer = Random.Range(m_event_interval_min, m_event_interval_max) + m_startDelay;
     }
 
     // Update is called once per frame
@@ -27,7 +27,7 @@ public class CrisisManager : MonoBehaviour
         if (eventTimer <= 0)
         {
             SpawnVehicle();
-            eventTimer = Random.Range(m_event_intervl_min, m_event_intervl_max);
+            eventTimer = Random.Range(m_event_interval_min, m_event_interval_max);
         }
     }
 
