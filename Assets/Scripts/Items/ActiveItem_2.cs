@@ -9,8 +9,9 @@ public class ActiveItem_2 : ActiveItem
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
     private float viewRadius = 10.0f;
-    private float dashSpeed = 50.0f;
-    private float displacement = 10.0f;
+    private float initialDashSpeed = 50.0f;
+    private float dashDistance = 5.0f;
+    private float dashDuration = 0.5f;
     private float timer = 0.0f;
     private float cooldown = 3.0f;
     [SerializeField] private TextMeshProUGUI timerText;
@@ -46,30 +47,14 @@ public class ActiveItem_2 : ActiveItem
         List<GameObject> targets = viewScript.GetCurrentCollsions();
         if (targets.Count > 0 && timer <= 0.0f)
         {
-            StartCoroutine(Dash(targets[0].transform.position));
+            StartCoroutine(Dash((targets[0].transform.position - transform.position).normalized * dashDistance));
             timer = cooldown;
         }
     }
 
-    IEnumerator Dash(Vector3 targetPos)
+    IEnumerator Dash(Vector3 displacement)
     {
-        float cumulativeDisplacement = 0.0f;
-        Vector3 direction = (targetPos - transform.position).normalized;
-        while (cumulativeDisplacement + dashSpeed * Time.deltaTime <= displacement)
-        {
-            cumulativeDisplacement += dashSpeed * Time.deltaTime;
-            GetComponentInParent<Player>().transform.Translate(dashSpeed * Time.deltaTime * direction);
-            foreach (GameObject vehicle in viewScript.GetCurrentCollsions())
-            {
-                if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
-                {
-                    vehicle.transform.rotation = Quaternion.LookRotation(Vector3.forward, vehicle.transform.position - transform.position);
-                    vehicle.GetComponent<Vehicle>().SetHostility(false);
-                }
-            };
-            yield return null;
-        }
-        GetComponentInParent<Player>().transform.Translate((displacement - cumulativeDisplacement) * direction);
+        return Utility.ForcedMovement(transform,displacement, initialDashSpeed, dashDuration);
     }
 
     private class ViewBehavior : MonoBehaviour
