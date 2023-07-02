@@ -7,9 +7,17 @@ public class Vehicle : MonoBehaviour
     // Start is called before the first frame update
 
     private static string prefabPath = "Prefabs/Vehicle";
-    public float speed = 30.0f;
-    private float contactDPS = 200.0f;
-    private bool hostility = true;
+    [SerializeField] private float speed;
+    [SerializeField] private float contactDPS;
+    [SerializeField] private bool hostility;
+
+    public float GetSpeed() { return speed; }
+
+    public void SetSpeed(float value) { speed = value; }
+
+    public float GetContactDPS() { return contactDPS; }
+
+    public void SetContactDPS(float value) { contactDPS = value; }
 
     public bool GetHostility() { return hostility; }
 
@@ -26,12 +34,15 @@ public class Vehicle : MonoBehaviour
         transform.Translate(speed * Time.deltaTime * Vector3.up);
     }
 
-    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float vehicleDelay)
+    public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float vehicleDelay, float speed, float contactDPS, bool hostility)
     {
         drawTraces(startPos, targetPos, Resources.Load<GameObject>(prefabPath).transform.lossyScale.x, traceDuration);
         yield return new WaitForSeconds(vehicleDelay);
         GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
-        vehicle.AddComponent<Vehicle>();
+        Vehicle script = vehicle.AddComponent<Vehicle>();
+        script.SetSpeed(speed);
+        script.SetContactDPS(contactDPS);
+        script.SetHostility(hostility);
         vehicle.AddComponent<DestroyOutOfBounds>();
     }
 
