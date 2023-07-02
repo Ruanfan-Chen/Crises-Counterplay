@@ -18,7 +18,8 @@ public static class Utility
         return default;
     }
 
-    public static IEnumerator ForcedMovement(Transform transform, Vector3 displacement, float initialSpeed, float duration) {
+    public static IEnumerator ForcedMovement(Transform transform, Vector3 displacement, float initialSpeed, float duration)
+    {
         float current = 0.0f;
         float currentVelocity = initialSpeed / displacement.magnitude;
         while (current < 1.0f)
@@ -28,6 +29,12 @@ public static class Utility
             current = next;
             yield return null;
         }
-        Debug.Log("Forced Movement Done.");
+    }
+
+    public static IEnumerator AddAndRemoveComponent(GameObject gameObject, System.Type componentType, float duration)
+    {
+        Component component = gameObject.AddComponent(componentType);
+        yield return new WaitForSeconds(duration);
+        Object.Destroy(component);
     }
 }

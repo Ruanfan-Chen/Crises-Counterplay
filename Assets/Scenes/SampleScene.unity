@@ -2270,6 +2270,10 @@ PrefabInstance:
       value: CharacterU
       objectReference: {fileID: 0}
     - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
+      propertyPath: maxHealth
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 6345411127375515699, guid: 8591cc42e0b3ebb4d84dd325cf73abe9, type: 3}
       propertyPath: gameplayManager
       value: 
       objectReference: {fileID: 1151485479}
