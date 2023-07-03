@@ -1,72 +1,43 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
+using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
-    public GameObject[] characters;
-    private float moveSpeed = 5.0f;
-    private float triRadius = 0.7f;
-    Quaternion rotationBias = Quaternion.Euler(0, 0, 0);
+    private static string characterPrefabPath = "Prefabs/Character";
+    private GameObject character;
 
-    public float GetMoveSpeed() { return moveSpeed; }
+    public GameObject GetCharacter() { return character; }
 
-    public void SetMoveSpeed(float value) { moveSpeed = value; }
+    public void SetCharacter(GameObject value) { character = value; }
 
-    // Start is called before the first frame update
     void Start()
     {
         GetComponent<ConstraintInsideOfMap>().SetOffset(1.5f);
+        character = Instantiate(Resources.Load<GameObject>(characterPrefabPath), gameObject.transform);
+        character.GetComponent<SpriteRenderer>().color = Color.red;
     }
     // Update is called once per frame
     void Update()
     {
         // Move Player
-        transform.Translate(GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
-        // Calculate Characters transform
-        Vector3 positionBias = Vector3.zero;
-        Vector3 activeCharacterPositionSum = Vector3.zero;
-        int activeCharacterCount = 0;
-        for (int i = 0; i < 1; i++)
+        transform.Translate(Character.GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
+
+        if (character != null)
         {
-            if (characters[i].activeSelf)
-            {
-                activeCharacterPositionSum += GetBasePosition(i);
-                activeCharacterCount++;
-            }
+            transform.position += character.transform.localPosition;
+            transform.rotation *= character.transform.localRotation;
+            character.transform.localPosition = Vector3.zero;
+            character.transform.localRotation = Quaternion.identity;
         }
-        if (activeCharacterCount > 0)
-            positionBias = -activeCharacterPositionSum / activeCharacterCount;
-        // Move Characters
-        for (int i = 0; i < 1; i++)
-        {
-            characters[i].transform.position = transform.position + rotationBias * (GetBasePosition(i) + positionBias);
-            characters[i].transform.rotation = rotationBias * GetBaseRotation(i);
-        }
+
         if (Input.GetKeyDown(KeyCode.J))
-            GetClosestCharacter(1).GetComponent<Character>().ActivateItem();
+            character.GetComponent<Character>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.K))
-            GetClosestCharacter(0).GetComponent<Character>().ActivateItem();
+            character.GetComponent<Character>().ActivateItem();
         if (Input.GetKeyDown(KeyCode.L))
-            GetClosestCharacter(2).GetComponent<Character>().ActivateItem();
+            character.GetComponent<Character>().ActivateItem();
     }
-    Quaternion GetBaseRotation(float i) { return Quaternion.Euler(0, 0, i * 120); }
-
-    Vector3 GetBasePosition(float i) { return GetBaseRotation(i) * Vector3.up * triRadius; }
-
-    public GameObject GetClosestCharacter(Quaternion rotation)
-    {
-        float[] angles = new float[3];
-        angles[0] = Quaternion.Angle(characters[0].transform.rotation, rotation);
-        float minAngle = Mathf.Min(angles);
-        if (minAngle == angles[0]) return characters[0];
-        return null;
-    }
-
-    public GameObject GetClosestCharacter(float bias)
-    {
-        return GetClosestCharacter(GetBaseRotation(bias));
-    }
-
-    public void Rotate(Quaternion rotation) { rotationBias *= rotation; }
 }

@@ -5,13 +5,14 @@ using UnityEngine;
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     [SerializeField] private float health;
+    [SerializeField] private float maxHealth;
+    private static float moveSpeed = 5.0f;
+    private List<PassiveItem> passiveItems = new();
+    private ActiveItem activeItem = null;
     private static float invDurationOnDmg = 0.7f;
     private static float knockbackDurationOnDmg = 0.5f;
     private static float knockbackDistanceOnDmg = 3.0f;
     private static float initialKnockbackSpeedOnDmg = 50.0f;
-    [SerializeField] private float maxHealth;
-    private List<PassiveItem> passiveItems = new();
-    private ActiveItem activeItem = null;
 
 
     public float GetHealth() { return health; }
@@ -22,15 +23,10 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMaxHealth(float value) { maxHealth = value; }
 
-    public float GetMoveSpeed()
-    {
-        return GetComponentInParent<Player>().GetMoveSpeed();
-    }
+    public static float GetMoveSpeed() { return moveSpeed; }
 
-    public void SetMoveSpeed(float value)
-    {
-        GetComponentInParent<Player>().SetMoveSpeed(value);
-    }
+    public static void SetMoveSpeed(float value) { moveSpeed = value; }
+
     public void ReceiveDamage(Damage damage)
     {
         if (GetComponent<Invulnerable>()) return;
@@ -42,7 +38,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         if (damage.GetMedium())
             sourcePos = damage.GetMedium().transform.position;
         StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
-        StartCoroutine(Utility.ForcedMovement(transform.parent, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
+        StartCoroutine(Utility.ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
     }
     public List<PassiveItem> GetPassiveItems() { return passiveItems; }
     public ActiveItem GetActiveItem() { return activeItem; }

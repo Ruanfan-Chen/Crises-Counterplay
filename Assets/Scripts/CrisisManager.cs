@@ -54,7 +54,7 @@ public class CrisisManager : MonoBehaviour
     {
         Vector2 mapScale = GetComponent<MapManager>().GetMapScale();
         Vector3 position = new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
-        StartCoroutine(ElectricField.Instantiate(m_player.GetComponent<Player>().GetClosestCharacter(0), position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
+        StartCoroutine(ElectricField.Instantiate(m_player.GetComponent<Player>().GetCharacter(), position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 
     void SpawnTidalWave()

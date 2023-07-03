@@ -37,7 +37,7 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
     {
         view = new GameObject("WeaponView");
         view.transform.SetParent(gameObject.transform);
-        view.transform.SetLocalPositionAndRotation(Vector3.zero, new Quaternion());
+        view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         viewScript = view.AddComponent<ViewBehavior>();
         viewTrigger = view.AddComponent<PolygonCollider2D>();
         viewTrigger.isTrigger = true;

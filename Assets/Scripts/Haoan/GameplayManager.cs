@@ -20,8 +20,6 @@ public class GameplayManager : MonoBehaviour
     [Space(10)]
     [Header("Player and Character")]
     [SerializeField] private GameObject m_player;
-    private GameObject m_characterObject;
-    private Character m_character;
 
     [Space(10)]
     [Header("Gameplay and level")]
@@ -36,6 +34,16 @@ public class GameplayManager : MonoBehaviour
     delegate void ItemAction();
     ItemAction m_actionItem;
 
+    public GameObject GetCharacterObject()
+    {
+        return m_player.GetComponent<Player>().GetCharacter();
+    }
+
+    public Character GetCharacter()
+    {
+        return GetCharacterObject().GetComponent<Character>();
+    }
+
     struct Item
     {
         public string m_name;
@@ -48,9 +56,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        Player player = m_player.GetComponent<Player>();
-        m_characterObject = player.GetClosestCharacter(0);
-        m_character = m_characterObject.GetComponent<Character>();
+        //Player player = m_player.GetComponent<Player>();
         LoadLevel(m_levelNum);
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
@@ -62,7 +68,7 @@ public class GameplayManager : MonoBehaviour
         m_timer += Time.deltaTime;
         float timeLeft = m_maxTime - m_timer;
         m_timerText.text = Mathf.Round(timeLeft).ToString() + "s";
-        if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
+        if (GetCharacter() && GetCharacter().GetComponent<Character>().GetHealth() <= 0.0f)
         {
             ResetGame(1);
             return;
@@ -100,9 +106,9 @@ public class GameplayManager : MonoBehaviour
             itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
             m_actionItem = delegate ()
             {
-                if (m_character)
+                if (GetCharacter())
                 {
-                    m_character.GiveItem(typeof(ActiveItem_2));
+                    GetCharacter().GiveItem(typeof(ActiveItem_2));
                     m_activeK.SetActive(true);
                 }
             };
@@ -122,9 +128,9 @@ public class GameplayManager : MonoBehaviour
             itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
             m_actionItem = delegate ()
             {
-                if (m_character)
+                if (GetCharacter())
                 {
-                    m_character.GiveItem(typeof(PassiveItem_0));
+                    GetCharacter().GiveItem(typeof(PassiveItem_0));
                 }
             };
 
@@ -200,9 +206,9 @@ public class GameplayManager : MonoBehaviour
         }
         else if (levelNum == 2)
         {
-            if (m_character)
+            if (GetCharacter())
             {
-                m_character.GiveItem(typeof(ActiveItem_2));
+                GetCharacter().GiveItem(typeof(ActiveItem_2));
                 m_activeK.SetActive(true);
             }
         }
@@ -214,9 +220,9 @@ public class GameplayManager : MonoBehaviour
         else if (levelNum == 4)
         {
             LoadLevel(3);
-            if (m_character)
+            if (GetCharacter())
             {
-                m_character.GiveItem(typeof(PassiveItem_0));
+                GetCharacter().GiveItem(typeof(PassiveItem_0));
             }
         }
     }
