@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static System.Runtime.CompilerServices.RuntimeHelpers;
 using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
@@ -16,7 +15,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     private static float knockbackDistanceOnDmg = 3.0f;
     private static float initialKnockbackSpeedOnDmg = 50.0f;
 
-
     public float GetHealth() { return health; }
 
     public void SetHealth(float value) { health = value; }
@@ -29,18 +27,29 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public static void SetMoveSpeed(float value) { moveSpeed = value; }
 
+    public static float GetKnockbackDurationOnDmg() { return knockbackDurationOnDmg; }
+
+    public static float GetKnockbackDistanceOnDmg() { return knockbackDistanceOnDmg; }
+
+    public static float GetInitialKnockbackSpeedOnDmg() { return initialKnockbackSpeedOnDmg; }
+
     public void ReceiveDamage(Damage damage)
     {
         if (GetComponent<Invulnerable>()) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
-        Vector3 sourcePos = transform.position;
-        if (damage.GetSource())
-            sourcePos = damage.GetSource().transform.position;
-        if (damage.GetMedium())
-            sourcePos = damage.GetMedium().transform.position;
-        StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
-        StartCoroutine(Utility.ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
+        IEnumerator coroutine = damage.GetCoroutine();
+        if (coroutine == null)
+        {
+            Vector3 sourcePos = transform.position;
+            if (damage.GetSource())
+                sourcePos = damage.GetSource().transform.position;
+            if (damage.GetMedium())
+                sourcePos = damage.GetMedium().transform.position;
+            coroutine = ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg);
+        }
+        StartCoroutine(coroutine);
+        StartCoroutine(AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }

@@ -1,8 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.ComponentModel;
-using Unity.VisualScripting;
 using UnityEngine;
+using static Utility;
 
 public class ElectricField : MonoBehaviour
 {
@@ -30,10 +29,14 @@ public class ElectricField : MonoBehaviour
 
     void Update()
     {
-        float centerDistance = (character.transform.position - transform.position).magnitude;
+        Vector3 centerDisplacement = character.transform.position - transform.position;
         float characterRadius = character.GetComponent<CircleCollider2D>().radius;
-        if (radius - characterRadius < centerDistance && centerDistance < radius + characterRadius)
-            new Damage(gameObject, null, character.GetComponent<IDamageable>(), damage).Apply();
+        if (radius - characterRadius < centerDisplacement.magnitude && centerDisplacement.magnitude < radius + characterRadius)
+        {
+            Vector3 displacement = Mathf.Sign(centerDisplacement.magnitude - radius) * Character.GetKnockbackDistanceOnDmg() * centerDisplacement.normalized;
+            IEnumerator coroutine = ForcedMovement(character.transform, displacement, Character.GetInitialKnockbackSpeedOnDmg(), Character.GetKnockbackDurationOnDmg());
+            new Damage(gameObject, null, character.GetComponent<IDamageable>(), damage, coroutine).Apply();
+        }
     }
 
     public static IEnumerator Instantiate(GameObject character, Vector3 position, float traceDuration, float delay, float radius, float electricFieldDuration, float damage)
@@ -51,5 +54,8 @@ public class ElectricField : MonoBehaviour
         DestroyOutOfTime destroyScript = electricField.GetComponent<DestroyOutOfTime>();
         destroyScript.SetTimer(electricFieldDuration);
         destroyScript.Activate();
+    }
+    void Start() {
+        gameObject.tag = "Disposable";
     }
 }
