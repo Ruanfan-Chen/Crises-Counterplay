@@ -7,7 +7,7 @@ using UnityEngine.UIElements;
 public class Player : MonoBehaviour
 {
     private static string characterPrefabPath = "Prefabs/Character";
-    private GameObject character;
+    [SerializeField] private GameObject character;
 
     public GameObject GetCharacter() { return character; }
 

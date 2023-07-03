@@ -30,8 +30,9 @@ public class GameplayManager : MonoBehaviour
     private MapManager m_mapManager;
 
     //delegate for dynamic button action assignment
-    delegate void ItemAction();
-    ItemAction m_actionItem;
+    delegate void ButtonAction();
+    ButtonAction m_actionItem;
+    ButtonAction m_actionAttribute;
 
     public GameObject GetCharacterObject()
     {
@@ -55,7 +56,6 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        //Player player = m_player.GetComponent<Player>();
         LoadLevel(m_levelNum);
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
@@ -92,7 +92,21 @@ public class GameplayManager : MonoBehaviour
         m_player.transform.position = Vector3.zero;
         m_gameplayPanel.SetActive(false);
         m_shopPanel.SetActive(true);
+        GameObject attributeButton = m_shopPanel.transform.GetChild(0).gameObject;
         GameObject itemButton = m_shopPanel.transform.GetChild(1).gameObject;
+        Character c = GetCharacter();
+
+        //show hp recovery regardless of the level
+        int hpRecovery = Random.Range(15, 36);
+        string description = "Recover " + hpRecovery.ToString() + " HP";
+        attributeButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = description;
+        m_actionAttribute = delegate ()
+        {
+            if (c)
+            {
+                c.SetHealth(c.GetHealth() + (float)hpRecovery);
+            }
+        };
 
         //show items based on the level
         switch (m_levelNum)
@@ -107,9 +121,9 @@ public class GameplayManager : MonoBehaviour
                     itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
                     m_actionItem = delegate ()
                     {
-                        if (GetCharacter())
+                        if (c)
                         {
-                            GetCharacter().GiveActiveItem<ActiveItem_2>(KeyCode.K);
+                            c.GiveActiveItem<ActiveItem_2>(KeyCode.K);
                             m_activeK.SetActive(true);
                         }
                     };
@@ -130,9 +144,9 @@ public class GameplayManager : MonoBehaviour
                     itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
                     m_actionItem = delegate ()
                     {
-                        if (GetCharacter())
+                        if (c)
                         {
-                            GetCharacter().GivePassiveItem<PassiveItem_0>();
+                            c.GivePassiveItem<PassiveItem_0>();
                         }
                     };
                     break;
@@ -195,6 +209,15 @@ public class GameplayManager : MonoBehaviour
         if (m_actionItem != null)
         {
             m_actionItem();
+        }
+        CloseShop();
+    }
+
+    public void AttributeButtonOnClick()
+    {
+        if(m_actionAttribute != null)
+        {
+            m_actionAttribute();
         }
         CloseShop();
     }
