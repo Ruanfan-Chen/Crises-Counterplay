@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Threading;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
@@ -96,50 +95,54 @@ public class GameplayManager : MonoBehaviour
         GameObject itemButton = m_shopPanel.transform.GetChild(1).gameObject;
 
         //show items based on the level
-        if (m_levelNum == 1)
+        switch (m_levelNum)
         {
-            Item item = new Item();
-            item.m_name = "Trainbound";
-            item.m_index = 2;
-            item.m_active = true;
-
-            itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
-            m_actionItem = delegate ()
-            {
-                if (GetCharacter())
+            case 1:
                 {
-                    GetCharacter().GiveItem(typeof(ActiveItem_2));
-                    m_activeK.SetActive(true);
-                }
-            };
-        }
-        else if (m_levelNum == 2)
-        {
-            gameObject.GetComponent<EnemySpawn>().enabled = true;
-            CloseShop();
-        }
-        else if (m_levelNum == 3)
-        {
-            Item item = new Item();
-            item.m_name = "Toxic Footprint";
-            item.m_index = 0;
-            item.m_active = false;
+                    Item item = new Item();
+                    item.m_name = "Trainbound";
+                    item.m_index = 2;
+                    item.m_active = true;
 
-            itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
-            m_actionItem = delegate ()
-            {
-                if (GetCharacter())
+                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+                    m_actionItem = delegate ()
+                    {
+                        if (GetCharacter())
+                        {
+                            GetCharacter().GiveActiveItem<ActiveItem_2>(KeyCode.K);
+                            m_activeK.SetActive(true);
+                        }
+                    };
+                    break;
+                }
+
+            case 2:
+                gameObject.GetComponent<EnemySpawn>().enabled = true;
+                CloseShop();
+                break;
+            case 3:
                 {
-                    GetCharacter().GiveItem(typeof(PassiveItem_0));
-                }
-            };
+                    Item item = new Item();
+                    item.m_name = "Toxic Footprint";
+                    item.m_index = 0;
+                    item.m_active = false;
 
-        }
-        else if (m_levelNum == 4)
-        {
-            GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
-            m_shopPanel.SetActive(false);
-            m_completePanel.SetActive(true);
+                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+                    m_actionItem = delegate ()
+                    {
+                        if (GetCharacter())
+                        {
+                            GetCharacter().GivePassiveItem<PassiveItem_0>();
+                        }
+                    };
+                    break;
+                }
+
+            case 4:
+                GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
+                m_shopPanel.SetActive(false);
+                m_completePanel.SetActive(true);
+                break;
         }
     }
 
@@ -162,18 +165,22 @@ public class GameplayManager : MonoBehaviour
 
     public void ResetGame(int levelNum)
     {
-        if (levelNum == 1)
+        switch (levelNum)
         {
+            case 1:
+                {
 
-            GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
-            Scene scene = SceneManager.GetActiveScene();
-            SceneManager.LoadScene(scene.name);
-        }
-        else
-        {
-            m_levelNum = levelNum;
-            LoadLevel(m_levelNum);
-            ResetGame();
+                    GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
+                    Scene scene = SceneManager.GetActiveScene();
+                    SceneManager.LoadScene(scene.name);
+                    break;
+                }
+
+            default:
+                m_levelNum = levelNum;
+                LoadLevel(m_levelNum);
+                ResetGame();
+                break;
         }
     }
 
@@ -200,30 +207,28 @@ public class GameplayManager : MonoBehaviour
 
     void LoadLevel(int levelNum)
     {
-        if (levelNum == 1)
+        switch (levelNum)
         {
-            //do nothing
-        }
-        else if (levelNum == 2)
-        {
-            if (GetCharacter())
-            {
-                GetCharacter().GiveItem(typeof(ActiveItem_2));
-                m_activeK.SetActive(true);
-            }
-        }
-        else if (levelNum == 3)
-        {
-            LoadLevel(2);
-            gameObject.GetComponent<EnemySpawn>().enabled = true;
-        }
-        else if (levelNum == 4)
-        {
-            LoadLevel(3);
-            if (GetCharacter())
-            {
-                GetCharacter().GiveItem(typeof(PassiveItem_0));
-            }
+            case 1:
+                break;
+            case 2:
+                if (GetCharacter())
+                {
+                    GetCharacter().GiveActiveItem<ActiveItem_2>(KeyCode.K);
+                    m_activeK.SetActive(true);
+                }
+                break;
+            case 3:
+                LoadLevel(2);
+                gameObject.GetComponent<EnemySpawn>().enabled = true;
+                break;
+            case 4:
+                LoadLevel(3);
+                if (GetCharacter())
+                {
+                    GetCharacter().GivePassiveItem<PassiveItem_0>();
+                }
+                break;
         }
     }
 }

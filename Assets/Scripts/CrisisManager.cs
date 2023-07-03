@@ -36,7 +36,16 @@ public class CrisisManager : MonoBehaviour
         eventTimer -= Time.deltaTime;
         if (eventTimer <= 0)
         {
-            SpawnElectricField();
+            int r = Utility.WeightedRandom(new Dictionary<int, float>() { [0] = 1.0f, [1] = 1.0f });
+            switch (r)
+            {
+                case 0:
+                    SpawnVehicle();
+                    break;
+                case 1:
+                    SpawnElectricField();
+                    break;
+            }
             eventTimer = Random.Range(m_eventIntervalMin, m_eventIntervalMax);
         }
     }

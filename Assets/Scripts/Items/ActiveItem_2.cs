@@ -63,6 +63,11 @@ public class ActiveItem_2 : ActiveItem
         viewScript.SetRepelVehicle(false);
     }
 
+    public override float GetChargeProgress()
+    {
+        throw new NotImplementedException();
+    }
+
     private class ViewBehavior : MonoBehaviour
     {
         private List<GameObject> currentCollisions = new();

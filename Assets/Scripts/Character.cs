@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static System.Runtime.CompilerServices.RuntimeHelpers;
+using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
@@ -8,7 +10,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     [SerializeField] private float maxHealth;
     private static float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
-    private ActiveItem activeItem = null;
+    private BiDictionary<KeyCode, ActiveItem> activeItems = new();
     private static float invDurationOnDmg = 0.7f;
     private static float knockbackDurationOnDmg = 0.5f;
     private static float knockbackDistanceOnDmg = 3.0f;
@@ -40,45 +42,67 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
         StartCoroutine(Utility.ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
     }
-    public List<PassiveItem> GetPassiveItems() { return passiveItems; }
-    public ActiveItem GetActiveItem() { return activeItem; }
-    public bool RemoveItem(Component item)
+    public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
+    public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
+    public IReadOnlyDictionary<ActiveItem, KeyCode> GetActiveItemKeyCodePairs() { return activeItems.GetUTDict(); }
+    public ActiveItem GetActiveItem(KeyCode keyCode)
     {
-        if (activeItem == item)
-        {
-            activeItem = null;
-            Destroy(item);
-            return true;
-        }
-        else if (passiveItems.Remove((PassiveItem)item))
+        return activeItems.TryGetValue(keyCode, out ActiveItem item) ? item : null;
+    }
+    public KeyCode GetKeyCode(ActiveItem item)
+    {
+        return activeItems.TryGetValue(item, out KeyCode keyCode) ? keyCode : KeyCode.None;
+    }
+    public bool RemoveItem(PassiveItem item)
+    {
+        if (passiveItems.Remove(item))
         {
             Destroy(item);
             return true;
         }
         return false;
     }
-    public Component GiveItem(System.Type item)
+    public bool RemoveItem(KeyCode keyCode)
     {
-        if (typeof(ActiveItem).IsAssignableFrom(item))
-        {
-            if (activeItem) RemoveItem(activeItem);
-            ActiveItem newComponent = (ActiveItem)gameObject.AddComponent(item);
-            activeItem = newComponent;
-            return newComponent;
-        }
-        if (typeof(PassiveItem).IsAssignableFrom(item))
-        {
-            PassiveItem newComponent = (PassiveItem)gameObject.AddComponent(item);
-            passiveItems.Add(newComponent);
-            return newComponent;
-        }
-        return null;
-
+        ActiveItem item = GetActiveItem(keyCode);
+        return item ? RemoveItem(item) : false;
     }
-    public void ActivateItem()
+    public bool RemoveItem(ActiveItem item)
     {
-        if (activeItem)
-            activeItem.Activate();
+        if (activeItems.Remove(item))
+        {
+            Destroy(item);
+            return true;
+        }
+        return false;
+    }
+    public PassiveItem GivePassiveItem<T>()
+    {
+        if (typeof(PassiveItem).IsAssignableFrom(typeof(T)))
+        {
+            PassiveItem item = (PassiveItem)gameObject.AddComponent(typeof(T));
+            passiveItems.Add(item);
+            return item;
+        }
+        return default;
+    }
+
+    public ActiveItem GiveActiveItem<T>(KeyCode keyCode)
+    {
+        if (typeof(ActiveItem).IsAssignableFrom(typeof(T)))
+        {
+            RemoveItem(keyCode);
+            ActiveItem item = (ActiveItem)gameObject.AddComponent(typeof(T));
+            activeItems.Add(keyCode, item);
+            return item;
+        }
+        return default;
+    }
+    public void ActivateItem(KeyCode keyCode)
+    {
+        ActiveItem item = GetActiveItem(keyCode);
+        if (item)
+            item.Activate();
     }
     public bool GetHostility() { return false; }
 
@@ -92,6 +116,15 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GiveItem(typeof(PassiveItem_Weapon_0));
+        GivePassiveItem<PassiveItem_Weapon_0>();
+    }
+
+    void Update()
+    {
+        foreach (KeyValuePair<KeyCode, ActiveItem> keyValuePair in activeItems.GetTUDict())
+        {
+            if (Input.GetKeyDown(keyValuePair.Key))
+                keyValuePair.Value.Activate();
+        }
     }
 }

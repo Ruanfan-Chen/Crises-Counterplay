@@ -32,12 +32,5 @@ public class Player : MonoBehaviour
             character.transform.localPosition = Vector3.zero;
             character.transform.localRotation = Quaternion.identity;
         }
-
-        if (Input.GetKeyDown(KeyCode.J))
-            character.GetComponent<Character>().ActivateItem();
-        if (Input.GetKeyDown(KeyCode.K))
-            character.GetComponent<Character>().ActivateItem();
-        if (Input.GetKeyDown(KeyCode.L))
-            character.GetComponent<Character>().ActivateItem();
     }
 }

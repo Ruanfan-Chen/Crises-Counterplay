@@ -10,6 +10,8 @@ public abstract class PassiveItem : MonoBehaviour
 public abstract class ActiveItem : MonoBehaviour
 {
     public abstract void Activate();
+
+    public abstract float GetChargeProgress();
 }
 
 public interface IProjectileModifier
