@@ -55,7 +55,6 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        //Player player = m_player.GetComponent<Player>();
         LoadLevel(m_levelNum);
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;

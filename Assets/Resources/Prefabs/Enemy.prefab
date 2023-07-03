@@ -45,6 +45,8 @@ GameObject:
   - component: {fileID: -5177668855911468056}
   - component: {fileID: 3750545958797834843}
   - component: {fileID: 1405297605503463404}
+  - component: {fileID: 8035076195716410220}
+  - component: {fileID: 3598779051408476155}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -181,3 +183,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 73d986382fed6b94898e619a7d3cbd2a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!95 &8035076195716410220
+Animator:
+  serializedVersion: 5
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6230283339830946825}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 72fca4befc2f6459389dec583ebe0ead, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &3598779051408476155
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6230283339830946825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d6d5e7ecaae44bbfbd5a1111e4200eb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_minSpeed: 0.8
+  m_maxSpeed: 1.2

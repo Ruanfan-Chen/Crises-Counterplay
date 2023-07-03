@@ -2010,6 +2010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b48241c71fbf03046a5926d74ac59569, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  character: {fileID: 0}
 --- !u!114 &1713116187
 MonoBehaviour:
   m_ObjectHideFlags: 0
