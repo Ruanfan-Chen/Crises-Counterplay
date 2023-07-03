@@ -23,7 +23,7 @@ public class EnemySpawn : MonoBehaviour
         {
             position = new Vector3(Random.Range(-mapScale.x/2, mapScale.x/2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
         } while (!mapManager.IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
-        GameObject enemy = Enemy.Instantiate(position, new Quaternion());
+        GameObject enemy = Enemy.Instantiate(position, Quaternion.identity);
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
         switch (Random.Range(0, 4))
         {

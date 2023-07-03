@@ -30,7 +30,7 @@ public class ActiveItem_2 : ActiveItem
     {
         view = new GameObject("DashView");
         view.transform.SetParent(gameObject.transform);
-        view.transform.SetLocalPositionAndRotation(Vector3.zero, new Quaternion());
+        view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         viewScript = view.AddComponent<ViewBehavior>();
         viewScript.SetRepelVehicle(false);
         viewTrigger = view.AddComponent<CircleCollider2D>();
