@@ -9,14 +9,17 @@ public class ElectricField : MonoBehaviour
     private static string prefabPath = "Prefabs/ElectricField";
 
     private GameObject character;
-    private float radius;
-    private float damage;
+    [SerializeField] private float radius;
+    [SerializeField] private float damage;
+    private bool m_isInRange = false;
 
     public GameObject GetCharacter() { return character; }
 
     public void SetCharacter(GameObject value) { character = value; }
 
     public float GetRadius() { return radius; }
+
+    public void SetIsInRange(bool value) { m_isInRange = value; }
 
     public void SetRadius(float value)
     {
@@ -32,8 +35,22 @@ public class ElectricField : MonoBehaviour
     {
         float centerDistance = (character.transform.position - transform.position).magnitude;
         float characterRadius = character.GetComponent<CircleCollider2D>().radius;
-        if (radius - characterRadius < centerDistance && centerDistance < radius + characterRadius)
-            new Damage(gameObject, null, character.GetComponent<IDamageable>(), damage).Apply();
+        //if (radius - characterRadius < centerDistance && centerDistance < radius + characterRadius)
+        //    new Damage(gameObject, null, character.GetComponent<IDamageable>(), damage).Apply();
+        if (m_isInRange)
+        {
+            if(centerDistance > radius - characterRadius)
+            {
+                //push back to the field and do damage
+            }
+        }
+        else
+        {
+            if(centerDistance < radius + characterRadius)
+            {
+                //push out and do damage
+            }
+        }
     }
 
     public static IEnumerator Instantiate(GameObject character, Vector3 position, float traceDuration, float delay, float radius, float electricFieldDuration, float damage)
@@ -48,6 +65,27 @@ public class ElectricField : MonoBehaviour
         driverScript.SetCharacter(character);
         driverScript.SetRadius(radius);
         driverScript.SetDamage(damage);
+
+        float distance = (character.transform.position - position).magnitude;
+        float characterRadius = character.GetComponent<CircleCollider2D>().radius;
+
+        //in the field
+        if (distance < radius - characterRadius)
+        {
+            driverScript.SetIsInRange(true);
+        }
+        //touching the field
+        else if(distance < radius + characterRadius)
+        {
+            //push out to the field
+
+            driverScript.SetIsInRange(false);
+        }
+        else
+        {
+            driverScript.SetIsInRange(false);
+        }
+
         DestroyOutOfTime destroyScript = electricField.GetComponent<DestroyOutOfTime>();
         destroyScript.SetTimer(electricFieldDuration);
         destroyScript.Activate();

@@ -40,7 +40,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         if (damage.GetMedium())
             sourcePos = damage.GetMedium().transform.position;
         StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
-        StartCoroutine(Utility.ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
+        //StartCoroutine(Utility.ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
