@@ -43,7 +43,7 @@ public class Vehicle : MonoBehaviour
         script.SetSpeed(speed);
         script.SetContactDamage(contactDamage);
         script.SetHostility(hostility);
-        vehicle.AddComponent<DestroyOutOfBounds>();
+        vehicle.GetComponent<DestroyOutOfBounds>().SetOffset(-1.0f);
     }
 
 

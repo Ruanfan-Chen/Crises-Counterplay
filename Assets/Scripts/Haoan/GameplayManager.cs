@@ -40,7 +40,7 @@ public class GameplayManager : MonoBehaviour
 
     public Character GetCharacter()
     {
-        return GetCharacterObject().GetComponent<Character>();
+        return GetCharacterObject() ? GetCharacterObject().GetComponent<Character>() : null;
     }
 
     struct Item
