@@ -1695,10 +1695,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 92580d8f950bb9d45be8a741be13b2eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_widthNum: 0
-  m_heightNum: 0
-  m_floorPrefab: {fileID: 470404156433802664, guid: 9ee059ce11a9bad4cad3f024f234bff9, type: 3}
-  m_player: {fileID: 1713116184}
+  m_widthNum: 30
+  m_heightNum: 20
+  m_wasd: {fileID: 3939680195493970209, guid: 8357caf99df4242feb02d3e5a94c564f, type: 3}
+  m_tilePrefab: {fileID: 6155072850709128335, guid: 8c739a45968404bec8c51cf4178e4bd1, type: 3}
   m_sprite: {fileID: 21300000, guid: bb87efd8125e54b4291caf5821589bfd, type: 3}
 --- !u!114 &1151485482
 MonoBehaviour:

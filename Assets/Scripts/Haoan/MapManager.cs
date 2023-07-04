@@ -7,15 +7,9 @@ public class MapManager : MonoBehaviour
 {
     [SerializeField] private int m_widthNum;
     [SerializeField] private int m_heightNum;
-    int m_gridSize = 16;
-    int m_xLower;
-    int m_yLower;
-    int m_xUpper;
-    int m_yUpper;
     Vector2 m_size;
-
-    [SerializeField] GameObject m_floorPrefab;
-    [SerializeField] private GameObject m_player;
+    [SerializeField] GameObject m_wasd;
+    [SerializeField] GameObject m_tilePrefab;
     [SerializeField] private Sprite m_sprite;
     private SpriteRenderer m_spriteRenderer;
 
@@ -24,23 +18,36 @@ public class MapManager : MonoBehaviour
 
     void Start()
     {
-        m_xLower = -m_widthNum * m_gridSize;
-        m_xUpper = m_widthNum * m_gridSize;
-        m_yLower = -m_heightNum * m_gridSize;
-        m_yUpper = m_heightNum * m_gridSize;
     }
 
     public void CreateMap()
     {
-        m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        if (!m_spriteRenderer)
+        //m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        //if (!m_spriteRenderer)
+        //{
+        //    m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        //}
+        //transform.position = new Vector3(0.0f, 0.0f, 0.5f);
+        //m_spriteRenderer.sprite = m_sprite;
+        //transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
+        //m_size = new Vector2(60.7f, 30.4f);
+        CreateMapByTile();
+    }
+
+    public void CreateMapByTile()
+    {
+        for(int x = -m_widthNum; x <= m_widthNum; x++)
         {
-            m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+            for (int y = -m_heightNum; y <= m_heightNum; y++)
+            {
+                Vector3 tilePosition = new Vector3(x, y, 0.5f);
+                GameObject newTile = Instantiate(m_tilePrefab, tilePosition, Quaternion.identity);
+                newTile.transform.parent = transform;
+            }
         }
-        transform.position = new Vector3(0.0f, 0.0f, 0.5f);
-        m_spriteRenderer.sprite = m_sprite;
-        transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
-        m_size = new Vector2(60.7f, 30.4f);
+        Vector3 wasdPosition = new Vector3(0f, 0f, 0.5f);
+        GameObject wasd = Instantiate(m_wasd, wasdPosition, Quaternion.identity);
+        m_size = new Vector2(2 * m_widthNum + 1, 2 * m_heightNum + 1);
     }
 
     public void LoadLevel(int levelNum)
