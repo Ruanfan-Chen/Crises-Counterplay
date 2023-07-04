@@ -45,7 +45,11 @@ public class ActiveItem_2_0 : ActiveItem
         if (i == 0)
             charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
         else
+        {
             charge = Mathf.Clamp(charge - i * costRate * Time.deltaTime, 0.0f, maxCharge);
+            if (charge <= 0.0f)
+                Deactivate();
+        }
         //float val = Mathf.Clamp(timer, 0.0f, cooldown);
         //timerText.text = Mathf.Round(val).ToString() + "s";
     }
