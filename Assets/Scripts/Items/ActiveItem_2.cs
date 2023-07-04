@@ -49,7 +49,7 @@ public class ActiveItem_2 : ActiveItem
     {
         if (IsUsable())
         {
-            StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), dashDuration));
+            StartCoroutine(Utility.AddAndRemoveComponent<Invulnerable>(gameObject, dashDuration));
             StartCoroutine(RepelVehicles(dashDuration));
             StartCoroutine(Utility.ForcedMovement(transform.parent, (viewScript.GetCurrentCollisions()[0].transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
             charge -= cost;

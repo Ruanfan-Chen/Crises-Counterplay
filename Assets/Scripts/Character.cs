@@ -35,7 +35,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void ReceiveDamage(Damage damage)
     {
-        if (GetComponent<Invulnerable>()) return;
+        if (GetComponent<IInvulnerable>() == null) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
         IEnumerator coroutine = damage.GetCoroutine();
@@ -49,7 +49,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
             coroutine = ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg);
         }
         StartCoroutine(coroutine);
-        StartCoroutine(AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
+        StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, invDurationOnDmg));
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
@@ -85,27 +85,19 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         }
         return false;
     }
-    public PassiveItem GivePassiveItem<T>()
+    public PassiveItem GiveItem<T>() where T : PassiveItem
     {
-        if (typeof(PassiveItem).IsAssignableFrom(typeof(T)))
-        {
-            PassiveItem item = (PassiveItem)gameObject.AddComponent(typeof(T));
-            passiveItems.Add(item);
-            return item;
-        }
-        return default;
+        PassiveItem item = gameObject.AddComponent<T>();
+        passiveItems.Add(item);
+        return item;
     }
 
-    public ActiveItem GiveActiveItem<T>(KeyCode keyCode)
+    public ActiveItem GiveItem<T>(KeyCode keyCode) where T : ActiveItem
     {
-        if (typeof(ActiveItem).IsAssignableFrom(typeof(T)))
-        {
-            RemoveItem(keyCode);
-            ActiveItem item = (ActiveItem)gameObject.AddComponent(typeof(T));
-            activeItems.Add(keyCode, item);
-            return item;
-        }
-        return default;
+        RemoveItem(keyCode);
+        ActiveItem item = gameObject.AddComponent<T>();
+        activeItems.Add(keyCode, item);
+        return item;
     }
     public void ActivateItem(KeyCode keyCode)
     {
@@ -125,7 +117,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GivePassiveItem<PassiveItem_Weapon_0>();
+        GiveItem<PassiveItem_Weapon_0>();
     }
 
     void Update()

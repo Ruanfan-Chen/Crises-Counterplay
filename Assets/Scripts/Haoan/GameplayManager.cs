@@ -123,7 +123,7 @@ public class GameplayManager : MonoBehaviour
                     {
                         if (c)
                         {
-                            c.GiveActiveItem<ActiveItem_2>(KeyCode.K);
+                            c.GiveItem<ActiveItem_2>(KeyCode.K);
                             m_activeK.SetActive(true);
                         }
                     };
@@ -146,7 +146,7 @@ public class GameplayManager : MonoBehaviour
                     {
                         if (c)
                         {
-                            c.GivePassiveItem<PassiveItem_0>();
+                            c.GiveItem<PassiveItem_0>();
                         }
                     };
                     break;
@@ -237,7 +237,7 @@ public class GameplayManager : MonoBehaviour
             case 2:
                 if (GetCharacter())
                 {
-                    GetCharacter().GiveActiveItem<ActiveItem_2>(KeyCode.K);
+                    GetCharacter().GiveItem<ActiveItem_2>(KeyCode.K);
                     m_activeK.SetActive(true);
                 }
                 break;
@@ -249,7 +249,7 @@ public class GameplayManager : MonoBehaviour
                 LoadLevel(3);
                 if (GetCharacter())
                 {
-                    GetCharacter().GivePassiveItem<PassiveItem_0>();
+                    GetCharacter().GiveItem<PassiveItem_0>();
                 }
                 break;
         }

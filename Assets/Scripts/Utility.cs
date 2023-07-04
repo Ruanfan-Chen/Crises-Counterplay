@@ -31,9 +31,9 @@ public static class Utility
         }
     }
 
-    public static IEnumerator AddAndRemoveComponent(GameObject gameObject, System.Type componentType, float duration)
+    public static IEnumerator AddAndRemoveComponent<T>(GameObject gameObject, float duration) where T : Component
     {
-        Component component = gameObject.AddComponent(componentType);
+        T component = gameObject.AddComponent<T>();
         yield return new WaitForSeconds(duration);
         Object.Destroy(component);
     }
