@@ -22,16 +22,20 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
-        //m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
-        //if (!m_spriteRenderer)
-        //{
-        //    m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
-        //}
-        //transform.position = new Vector3(0.0f, 0.0f, 0.5f);
-        //m_spriteRenderer.sprite = m_sprite;
-        //transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
-        //m_size = new Vector2(60.7f, 30.4f);
-        CreateMapByTile();
+        CreateMapBySprite();
+    }
+
+    public void CreateMapBySprite()
+    {
+        m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        if (!m_spriteRenderer)
+        {
+            m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>() as SpriteRenderer;
+        }
+        transform.position = new Vector3(0.0f, 0.0f, 0.5f);
+        m_spriteRenderer.sprite = m_sprite;
+        transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
+        m_size = new Vector2(60.7f, 30.4f);
     }
 
     public void CreateMapByTile()
