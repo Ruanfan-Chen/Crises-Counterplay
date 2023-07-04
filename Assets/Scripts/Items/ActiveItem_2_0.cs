@@ -5,23 +5,28 @@ using UnityEngine;
 
 public class ActiveItem_2_0 : ActiveItem
 {
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private GameObject view;
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
     private float viewRadius = 10.0f;
-    private float timer = 0.0f;
-    private float cooldown = 3.0f;
-    [SerializeField] private TextMeshProUGUI timerText;
+    private float maxCharge = 5.0f;
+    private float charge = 5.0f;
+    private float costRate = 1.0f;
+    private List<Captured> scripts = new();
+    //[SerializeField] private TextMeshProUGUI timerText;
     private float orbitRadius = 5.0f;
 
-    private void Start()
-    {
-        GameObject cooldown = GameObject.Find("Cooldown");
-        if (cooldown != null)
-        {
-            timerText = cooldown.GetComponent<TextMeshProUGUI>();
-        }
-    }
+    //private void Start()
+    //{
+    //    //GameObject cooldown = GameObject.Find("Cooldown");
+    //    //if (cooldown != null)
+    //    //{
+    //    //    timerText = cooldown.GetComponent<TextMeshProUGUI>();
+    //    //}
+    //}
 
     void OnEnable()
     {
@@ -36,16 +41,19 @@ public class ActiveItem_2_0 : ActiveItem
     }
     void Update()
     {
-        timer -= Time.deltaTime;
-        float val = Mathf.Clamp(timer, 0.0f, cooldown);
-        timerText.text = Mathf.Round(val).ToString() + "s";
+        int i = scripts.Count;
+        if (i == 0)
+            charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
+        else
+            charge = Mathf.Clamp(charge - i * costRate * Time.deltaTime, 0.0f, maxCharge);
+        //float val = Mathf.Clamp(timer, 0.0f, cooldown);
+        //timerText.text = Mathf.Round(val).ToString() + "s";
     }
     public override void Activate()
     {
-        List<GameObject> targets = viewScript.GetCurrentCollsions();
-        if (targets.Count > 0 && timer <= 0.0f)
+        if (IsUsable())
         {
-            foreach (GameObject vehicle in targets)
+            foreach (GameObject vehicle in viewScript.GetCurrentCollisions())
             {
                 if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
                 {
@@ -53,32 +61,59 @@ public class ActiveItem_2_0 : ActiveItem
                     Captured script = vehicle.AddComponent<Captured>();
                     script.SetCenter(gameObject);
                     script.SetOrbitRadius(orbitRadius);
+                    scripts.Add(script);
                 }
             };
-            timer = cooldown;
         }
+    }
+
+    public override void Deactivate()
+    {
+        foreach (Captured script in scripts)
+            Destroy(script);
+        scripts.Clear();
     }
 
     public override float GetChargeProgress()
     {
-        throw new System.NotImplementedException();
+        return charge / maxCharge;
+    }
+
+    public override bool IsUsable()
+    {
+        return charge > 0.0f && viewScript.GetCurrentCollisions().Count > 0;
+    }
+
+    public override string GetDescription()
+    {
+        return description;
+    }
+
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
     }
 
     private class ViewBehavior : MonoBehaviour
     {
-        private List<GameObject> currentCollsions = new();
+        private List<GameObject> currentCollisions = new();
 
-        public List<GameObject> GetCurrentCollsions() { return currentCollsions; }
+        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.GetComponent<Vehicle>() != null)
-                currentCollsions.Add(collision.gameObject);
+                currentCollisions.Add(collision.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            currentCollsions.Remove(collision.gameObject);
+            currentCollisions.Remove(collision.gameObject);
         }
     }
 

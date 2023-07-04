@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 {
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private GameObject view;
     private ViewBehavior viewScript;
     private PolygonCollider2D viewTrigger;
@@ -69,6 +73,21 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
         DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
         timer.SetTimer(range / projectileSpeed);
         timer.Activate();
+    }
+
+    public override string GetDescription()
+    {
+        return description;
+    }
+
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
     }
 
     private class ViewBehavior : MonoBehaviour

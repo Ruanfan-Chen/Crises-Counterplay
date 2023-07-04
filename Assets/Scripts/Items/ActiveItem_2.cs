@@ -1,11 +1,12 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class ActiveItem_2 : ActiveItem
 {
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private GameObject view;
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
@@ -13,18 +14,18 @@ public class ActiveItem_2 : ActiveItem
     private float initialDashSpeed = 50.0f;
     private float dashDistance = 5.0f;
     private float dashDuration = 0.5f;
-    private float timer = 0.0f;
-    private float cooldown = 3.0f;
-    [SerializeField] private TextMeshProUGUI timerText;
+    private float charge = 3.0f;
+    private float cost = 3.0f;
+    //[SerializeField] private TextMeshProUGUI timerText;
 
-    private void Start()
-    {
-        GameObject cooldown = GameObject.Find("Cooldown");
-        if (cooldown != null)
-        {
-            timerText = cooldown.GetComponent<TextMeshProUGUI>();
-        }
-    }
+    //private void Start()
+    //{
+    //    //GameObject cooldown = GameObject.Find("Cooldown");
+    //    //if (cooldown != null)
+    //    //{
+    //    //    timerText = cooldown.GetComponent<TextMeshProUGUI>();
+    //    //}
+    //}
 
     void OnEnable()
     {
@@ -40,19 +41,18 @@ public class ActiveItem_2 : ActiveItem
     }
     void Update()
     {
-        timer -= Time.deltaTime;
-        float val = Mathf.Clamp(timer, 0.0f, cooldown);
-        timerText.text = Mathf.Round(val).ToString() + "s";
+        charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, cost);
+        //float val = Mathf.Clamp(timer, 0.0f, cooldown);
+        //timerText.text = Mathf.Round(val).ToString() + "s";
     }
     public override void Activate()
     {
-        List<GameObject> targets = viewScript.GetCurrentCollisions();
-        if (targets.Count > 0 && timer <= 0.0f)
+        if (IsUsable())
         {
             StartCoroutine(Utility.AddAndRemoveComponent(gameObject, typeof(Invulnerable), dashDuration));
             StartCoroutine(RepelVehicles(dashDuration));
-            StartCoroutine(Utility.ForcedMovement(transform.parent, (targets[0].transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
-            timer = cooldown;
+            StartCoroutine(Utility.ForcedMovement(transform.parent, (viewScript.GetCurrentCollisions()[0].transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
+            charge -= cost;
         }
     }
 
@@ -63,9 +63,31 @@ public class ActiveItem_2 : ActiveItem
         viewScript.SetRepelVehicle(false);
     }
 
+    public override void Deactivate() { }
+
     public override float GetChargeProgress()
     {
-        throw new NotImplementedException();
+        return charge / cost;
+    }
+
+    public override bool IsUsable()
+    {
+        return charge >= cost && viewScript.GetCurrentCollisions().Count > 0;
+    }
+
+    public override string GetDescription()
+    {
+        return description;
+    }
+
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
     }
 
     private class ViewBehavior : MonoBehaviour

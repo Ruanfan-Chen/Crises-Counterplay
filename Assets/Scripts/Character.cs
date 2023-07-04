@@ -134,6 +134,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         {
             if (Input.GetKeyDown(keyValuePair.Key))
                 keyValuePair.Value.Activate();
+            if (Input.GetKeyUp(keyValuePair.Key))
+                keyValuePair.Value.Deactivate();
         }
     }
 }

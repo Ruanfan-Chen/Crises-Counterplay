@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 public class PassiveItem_0 : PassiveItem
 {
     private static string prefabPath = "Prefabs/Footprint";
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private Vector3 prevPos;
     private float stepsize;
     private float minStepsize = 0.5f;
@@ -33,6 +37,22 @@ public class PassiveItem_0 : PassiveItem
             stepsize = Random.Range(minStepsize, maxStepsize);
         }
     }
+
+    public override string GetDescription()
+    {
+        return description;
+    }
+
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
+    }
+
     private class Footprint : MonoBehaviour
     {
         private float alpha = 1.0f;

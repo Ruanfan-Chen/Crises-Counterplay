@@ -5,6 +5,9 @@ using UnityEngine;
 public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
 {
     private static string prefabPath = "Prefabs/Footprint";
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private GameObject projectile;
     private ProjectileBehavior projectilScript;
     private GameObject view;
@@ -76,34 +79,48 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
     {
         if (projectilScript.GetTarget() == gameObject)
         {
-            List<GameObject> targetList = viewScript.GetCurrentCollsions();
-            targetList.Remove(gameObject);
-            if (targetList.Count == 0)
+            viewScript.GetCurrentCollisions().Remove(gameObject);
+            if (viewScript.GetCurrentCollisions().Count == 0)
             {
                 projectilScript.SetTarget(gameObject);
                 return;
             }
-            projectilScript.SetTarget(targetList[Random.Range(0, targetList.Count)]);
+            projectilScript.SetTarget(viewScript.GetCurrentCollisions()[Random.Range(0, viewScript.GetCurrentCollisions().Count)]);
         }
         else
             projectilScript.SetTarget(gameObject);
     }
 
+    public override string GetDescription()
+    {
+        return description;
+    }
+
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
+    }
+
     private class ViewBehavior : MonoBehaviour
     {
-        private List<GameObject> currentCollsions = new();
+        private List<GameObject> currentCollisions = new();
 
-        public List<GameObject> GetCurrentCollsions() { return currentCollsions; }
+        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
             if (collision.GetComponent<IDamageable>() != null)
-                currentCollsions.Add(collision.gameObject);
+                currentCollisions.Add(collision.gameObject);
         }
 
         private void OnTriggerExit2D(Collider2D collision)
         {
-            currentCollsions.Remove(collision.gameObject);
+            currentCollisions.Remove(collision.gameObject);
         }
     }
 
