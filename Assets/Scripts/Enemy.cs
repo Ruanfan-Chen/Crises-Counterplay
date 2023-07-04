@@ -81,7 +81,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
     }
 
-    public void Modify(GameObject projectile)
+    void IProjectileModifier.Modify(GameObject projectile)
     {
         projectile.AddComponent<Projectile.DamageOnCollision>().SetDamage(damage);
         Projectile script = projectile.GetComponent<Projectile>();
