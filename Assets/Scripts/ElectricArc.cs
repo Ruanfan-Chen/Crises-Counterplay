@@ -7,21 +7,22 @@ using static Utility;
 public class ElectricArc : MonoBehaviour
 {
     public static readonly float maxLength = 5.0f;
-    private Vehicle vehicle;
+    private GameObject vehicle;
     private ElectricField electricField;
 
     void Update()
     {
         LineRenderer lineRenderer = GetComponent<LineRenderer>();
-        lineRenderer.SetPosition(0, vehicle.transform.position);
-        lineRenderer.SetPosition(1, GetEFEndpoint());
+        Vector3 endpoint = GetEFEndpoint();
+        lineRenderer.SetPosition(0, vehicle.GetComponent<Collider2D>().ClosestPoint(endpoint));
+        lineRenderer.SetPosition(1, endpoint);
     }
     private Vector3 GetEFEndpoint()
     {
         return GetEFEndpoint(vehicle.transform.position, electricField.transform.position, electricField.GetRadius());
     }
 
-    public static GameObject Instantiate(Vehicle vehicle, ElectricField electricField)
+    public static GameObject Instantiate(GameObject vehicle, ElectricField electricField)
     {
         GameObject electricArcObj = DrawLine("ElectricArc", vehicle.transform.position, GetEFEndpoint(vehicle.transform.position, electricField.transform.position, electricField.GetRadius()), Color.yellow);
         ElectricArc script = electricArcObj.AddComponent<ElectricArc>();

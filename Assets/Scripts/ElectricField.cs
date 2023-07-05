@@ -32,7 +32,7 @@ public class ElectricField : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<Vehicle>() != null)
-            currentArc.Add(collision, ElectricArc.Instantiate(collision.GetComponent<Vehicle>(), this));
+            currentArc.Add(collision, ElectricArc.Instantiate(collision.gameObject, this));
     }
 
     private void OnTriggerExit2D(Collider2D collision)
