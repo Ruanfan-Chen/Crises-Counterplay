@@ -57,8 +57,10 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 
     private void UpdateCollider()
     {
-        List<Vector2> points = new();
-        points.Add(Vector2.zero);
+        List<Vector2> points = new()
+        {
+            Vector2.zero
+        };
         for (float i = 0; i <= interpolationDensity; i++)
         {
             points.Add(range * (Quaternion.Euler(0, 0, (i / interpolationDensity - 0.5f) * angleOfView) * Vector3.up));

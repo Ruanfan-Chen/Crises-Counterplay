@@ -64,8 +64,8 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-        Vector2 mapScale = GetComponent<MapManager>().GetMapScale();
-        Vector3 position = new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
+        Bounds bound = GetComponent<MapManager>().GetMapBounds(5.0f);
+        Vector3 position = new(Random.Range(bound.min.x, bound.max.x), Random.Range(bound.min.y, bound.max.y), 0);
         StartCoroutine(ElectricField.Instantiate(m_player.GetComponent<Player>().GetCharacter(), position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 

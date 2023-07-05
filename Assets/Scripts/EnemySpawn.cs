@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
@@ -18,11 +19,11 @@ public class EnemySpawn : MonoBehaviour
     {
         Vector3 position;
         MapManager mapManager = GetComponent<MapManager>();
-        Vector2 mapScale = mapManager.GetMapScale();
+        Bounds bounds = mapManager.GetMapBounds(offset);
         do
         {
-            position = new Vector3(Random.Range(-mapScale.x/2, mapScale.x/2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
-        } while (!mapManager.IsInMap(position, offset) || (position - player.transform.position).magnitude <= offset);
+            position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);
+        } while ((position - player.transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, Quaternion.identity);
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
         switch (Random.Range(0, 4))
