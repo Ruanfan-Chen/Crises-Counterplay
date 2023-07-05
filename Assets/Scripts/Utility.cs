@@ -5,6 +5,7 @@ using UnityEngine;
 
 public static class Utility
 {
+    static string DEAFULT_LINE_SHADER_PATH = "Legacy Shaders/Particles/Alpha Blended Premultiply";
     public static T WeightedRandom<T>(Dictionary<T, float> weightDict)
     {
         float r = Random.Range(0.0f, weightDict.Sum(kvp => kvp.Value));
@@ -99,6 +100,10 @@ public static class Utility
         GameObject lineObj = new GameObject(name);
         lineObj.tag = "Disposable";
         LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+        //Use Dedault-Line Material
+        lineRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
+
         //Set color
         lineRenderer.startColor = color;
         lineRenderer.endColor = color;
@@ -122,8 +127,8 @@ public static class Utility
         lineObj.tag = "Disposable";
         LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
 
-        //Particles/Additive
-        lineRenderer.material = new Material(Shader.Find("Hidden/Internal-Colored"));
+        //Use Dedault-Line Material
+        lineRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
 
         //Set color
         lineRenderer.startColor = color;
