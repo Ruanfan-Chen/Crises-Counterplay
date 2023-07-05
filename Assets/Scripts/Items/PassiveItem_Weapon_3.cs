@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Utility;
 
 public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
 {
@@ -11,7 +13,6 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
     private GameObject projectile;
     private ProjectileBehavior projectilScript;
     private GameObject view;
-    private ViewBehavior viewScript;
     private PolygonCollider2D viewTrigger;
     private float range = 10.0f;
     private float angleOfView = 120.0f;
@@ -41,7 +42,6 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
         view = new GameObject("WeaponView");
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        viewScript = view.AddComponent<ViewBehavior>();
         viewTrigger = view.AddComponent<PolygonCollider2D>();
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
@@ -58,7 +58,6 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
     {
         Destroy(projectile);
         view = null;
-        viewScript = null;
         viewTrigger = null;
         projectile = null;
         projectilScript = null;
@@ -77,18 +76,14 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
 
     public void UpdateTarget()
     {
-        if (projectilScript.GetTarget() == gameObject)
+        if (projectilScript.GetTarget() != gameObject)
         {
-            viewScript.GetCurrentCollisions().Remove(gameObject);
-            if (viewScript.GetCurrentCollisions().Count == 0)
-            {
-                projectilScript.SetTarget(gameObject);
-                return;
-            }
-            projectilScript.SetTarget(viewScript.GetCurrentCollisions()[Random.Range(0, viewScript.GetCurrentCollisions().Count)]);
-        }
-        else
             projectilScript.SetTarget(gameObject);
+            return;
+        }
+        IEnumerable<GameObject> others = OverlapDamageable().Where(damageable => damageable != gameObject);
+        if (others.Count() > 0)
+            projectilScript.SetTarget(others.ElementAt(Random.Range(0, others.Count())));
     }
 
     public override string GetDescription()
@@ -106,24 +101,10 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
         return itemName;
     }
 
-    private class ViewBehavior : MonoBehaviour
+    private IEnumerable<GameObject> OverlapDamageable()
     {
-        private List<GameObject> currentCollisions = new();
-
-        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.GetComponent<IDamageable>() != null)
-                currentCollisions.Add(collision.gameObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            currentCollisions.Remove(collision.gameObject);
-        }
+        return OverlapGameObject(view, collider => collider.GetComponent<IDamageable>() != null);
     }
-
     private class ProjectileBehavior : MonoBehaviour
     {
         private GameObject target;

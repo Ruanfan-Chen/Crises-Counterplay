@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Utility;
 
 public class ActiveItem_2 : ActiveItem
 {
@@ -49,9 +51,9 @@ public class ActiveItem_2 : ActiveItem
     {
         if (IsUsable())
         {
-            StartCoroutine(Utility.AddAndRemoveComponent<Invulnerable>(gameObject, dashDuration));
+            StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, dashDuration));
             StartCoroutine(RepelVehicles(dashDuration));
-            StartCoroutine(Utility.ForcedMovement(transform.parent, (viewScript.GetCurrentCollisions()[0].transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
+            StartCoroutine(ForcedMovement(transform.parent, (OverlapVehicle().ElementAt(Random.Range(0, OverlapVehicle().Count())).transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
             charge -= cost;
         }
     }
@@ -72,7 +74,7 @@ public class ActiveItem_2 : ActiveItem
 
     public override bool IsUsable()
     {
-        return charge >= cost && viewScript.GetCurrentCollisions().Count > 0;
+        return charge >= cost && OverlapVehicle().Count() > 0;
     }
 
     public override string GetDescription()
@@ -90,33 +92,23 @@ public class ActiveItem_2 : ActiveItem
         return itemName;
     }
 
+    private IEnumerable<GameObject> OverlapVehicle() {
+        return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
+    }
+
     private class ViewBehavior : MonoBehaviour
     {
-        private List<GameObject> currentCollisions = new();
         private bool repelVehicle;
 
         public bool GetRepelVehicle() { return repelVehicle; }
 
         public void SetRepelVehicle(bool value) { repelVehicle = value; }
 
-        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.GetComponent<Vehicle>() != null)
-                currentCollisions.Add(collision.gameObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            currentCollisions.Remove(collision.gameObject);
-        }
-
         void Update()
         {
             if (repelVehicle)
             {
-                foreach (GameObject vehicle in currentCollisions)
+                foreach (GameObject vehicle in OverlapGameObject(gameObject, collider=>collider.GetComponent<Vehicle>()))
                 {
                     if (vehicle.GetComponent<Vehicle>().GetHostility())
                     {

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ public static class Utility
     static string DEAFULT_LINE_SHADER_PATH = "Legacy Shaders/Particles/Alpha Blended Premultiply";
     public static T WeightedRandom<T>(Dictionary<T, float> weightDict)
     {
-        float r = Random.Range(0.0f, weightDict.Sum(kvp => kvp.Value));
+        float r = UnityEngine.Random.Range(0.0f, weightDict.Sum(kvp => kvp.Value));
         foreach (KeyValuePair<T, float> kvp in weightDict)
         {
             if (r <= kvp.Value)
@@ -36,7 +37,7 @@ public static class Utility
     {
         T component = gameObject.AddComponent<T>();
         yield return new WaitForSeconds(duration);
-        Object.Destroy(component);
+        UnityEngine.Object.Destroy(component);
     }
 
     public class BiDictionary<T, U>
@@ -150,5 +151,11 @@ public static class Utility
             lineRenderer.SetPosition(i, center + Quaternion.Euler(0.0f, 0.0f, 360 * i / erpDensity) * Vector3.up * radius);
         }
         return lineObj;
+    }
+
+    public static IEnumerable<GameObject> OverlapGameObject(GameObject gameObject, Func<Collider2D, bool> predicate) {
+        List<Collider2D> colliders = new();
+        gameObject.GetComponent<Collider2D>().OverlapCollider(new ContactFilter2D().NoFilter(), colliders);
+        return colliders.Where(predicate).Select(collider => collider.gameObject);
     }
 }

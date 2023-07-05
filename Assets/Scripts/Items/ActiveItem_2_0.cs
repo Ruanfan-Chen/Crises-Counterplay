@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using TMPro;
+using System.Linq;
 using UnityEngine;
+using static Utility;
 
 public class ActiveItem_2_0 : ActiveItem
 {
@@ -9,7 +10,6 @@ public class ActiveItem_2_0 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Resources/Placeholder";
     private GameObject view;
-    private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
     private float viewRadius = 10.0f;
     private float maxCharge = 5.0f;
@@ -33,7 +33,6 @@ public class ActiveItem_2_0 : ActiveItem
         view = new GameObject("CaptureView");
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, new Quaternion());
-        viewScript = view.AddComponent<ViewBehavior>();
         viewTrigger = view.AddComponent<CircleCollider2D>();
         viewTrigger.radius = viewRadius;
         viewTrigger.isTrigger = true;
@@ -57,7 +56,7 @@ public class ActiveItem_2_0 : ActiveItem
     {
         if (IsUsable())
         {
-            foreach (GameObject vehicle in viewScript.GetCurrentCollisions())
+            foreach (GameObject vehicle in OverlapVehicle())
             {
                 if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
                 {
@@ -85,7 +84,7 @@ public class ActiveItem_2_0 : ActiveItem
 
     public override bool IsUsable()
     {
-        return charge > 0.0f && viewScript.GetCurrentCollisions().Count > 0;
+        return charge > 0.0f && OverlapVehicle().Count() > 0;
     }
 
     public override string GetDescription()
@@ -103,22 +102,8 @@ public class ActiveItem_2_0 : ActiveItem
         return itemName;
     }
 
-    private class ViewBehavior : MonoBehaviour
-    {
-        private List<GameObject> currentCollisions = new();
-
-        public List<GameObject> GetCurrentCollisions() { return currentCollisions; }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.GetComponent<Vehicle>() != null)
-                currentCollisions.Add(collision.gameObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            currentCollisions.Remove(collision.gameObject);
-        }
+    private IEnumerable<GameObject> OverlapVehicle() {
+        return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
     }
 
     private class Captured : MonoBehaviour

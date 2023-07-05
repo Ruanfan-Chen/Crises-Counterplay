@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
+using static Utility;
 
 public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
 {
@@ -50,7 +50,7 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
         projectile.AddComponent<CircleCollider2D>().radius = explosionRadius / projectile.transform.lossyScale.x;
         BombBehavior script = projectile.AddComponent<BombBehavior>();
         script.SetDamage(damage);
-        script.SetAccelration(-projectileSpeed * projectileSpeed / range /2.0f);
+        script.SetAccelration(-projectileSpeed * projectileSpeed / range / 2.0f);
         script.SetTimer(explosionDelay);
         projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
     }
@@ -75,7 +75,6 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
         private float damage;
         private float explosionTimer;
         private float accelration;
-        private List<GameObject> currentCollisions = new();
 
         public float GetDamage() { return damage; }
 
@@ -97,26 +96,16 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
             explosionTimer -= Time.deltaTime;
             if (explosionTimer <= 0.0f)
             {
-                foreach (GameObject g in currentCollisions.ToArray())
+                foreach (GameObject g in OverlapGameObject(gameObject, collision => collision.GetComponent<IDamageable>() != null))
                 {
                     IDamageable damageable = g.GetComponent<IDamageable>();
-                    if (damageable != null && damageable.GetHostility() != script.GetHostility())
+                    if (damageable.GetHostility() != script.GetHostility())
                     {
                         new Damage(script.GetSource(), gameObject, damageable, damage).Apply();
                     }
                 }
                 Destroy(gameObject);
             }
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            currentCollisions.Add(collision.gameObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            currentCollisions.Remove(collision.gameObject);
         }
     }
 }

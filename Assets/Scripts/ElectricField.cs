@@ -10,7 +10,6 @@ public class ElectricField : MonoBehaviour
     private GameObject character;
     private float radius;
     private float damage;
-    private Dictionary<Collider2D, GameObject> currentArc = new();
 
     public GameObject GetCharacter() { return character; }
 
@@ -22,7 +21,7 @@ public class ElectricField : MonoBehaviour
     {
         radius = value;
         transform.localScale = new Vector3(value * 2, value * 2, 1.0f);
-        GetComponent<CircleCollider2D>().radius = 1 + ElectricArc.maxLength / value;
+        GetComponent<CircleCollider2D>().radius = 0.5f + ElectricArc.maxLength / value / 2.0f;
     }
 
     public float GetDamage() { return damage; }
@@ -32,13 +31,7 @@ public class ElectricField : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.GetComponent<Vehicle>() != null)
-            currentArc.Add(collision, ElectricArc.Instantiate(collision.gameObject, this));
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (currentArc.TryGetValue(collision, out GameObject arc))
-            Destroy(arc);
+            ElectricArc.Instantiate(collision.gameObject, this);
     }
 
     void Update()
