@@ -48,12 +48,12 @@ public static class Utility
         public IReadOnlyDictionary<T, U> GetTUDict() { return TUDict; }
         public IReadOnlyDictionary<U, T> GetUTDict() { return UTDict; }
 
-        public U this[T t] { get => TUDict[t]; set { TUDict[t] = value; UTDict[value] = t; } }
-        public T this[U u] { get => UTDict[u]; set { UTDict[u] = value; TUDict[value] = u; } }
+        public U this[T t] { get => TUDict[t]; set => Add(t, value); }
+        public T this[U u] { get => UTDict[u]; set => Add(value, u); }
 
         public bool Remove(T t)
         {
-            if (TUDict.TryGetValue(t, out U u) && UTDict.ContainsKey(u))
+            if (TUDict.TryGetValue(t, out U u))
             {
                 TUDict.Remove(t);
                 UTDict.Remove(u);
@@ -64,7 +64,7 @@ public static class Utility
 
         public bool Remove(U u)
         {
-            if (UTDict.TryGetValue(u, out T t) && TUDict.ContainsKey(t))
+            if (UTDict.TryGetValue(u, out T t))
             {
                 UTDict.Remove(u);
                 TUDict.Remove(t);
@@ -85,6 +85,10 @@ public static class Utility
 
         public void Add(T t, U u)
         {
+            if (TUDict.ContainsKey(t))
+                Remove(t);
+            if (UTDict.ContainsKey(u))
+                Remove(u);
             TUDict[t] = u;
             UTDict[u] = t;
         }
@@ -153,7 +157,8 @@ public static class Utility
         return lineObj;
     }
 
-    public static IEnumerable<GameObject> OverlapGameObject(GameObject gameObject, Func<Collider2D, bool> predicate) {
+    public static IEnumerable<GameObject> OverlapGameObject(GameObject gameObject, Func<Collider2D, bool> predicate)
+    {
         List<Collider2D> colliders = new();
         gameObject.GetComponent<Collider2D>().OverlapCollider(new ContactFilter2D().NoFilter(), colliders);
         return colliders.Where(predicate).Select(collider => collider.gameObject);
