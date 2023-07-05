@@ -93,4 +93,57 @@ public static class Utility
             UTDict.Clear();
         }
     }
+
+    public static GameObject DrawLine(string name, Vector3 start, Vector3 end, Color color, float width = 0.2f)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.tag = "Disposable";
+        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+        //Set color
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+
+        //Set width
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        //Set line count which is 2
+        lineRenderer.positionCount = 2;
+
+        //Set the position of both two lines
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+        return lineObj;
+    }
+
+    public static GameObject DrawCircle(string name, Vector3 center, float radius, Color color, int erpDensity = 10, float width = 0.2f)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.tag = "Disposable";
+        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+        //Particles/Additive
+        lineRenderer.material = new Material(Shader.Find("Hidden/Internal-Colored"));
+
+        //Set color
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+
+        //Set width
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        //Set line count which is erpDensity
+        lineRenderer.positionCount = erpDensity;
+
+        //Connect loop
+        lineRenderer.loop = true;
+
+        //Set the positions
+        for (int i = 0; i < erpDensity; i++)
+        {
+            lineRenderer.SetPosition(i, center + Quaternion.Euler(0.0f, 0.0f, 360 * i / erpDensity) * Vector3.up * radius);
+        }
+        return lineObj;
+    }
 }

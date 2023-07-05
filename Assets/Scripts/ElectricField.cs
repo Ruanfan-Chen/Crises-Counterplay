@@ -41,10 +41,7 @@ public class ElectricField : MonoBehaviour
 
     public static IEnumerator Instantiate(GameObject character, Vector3 position, float traceDuration, float delay, float radius, float electricFieldDuration, float damage)
     {
-        foreach (LineDrawer lineDrawer in LineDrawer.DrawCircleInGameView(position, radius, Color.yellow))
-        {
-            lineDrawer.Destroy(traceDuration);
-        }
+        Destroy(DrawCircle("ElectricField", position, radius, Color.yellow), traceDuration);
         yield return new WaitForSeconds(delay);
         GameObject electricField = Instantiate(Resources.Load<GameObject>(prefabPath), position, Quaternion.identity);
         ElectricField driverScript = electricField.GetComponent<ElectricField>();

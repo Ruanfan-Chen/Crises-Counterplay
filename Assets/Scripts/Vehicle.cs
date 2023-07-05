@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Utility;
 
 public class Vehicle : MonoBehaviour
 {
@@ -51,14 +52,16 @@ public class Vehicle : MonoBehaviour
     {
         Vector3 bias = Quaternion.Euler(0, 0, 90) * (targetPos - startPos).normalized * vehicleWidth / 2;
 
-        LineDrawer lineDrawer1 = new LineDrawer();
-        lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
-        lineDrawer1.Destroy(duration);
-        //Debug.Log("Drew lines from p1 = " + traceStartVector1);
+        Destroy(DrawLine("VehicleTrace", startPos + bias, targetPos + bias, Color.green), duration);
+        Destroy(DrawLine("VehicleTrace", startPos - bias, targetPos - bias, Color.green), duration);
+        //LineDrawer lineDrawer1 = new LineDrawer();
+        //lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
+        //lineDrawer1.Destroy(duration);
+        ////Debug.Log("Drew lines from p1 = " + traceStartVector1);
 
-        LineDrawer lineDrawer2 = new LineDrawer();
-        lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
-        lineDrawer2.Destroy(duration);
+        //LineDrawer lineDrawer2 = new LineDrawer();
+        //lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
+        //lineDrawer2.Destroy(duration);
         //Debug.Log("Drew lines from p2 = " + traceStartVector2);
 
         // lineDrawer.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);

@@ -35,7 +35,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void ReceiveDamage(Damage damage)
     {
-        if (GetComponent<IInvulnerable>() == null) return;
+        if (GetComponent<IInvulnerable>() != null) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
         IEnumerator coroutine = damage.GetCoroutine();
