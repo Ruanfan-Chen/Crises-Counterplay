@@ -10,6 +10,7 @@ public class ElectricField : MonoBehaviour
     private GameObject character;
     private float radius;
     private float damage;
+    private Dictionary<Collider2D, GameObject> currentArc = new();
 
     public GameObject GetCharacter() { return character; }
 
@@ -21,11 +22,24 @@ public class ElectricField : MonoBehaviour
     {
         radius = value;
         transform.localScale = new Vector3(value * 2, value * 2, 1.0f);
+        GetComponent<CircleCollider2D>().radius = 1 + ElectricArc.maxLength / value;
     }
 
     public float GetDamage() { return damage; }
 
     public void SetDamage(float value) { damage = value; }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.GetComponent<Vehicle>() != null)
+            currentArc.Add(collision, ElectricArc.Instantiate(collision.GetComponent<Vehicle>(), this));
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (currentArc.TryGetValue(collision, out GameObject arc))
+            Destroy(arc);
+    }
 
     void Update()
     {
@@ -33,8 +47,8 @@ public class ElectricField : MonoBehaviour
         float characterRadius = character.GetComponent<CircleCollider2D>().radius;
         if (radius - characterRadius < centerDisplacement.magnitude && centerDisplacement.magnitude < radius + characterRadius)
         {
-            Vector3 displacement = Mathf.Sign(centerDisplacement.magnitude - radius) * Character.GetKnockbackDistanceOnDmg() * centerDisplacement.normalized;
-            IEnumerator coroutine = ForcedMovement(character.transform, displacement, Character.GetInitialKnockbackSpeedOnDmg(), Character.GetKnockbackDurationOnDmg());
+            Vector3 displacement = Mathf.Sign(centerDisplacement.magnitude - radius) * Character.knockbackDistanceOnDmg * centerDisplacement.normalized;
+            IEnumerator coroutine = ForcedMovement(character.transform, displacement, Character.initialKnockbackSpeedOnDmg, Character.knockbackDurationOnDmg);
             new Damage(gameObject, null, character.GetComponent<IDamageable>(), damage, coroutine).Apply();
         }
     }

@@ -10,10 +10,10 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     private static float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
     private BiDictionary<KeyCode, ActiveItem> activeItems = new();
-    private static float invDurationOnDmg = 0.7f;
-    private static float knockbackDurationOnDmg = 0.5f;
-    private static float knockbackDistanceOnDmg = 3.0f;
-    private static float initialKnockbackSpeedOnDmg = 50.0f;
+    public static readonly float invDurationOnDmg = 0.7f;
+    public static readonly float knockbackDurationOnDmg = 0.5f;
+    public static readonly float knockbackDistanceOnDmg = 3.0f;
+    public static readonly float initialKnockbackSpeedOnDmg = 50.0f;
 
     public float GetHealth() { return health; }
 
@@ -26,12 +26,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public static float GetMoveSpeed() { return moveSpeed; }
 
     public static void SetMoveSpeed(float value) { moveSpeed = value; }
-
-    public static float GetKnockbackDurationOnDmg() { return knockbackDurationOnDmg; }
-
-    public static float GetKnockbackDistanceOnDmg() { return knockbackDistanceOnDmg; }
-
-    public static float GetInitialKnockbackSpeedOnDmg() { return initialKnockbackSpeedOnDmg; }
 
     public void ReceiveDamage(Damage damage)
     {
