@@ -24,11 +24,6 @@ public class Vehicle : MonoBehaviour
 
     public void SetHostility(bool value) { hostility = value; }
 
-    void Start()
-    {
-        gameObject.tag = "Disposable";
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -37,38 +32,17 @@ public class Vehicle : MonoBehaviour
 
     public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float delay, float speed, float contactDamage, bool hostility)
     {
-        drawTraces(startPos, targetPos, Resources.Load<GameObject>(prefabPath).transform.lossyScale.x, traceDuration);
+        Vector3 bias = Quaternion.Euler(0, 0, 90) * (targetPos - startPos).normalized * Resources.Load<GameObject>(prefabPath).transform.lossyScale.x / 2;
+        Destroy(DrawLine("VehicleTrace", startPos + bias, targetPos + bias, Color.green), traceDuration);
+        Destroy(DrawLine("VehicleTrace", startPos - bias, targetPos - bias, Color.green), traceDuration);
         yield return new WaitForSeconds(delay);
         GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
+        vehicle.tag = "Disposable";
         Vehicle script = vehicle.GetComponent<Vehicle>();
         script.SetSpeed(speed);
         script.SetContactDamage(contactDamage);
         script.SetHostility(hostility);
         vehicle.GetComponent<DestroyOutOfBounds>().SetOffset(-1.0f);
-    }
-
-
-    private static void drawTraces(Vector3 startPos, Vector3 targetPos, float vehicleWidth, float duration)
-    {
-        Vector3 bias = Quaternion.Euler(0, 0, 90) * (targetPos - startPos).normalized * vehicleWidth / 2;
-
-        Destroy(DrawLine("VehicleTrace", startPos + bias, targetPos + bias, Color.green), duration);
-        Destroy(DrawLine("VehicleTrace", startPos - bias, targetPos - bias, Color.green), duration);
-        //LineDrawer lineDrawer1 = new LineDrawer();
-        //lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
-        //lineDrawer1.Destroy(duration);
-        ////Debug.Log("Drew lines from p1 = " + traceStartVector1);
-
-        //LineDrawer lineDrawer2 = new LineDrawer();
-        //lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
-        //lineDrawer2.Destroy(duration);
-        //Debug.Log("Drew lines from p2 = " + traceStartVector2);
-
-        // lineDrawer.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);
-
-        // Debug.DrawLine(traceStartVector1, traceEndVector1, Color.green, Vehicle.traceDuration);
-        // Debug.DrawLine(traceStartVector2, traceEndVector2, Color.green, Vehicle.traceDuration);
-
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -79,4 +53,25 @@ public class Vehicle : MonoBehaviour
             new Damage(gameObject, null, damageable, contactDamage).Apply();
         }
     }
+
+
+    //private static void drawTraces(Vector3 startPos, Vector3 targetPos, float vehicleWidth, float duration)
+    //{
+
+    //    //LineDrawer lineDrawer1 = new LineDrawer();
+    //    //lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
+    //    //lineDrawer1.Destroy(duration);
+    //    ////Debug.Log("Drew lines from p1 = " + traceStartVector1);
+
+    //    //LineDrawer lineDrawer2 = new LineDrawer();
+    //    //lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
+    //    //lineDrawer2.Destroy(duration);
+    //    //Debug.Log("Drew lines from p2 = " + traceStartVector2);
+
+    //    // lineDrawer.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);
+
+    //    // Debug.DrawLine(traceStartVector1, traceEndVector1, Color.green, Vehicle.traceDuration);
+    //    // Debug.DrawLine(traceStartVector2, traceEndVector2, Color.green, Vehicle.traceDuration);
+
+    //}
 }

@@ -28,6 +28,7 @@ public class PassiveItem_0 : PassiveItem
         if ((transform.position - prevPos).magnitude >= stepsize)
         {
             GameObject footprint = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
+            footprint.tag = "Disposable";
             Footprint script = footprint.AddComponent<Footprint>();
             script.SetContactDPS(contactDPS);
             script.SetHostility(GetComponent<Character>().GetHostility());
@@ -69,10 +70,6 @@ public class PassiveItem_0 : PassiveItem
         public void SetMaxDuration(float value) { maxDuration = value; }
         public float GetMaxDamage() { return maxDamage; }
         public void SetMaxDamage(float value) { maxDamage = value; }
-        void Start()
-        {
-            gameObject.tag = "Disposable";
-        }
         void Update()
         {
             alpha -= Time.deltaTime / maxDuration;

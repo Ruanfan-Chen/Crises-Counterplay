@@ -44,6 +44,7 @@ public class ElectricField : MonoBehaviour
         Destroy(DrawCircle("ElectricField", position, radius, Color.yellow), traceDuration);
         yield return new WaitForSeconds(delay);
         GameObject electricField = Instantiate(Resources.Load<GameObject>(prefabPath), position, Quaternion.identity);
+        electricField.tag = "Disposable";
         ElectricField driverScript = electricField.GetComponent<ElectricField>();
         driverScript.SetCharacter(character);
         driverScript.SetRadius(radius);
@@ -51,8 +52,5 @@ public class ElectricField : MonoBehaviour
         DestroyOutOfTime destroyScript = electricField.GetComponent<DestroyOutOfTime>();
         destroyScript.SetTimer(electricFieldDuration);
         destroyScript.Activate();
-    }
-    void Start() {
-        gameObject.tag = "Disposable";
     }
 }

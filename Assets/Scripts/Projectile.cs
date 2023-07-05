@@ -25,13 +25,6 @@ public class Projectile : MonoBehaviour
 
     public void SetSource(GameObject value) { source = value; }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameObject.tag = "Disposable";
-        GetComponent<DestroyOutOfBounds>().SetOffset(-15.0f);
-    }
-
     // Update is called once per frame
     void Update()
     {
@@ -41,6 +34,8 @@ public class Projectile : MonoBehaviour
     public static GameObject Instantiate(Vector3 position, Quaternion rotation, IProjectileModifier[] modifiers)
     {
         GameObject projectile = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        projectile.tag = "Disposable";
+        projectile.GetComponent<DestroyOutOfBounds>().SetOffset(-15.0f);
         foreach (IProjectileModifier modifier in modifiers)
             modifier.Modify(projectile);
         return projectile;
@@ -63,7 +58,8 @@ public class Projectile : MonoBehaviour
         return projectileList;
     }
 
-    public class DamageOnCollision : MonoBehaviour {
+    public class DamageOnCollision : MonoBehaviour
+    {
         private float damage;
 
         public DamageOnCollision(float damage)

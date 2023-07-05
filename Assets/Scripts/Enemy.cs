@@ -60,13 +60,6 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         Destroy(gameObject);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        gameObject.tag = "Disposable";
-        GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
-    }
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         IDamageable damageable = collision.GetComponent<IDamageable>();
@@ -78,7 +71,10 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 
     public static GameObject Instantiate(Vector3 position, Quaternion rotation)
     {
-        return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        GameObject enemy = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        enemy.tag = "Disposable";
+        enemy.GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
+        return enemy;
     }
 
     void IProjectileModifier.Modify(GameObject projectile)

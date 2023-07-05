@@ -36,8 +36,11 @@ public class CrisisManager : MonoBehaviour
         eventTimer -= Time.deltaTime;
         if (eventTimer <= 0)
         {
-            int r = Utility.WeightedRandom(new Dictionary<int, float>() { [0] = 1.0f, [1] = 1.0f });
-            switch (r)
+            switch (Utility.WeightedRandom(new Dictionary<int, float>()
+            {
+                [0] = 1.0f,
+                [1] = 1.0f
+            }))
             {
                 case 0:
                     SpawnVehicle();
