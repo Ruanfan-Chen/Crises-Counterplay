@@ -13,6 +13,6 @@ public class ConstraintInsideOfMap : MonoBehaviour
     private void LateUpdate()
     {
 
-        transform.position = GameObject.Find("GameplayManager").GetComponent<MapManager>().PosInMap(transform.position, GetOffset());
+        transform.position = MapManager.PosInMap(transform.position, GetOffset());
     }
 }

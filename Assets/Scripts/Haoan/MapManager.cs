@@ -14,7 +14,7 @@ public class MapManager : MonoBehaviour
 
     public static readonly float MAP_DEPTH = 0.5f;
     private int m_level;
-    Bounds m_bounds;
+    static Bounds m_bounds;
 
     public void CreateMap()
     {
@@ -63,23 +63,23 @@ public class MapManager : MonoBehaviour
     /// <param name="pos"></param>
     /// <param name="offset"></param>
     /// <returns>Returns the result.</returns>
-    public Vector3 PosInMap(Vector3 pos, float offset = 0.0f)
+    static public Vector3 PosInMap(Vector3 pos, float offset = 0.0f)
     {
         Bounds bounds = GetMapBounds(offset);
         return new Vector3(Mathf.Clamp(pos.x, bounds.min.x, bounds.max.x), Mathf.Clamp(pos.y, bounds.min.y, bounds.max.y), pos.z);
     }
 
-    public bool IsInMap(Vector3 pos, float offset = 0.0f)
+    static public bool IsInMap(Vector3 pos, float offset = 0.0f)
     {
         return pos == PosInMap(pos, offset);
     }
 
-    public Bounds GetMapBounds(float offset = 0.0f)
+    static public Bounds GetMapBounds(float offset = 0.0f)
     {
         return new Bounds(m_bounds.center, m_bounds.size - 2 * new Vector3(offset, offset));
     }
 
-    public Vector3 GetRandomPointOnEdge(float offset = 0.0f)
+    static public Vector3 GetRandomPointOnEdge(float offset = 0.0f)
     {
         Bounds bounds = GetMapBounds(offset);
         float randX = Random.Range(bounds.min.x, bounds.max.x);

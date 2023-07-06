@@ -37,7 +37,6 @@ public class TerrainManager : MonoBehaviour
     {
         GameObject unit = new("Terrain" + gridPos.x + gridPos.y);
         unit.transform.position = GetPosition3D(gridPos);
-        unit.AddComponent<Terrain>().SetGridPos(gridPos);
         terrainGraph.Add(gridPos, unit);
         return unit;
     }

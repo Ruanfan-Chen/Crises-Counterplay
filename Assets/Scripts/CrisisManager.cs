@@ -56,7 +56,7 @@ public class CrisisManager : MonoBehaviour
     void SpawnVehicle()
     {
         float length = 2.24f * 30.0f;
-        Vector3 startPos = GetComponent<MapManager>().GetRandomPointOnEdge();
+        Vector3 startPos = MapManager.GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (m_player.transform.position - startPos).normalized * length;
 
         StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, m_vehicleSpeed, m_vehicleContactDamage, true));
@@ -64,7 +64,7 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-        Bounds bound = GetComponent<MapManager>().GetMapBounds(5.0f);
+        Bounds bound = MapManager.GetMapBounds(5.0f);
         Vector3 position = new(Random.Range(bound.min.x, bound.max.x), Random.Range(bound.min.y, bound.max.y), 0);
         StartCoroutine(ElectricField.Instantiate(m_player.GetComponent<Player>().GetCharacter(), position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }

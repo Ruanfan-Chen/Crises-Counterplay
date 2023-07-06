@@ -18,8 +18,7 @@ public class EnemySpawn : MonoBehaviour
     public GameObject SpawnRandomEnemy()
     {
         Vector3 position;
-        MapManager mapManager = GetComponent<MapManager>();
-        Bounds bounds = mapManager.GetMapBounds(offset);
+        Bounds bounds = MapManager.GetMapBounds(offset);
         do
         {
             position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);

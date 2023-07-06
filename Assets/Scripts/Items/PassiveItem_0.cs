@@ -27,7 +27,7 @@ public class PassiveItem_0 : PassiveItem
     {
         if ((transform.position - prevPos).magnitude >= stepsize)
         {
-            GameObject footprint = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position + Vector3.forward * GameObject.Find("GameplayManager").transform.position.z / 2, transform.rotation);
+            GameObject footprint = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position + Vector3.forward * MapManager.MAP_DEPTH / 2.0f, transform.rotation);
             footprint.tag = "Disposable";
             Footprint script = footprint.AddComponent<Footprint>();
             script.SetContactDPS(contactDPS);
