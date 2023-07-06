@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
+using UnityEngine.Windows.Speech;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        LoadLevel(m_levelNum);
+        
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
     }
@@ -123,8 +124,9 @@ public class GameplayManager : MonoBehaviour
                     {
                         if (c)
                         {
-                            c.GiveItem<ActiveItem_2>(KeyCode.K);
+                            ActiveItem activeItem = c.GiveItem<ActiveItem_2>(KeyCode.K);
                             m_activeK.SetActive(true);
+                            m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem);
                         }
                     };
                     break;
@@ -225,6 +227,7 @@ public class GameplayManager : MonoBehaviour
     public void StartButtonOnClick()
     {
         m_startPanel.SetActive(false);
+        LoadLevel(m_levelNum);
         Time.timeScale = 1.0f;
     }
 
@@ -237,8 +240,9 @@ public class GameplayManager : MonoBehaviour
             case 2:
                 if (GetCharacter())
                 {
-                    GetCharacter().GiveItem<ActiveItem_2>(KeyCode.K);
+                    ActiveItem activeItem = GetCharacter().GiveItem<ActiveItem_2>(KeyCode.K);
                     m_activeK.SetActive(true);
+                    m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem);
                 }
                 break;
             case 3:
