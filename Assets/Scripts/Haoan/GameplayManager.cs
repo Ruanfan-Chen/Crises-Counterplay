@@ -198,11 +198,11 @@ public class GameplayManager : MonoBehaviour
         }
     }
     
-    public void TrackDamage(string element, float damageAmount)
-    {
-        GetComponent<SendToGoogle>().SendDamageData(element, damageAmount);
+    //public void TrackDamage(string element, float damageAmount)
+    //{
+      //  GetComponent<SendToGoogle>().SendDamageData(element, damageAmount);
         
-    }
+    //}
 
     public int GetLevelNum()
     {
@@ -234,13 +234,6 @@ public class GameplayManager : MonoBehaviour
         Time.timeScale = 1.0f;
     }
     
-    public void TrackDamage(string element, float damageAmount)
-    {
-        GetComponent<SendToGoogle>().SendDamageData(element, damageAmount);
-
-        
-    }
-
     void LoadLevel(int levelNum)
     {
         switch (levelNum)

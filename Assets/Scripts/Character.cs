@@ -38,6 +38,11 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         if (GetComponent<Invulnerable>()) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
+        
+        GameObject damageSource = damage.GetSource();
+        string sourceName = damageSource != null ? damageSource.name : "Unknown";
+
+        
         IEnumerator coroutine = damage.GetCoroutine();
         if (coroutine == null)
         {
@@ -48,8 +53,11 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
                 sourcePos = damage.GetMedium().transform.position;
             coroutine = ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg);
         }
+        
         StartCoroutine(coroutine);
         StartCoroutine(AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
+        
+        GetComponent<SendToGoogle>().SendDamageName(sourceName);
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
