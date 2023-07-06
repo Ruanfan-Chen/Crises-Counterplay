@@ -10,39 +10,19 @@ public class TerrainManager : MonoBehaviour
     public static readonly float UNIT_SIZE = 1.0f;
     private static readonly float sqrt3 = Mathf.Sqrt(3.0f);
     private static Bounds mapBounds;
-    private static readonly List<List<TerrainData>> terrainI = new();
-    private static readonly List<List<TerrainData>> terrainII = new();
-    private static readonly List<List<TerrainData>> terrainIII = new();
-    private static readonly List<List<TerrainData>> terrainIV = new();
+    private static Dictionary<Vector2Int,TerrainData> map;
 
     public static void Initialize(Bounds bounds)
     {
         mapBounds = bounds;
-        terrainI.Clear();
-        terrainII.Clear();
-        terrainIII.Clear();
-        terrainIV.Clear();
+        map.Clear();
         Queue<Vector2Int> queue = new();
         queue.Enqueue(Vector2Int.zero);
         HashSet<Vector2Int> explored = new() { Vector2Int.zero };
         while (queue.Count > 0)
         {
             Vector2Int currentGrid = queue.Dequeue();
-            //switch (currentGrid.x, currentGrid.y)
-            //{
-            //    case ( >= 0, >= 0):
-            //        terrainI[currentGrid.x][currentGrid.y] = new();
-            //        break;
-            //    case ( < 0, >= 0):
-            //        terrainII[-currentGrid.x - 1][currentGrid.y] = new();
-            //        break;
-            //    case ( < 0, < 0):
-            //        terrainIII[-currentGrid.x - 1][-currentGrid.y - 1] = new();
-            //        break;
-            //    case ( >= 0, < 0):
-            //        terrainIV[currentGrid.x][-currentGrid.y - 1] = new();
-            //        break;
-            //}
+            map.Add(currentGrid, new());
             foreach (Vector2Int neighbour in GetNeighbourGrid(currentGrid))
             {
                 if (!explored.Contains(neighbour))
@@ -51,21 +31,6 @@ public class TerrainManager : MonoBehaviour
                     queue.Enqueue(neighbour);
                 }
             }
-        }
-    }
-
-    public static TerrainData GetTerrainData(Vector2Int gridPos)
-    {
-        switch (gridPos.x, gridPos.y)
-        {
-            case ( >= 0, >= 0):
-                return terrainI[gridPos.x][gridPos.y];
-            case ( < 0, >= 0):
-                return terrainII[-gridPos.x - 1][gridPos.y];
-            case ( < 0, < 0):
-                return terrainIII[-gridPos.x - 1][-gridPos.y - 1];
-            case ( >= 0, < 0):
-                return terrainIV[gridPos.x][-gridPos.y - 1];
         }
     }
 
