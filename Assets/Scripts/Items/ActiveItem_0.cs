@@ -5,11 +5,11 @@ using static Utility;
 
 public class ActiveItem_0 : ActiveItem
 {
-    private static string itemName = "Name Placeholder";
+    private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
-    private static string logoPath = "Resources/Placeholder";
+    private static string logoPath = "Sprites/Skills/Supercharge";
     private float maxCharge = 5.0f;
-    private float charge = 5.0f;
+    private float charge = 0.0f;
     private float cost = 5.0f;
     private float duration = 10.0f;
 

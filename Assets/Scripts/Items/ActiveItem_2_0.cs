@@ -6,9 +6,9 @@ using static Utility;
 
 public class ActiveItem_2_0 : ActiveItem
 {
-    private static string itemName = "Name Placeholder";
+    private static string itemName = "Chistrike";
     private static string description = "Description Placeholder";
-    private static string logoPath = "Resources/Placeholder";
+    private static string logoPath = "Sprites/Skills/Chistrike";
     private GameObject view;
     private CircleCollider2D viewTrigger;
     private float viewRadius = 10.0f;
