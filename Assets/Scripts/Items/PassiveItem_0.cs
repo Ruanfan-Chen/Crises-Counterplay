@@ -7,7 +7,7 @@ public class PassiveItem_0 : PassiveItem
     private static string prefabPath = "Prefabs/Footprint";
     private static string itemName = "Name Placeholder";
     private static string description = "Description Placeholder";
-    private static string logoPath = "Resources/Placeholder";
+    private static string logoPath = "Sprites/Skills/Toxic Footprint";
     private Vector3 prevPos;
     private float stepsize;
     private float minStepsize = 0.5f;

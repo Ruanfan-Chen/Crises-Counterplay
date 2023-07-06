@@ -6,9 +6,9 @@ using static Utility;
 
 public class ActiveItem_2 : ActiveItem
 {
-    private static string itemName = "Name Placeholder";
+    private static string itemName = "Trainbound";
     private static string description = "Description Placeholder";
-    private static string logoPath = "Resources/Placeholder";
+    private static string logoPath = "Sprites/Skills/Trainbound";
     private GameObject view;
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
