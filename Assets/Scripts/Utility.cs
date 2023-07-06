@@ -126,7 +126,7 @@ public static class Utility
         return lineObj;
     }
 
-    public static GameObject DrawCircle(string name, Vector3 center, float radius, Color color, int erpDensity = 10, float width = 0.2f)
+    public static GameObject DrawCircle(string name, Vector3 center, float radius, Color color, int erpDensity = 24, float width = 0.2f)
     {
         GameObject lineObj = new GameObject(name);
         lineObj.tag = "Disposable";

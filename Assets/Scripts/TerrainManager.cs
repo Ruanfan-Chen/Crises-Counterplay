@@ -28,21 +28,21 @@ public class TerrainManager : MonoBehaviour
         while (queue.Count > 0)
         {
             Vector2Int currentGrid = queue.Dequeue();
-            switch (currentGrid.x, currentGrid.y)
-            {
-                case ( >= 0, >= 0):
-                    terrainI[currentGrid.x][currentGrid.y] = new();
-                    break;
-                case ( < 0, >= 0):
-                    terrainII[-currentGrid.x - 1][currentGrid.y] = new();
-                    break;
-                case ( < 0, < 0):
-                    terrainIII[-currentGrid.x - 1][-currentGrid.y - 1] = new();
-                    break;
-                case ( >= 0, < 0):
-                    terrainIV[currentGrid.x][-currentGrid.y - 1] = new();
-                    break;
-            }
+            //switch (currentGrid.x, currentGrid.y)
+            //{
+            //    case ( >= 0, >= 0):
+            //        terrainI[currentGrid.x][currentGrid.y] = new();
+            //        break;
+            //    case ( < 0, >= 0):
+            //        terrainII[-currentGrid.x - 1][currentGrid.y] = new();
+            //        break;
+            //    case ( < 0, < 0):
+            //        terrainIII[-currentGrid.x - 1][-currentGrid.y - 1] = new();
+            //        break;
+            //    case ( >= 0, < 0):
+            //        terrainIV[currentGrid.x][-currentGrid.y - 1] = new();
+            //        break;
+            //}
             foreach (Vector2Int neighbour in GetNeighbourGrid(currentGrid))
             {
                 if (!explored.Contains(neighbour))
