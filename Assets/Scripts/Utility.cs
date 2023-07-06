@@ -163,4 +163,22 @@ public static class Utility
         gameObject.GetComponent<Collider2D>().OverlapCollider(new ContactFilter2D().NoFilter(), colliders);
         return colliders.Where(predicate).Select(collider => collider.gameObject);
     }
+
+    public static IEnumerable<T> BFTraversal<T>(T root, System.Func<T, IEnumerable<T>> GetAdjacent)
+    {
+        Queue<T> queue = new();
+        queue.Enqueue(root);
+        HashSet<T> visited = new() { root };
+        while (queue.Count > 0)
+        {
+            T current = queue.Dequeue();
+            foreach (T t in GetAdjacent(current))
+            {
+                if (visited.Contains(t)) continue;
+                visited.Add(t);
+                queue.Enqueue(t);
+            }
+        }
+        return visited;
+    }
 }
