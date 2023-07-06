@@ -14,18 +14,18 @@ public class SendToGoogle : MonoBehaviour
         sessionID = DateTime.Now.Ticks;
     }
 
-    public void Send(int levelCount, int APitem, int playerSelection)
+    public void Send(int levelCount, int APitem, int HealthScore)
     {
-        StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), playerSelection.ToString(), APitem.ToString()));
+        StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), HealthScore.ToString(), APitem.ToString()));
     }
 
 
-    private IEnumerator Post(string sessionID, string levelCount, string playerSelection, string APitem)
+    private IEnumerator Post(string sessionID, string levelCount, string HealthScore, string APitem)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1477553278", sessionID);
         form.AddField("entry.1570433801", levelCount);
-        form.AddField("entry.1212750405", playerSelection);
+        form.AddField("entry.1212750405", HealthScore);
         form.AddField("entry.360297603", APitem);
 
         // Send responses and verify result
