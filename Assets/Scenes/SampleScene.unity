@@ -2497,7 +2497,7 @@ MonoBehaviour:
   m_activeK: {fileID: 111763160}
   m_activeL: {fileID: 699989869}
   m_player: {fileID: 1713116184}
-  m_maxTime: 10
+  m_maxTime: 45
   m_levelNum: 3
 --- !u!4 &1151485480
 Transform:
@@ -2573,12 +2573,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_player: {fileID: 1713116184}
   m_startDelay: 2
-  m_eventIntervalMin: 3
-  m_eventIntervalMax: 6
+  m_eventIntervalMin: 2
+  m_eventIntervalMax: 3
   m_vehicleTraceDuration: 2
   m_vehicleStartDelay: 2
   m_vehicleSpeed: 30
-  m_vehicleContactDamage: 50
+  m_vehicleContactDamage: 25
   m_electricFieldTraceDuration: 2
   m_electricFieldStartDelay: 2
   m_electricFieldRadius: 5
@@ -2591,7 +2591,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1151485478}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2bae53d594f35304884f680c20615d95, type: 3}
   m_Name: 

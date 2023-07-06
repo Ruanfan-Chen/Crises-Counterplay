@@ -20,6 +20,15 @@ public static class Utility
         return default;
     }
 
+    public static T RandomChoice<T>(ICollection<T> collection)
+    {
+        return collection.ToList()[UnityEngine.Random.Range(0, collection.Count)];
+    }
+    public static T RandomChoice<T>(IEnumerable<T> collection)
+    {
+        return collection.ToList()[UnityEngine.Random.Range(0, collection.Count())];
+    }
+
     public static IEnumerator ForcedMovement(Transform transform, Vector3 displacement, float initialSpeed, float duration)
     {
         float current = 0.0f;
@@ -181,4 +190,5 @@ public static class Utility
         }
         return visited;
     }
+
 }

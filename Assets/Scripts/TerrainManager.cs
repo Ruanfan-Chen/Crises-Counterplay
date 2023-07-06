@@ -1,29 +1,47 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using UnityEditor.Experimental.GraphView;
-using UnityEditor.PackageManager;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UIElements;
 using static Utility;
 
 public class TerrainManager : MonoBehaviour
 {
     public static readonly float TERRAIN_DEPTH = 0.25f;
-    public static readonly float UNIT_SIZE = 1.0f;
+    public static readonly float UNIT_SIZE = 4.0f;
     private static Bounds mapBounds;
     private static Dictionary<Vector2Int, TerrainEntry> map = new();
-    private static ISet<Edge> edges = new HashSet<Edge>();
+    private static GameObject terrainObj;
+
+
+    private void Start()
+    {
+        
+    }
+    private void LateUpdate()
+    {
+        SetIsWet(RandomChoice(map.Keys), true);
+        List<List<Vector2>> paths = GetPaths();
+        PolygonCollider2D collider = terrainObj.GetComponent<PolygonCollider2D>();
+        collider.pathCount = paths.Count;
+        int i = 0;
+        foreach (List<Vector2> path in paths)
+        {
+            collider.SetPath(i, path);
+            i++;
+        }
+    }
     public static void Initialize(Bounds bounds)
     {
         mapBounds = bounds;
         map.Clear();
-        edges.Clear();
-        foreach (Vector2Int gridPos in BFTraversal(Vector2Int.zero, gridPos => GetAdjacentGrid(gridPos).Where(gridPos => ExistGrid(gridPos))))
-            map.Add(gridPos, new(gridPos));
+        terrainObj = new GameObject("Terrain");
+        terrainObj.AddComponent<PolygonCollider2D>();
+        for (int i = Mathf.FloorToInt(mapBounds.min.x); i <= Mathf.CeilToInt(mapBounds.max.x); i++)
+            for (int j = Mathf.FloorToInt(mapBounds.min.y); j <= Mathf.CeilToInt(mapBounds.max.y); j++)
+                map.Add(new Vector2Int(i, j), new());
     }
 
-    public static IEnumerable<Vector2Int> GetAdjacentGrid(Vector2Int gridPos)
+    public static IEnumerable<Vector2Int> GetAdjacentVector2Int(Vector2Int gridPos)
     {
         return new HashSet<Vector2Int>()
         {
@@ -36,123 +54,61 @@ public class TerrainManager : MonoBehaviour
 
     public static List<List<Vector2>> GetPaths()
     {
-        Dictionary<Edge, int> curl = new();
-        foreach (Edge e in edges)
-        {
-            curl.Add(e, 0);
-        }
-        foreach (TerrainEntry terrainEntry in map.Values)
-        {
-            curl[terrainEntry.topEdge]++;
-            curl[terrainEntry.bottomEdge]--;
-            curl[terrainEntry.leftEdge]++;
-            curl[terrainEntry.rightEdge]--;
-        }
         List<List<Vector2>> paths = new();
-        while (curl.Count > 0)
+        HashSet<Vector2Int> unvisited = new();
+        for (int i = Mathf.FloorToInt(mapBounds.min.x); i <= Mathf.CeilToInt(mapBounds.max.x); i++)
+            for (int j = Mathf.FloorToInt(mapBounds.min.y); j <= Mathf.CeilToInt(mapBounds.max.y); j++)
+                unvisited.Add(new Vector2Int(i, j));
+        while (unvisited.Count > 0)
         {
-            KeyValuePair<Edge, int> kvp = curl.First();
-            if (kvp.Value == 0)
+            Vector2Int current = RandomChoice(unvisited);
+            if (IsOnEdge(current))
             {
-                curl.Remove(kvp.Key);
-                continue;
+                List<Vector2> path = new();
+                while (true)
+                {
+                    path.Add(current);
+                    IEnumerable<Vector2Int> next = GetAdjacentVector2Int(current).Where(gridPos => IsOnEdge(gridPos) && !path.Contains(gridPos));
+                    unvisited.Remove(current);
+                    if (next.Count() > 0)
+                        current = RandomChoice(next);
+                    else
+                        break;
+                }
+                paths.Add(path);
             }
-            List<Vector2> path = new();
-            paths.Add(path);
-            foreach (Edge edge in BFTraversal(kvp.Key, e => e.GetAdjcent().Where(e => curl[e] != 0)))
+            else
             {
-
-                curl.Remove(edge);
-                path.Add(edge.GetMidpointGridPos());
+                unvisited.Remove(current);
             }
-        };
+        }
         return paths;
     }
 
     public static bool ExistGrid(Vector2Int gridPos)
     {
-        return mapBounds.SqrDistance((Vector2)gridPos) * 4.0f <= UNIT_SIZE * UNIT_SIZE;
+        if (gridPos.x < Mathf.FloorToInt(mapBounds.min.x)) return false;
+        if (gridPos.x < Mathf.CeilToInt(mapBounds.max.x)) return false;
+        if (gridPos.y > Mathf.FloorToInt(mapBounds.min.y)) return false;
+        if (gridPos.y > Mathf.CeilToInt(mapBounds.max.x)) return false;
+        return true;
+    }
+
+    public static bool IsOnEdge(Vector2Int gridPos)
+    {
+        List<bool> w = new() { GetIsWet(gridPos), GetIsWet(gridPos + Vector2Int.left), GetIsWet(gridPos + Vector2Int.down), GetIsWet(gridPos + Vector2Int.left + Vector2Int.down) };
+        if (w[0] && w[1] && w[2] && w[3]) return false;
+        if (!w[0] && !w[1] && !w[2] && !w[3]) return false;
+        return true;
     }
 
     private class TerrainEntry
     {
-        public readonly Vertex topLeftVertex;
-        public readonly Vertex topRightVertex;
-        public readonly Vertex bottomLeftVertex;
-        public readonly Vertex bottomRightVertex;
-        public readonly Edge topEdge;
-        public readonly Edge bottomEdge;
-        public readonly Edge leftEdge;
-        public readonly Edge rightEdge;
 
         private bool isWet;
-        public TerrainEntry(Vector2Int gridPos)
+        public TerrainEntry()
         {
             isWet = false;
-            if (map.TryGetValue(gridPos + Vector2Int.up, out TerrainEntry topEntry))
-            {
-                topLeftVertex = topEntry.bottomLeftVertex;
-                topRightVertex = topEntry.bottomRightVertex;
-            }
-            if (map.TryGetValue(gridPos + Vector2Int.down, out TerrainEntry downEntry))
-            {
-                bottomLeftVertex = downEntry.topLeftVertex;
-                bottomRightVertex = downEntry.topRightVertex;
-            }
-            if (map.TryGetValue(gridPos + Vector2Int.left, out TerrainEntry leftEntry))
-            {
-                topLeftVertex = leftEntry.topRightVertex;
-                bottomLeftVertex = leftEntry.bottomRightVertex;
-            }
-            if (map.TryGetValue(gridPos + Vector2Int.right, out TerrainEntry rightEntry))
-            {
-                topRightVertex = rightEntry.topLeftVertex;
-                bottomRightVertex = rightEntry.bottomLeftVertex;
-            }
-            if (topLeftVertex == null)
-            {
-                if (map.TryGetValue(gridPos + Vector2Int.up + Vector2Int.left, out TerrainEntry topLeftEntry))
-                    topLeftVertex = topLeftEntry.bottomRightVertex;
-                else
-                    topLeftVertex = new(gridPos + Vector2.up / 2.0f + Vector2.left / 2.0f);
-            }
-            if (topRightVertex == null)
-            {
-                if (map.TryGetValue(gridPos + Vector2Int.up + Vector2Int.right, out TerrainEntry topRightEntry))
-                    topRightVertex = topRightEntry.bottomLeftVertex;
-                else
-                    topRightVertex = new(gridPos + Vector2.up / 2.0f + Vector2.right / 2.0f);
-            }
-            if (bottomLeftVertex == null)
-            {
-                if (map.TryGetValue(gridPos + Vector2Int.down + Vector2Int.left, out TerrainEntry bottomLeftEntry))
-                    bottomLeftVertex = bottomLeftEntry.topRightVertex;
-                else
-                    bottomLeftVertex = new(gridPos + Vector2.down / 2.0f + Vector2.left / 2.0f);
-            }
-            if (bottomRightVertex == null)
-            {
-                if (map.TryGetValue(gridPos + Vector2Int.down + Vector2Int.right, out TerrainEntry bottomRightEntry))
-                    bottomRightVertex = bottomRightEntry.topLeftVertex;
-                else
-                    bottomRightVertex = new(gridPos + Vector2.down / 2.0f + Vector2.right / 2.0f);
-            }
-            if (map.TryGetValue(gridPos + Vector2Int.up, out topEntry))
-                topEdge = topEntry.bottomEdge;
-            else
-                topEdge = new(false, topLeftVertex, topRightVertex);
-            if (map.TryGetValue(gridPos + Vector2Int.down, out downEntry))
-                bottomEdge = downEntry.topEdge;
-            else
-                bottomEdge = new(false, bottomLeftVertex, bottomRightVertex);
-            if (map.TryGetValue(gridPos + Vector2Int.left, out leftEntry))
-                leftEdge = leftEntry.rightEdge;
-            else
-                leftEdge = new(true, topLeftVertex, bottomLeftVertex);
-            if (map.TryGetValue(gridPos + Vector2Int.right, out rightEntry))
-                rightEdge = rightEntry.leftEdge;
-            else
-                rightEdge = new(true, topRightVertex, bottomRightVertex);
         }
 
         public bool GetIsWet() { return isWet; }
@@ -160,68 +116,22 @@ public class TerrainManager : MonoBehaviour
         public void SetIsWet(bool value) { isWet = value; }
     }
 
-    private class Edge
+    public static bool SetIsWet(Vector2Int gridPos, bool value)
     {
-        public readonly bool isVertical;
-        public readonly Vertex topOrLeftVertex;
-        public readonly Vertex bottomOrRighrVertex;
-
-        public Edge(bool isVertical, Vertex topOrLeftVertex, Vertex bottomOrRighrVertex)
+        if (map.TryGetValue(gridPos, out TerrainEntry entry))
         {
-            this.isVertical = isVertical;
-            this.topOrLeftVertex = topOrLeftVertex;
-            this.bottomOrRighrVertex = bottomOrRighrVertex;
-            edges.Add(this);
+            entry.SetIsWet(value);
+            return true;
         }
-
-        public Vector2 GetMidpointGridPos()
-        {
-            return (topOrLeftVertex.gridPos + bottomOrRighrVertex.gridPos) / 2.0f;
-        }
-
-        public IEnumerable<Edge> GetAdjcent()
-        {
-            HashSet<Edge> adj = new() { };
-            adj.Add(topOrLeftVertex.GetTopEdge());
-            adj.Add(topOrLeftVertex.GetBottomEdge());
-            adj.Add(topOrLeftVertex.GetLeftEdge());
-            adj.Add(topOrLeftVertex.GetRightEdge());
-            adj.Add(bottomOrRighrVertex.GetTopEdge());
-            adj.Add(bottomOrRighrVertex.GetBottomEdge());
-            adj.Add(bottomOrRighrVertex.GetLeftEdge());
-            adj.Add(bottomOrRighrVertex.GetRightEdge());
-            adj.Remove(this);
-            return adj;
-        }
+        return false;
     }
 
-    private class Vertex
+    public static bool GetIsWet(Vector2Int gridPos)
     {
-        private Edge topEdge;
-        private Edge bottomEdge;
-        private Edge leftEdge;
-        private Edge rightEdge;
-        public readonly Vector2 gridPos;
-
-        public Edge GetTopEdge() { return topEdge; }
-
-        public void SetTopEdge(Edge value) { topEdge = value; }
-
-        public Edge GetBottomEdge() { return bottomEdge; }
-
-        public void SetBottomEdge(Edge value) { bottomEdge = value; }
-
-        public Edge GetLeftEdge() { return leftEdge; }
-
-        public void SetLeftEdge(Edge value) { leftEdge = value; }
-
-        public Edge GetRightEdge() { return rightEdge; }
-
-        public void SetRightEdge(Edge value) { rightEdge = value; }
-
-        public Vertex(Vector2 gridPos)
+        if (map.TryGetValue(gridPos, out TerrainEntry entry))
         {
-            this.gridPos = gridPos;
+            return entry.GetIsWet();
         }
+        return false;
     }
 }
