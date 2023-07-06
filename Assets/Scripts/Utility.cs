@@ -6,7 +6,7 @@ using UnityEngine;
 
 public static class Utility
 {
-    static string DEAFULT_LINE_SHADER_PATH = "Legacy Shaders/Particles/Alpha Blended Premultiply";
+    static string DEAFULT_LINE_SHADER_PATH = "Hidden/Internal-Colored";
     public static T WeightedRandom<T>(Dictionary<T, float> weightDict)
     {
         float r = UnityEngine.Random.Range(0.0f, weightDict.Sum(kvp => kvp.Value));
