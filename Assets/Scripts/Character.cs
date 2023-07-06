@@ -57,7 +57,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         StartCoroutine(coroutine);
         StartCoroutine(AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
         
-        GetComponent<SendToGoogle>().SendDamageName(sourceName);
+        GetComponent<SendToGoogle>().SendDamageSource(sourceName);
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
