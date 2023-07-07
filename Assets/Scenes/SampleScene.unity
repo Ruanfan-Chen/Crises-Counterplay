@@ -1745,7 +1745,7 @@ MonoBehaviour:
   m_eventIntervalMin: 3
   m_eventIntervalMax: 6
   m_vehicleTraceDuration: 2
-  m_vehicleStartDelay: 4
+  m_vehicleStartDelay: 2
   m_vehicleSpeed: 30
   m_vehicleContactDamage: 50
   m_electricFieldTraceDuration: 2
