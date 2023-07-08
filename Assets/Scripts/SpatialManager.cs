@@ -49,7 +49,7 @@ public class SpatialManager : MonoBehaviour
         return hivePos.x * UNIT_RADIUS * BASE_X + hivePos.y * UNIT_RADIUS * BASE_Y;
     }
 
-    public static Vector2Int GetTangent<T>(string layerName, Vector2Int hivePos, Func<T,bool> predicate)
+    public static Vector2Int GetTangent<T>(string layerName, Vector2Int hivePos, Func<T, bool> predicate)
     {
         switch ((hivePos.x - hivePos.y) % 3)
         {
@@ -122,24 +122,30 @@ public class SpatialManager : MonoBehaviour
             Vector2Int startPos = RandomChoice(vertices); ;
             List<Vector2> smoothLine = new();
             Vector2Int prev = startPos;
-            Vector2Int current = prev + GetTangent<T>(layerName, prev, predicate);
-            Vector2Int next = current + GetTangent<T>(layerName, current, predicate);
+            Vector2Int current = prev + GetTangent(layerName, prev, predicate);
+            Vector2Int next = current + GetTangent(layerName, current, predicate);
+            bool IsStraightLine = false;
             do
             {
                 vertices.Remove(current);
                 if (prev + next == current * 2)
-                    smoothLine.Add((Hive2Cartesian(prev + current)) / 2.0f);
+                {
+                    if (!IsStraightLine)
+                        smoothLine.Add((Hive2Cartesian(prev + current)) / 2.0f);
+                    IsStraightLine = true;
+                }
                 else
                 {
                     for (int j = 0; j < interpolationDensity; j++)
                     {
                         float t = (float)j / interpolationDensity;
-                        smoothLine.Add(Hive2Cartesian(Vector2.Lerp(prev, current, t) + Vector2.Lerp(current, next, t)) / 2.0f);
+                        smoothLine.Add(Hive2Cartesian(Vector2.Lerp(prev + current, current + next, t)) / 2.0f);
                     }
+                    IsStraightLine = false;
                 }
                 prev = current;
                 current = next;
-                next = current + GetTangent<T>(layerName, current, predicate);
+                next = current + GetTangent(layerName, current, predicate);
             } while (prev != startPos);
             if (smoothLine.Count > interpolationDensity)
                 paths.Add(smoothLine);
