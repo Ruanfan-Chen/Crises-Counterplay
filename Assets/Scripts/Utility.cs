@@ -135,7 +135,7 @@ public static class Utility
         return lineObj;
     }
 
-    public static GameObject DrawCircle(string name, Vector3 center, float radius, Color color, int erpDensity = 24, float width = 0.2f)
+    public static GameObject DrawLine(string name, IEnumerable<Vector3> line, bool loop, Color color, float width = 0.2f)
     {
         GameObject lineObj = new GameObject(name);
         lineObj.tag = "Disposable";
@@ -153,17 +153,60 @@ public static class Utility
         lineRenderer.endWidth = width;
 
         //Set line count which is erpDensity
-        lineRenderer.positionCount = erpDensity;
+        lineRenderer.positionCount = line.Count();
 
-        //Connect loop
-        lineRenderer.loop = true;
+        //Set loop
+        lineRenderer.loop = loop;
+
+        //Set the positions
+        for (int i = 0; i < lineRenderer.positionCount; i++)
+        {
+            lineRenderer.SetPosition(i, line.ElementAt(i));
+        }
+        return lineObj;
+    }
+
+    public static GameObject DrawLine(string name, IEnumerable<Vector2> line, bool loop, Color color, float width = 0.2f)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.tag = "Disposable";
+        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+        //Use Dedault-Line Material
+        lineRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
+
+        //Set color
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+
+        //Set width
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        //Set line count which is erpDensity
+        lineRenderer.positionCount = line.Count();
+
+        //Set loop
+        lineRenderer.loop = loop;
+
+        //Set the positions
+        for (int i = 0; i < lineRenderer.positionCount; i++)
+        {
+            lineRenderer.SetPosition(i, line.ElementAt(i));
+        }
+        return lineObj;
+    }
+
+    public static GameObject DrawCircle(string name, Vector3 center, float radius, Color color, int erpDensity = 24, float width = 0.2f)
+    {
+        List<Vector3> points = new();
 
         //Set the positions
         for (int i = 0; i < erpDensity; i++)
         {
-            lineRenderer.SetPosition(i, center + Quaternion.Euler(0.0f, 0.0f, 360 * i / erpDensity) * Vector3.up * radius);
+            points.Add(center + Quaternion.Euler(0.0f, 0.0f, 360 * i / erpDensity) * Vector3.up * radius);
         }
-        return lineObj;
+        return DrawLine(name, points, true, color, width);
     }
 
     public static IEnumerable<GameObject> OverlapGameObject(GameObject gameObject, Func<Collider2D, bool> predicate)

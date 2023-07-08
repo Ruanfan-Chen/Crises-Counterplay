@@ -19,7 +19,7 @@ public class MapManager : MonoBehaviour
     public void CreateMap()
     {
         CreateMapBySprite();
-        TerrainManager.Initialize(m_bounds);
+        SpatialManager.Initialize(m_bounds);
     }
 
     public void CreateMapBySprite()
