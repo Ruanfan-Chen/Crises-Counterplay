@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Utility;
@@ -15,10 +16,25 @@ public class SpatialManager : MonoBehaviour
     public static readonly Vector2Int DOWN = new(0, -1);
     public static readonly Vector2Int DOWNLEFT = new(-1, 0);
     public static readonly Vector2Int DOWNRIGHT = new(1, -1);
+    private static readonly Dictionary<string, GameObject> layers = new();
 
+    public static void UpdateLayerDisplay<T>(string layerName, int interpolationDensity, Func<T, bool> predicate)
+    {
+        List<List<Vector2>> paths = GetContourLines(layerName, interpolationDensity, predicate);
+        PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
+        collider.pathCount = paths.Count;
+        for (int i = 0; i < paths.Count; i++)
+            collider.SetPath(i, paths[i]);
+        layers[layerName].GetComponent<MeshFilter>().mesh = collider.CreateMesh(false, false);
+    }
     public static void Initialize()
     {
         SpatialData.Clear();
+        foreach (GameObject layer in layers.Values)
+        {
+            Destroy(layer);
+        }
+        layers.Clear();
     }
     public static bool IsDataPoint(Vector2Int hivePos)
     {
@@ -167,6 +183,15 @@ public class SpatialManager : MonoBehaviour
 
         public void SetValue(string layerName, object value)
         {
+            if (!layers.ContainsKey(layerName))
+            {
+                GameObject layer = new GameObject(layerName + "Layer");
+                layer.transform.position = Vector3.forward * TERRAIN_DEPTH;
+                layer.AddComponent<MeshRenderer>();
+                layer.AddComponent<MeshFilter>();
+                layer.AddComponent<PolygonCollider2D>();
+                layers.Add(layerName, layer);
+            }
             if (data.ContainsKey(layerName))
                 data[layerName] = value;
             else
