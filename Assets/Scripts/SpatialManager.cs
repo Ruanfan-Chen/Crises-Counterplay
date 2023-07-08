@@ -18,8 +18,29 @@ public class SpatialManager : MonoBehaviour
     public static readonly Vector2Int DOWNRIGHT = new(1, -1);
     private static readonly Dictionary<string, GameObject> layers = new();
 
+    void Start()
+    {
+        InvokeRepeating("RainRandom", 0.0f, 0.3f);
+        StartCoroutine(AutoUpdate(0.5f));
+    }
+
+    void RainRandom()
+    {
+        Bounds mapBounds = MapManager.GetMapBounds();
+        Vector2Int pos = GetClosestDataPoint(new Vector2(UnityEngine.Random.Range(mapBounds.min.x, mapBounds.max.x), UnityEngine.Random.Range(mapBounds.min.y, mapBounds.max.y)));
+        SpatialData.SetValue("Water", pos, true);
+    }
+    IEnumerator AutoUpdate(float interval)
+    {
+        while (true)
+        {
+            UpdateLayerDisplay<bool>("Water", 3, b => b);
+            yield return new WaitForSeconds(interval);
+        }
+    }
     public static void UpdateLayerDisplay<T>(string layerName, int interpolationDensity, Func<T, bool> predicate)
     {
+        if (!layers.ContainsKey(layerName)) return;
         List<List<Vector2>> paths = GetContourLines(layerName, interpolationDensity, predicate);
         PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
         collider.pathCount = paths.Count;
@@ -144,18 +165,23 @@ public class SpatialManager : MonoBehaviour
             do
             {
                 vertices.Remove(current);
-                if (prev + next == current * 2)
+                Vector2Int discriminant = prev + next - current;
+                if (discriminant == current)
                 {
                     if (!IsStraightLine)
-                        smoothLine.Add((Hive2Cartesian(prev + current)) / 2.0f);
+                        smoothLine.Add(Hive2Cartesian(prev + current) / 2.0f);
                     IsStraightLine = true;
                 }
                 else
                 {
+                    Vector2 center = Hive2Cartesian(discriminant);
+                    Vector2 p0 = Hive2Cartesian(prev + current) / 2.0f - center;
+                    Vector2 p1 = Hive2Cartesian(next + current) / 2.0f - center;
+                    float theta = Mathf.PI / 3.0f;
                     for (int j = 0; j < interpolationDensity; j++)
                     {
-                        float t = (float)j / interpolationDensity;
-                        smoothLine.Add(Hive2Cartesian(Vector2.Lerp(prev + current, current + next, t)) / 2.0f);
+                        float t = j * theta / interpolationDensity;
+                        smoothLine.Add(center + (Mathf.Sin(theta - t) * p0 + Mathf.Sin(t) * p1) / Mathf.Sin(theta));
                     }
                     IsStraightLine = false;
                 }
