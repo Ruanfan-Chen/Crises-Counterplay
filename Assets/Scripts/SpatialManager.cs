@@ -1,13 +1,11 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Utility;
 
 public class SpatialManager : MonoBehaviour
 {
     public static readonly float TERRAIN_DEPTH = 0.25f;
-    public static readonly float UNIT_RADIUS = 1.0f;
+    public static readonly float UNIT_RADIUS = 0.5f;
     public static readonly Vector2 BASE_X = new(0.5f * Mathf.Sqrt(3.0f), 0.5f);
     public static readonly Vector2 BASE_Y = new(0.0f, 1.0f);
     public static readonly Vector2Int UP = new(0, 1);
@@ -18,10 +16,9 @@ public class SpatialManager : MonoBehaviour
     public static readonly Vector2Int DOWNRIGHT = new(1, -1);
     private static readonly Dictionary<string, GameObject> layers = new();
 
-    void Start()
+    void Update()
     {
-        InvokeRepeating("RainRandom", 0.0f, 0.3f);
-        StartCoroutine(AutoUpdate(0.5f));
+        RainRandom();
     }
 
     void RainRandom()
@@ -29,24 +26,6 @@ public class SpatialManager : MonoBehaviour
         Bounds mapBounds = MapManager.GetMapBounds();
         Vector2Int pos = GetClosestDataPoint(new Vector2(UnityEngine.Random.Range(mapBounds.min.x, mapBounds.max.x), UnityEngine.Random.Range(mapBounds.min.y, mapBounds.max.y)));
         SpatialData.SetValue("Water", pos, true);
-    }
-    IEnumerator AutoUpdate(float interval)
-    {
-        while (true)
-        {
-            UpdateLayerDisplay<bool>("Water", 3, b => b);
-            yield return new WaitForSeconds(interval);
-        }
-    }
-    public static void UpdateLayerDisplay<T>(string layerName, int interpolationDensity, Func<T, bool> predicate)
-    {
-        if (!layers.ContainsKey(layerName)) return;
-        List<List<Vector2>> paths = GetContourLines(layerName, interpolationDensity, predicate);
-        PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
-        collider.pathCount = paths.Count;
-        for (int i = 0; i < paths.Count; i++)
-            collider.SetPath(i, paths[i]);
-        layers[layerName].GetComponent<MeshFilter>().mesh = collider.CreateMesh(false, false);
     }
     public static void Initialize()
     {
@@ -86,7 +65,7 @@ public class SpatialManager : MonoBehaviour
         return hivePos.x * UNIT_RADIUS * BASE_X + hivePos.y * UNIT_RADIUS * BASE_Y;
     }
 
-    public static Vector2Int GetTangent<T>(string layerName, Vector2Int hivePos, Func<T, bool> predicate)
+    public static Vector2Int GetTangent(string layerName, Vector2Int hivePos)
     {
         switch ((hivePos.x - hivePos.y) % 3)
         {
@@ -94,9 +73,9 @@ public class SpatialManager : MonoBehaviour
                 return Vector2Int.zero;
             case 1 or -2:
                 switch (
-                    predicate(SpatialData.GetValue<T>(layerName, hivePos + UP)),
-                    predicate(SpatialData.GetValue<T>(layerName, hivePos + DOWNLEFT)),
-                    predicate(SpatialData.GetValue<T>(layerName, hivePos + DOWNRIGHT)))
+                    SpatialData.GetValue(layerName, hivePos + UP),
+                    SpatialData.GetValue(layerName, hivePos + DOWNLEFT),
+                    SpatialData.GetValue(layerName, hivePos + DOWNRIGHT))
                 {
                     case (false, false, false):
                         return Vector2Int.zero;
@@ -117,9 +96,9 @@ public class SpatialManager : MonoBehaviour
                 }
             case 2 or -1:
                 switch (
-                    predicate(SpatialData.GetValue<T>(layerName, hivePos + DOWN)),
-                    predicate(SpatialData.GetValue<T>(layerName, hivePos + UPLEFT)),
-                    predicate(SpatialData.GetValue<T>(layerName, hivePos + UPRIGHT)))
+                    SpatialData.GetValue(layerName, hivePos + DOWN),
+                    SpatialData.GetValue(layerName, hivePos + UPLEFT),
+                    SpatialData.GetValue(layerName, hivePos + UPRIGHT))
                 {
                     case (false, false, false):
                         return Vector2Int.zero;
@@ -142,55 +121,26 @@ public class SpatialManager : MonoBehaviour
         throw new Exception();
     }
 
-    public static List<List<Vector2>> GetContourLines<T>(string layerName, int interpolationDensity, Func<T, bool> predicate)
+    public static List<List<Vector2>> GetPaths(string layerName)
     {
-        HashSet<Vector2Int> vertices = new();
+        HashSet<Vector2Int> centers = new();
         foreach (SpatialData entity in SpatialData.GetAllNonDefaultDatapoint().Values)
         {
-            if (!predicate(entity.GetValue<T>(layerName)))
-                continue;
-            vertices.Add(entity.hivePos + UP);
+            if (entity.GetValue(layerName))
+                centers.Add(entity.hivePos);
         }
 
         List<List<Vector2>> paths = new();
-
-        while (vertices.Count > 0)
+        foreach (Vector2Int center in centers)
         {
-            Vector2Int startPos = RandomChoice(vertices); ;
-            List<Vector2> smoothLine = new();
-            Vector2Int prev = startPos;
-            Vector2Int current = prev + GetTangent(layerName, prev, predicate);
-            Vector2Int next = current + GetTangent(layerName, current, predicate);
-            bool IsStraightLine = false;
-            do
-            {
-                vertices.Remove(current);
-                Vector2Int discriminant = prev + next - current;
-                if (discriminant == current)
-                {
-                    if (!IsStraightLine)
-                        smoothLine.Add(Hive2Cartesian(prev + current) / 2.0f);
-                    IsStraightLine = true;
-                }
-                else
-                {
-                    Vector2 center = Hive2Cartesian(discriminant);
-                    Vector2 p0 = Hive2Cartesian(prev + current) / 2.0f - center;
-                    Vector2 p1 = Hive2Cartesian(next + current) / 2.0f - center;
-                    float theta = Mathf.PI / 3.0f;
-                    for (int j = 0; j < interpolationDensity; j++)
-                    {
-                        float t = j * theta / interpolationDensity;
-                        smoothLine.Add(center + (Mathf.Sin(theta - t) * p0 + Mathf.Sin(t) * p1) / Mathf.Sin(theta));
-                    }
-                    IsStraightLine = false;
-                }
-                prev = current;
-                current = next;
-                next = current + GetTangent(layerName, current, predicate);
-            } while (prev != startPos);
-            if (smoothLine.Count > interpolationDensity)
-                paths.Add(smoothLine);
+            paths.Add(new List<Vector2> {
+                Hive2Cartesian(center + UP),
+                Hive2Cartesian(center + UPLEFT),
+                Hive2Cartesian(center + DOWNLEFT),
+                Hive2Cartesian(center + DOWN),
+                Hive2Cartesian(center + DOWNRIGHT),
+                Hive2Cartesian(center + UPRIGHT)
+            });
         }
         return paths;
     }
@@ -199,7 +149,8 @@ public class SpatialManager : MonoBehaviour
     {
         private static readonly Dictionary<Vector2Int, SpatialData> datapoints = new();
         public readonly Vector2Int hivePos;
-        private readonly Dictionary<string, object> data = new();
+        private readonly Dictionary<string, bool> data = new();
+        private readonly Dictionary<string, int> index = new();
 
         private SpatialData(Vector2Int hivePos)
         {
@@ -207,7 +158,7 @@ public class SpatialManager : MonoBehaviour
             datapoints.Add(hivePos, this);
         }
 
-        public void SetValue(string layerName, object value)
+        public void SetValue(string layerName, bool value)
         {
             if (!layers.ContainsKey(layerName))
             {
@@ -215,29 +166,58 @@ public class SpatialManager : MonoBehaviour
                 layer.transform.position = Vector3.forward * TERRAIN_DEPTH;
                 layer.AddComponent<MeshRenderer>();
                 layer.AddComponent<MeshFilter>();
+                layer.AddComponent<Layer>();
                 layer.AddComponent<PolygonCollider2D>();
                 layers.Add(layerName, layer);
             }
+            bool oldValue = data.ContainsKey(layerName) ? data[layerName] : false;
             if (data.ContainsKey(layerName))
                 data[layerName] = value;
             else
                 data.Add(layerName, value);
+            switch (oldValue, value)
+            {
+                case (false, true):
+                    {
+                        PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
+                        index.Add(layerName, collider.pathCount);
+                        collider.pathCount++;
+                        collider.SetPath(collider.pathCount - 1, new Vector2[] {
+                            Hive2Cartesian(hivePos + UP),
+                            Hive2Cartesian(hivePos + UPLEFT),
+                            Hive2Cartesian(hivePos + DOWNLEFT),
+                            Hive2Cartesian(hivePos + DOWN),
+                            Hive2Cartesian(hivePos + DOWNRIGHT),
+                            Hive2Cartesian(hivePos + UPRIGHT)
+                        });
+                    }
+                    break;
+                case (true, false):
+                    {
+                        PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
+                        collider.SetPath(index[layerName], collider.GetPath(collider.pathCount - 1));
+                        collider.pathCount--;
+                        index.Remove(layerName);
+                    }
+                    break;
+            }
         }
-        public T GetValue<T>(string layerName)
+        public bool GetValue(string layerName)
         {
-            return data.ContainsKey(layerName) ? (T)data[layerName] : default;
+            return data.ContainsKey(layerName) ? data[layerName] : false;
         }
-        public static void SetValue(string layerName, Vector2Int hivePos, object value)
+
+        public static void SetValue(string layerName, Vector2Int hivePos, bool value)
         {
             if (!IsDataPoint(hivePos)) throw new ArgumentException("Cannot set value on a vertex.");
             SpatialData datapoint = (datapoints.ContainsKey(hivePos)) ? datapoints[hivePos] : new SpatialData(hivePos);
             datapoint.SetValue(layerName, value);
         }
 
-        public static T GetValue<T>(string layerName, Vector2Int hivePos)
+        public static bool GetValue(string layerName, Vector2Int hivePos)
         {
-            if (!(IsDataPoint(hivePos) && datapoints.ContainsKey(hivePos))) return default;
-            return datapoints[hivePos].GetValue<T>(layerName);
+            if (!(IsDataPoint(hivePos) && datapoints.ContainsKey(hivePos))) return false;
+            return datapoints[hivePos].GetValue(layerName);
         }
 
         public static IReadOnlyDictionary<Vector2Int, SpatialData> GetAllNonDefaultDatapoint() { return datapoints; }
@@ -245,6 +225,29 @@ public class SpatialManager : MonoBehaviour
         public static void Clear()
         {
             datapoints.Clear();
+        }
+    }
+
+    private class Layer : MonoBehaviour
+    {
+        private string layerName;
+
+        public void SetLayerName(string value) { layerName = value; }
+
+        void Start()
+        {
+            GetComponent<MeshFilter>().mesh = new();
+            GetComponent<PolygonCollider2D>().pathCount = 0;
+        }
+
+        void Update()
+        {
+            Mesh mesh = GetComponent<MeshFilter>().mesh;
+            Mesh newMesh = GetComponent<PolygonCollider2D>().CreateMesh(false, false);
+            mesh.Clear();
+            mesh.vertices = newMesh.vertices;
+            mesh.triangles = newMesh.triangles;
+            Destroy(newMesh);
         }
     }
 }
