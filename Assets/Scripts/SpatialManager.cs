@@ -14,7 +14,7 @@ public class SpatialManager : MonoBehaviour
     public static readonly Vector2Int DOWN = new(0, -1);
     public static readonly Vector2Int DOWNLEFT = new(-1, 0);
     public static readonly Vector2Int DOWNRIGHT = new(1, -1);
-    private static readonly Dictionary<string, GameObject> layers = new();
+    private static readonly Dictionary<string, Layer> layers = new();
 
     void Update()
     {
@@ -30,9 +30,9 @@ public class SpatialManager : MonoBehaviour
     public static void Initialize()
     {
         SpatialData.Clear();
-        foreach (GameObject layer in layers.Values)
+        foreach (Layer layer in layers.Values)
         {
-            Destroy(layer);
+            Destroy(layer.gameObject);
         }
         layers.Clear();
     }
@@ -65,92 +65,11 @@ public class SpatialManager : MonoBehaviour
         return hivePos.x * UNIT_RADIUS * BASE_X + hivePos.y * UNIT_RADIUS * BASE_Y;
     }
 
-    public static Vector2Int GetTangent(string layerName, Vector2Int hivePos)
-    {
-        switch ((hivePos.x - hivePos.y) % 3)
-        {
-            case 0:
-                return Vector2Int.zero;
-            case 1 or -2:
-                switch (
-                    SpatialData.GetValue(layerName, hivePos + UP),
-                    SpatialData.GetValue(layerName, hivePos + DOWNLEFT),
-                    SpatialData.GetValue(layerName, hivePos + DOWNRIGHT))
-                {
-                    case (false, false, false):
-                        return Vector2Int.zero;
-                    case (false, false, true):
-                        return DOWN;
-                    case (false, true, false):
-                        return UPLEFT;
-                    case (false, true, true):
-                        return UPLEFT;
-                    case (true, false, false):
-                        return UPRIGHT;
-                    case (true, false, true):
-                        return DOWN;
-                    case (true, true, false):
-                        return UPRIGHT;
-                    case (true, true, true):
-                        return Vector2Int.zero;
-                }
-            case 2 or -1:
-                switch (
-                    SpatialData.GetValue(layerName, hivePos + DOWN),
-                    SpatialData.GetValue(layerName, hivePos + UPLEFT),
-                    SpatialData.GetValue(layerName, hivePos + UPRIGHT))
-                {
-                    case (false, false, false):
-                        return Vector2Int.zero;
-                    case (false, false, true):
-                        return DOWNRIGHT;
-                    case (false, true, false):
-                        return UP;
-                    case (false, true, true):
-                        return DOWNRIGHT;
-                    case (true, false, false):
-                        return DOWNLEFT;
-                    case (true, false, true):
-                        return DOWNLEFT;
-                    case (true, true, false):
-                        return UP;
-                    case (true, true, true):
-                        return Vector2Int.zero;
-                }
-        }
-        throw new Exception();
-    }
-
-    public static List<List<Vector2>> GetPaths(string layerName)
-    {
-        HashSet<Vector2Int> centers = new();
-        foreach (SpatialData entity in SpatialData.GetAllNonDefaultDatapoint().Values)
-        {
-            if (entity.GetValue(layerName))
-                centers.Add(entity.hivePos);
-        }
-
-        List<List<Vector2>> paths = new();
-        foreach (Vector2Int center in centers)
-        {
-            paths.Add(new List<Vector2> {
-                Hive2Cartesian(center + UP),
-                Hive2Cartesian(center + UPLEFT),
-                Hive2Cartesian(center + DOWNLEFT),
-                Hive2Cartesian(center + DOWN),
-                Hive2Cartesian(center + DOWNRIGHT),
-                Hive2Cartesian(center + UPRIGHT)
-            });
-        }
-        return paths;
-    }
-
     public class SpatialData
     {
         private static readonly Dictionary<Vector2Int, SpatialData> datapoints = new();
         public readonly Vector2Int hivePos;
         private readonly Dictionary<string, bool> data = new();
-        private readonly Dictionary<string, int> index = new();
 
         private SpatialData(Vector2Int hivePos)
         {
@@ -162,45 +81,28 @@ public class SpatialManager : MonoBehaviour
         {
             if (!layers.ContainsKey(layerName))
             {
-                GameObject layer = new GameObject(layerName + "Layer");
-                layer.transform.position = Vector3.forward * TERRAIN_DEPTH;
-                layer.AddComponent<MeshRenderer>();
-                layer.AddComponent<MeshFilter>();
-                layer.AddComponent<Layer>();
-                layer.AddComponent<PolygonCollider2D>();
-                layers.Add(layerName, layer);
+                GameObject layerObj = new GameObject(layerName + "Layer");
+                layerObj.transform.position = Vector3.forward * TERRAIN_DEPTH;
+                layerObj.AddComponent<MeshRenderer>();
+                layerObj.AddComponent<MeshFilter>(); ;
+                layerObj.AddComponent<PolygonCollider2D>();
+                layers.Add(layerName, layerObj.AddComponent<Layer>());
             }
-            bool oldValue = data.ContainsKey(layerName) ? data[layerName] : false;
+            bool oldValue;
             if (data.ContainsKey(layerName))
-                data[layerName] = value;
-            else
-                data.Add(layerName, value);
-            switch (oldValue, value)
             {
-                case (false, true):
-                    {
-                        PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
-                        index.Add(layerName, collider.pathCount);
-                        collider.pathCount++;
-                        collider.SetPath(collider.pathCount - 1, new Vector2[] {
-                            Hive2Cartesian(hivePos + UP),
-                            Hive2Cartesian(hivePos + UPLEFT),
-                            Hive2Cartesian(hivePos + DOWNLEFT),
-                            Hive2Cartesian(hivePos + DOWN),
-                            Hive2Cartesian(hivePos + DOWNRIGHT),
-                            Hive2Cartesian(hivePos + UPRIGHT)
-                        });
-                    }
-                    break;
-                case (true, false):
-                    {
-                        PolygonCollider2D collider = layers[layerName].GetComponent<PolygonCollider2D>();
-                        collider.SetPath(index[layerName], collider.GetPath(collider.pathCount - 1));
-                        collider.pathCount--;
-                        index.Remove(layerName);
-                    }
-                    break;
+                oldValue = data[layerName];
+                data[layerName] = value;
             }
+            else
+            {
+                oldValue = false;
+                data.Add(layerName, value);
+            }
+            if (!oldValue && value)
+                layers[layerName].AddShape(hivePos);
+            if (oldValue && !value)
+                layers[layerName].RemoveShape(hivePos);
         }
         public bool GetValue(string layerName)
         {
@@ -231,6 +133,7 @@ public class SpatialManager : MonoBehaviour
     private class Layer : MonoBehaviour
     {
         private string layerName;
+        private readonly List<Vector2Int> hiveCoordinate = new();
 
         public void SetLayerName(string value) { layerName = value; }
 
@@ -248,6 +151,33 @@ public class SpatialManager : MonoBehaviour
             mesh.vertices = newMesh.vertices;
             mesh.triangles = newMesh.triangles;
             Destroy(newMesh);
+        }
+
+        public void AddShape(Vector2Int hivePos)
+        {
+            if (hiveCoordinate.Contains(hivePos)) return;
+            PolygonCollider2D collider = GetComponent<PolygonCollider2D>();
+            hiveCoordinate.Add(hivePos);
+            collider.pathCount++;
+            collider.SetPath(collider.pathCount - 1, new Vector2[] {
+                            Hive2Cartesian(hivePos + UP),
+                            Hive2Cartesian(hivePos + UPLEFT),
+                            Hive2Cartesian(hivePos + DOWNLEFT),
+                            Hive2Cartesian(hivePos + DOWN),
+                            Hive2Cartesian(hivePos + DOWNRIGHT),
+                            Hive2Cartesian(hivePos + UPRIGHT)
+                    });
+        }
+
+        public void RemoveShape(Vector2Int hivePos)
+        {
+            if (!hiveCoordinate.Contains(hivePos)) return;
+            PolygonCollider2D collider = GetComponent<PolygonCollider2D>();
+            int index = hiveCoordinate.IndexOf(hivePos);
+            collider.SetPath(index, collider.GetPath(collider.pathCount - 1));
+            collider.pathCount--;
+            hiveCoordinate[index] = hiveCoordinate[^1];
+            hiveCoordinate.RemoveAt(hiveCoordinate.Count - 1);
         }
     }
 }
