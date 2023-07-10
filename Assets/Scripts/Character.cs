@@ -7,13 +7,13 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
-    private static float moveSpeed = 5.0f;
+    private float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
     private BiDictionary<KeyCode, ActiveItem> activeItems = new();
-    private static float invDurationOnDmg = 0.7f;
-    private static float knockbackDurationOnDmg = 0.5f;
-    private static float knockbackDistanceOnDmg = 3.0f;
-    private static float initialKnockbackSpeedOnDmg = 50.0f;
+    public static readonly float invDurationOnDmg = 0.7f;
+    public static readonly float knockbackDurationOnDmg = 0.5f;
+    public static readonly float knockbackDistanceOnDmg = 3.0f;
+    public static readonly float initialKnockbackSpeedOnDmg = 50.0f;
 
     public float GetHealth() { return health; }
 
@@ -23,19 +23,18 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMaxHealth(float value) { maxHealth = value; }
 
-    public static float GetMoveSpeed() { return moveSpeed; }
+    public float GetMoveSpeed() {
+        float bonus = 0.0f;
+        foreach (ISpeedBonus buff in GetComponents<ISpeedBonus>())
+            bonus += buff.GetValue();
+        return moveSpeed + bonus;
+    }
 
-    public static void SetMoveSpeed(float value) { moveSpeed = value; }
-
-    public static float GetKnockbackDurationOnDmg() { return knockbackDurationOnDmg; }
-
-    public static float GetKnockbackDistanceOnDmg() { return knockbackDistanceOnDmg; }
-
-    public static float GetInitialKnockbackSpeedOnDmg() { return initialKnockbackSpeedOnDmg; }
+    public void SetMoveSpeed(float value) { moveSpeed = value; }
 
     public void ReceiveDamage(Damage damage)
     {
-        if (GetComponent<Invulnerable>()) return;
+        if (GetComponent<IInvulnerable>() != null) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
         IEnumerator coroutine = damage.GetCoroutine();
@@ -49,7 +48,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
             coroutine = ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg);
         }
         StartCoroutine(coroutine);
-        StartCoroutine(AddAndRemoveComponent(gameObject, typeof(Invulnerable), invDurationOnDmg));
+        StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, invDurationOnDmg));
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
@@ -85,27 +84,19 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         }
         return false;
     }
-    public PassiveItem GivePassiveItem<T>()
+    public PassiveItem GiveItem<T>() where T : PassiveItem
     {
-        if (typeof(PassiveItem).IsAssignableFrom(typeof(T)))
-        {
-            PassiveItem item = (PassiveItem)gameObject.AddComponent(typeof(T));
-            passiveItems.Add(item);
-            return item;
-        }
-        return default;
+        PassiveItem item = gameObject.AddComponent<T>();
+        passiveItems.Add(item);
+        return item;
     }
 
-    public ActiveItem GiveActiveItem<T>(KeyCode keyCode)
+    public ActiveItem GiveItem<T>(KeyCode keyCode) where T : ActiveItem
     {
-        if (typeof(ActiveItem).IsAssignableFrom(typeof(T)))
-        {
-            RemoveItem(keyCode);
-            ActiveItem item = (ActiveItem)gameObject.AddComponent(typeof(T));
-            activeItems.Add(keyCode, item);
-            return item;
-        }
-        return default;
+        RemoveItem(keyCode);
+        ActiveItem item = gameObject.AddComponent<T>();
+        activeItems.Add(keyCode, item);
+        return item;
     }
     public void ActivateItem(KeyCode keyCode)
     {
@@ -125,7 +116,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GivePassiveItem<PassiveItem_Weapon_0>();
+        GiveItem<PassiveItem_Weapon_0>();
     }
 
     void Update()
@@ -134,6 +125,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         {
             if (Input.GetKeyDown(keyValuePair.Key))
                 keyValuePair.Value.Activate();
+            if (Input.GetKeyUp(keyValuePair.Key))
+                keyValuePair.Value.Deactivate();
         }
     }
 }

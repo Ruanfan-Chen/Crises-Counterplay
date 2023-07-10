@@ -1,9 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Utility;
 
 public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
 {
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private float damage = 100.0f;
     private float range = 6.0f;
     private float projectileSpeed = 5.0f;
@@ -46,9 +50,24 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
         projectile.AddComponent<CircleCollider2D>().radius = explosionRadius / projectile.transform.lossyScale.x;
         BombBehavior script = projectile.AddComponent<BombBehavior>();
         script.SetDamage(damage);
-        script.SetAccelration(-projectileSpeed * projectileSpeed / range /2.0f);
+        script.SetAccelration(-projectileSpeed * projectileSpeed / range / 2.0f);
         script.SetTimer(explosionDelay);
         projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
+    }
+
+    public override string GetDescription()
+    {
+        return description;
+    }
+
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
     }
 
     private class BombBehavior : MonoBehaviour
@@ -56,7 +75,6 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
         private float damage;
         private float explosionTimer;
         private float accelration;
-        private List<GameObject> currentCollsions = new();
 
         public float GetDamage() { return damage; }
 
@@ -78,26 +96,16 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
             explosionTimer -= Time.deltaTime;
             if (explosionTimer <= 0.0f)
             {
-                foreach (GameObject g in currentCollsions.ToArray())
+                foreach (GameObject g in OverlapGameObject(gameObject, collision => collision.GetComponent<IDamageable>() != null))
                 {
                     IDamageable damageable = g.GetComponent<IDamageable>();
-                    if (damageable != null && damageable.GetHostility() != script.GetHostility())
+                    if (damageable.GetHostility() != script.GetHostility())
                     {
                         new Damage(script.GetSource(), gameObject, damageable, damage).Apply();
                     }
                 }
                 Destroy(gameObject);
             }
-        }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            currentCollsions.Add(collision.gameObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            currentCollsions.Remove(collision.gameObject);
         }
     }
 }

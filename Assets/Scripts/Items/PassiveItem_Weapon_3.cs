@@ -1,14 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
+using static Utility;
 
 public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
 {
     private static string prefabPath = "Prefabs/Footprint";
+    private static string itemName = "Name Placeholder";
+    private static string description = "Description Placeholder";
+    private static string logoPath = "Resources/Placeholder";
     private GameObject projectile;
     private ProjectileBehavior projectilScript;
     private GameObject view;
-    private ViewBehavior viewScript;
     private PolygonCollider2D viewTrigger;
     private float range = 10.0f;
     private float angleOfView = 120.0f;
@@ -38,7 +42,6 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
         view = new GameObject("WeaponView");
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        viewScript = view.AddComponent<ViewBehavior>();
         viewTrigger = view.AddComponent<PolygonCollider2D>();
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
@@ -55,7 +58,6 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
     {
         Destroy(projectile);
         view = null;
-        viewScript = null;
         viewTrigger = null;
         projectile = null;
         projectilScript = null;
@@ -74,39 +76,35 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
 
     public void UpdateTarget()
     {
-        if (projectilScript.GetTarget() == gameObject)
+        if (projectilScript.GetTarget() != gameObject)
         {
-            List<GameObject> targetList = viewScript.GetCurrentCollsions();
-            targetList.Remove(gameObject);
-            if (targetList.Count == 0)
-            {
-                projectilScript.SetTarget(gameObject);
-                return;
-            }
-            projectilScript.SetTarget(targetList[Random.Range(0, targetList.Count)]);
-        }
-        else
             projectilScript.SetTarget(gameObject);
+            return;
+        }
+        IEnumerable<GameObject> others = OverlapDamageable().Where(damageable => damageable != gameObject);
+        if (others.Count() > 0)
+            projectilScript.SetTarget(others.ElementAt(Random.Range(0, others.Count())));
     }
 
-    private class ViewBehavior : MonoBehaviour
+    public override string GetDescription()
     {
-        private List<GameObject> currentCollsions = new();
-
-        public List<GameObject> GetCurrentCollsions() { return currentCollsions; }
-
-        private void OnTriggerEnter2D(Collider2D collision)
-        {
-            if (collision.GetComponent<IDamageable>() != null)
-                currentCollsions.Add(collision.gameObject);
-        }
-
-        private void OnTriggerExit2D(Collider2D collision)
-        {
-            currentCollsions.Remove(collision.gameObject);
-        }
+        return description;
     }
 
+    public override Sprite GetLogo()
+    {
+        return Resources.Load<Sprite>(logoPath);
+    }
+
+    public override string GetName()
+    {
+        return itemName;
+    }
+
+    private IEnumerable<GameObject> OverlapDamageable()
+    {
+        return OverlapGameObject(view, collider => collider.GetComponent<IDamageable>() != null);
+    }
     private class ProjectileBehavior : MonoBehaviour
     {
         private GameObject target;

@@ -36,8 +36,11 @@ public class CrisisManager : MonoBehaviour
         eventTimer -= Time.deltaTime;
         if (eventTimer <= 0)
         {
-            int r = Utility.WeightedRandom(new Dictionary<int, float>() { [0] = 1.0f, [1] = 1.0f });
-            switch (r)
+            switch (Utility.WeightedRandom(new Dictionary<int, float>()
+            {
+                [0] = 1.0f,
+                [1] = 1.0f
+            }))
             {
                 case 0:
                     SpawnVehicle();
@@ -53,7 +56,7 @@ public class CrisisManager : MonoBehaviour
     void SpawnVehicle()
     {
         float length = 2.24f * 30.0f;
-        Vector3 startPos = GetComponent<MapManager>().GetRandomPointOnEdge();
+        Vector3 startPos = MapManager.GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (m_player.transform.position - startPos).normalized * length;
 
         StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, m_vehicleSpeed, m_vehicleContactDamage, true));
@@ -61,9 +64,9 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-        Vector2 mapScale = GetComponent<MapManager>().GetMapScale();
-        Vector3 position = new Vector3(Random.Range(-mapScale.x / 2, mapScale.x / 2), Random.Range(-mapScale.y / 2, mapScale.y / 2), 0);
-        StartCoroutine(ElectricField.Instantiate(m_player.GetComponent<Player>().GetCharacter(), position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
+        Bounds bound = MapManager.GetMapBounds(5.0f);
+        Vector3 position = new(Random.Range(bound.min.x, bound.max.x), Random.Range(bound.min.y, bound.max.y), 0);
+        StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 
     void SpawnTidalWave()

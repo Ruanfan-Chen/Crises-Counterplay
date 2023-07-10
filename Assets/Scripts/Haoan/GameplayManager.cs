@@ -1,8 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -13,8 +12,10 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private GameObject m_shopPanel;
     [SerializeField] private GameObject m_startPanel;
     [SerializeField] private GameObject m_completePanel;
-    [Tooltip("UI element that shows the active skill invoked by K key.")]
+    [Tooltip("UI element that shows the active skill invoked by pressing the keys.")]
+    [SerializeField] private GameObject m_activeJ;
     [SerializeField] private GameObject m_activeK;
+    [SerializeField] private GameObject m_activeL;
 
     [Space(10)]
     [Header("Player and Character")]
@@ -56,7 +57,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        LoadLevel(m_levelNum);
+        
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
     }
@@ -98,7 +99,7 @@ public class GameplayManager : MonoBehaviour
 
         //show hp recovery regardless of the level
         int hpRecovery = Random.Range(15, 36);
-        string description = "Recover " + hpRecovery.ToString() + " HP";
+        string description = "+" + hpRecovery.ToString() + " HP";
         attributeButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = description;
         m_actionAttribute = delegate ()
         {
@@ -113,19 +114,32 @@ public class GameplayManager : MonoBehaviour
         {
             case 1:
                 {
-                    Item item = new Item();
-                    item.m_name = "Trainbound";
-                    item.m_index = 2;
-                    item.m_active = true;
+                    //ActiveItem candidate = null;
+                    //int randint = Random.Range(0, 2);
+                    //switch (randint)
+                    //{
+                    //    case 0:
+                    //        candidate = new ActiveItem_2();
+                    //        break;
+                    //    case 1:
+                    //        candidate = new ActiveItem_2_0();
+                    //        break;
+                    //}
 
-                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+                    //itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = candidate.GetName();
+                    //itemButton.GetComponent<Image>().sprite = candidate.GetLogo();
+                    //m_actionItem = delegate ()
+                    //{
+                    //    GiveTrainActive(randint);
+                    //};
+
+                    ActiveItem candidate = null;
+                    candidate = new ActiveItem_0();
+                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = candidate.GetName();
+                    itemButton.GetComponent<Image>().sprite = candidate.GetLogo();
                     m_actionItem = delegate ()
                     {
-                        if (c)
-                        {
-                            c.GiveActiveItem<ActiveItem_2>(KeyCode.K);
-                            m_activeK.SetActive(true);
-                        }
+                        GiveElectricActive();
                     };
                     break;
                 }
@@ -136,18 +150,11 @@ public class GameplayManager : MonoBehaviour
                 break;
             case 3:
                 {
-                    Item item = new Item();
-                    item.m_name = "Toxic Footprint";
-                    item.m_index = 0;
-                    item.m_active = false;
-
-                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = item.m_name;
+                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = "Toxic Footprint";
+                    itemButton.GetComponent<Image>().sprite = Resources.Load<Sprite>("Sprites/Skills/Toxic Footprint");
                     m_actionItem = delegate ()
                     {
-                        if (c)
-                        {
-                            c.GivePassiveItem<PassiveItem_0>();
-                        }
+                        GiveToxicFootprint();
                     };
                     break;
                 }
@@ -225,6 +232,7 @@ public class GameplayManager : MonoBehaviour
     public void StartButtonOnClick()
     {
         m_startPanel.SetActive(false);
+        LoadLevel(m_levelNum);
         Time.timeScale = 1.0f;
     }
 
@@ -235,11 +243,7 @@ public class GameplayManager : MonoBehaviour
             case 1:
                 break;
             case 2:
-                if (GetCharacter())
-                {
-                    GetCharacter().GiveActiveItem<ActiveItem_2>(KeyCode.K);
-                    m_activeK.SetActive(true);
-                }
+                GiveTrainActive(-1);
                 break;
             case 3:
                 LoadLevel(2);
@@ -247,11 +251,58 @@ public class GameplayManager : MonoBehaviour
                 break;
             case 4:
                 LoadLevel(3);
-                if (GetCharacter())
-                {
-                    GetCharacter().GivePassiveItem<PassiveItem_0>();
-                }
+                GiveToxicFootprint();
                 break;
+        }
+    }
+
+    void GiveTrainActive(int seed)
+    {
+        Character c = GetCharacter();
+        if (c)
+        {
+            int randint;
+            if(seed == -1)
+            {
+                randint = Random.Range(0, 2);
+            }
+            else
+            {
+                randint = seed;
+            }
+            
+            ActiveItem activeItem = null;
+            switch (randint)
+            {
+                case 0:
+                    activeItem = GetCharacter().GiveItem<ActiveItem_2>(KeyCode.K);
+                    m_activeK.SetActive(true);
+                    m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem);
+                    m_activeK.GetComponent<SpellCooldown>().SetCooldownTime(3.0f);
+                    break;
+                case 1:
+                    activeItem = GetCharacter().GiveItem<ActiveItem_2_0>(KeyCode.K);
+                    m_activeK.SetActive(true);
+                    m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem);
+                    m_activeK.GetComponent<SpellCooldown>().SetCooldownTime(5.0f);
+                    break;
+            }
+            
+        }
+    }
+
+    void GiveElectricActive()
+    {
+        ActiveItem activeItem = GetCharacter().GiveItem<ActiveItem_0>(KeyCode.J);
+        m_activeJ.SetActive(true);
+        m_activeJ.GetComponent<Supercharge>().SetActiveItem(activeItem);
+    }
+
+    void GiveToxicFootprint()
+    {
+        if (GetCharacter())
+        {
+            GetCharacter().GiveItem<PassiveItem_0>();
         }
     }
 }

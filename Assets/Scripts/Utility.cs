@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -5,9 +6,10 @@ using UnityEngine;
 
 public static class Utility
 {
+    static string DEAFULT_LINE_SHADER_PATH = "Hidden/Internal-Colored";
     public static T WeightedRandom<T>(Dictionary<T, float> weightDict)
     {
-        float r = Random.Range(0.0f, weightDict.Sum(kvp => kvp.Value));
+        float r = UnityEngine.Random.Range(0.0f, weightDict.Sum(kvp => kvp.Value));
         foreach (KeyValuePair<T, float> kvp in weightDict)
         {
             if (r <= kvp.Value)
@@ -16,6 +18,15 @@ public static class Utility
                 r -= kvp.Value;
         }
         return default;
+    }
+
+    public static T RandomChoice<T>(ICollection<T> collection)
+    {
+        return collection.ToList()[UnityEngine.Random.Range(0, collection.Count)];
+    }
+    public static T RandomChoice<T>(IEnumerable<T> collection)
+    {
+        return collection.ToList()[UnityEngine.Random.Range(0, collection.Count())];
     }
 
     public static IEnumerator ForcedMovement(Transform transform, Vector3 displacement, float initialSpeed, float duration)
@@ -31,11 +42,11 @@ public static class Utility
         }
     }
 
-    public static IEnumerator AddAndRemoveComponent(GameObject gameObject, System.Type componentType, float duration)
+    public static IEnumerator AddAndRemoveComponent<T>(GameObject gameObject, float duration) where T : Component
     {
-        Component component = gameObject.AddComponent(componentType);
+        T component = gameObject.AddComponent<T>();
         yield return new WaitForSeconds(duration);
-        Object.Destroy(component);
+        UnityEngine.Object.Destroy(component);
     }
 
     public class BiDictionary<T, U>
@@ -46,12 +57,12 @@ public static class Utility
         public IReadOnlyDictionary<T, U> GetTUDict() { return TUDict; }
         public IReadOnlyDictionary<U, T> GetUTDict() { return UTDict; }
 
-        public U this[T t] { get => TUDict[t]; set { TUDict[t] = value; UTDict[value] = t; } }
-        public T this[U u] { get => UTDict[u]; set { UTDict[u] = value; TUDict[value] = u; } }
+        public U this[T t] { get => TUDict[t]; set => Add(t, value); }
+        public T this[U u] { get => UTDict[u]; set => Add(value, u); }
 
         public bool Remove(T t)
         {
-            if (TUDict.TryGetValue(t, out U u) && UTDict.ContainsKey(u))
+            if (TUDict.TryGetValue(t, out U u))
             {
                 TUDict.Remove(t);
                 UTDict.Remove(u);
@@ -62,7 +73,7 @@ public static class Utility
 
         public bool Remove(U u)
         {
-            if (UTDict.TryGetValue(u, out T t) && TUDict.ContainsKey(t))
+            if (UTDict.TryGetValue(u, out T t))
             {
                 UTDict.Remove(u);
                 TUDict.Remove(t);
@@ -83,6 +94,10 @@ public static class Utility
 
         public void Add(T t, U u)
         {
+            if (TUDict.ContainsKey(t))
+                Remove(t);
+            if (UTDict.ContainsKey(u))
+                Remove(u);
             TUDict[t] = u;
             UTDict[u] = t;
         }
@@ -93,4 +108,130 @@ public static class Utility
             UTDict.Clear();
         }
     }
+
+    public static GameObject DrawLine(string name, Vector3 start, Vector3 end, Color color, float width = 0.2f)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.tag = "Disposable";
+        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+        //Use Dedault-Line Material
+        lineRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
+
+        //Set color
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+
+        //Set width
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        //Set line count which is 2
+        lineRenderer.positionCount = 2;
+
+        //Set the position of both two lines
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
+        return lineObj;
+    }
+
+    public static GameObject DrawLine(string name, IEnumerable<Vector3> line, bool loop, Color color, float width = 0.2f)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.tag = "Disposable";
+        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+        //Use Dedault-Line Material
+        lineRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
+
+        //Set color
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+
+        //Set width
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        //Set line count which is erpDensity
+        lineRenderer.positionCount = line.Count();
+
+        //Set loop
+        lineRenderer.loop = loop;
+
+        //Set the positions
+        for (int i = 0; i < lineRenderer.positionCount; i++)
+        {
+            lineRenderer.SetPosition(i, line.ElementAt(i));
+        }
+        return lineObj;
+    }
+
+    public static GameObject DrawLine(string name, IEnumerable<Vector2> line, bool loop, Color color, float width = 0.2f)
+    {
+        GameObject lineObj = new GameObject(name);
+        lineObj.tag = "Disposable";
+        LineRenderer lineRenderer = lineObj.AddComponent<LineRenderer>();
+
+        //Use Dedault-Line Material
+        lineRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
+
+        //Set color
+        lineRenderer.startColor = color;
+        lineRenderer.endColor = color;
+
+        //Set width
+        lineRenderer.startWidth = width;
+        lineRenderer.endWidth = width;
+
+        //Set line count which is erpDensity
+        lineRenderer.positionCount = line.Count();
+
+        //Set loop
+        lineRenderer.loop = loop;
+
+        //Set the positions
+        for (int i = 0; i < lineRenderer.positionCount; i++)
+        {
+            lineRenderer.SetPosition(i, line.ElementAt(i));
+        }
+        return lineObj;
+    }
+
+    public static GameObject DrawCircle(string name, Vector3 center, float radius, Color color, int erpDensity = 24, float width = 0.2f)
+    {
+        List<Vector3> points = new();
+
+        //Set the positions
+        for (int i = 0; i < erpDensity; i++)
+        {
+            points.Add(center + Quaternion.Euler(0.0f, 0.0f, 360 * i / erpDensity) * Vector3.up * radius);
+        }
+        return DrawLine(name, points, true, color, width);
+    }
+
+    public static IEnumerable<GameObject> OverlapGameObject(GameObject gameObject, Func<Collider2D, bool> predicate)
+    {
+        List<Collider2D> colliders = new();
+        gameObject.GetComponent<Collider2D>().OverlapCollider(new ContactFilter2D().NoFilter(), colliders);
+        return colliders.Where(predicate).Select(collider => collider.gameObject);
+    }
+
+    public static Dictionary<T, T> BFTraversal<T>(T root, Func<T, IEnumerable<T>> GetAdjacent)
+    {
+        Queue<T> queue = new();
+        queue.Enqueue(root);
+        Dictionary<T, T> parent = new() { [root] = default };
+        while (queue.Count > 0)
+        {
+            T current = queue.Dequeue();
+            foreach (T t in GetAdjacent(current))
+            {
+                if (parent.ContainsKey(t)) continue;
+                parent.Add(t, current);
+                queue.Enqueue(t);
+            }
+        }
+        return parent;
+    }
+
 }
