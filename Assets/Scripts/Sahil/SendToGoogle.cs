@@ -18,6 +18,12 @@ public class SendToGoogle : MonoBehaviour
     {
         StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), playerSelection.ToString(), APitem.ToString()));
     }
+    
+	 public int GetLevelCount()
+    {
+        return levelCount;
+    }
+
 
 
     private IEnumerator Post(string sessionID, string levelCount, string playerSelection, string APitem)
