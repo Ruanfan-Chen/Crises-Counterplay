@@ -21,7 +21,8 @@ public abstract class ActiveItem : MonoBehaviour, IItem
     public abstract string GetName();
 }
 
-public interface IItem {
+public interface IItem
+{
     public abstract string GetName();
     public abstract string GetDescription();
     public abstract Sprite GetLogo();

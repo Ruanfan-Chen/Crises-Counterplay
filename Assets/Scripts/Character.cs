@@ -7,7 +7,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
-    private static float moveSpeed = 5.0f;
+    private float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
     private BiDictionary<KeyCode, ActiveItem> activeItems = new();
     public static readonly float invDurationOnDmg = 0.7f;
@@ -23,9 +23,14 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMaxHealth(float value) { maxHealth = value; }
 
-    public static float GetMoveSpeed() { return moveSpeed; }
+    public float GetMoveSpeed() {
+        float bonus = 0.0f;
+        foreach (ISpeedBonus buff in GetComponents<ISpeedBonus>())
+            bonus += buff.GetValue();
+        return moveSpeed + bonus;
+    }
 
-    public static void SetMoveSpeed(float value) { moveSpeed = value; }
+    public void SetMoveSpeed(float value) { moveSpeed = value; }
 
     public void ReceiveDamage(Damage damage)
     {

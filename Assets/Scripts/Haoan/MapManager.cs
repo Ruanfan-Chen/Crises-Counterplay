@@ -19,7 +19,6 @@ public class MapManager : MonoBehaviour
     public void CreateMap()
     {
         CreateMapBySprite();
-        SpatialManager.Initialize();
     }
 
     public void CreateMapBySprite()

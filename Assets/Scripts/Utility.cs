@@ -216,22 +216,22 @@ public static class Utility
         return colliders.Where(predicate).Select(collider => collider.gameObject);
     }
 
-    public static IEnumerable<T> BFTraversal<T>(T root, System.Func<T, IEnumerable<T>> GetAdjacent)
+    public static Dictionary<T, T> BFTraversal<T>(T root, Func<T, IEnumerable<T>> GetAdjacent)
     {
         Queue<T> queue = new();
         queue.Enqueue(root);
-        HashSet<T> visited = new() { root };
+        Dictionary<T, T> parent = new() { [root] = default };
         while (queue.Count > 0)
         {
             T current = queue.Dequeue();
             foreach (T t in GetAdjacent(current))
             {
-                if (visited.Contains(t)) continue;
-                visited.Add(t);
+                if (parent.ContainsKey(t)) continue;
+                parent.Add(t, current);
                 queue.Enqueue(t);
             }
         }
-        return visited;
+        return parent;
     }
 
 }

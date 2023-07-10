@@ -9,19 +9,22 @@ public class ActiveItem_0 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
     private float maxCharge = 5.0f;
-    private float charge = 0.0f;
+    private float charge = 5.0f;
     private float cost = 5.0f;
     private float duration = 10.0f;
 
     void Update()
     {
-
-        charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
-
+        if (!GetComponent<Buff>())
+            charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
     }
     public override void Activate()
     {
-        if (IsUsable()) { AddAndRemoveComponent<Buff>(gameObject, duration); }
+        if (IsUsable())
+        {
+            StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
+            charge -= cost;
+        }
     }
 
     public override void Deactivate() { }
@@ -51,7 +54,7 @@ public class ActiveItem_0 : ActiveItem
         return charge >= cost;
     }
 
-    private class Buff : MonoBehaviour, IInvulnerable
+    private class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
     {
         private float damage = 50.0f;
         private float knockbackDistance = 3.0f;
@@ -59,14 +62,9 @@ public class ActiveItem_0 : ActiveItem
         private float knockbackDuration = 1.0f;
         private float speedBonus = 5.0f;
 
-        void OnEnable()
+        public float GetValue()
         {
-            Character.SetMoveSpeed(Character.GetMoveSpeed() + speedBonus);
-        }
-
-        void OnDisable()
-        {
-            Character.SetMoveSpeed(Character.GetMoveSpeed() - speedBonus);
+            return speedBonus;
         }
 
         private void OnTriggerEnter2D(Collider2D collision)

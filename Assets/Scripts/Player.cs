@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
-using UnityEngine.UIElements;
 
 public class Player : MonoBehaviour
 {
@@ -22,11 +18,10 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Move Player
-        transform.Translate(Character.GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
-
         if (character != null)
         {
+            // Move Player
+            transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
             transform.position += character.transform.localPosition;
             transform.rotation *= character.transform.localRotation;
             character.transform.localPosition = Vector3.zero;
