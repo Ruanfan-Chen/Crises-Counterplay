@@ -21,6 +21,7 @@ public class Supercharge : MonoBehaviour
     public void SetActiveItem(ActiveItem activeItem, Sprite logo)
     {
         m_activeItem = activeItem;
+        m_icon = GetComponent<Image>();
         m_icon.sprite = logo;
     }
     // Start is called before the first frame update
@@ -29,15 +30,12 @@ public class Supercharge : MonoBehaviour
         m_textCooldown.gameObject.SetActive(true);
         m_imageEdge.gameObject.SetActive(false);
         m_imageCooldown.fillAmount = 0.0f;
-
-        m_icon = GetComponent<Image>();
-        //m_icon.sprite = m_activeItem.GetLogo();
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_textCooldown.text = Mathf.Round(m_activeItem.GetChargeProgress() * 5.0f).ToString();
+        m_textCooldown.text = Mathf.Round(m_activeItem.GetChargeProgress() * 5.0f).ToString() + "s";
         if (m_activeItem.IsUsable())
         {
             m_imageCooldown.fillAmount = 0.0f;

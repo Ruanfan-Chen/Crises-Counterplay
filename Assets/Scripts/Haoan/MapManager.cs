@@ -18,7 +18,7 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
-        CreateMapBySprite();
+        CreateMapByTile();
     }
 
     public void CreateMapBySprite()

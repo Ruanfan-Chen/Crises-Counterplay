@@ -37,7 +37,7 @@ public class Bar : MonoBehaviour
                 break;
             case Usage.Mana:
                 maxValue = 1.0f;
-                currentValue = m_target.GetComponent<ActiveItem>().GetChargeProgress();
+                currentValue = m_target.transform.GetChild(0).GetComponent<ActiveItem>().GetChargeProgress();
                 break;
         }
         ShowBar(currentValue, maxValue);
