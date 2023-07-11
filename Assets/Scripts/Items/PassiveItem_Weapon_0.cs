@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
@@ -10,12 +7,10 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
     private static string logoPath = "Resources/Placeholder";
     private GameObject view;
     private ViewBehavior viewScript;
-    private PolygonCollider2D viewTrigger;
+    private CircleCollider2D viewTrigger;
     private float damage = 25.0f;
     private float range = 10.0f;
     private float projectileSpeed = 10.0f;
-    private float angleOfView = 360.0f;
-    private int interpolationDensity = 4;
 
     public float GetDamage() { return damage; }
     public void SetDamage(float value) { damage = value; }
@@ -28,9 +23,9 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 
     public void SetProjectileSpeed(float value) { projectileSpeed = value; }
 
-    public float GetAngleOfView() { return angleOfView; }
+    public float GetAngleOfView() { return 360.0f; }
 
-    public void SetAngleOfView(float value) { angleOfView = value; UpdateCollider(); }
+    public void SetAngleOfView(float value) { }
 
     public float GetAttackInterval() { return viewScript.GetAttackInterval(); }
 
@@ -42,7 +37,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         viewScript = view.AddComponent<ViewBehavior>();
-        viewTrigger = view.AddComponent<PolygonCollider2D>();
+        viewTrigger = view.AddComponent<CircleCollider2D>();
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
         UpdateCollider();
@@ -57,15 +52,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 
     private void UpdateCollider()
     {
-        List<Vector2> points = new()
-        {
-            Vector2.zero
-        };
-        for (float i = 0; i <= interpolationDensity; i++)
-        {
-            points.Add(range * (Quaternion.Euler(0, 0, (i / interpolationDensity - 0.5f) * angleOfView) * Vector3.up));
-        }
-        viewTrigger.SetPath(0, points);
+        viewTrigger.radius = range;
     }
 
     void IProjectileModifier.Modify(GameObject projectile)

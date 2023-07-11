@@ -39,6 +39,7 @@ public class EnemySpawn : MonoBehaviour
             case 3:
                 enemy.AddComponent<MoveInCircle>();
                 enemy.GetComponent<MoveInCircle>().SetCenter(player);
+                enemy.GetComponent<MoveInCircle>().SetRadius(5.0f);
                 break;
         }
 
@@ -142,18 +143,21 @@ public class EnemySpawn : MonoBehaviour
     private class MoveInCircle : MonoBehaviour
     {
         private GameObject center;
+        private float radius;
 
         private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
         public GameObject GetCenter() { return center; }
 
-        public void SetCenter(GameObject value) { center = value; }
+        public float GetRadius()        {            return radius;        }
 
-        public float GetRange() { return GetComponent<Enemy>().GetRange(); }
+        public void SetRadius(float value)        {            radius = value;        }
+
+        public void SetCenter(GameObject value) { center = value; }
 
         void Update()
         {
             Vector3 relativePos = transform.position - center.transform.position;
-            transform.Translate(GetSpeed() * Time.deltaTime * (Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, GetRange()) * Mathf.Rad2Deg) * relativePos.normalized));
+            transform.Translate(GetSpeed() * Time.deltaTime * (Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, radius) * Mathf.Rad2Deg) * relativePos.normalized));
         }
     }
 
