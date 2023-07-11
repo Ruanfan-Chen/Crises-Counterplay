@@ -22,10 +22,8 @@ public class ActiveItem_0 : ActiveItem
     {
         if (IsUsable())
         {
-            GetComponent<SpriteRenderer>().color = Color.yellow;
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
             charge -= cost;
-            GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 
@@ -63,6 +61,18 @@ public class ActiveItem_0 : ActiveItem
         private float initialKnockbackSpeed = 10.0f;
         private float knockbackDuration = 1.0f;
         private float speedBonus = 5.0f;
+        private Color colorDifference;
+
+        private void OnEnable()
+        {
+            colorDifference = Color.yellow - GetComponent<SpriteRenderer>().color;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+
+        private void OnDisable()
+        {
+            GetComponent<SpriteRenderer>().color -= colorDifference;
+        }
 
         public float GetValue()
         {
