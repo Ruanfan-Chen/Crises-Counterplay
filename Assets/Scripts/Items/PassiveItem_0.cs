@@ -8,7 +8,7 @@ public class PassiveItem_0 : PassiveItem
     private GameObject trailObj;
     private Color color = Color.green;
     private float width = 1.0f;
-    private float maxDuration = 5.0f;
+    private float trailDuration = 5.0f;
 
 
     private void OnEnable()
@@ -20,31 +20,31 @@ public class PassiveItem_0 : PassiveItem
         trailObj.transform.localScale = Vector3.one;
         TrailRenderer trailRenderer = trailObj.AddComponent<TrailRenderer>();
         trailRenderer.tag = "Disposable";
-        trailRenderer.time = maxDuration;
+        trailRenderer.time = trailDuration;
+        trailRenderer.numCapVertices = 8;
         trailRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
         trailRenderer.startColor = color;
         trailRenderer.startWidth = width;
-        trailRenderer.endColor = new Color(color.r, color.g, color.b, 0.0f);
+        trailRenderer.endColor = new Color(color.r, color.g, color.b, 0.5f);
         trailRenderer.endWidth = width;
         ColliderManager.AddSharedCollider<Foorprint>(trailRenderer);
     }
     private void OnDisable()
     {
-        if (trailObj == null) return;
-        ColliderManager.RemoveSharedCollider<Foorprint>(trailObj.GetComponent<TrailRenderer>());
         Destroy(trailObj);
     }
-    public override string GetDescription()
+
+    public static string GetDescription()
     {
         return description;
     }
 
-    public override Sprite GetLogo()
+    public static Sprite GetLogo()
     {
         return Resources.Load<Sprite>(logoPath);
     }
 
-    public override string GetName()
+    public static string GetName()
     {
         return itemName;
     }

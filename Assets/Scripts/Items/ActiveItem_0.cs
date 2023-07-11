@@ -34,17 +34,17 @@ public class ActiveItem_0 : ActiveItem
         return charge / maxCharge;
     }
 
-    public override string GetDescription()
+    public static string GetDescription()
     {
         return description;
     }
 
-    public override Sprite GetLogo()
+    public static Sprite GetLogo()
     {
         return Resources.Load<Sprite>(logoPath);
     }
 
-    public override string GetName()
+    public static string GetName()
     {
         return itemName;
     }

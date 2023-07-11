@@ -57,7 +57,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-        
+
         m_mapManager.LoadLevel(m_levelNum);
         Time.timeScale = 0.0f;
     }
@@ -132,11 +132,8 @@ public class GameplayManager : MonoBehaviour
                     //{
                     //    GiveTrainActive(randint);
                     //};
-
-                    ActiveItem candidate = null;
-                    candidate = new ActiveItem_0();
-                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = candidate.GetName();
-                    itemButton.GetComponent<Image>().sprite = candidate.GetLogo();
+                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_0.GetName();
+                    itemButton.GetComponent<Image>().sprite = ActiveItem_0.GetLogo();
                     m_actionItem = delegate ()
                     {
                         GiveElectricActive();
@@ -222,7 +219,7 @@ public class GameplayManager : MonoBehaviour
 
     public void AttributeButtonOnClick()
     {
-        if(m_actionAttribute != null)
+        if (m_actionAttribute != null)
         {
             m_actionAttribute();
         }
@@ -262,7 +259,7 @@ public class GameplayManager : MonoBehaviour
         if (c)
         {
             int randint;
-            if(seed == -1)
+            if (seed == -1)
             {
                 randint = Random.Range(0, 2);
             }
@@ -270,32 +267,35 @@ public class GameplayManager : MonoBehaviour
             {
                 randint = seed;
             }
-            
-            ActiveItem activeItem = null;
             switch (randint)
             {
                 case 0:
-                    activeItem = GetCharacter().GiveItem<ActiveItem_2>(KeyCode.K);
-                    m_activeK.SetActive(true);
-                    m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem);
-                    m_activeK.GetComponent<SpellCooldown>().SetCooldownTime(3.0f);
-                    break;
+                    {
+                        ActiveItem_2 activeItem = GetCharacter().GiveItem<ActiveItem_2>(KeyCode.K);
+                        m_activeK.SetActive(true);
+                        m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem, ActiveItem_2.GetLogo());
+                        m_activeK.GetComponent<SpellCooldown>().SetCooldownTime(3.0f);
+                        break;
+                    }
+
                 case 1:
-                    activeItem = GetCharacter().GiveItem<ActiveItem_2_0>(KeyCode.K);
-                    m_activeK.SetActive(true);
-                    m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem);
-                    m_activeK.GetComponent<SpellCooldown>().SetCooldownTime(5.0f);
-                    break;
+                    {
+                        ActiveItem_2_0 activeItem = GetCharacter().GiveItem<ActiveItem_2_0>(KeyCode.K);
+                        m_activeK.SetActive(true);
+                        m_activeK.GetComponent<SpellCooldown>().SetActiveItem(activeItem, ActiveItem_2_0.GetLogo());
+                        m_activeK.GetComponent<SpellCooldown>().SetCooldownTime(5.0f);
+                        break;
+                    }
             }
-            
+
         }
     }
 
     void GiveElectricActive()
     {
-        ActiveItem activeItem = GetCharacter().GiveItem<ActiveItem_0>(KeyCode.J);
+        ActiveItem_0 activeItem = GetCharacter().GiveItem<ActiveItem_0>(KeyCode.J);
         m_activeJ.SetActive(true);
-        m_activeJ.GetComponent<Supercharge>().SetActiveItem(activeItem);
+        m_activeJ.GetComponent<Supercharge>().SetActiveItem(activeItem, ActiveItem_0.GetLogo());
     }
 
     void GiveToxicFootprint()

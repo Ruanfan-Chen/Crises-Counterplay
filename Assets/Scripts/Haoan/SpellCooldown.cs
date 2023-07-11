@@ -18,7 +18,11 @@ public class SpellCooldown : MonoBehaviour
     private float m_cooldownTime;
     private Image m_icon;
 
-    public void SetActiveItem(ActiveItem activeItem) { m_activeItem = activeItem; }
+    public void SetActiveItem(ActiveItem activeItem, Sprite logo)
+    {
+        m_activeItem = activeItem;
+        m_icon.sprite = logo;
+    }
     public void SetCooldownTime(float cd) { m_cooldownTime = cd; }
     // Start is called before the first frame update
     void Start()
@@ -28,7 +32,6 @@ public class SpellCooldown : MonoBehaviour
         m_imageCooldown.fillAmount = 0.0f;
 
         m_icon = GetComponent<Image>();
-        m_icon.sprite = m_activeItem.GetLogo();
     }
 
     // Update is called once per frame
@@ -41,7 +44,7 @@ public class SpellCooldown : MonoBehaviour
         }
         else
         {
-            if(progress == 1.0f)
+            if (progress == 1.0f)
             {
                 m_imageCooldown.fillAmount = 1.0f;
             }
@@ -51,14 +54,14 @@ public class SpellCooldown : MonoBehaviour
             }
         }
 
-        if(m_imageCooldown.fillAmount == 0.0f)
+        if (m_imageCooldown.fillAmount == 0.0f)
         {
             m_textCooldown.gameObject.SetActive(false);
             m_imageEdge.gameObject.SetActive(false);
         }
         else
         {
-            if(progress != 1.0f)
+            if (progress != 1.0f)
             {
                 m_textCooldown.gameObject.SetActive(true);
                 m_imageEdge.gameObject.SetActive(true);

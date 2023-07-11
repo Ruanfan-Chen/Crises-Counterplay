@@ -87,17 +87,17 @@ public class ActiveItem_2_0 : ActiveItem
         return charge > 0.0f && OverlapVehicle().Count() > 0;
     }
 
-    public override string GetDescription()
+    public static string GetDescription()
     {
         return description;
     }
 
-    public override Sprite GetLogo()
+    public static Sprite GetLogo()
     {
         return Resources.Load<Sprite>(logoPath);
     }
 
-    public override string GetName()
+    public static string GetName()
     {
         return itemName;
     }

@@ -18,7 +18,11 @@ public class Supercharge : MonoBehaviour
     private float m_cooldownTime;
     private Image m_icon;
 
-    public void SetActiveItem(ActiveItem activeItem) { m_activeItem = activeItem; }
+    public void SetActiveItem(ActiveItem activeItem, Sprite logo)
+    {
+        m_activeItem = activeItem;
+        m_icon.sprite = logo;
+    }
     // Start is called before the first frame update
     void Start()
     {
@@ -27,7 +31,7 @@ public class Supercharge : MonoBehaviour
         m_imageCooldown.fillAmount = 0.0f;
 
         m_icon = GetComponent<Image>();
-        m_icon.sprite = m_activeItem.GetLogo();
+        //m_icon.sprite = m_activeItem.GetLogo();
     }
 
     // Update is called once per frame

@@ -41,8 +41,7 @@ public class EnemySpawn : MonoBehaviour
                 enemy.GetComponent<MoveInCircle>().SetCenter(player);
                 enemy.GetComponent<MoveInCircle>().SetRadius(5.0f);
                 break;
-        }
-
+        }        
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -66,6 +65,14 @@ public class EnemySpawn : MonoBehaviour
             case 2:
                 enemy.AddComponent<RingAttackOnDeath>();
                 enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
+                break;
+        }
+        switch (Random.Range(0, 2))
+        {
+            case 0:
+                break;
+            case 1:
+                enemy.AddComponent<Waterblight>();
                 break;
         }
         return enemy;

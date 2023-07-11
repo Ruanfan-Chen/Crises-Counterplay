@@ -64,17 +64,17 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
         timer.Activate();
     }
 
-    public override string GetDescription()
+    public static string GetDescription()
     {
         return description;
     }
 
-    public override Sprite GetLogo()
+    public static Sprite GetLogo()
     {
         return Resources.Load<Sprite>(logoPath);
     }
 
-    public override string GetName()
+    public static string GetName()
     {
         return itemName;
     }

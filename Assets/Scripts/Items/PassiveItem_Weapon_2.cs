@@ -55,17 +55,17 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
         projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
     }
 
-    public override string GetDescription()
+    public static string GetDescription()
     {
         return description;
     }
 
-    public override Sprite GetLogo()
+    public static Sprite GetLogo()
     {
         return Resources.Load<Sprite>(logoPath);
     }
 
-    public override string GetName()
+    public static string GetName()
     {
         return itemName;
     }

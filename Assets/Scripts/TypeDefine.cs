@@ -3,29 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class PassiveItem : MonoBehaviour, IItem
+public abstract class PassiveItem : MonoBehaviour
 {
-    public abstract string GetDescription();
-    public abstract Sprite GetLogo();
-    public abstract string GetName();
 }
 
-public abstract class ActiveItem : MonoBehaviour, IItem
+public abstract class ActiveItem : MonoBehaviour
 {
     public abstract void Activate();
     public abstract void Deactivate();
     public abstract bool IsUsable();
     public abstract float GetChargeProgress();
-    public abstract string GetDescription();
-    public abstract Sprite GetLogo();
-    public abstract string GetName();
-}
-
-public interface IItem
-{
-    public abstract string GetName();
-    public abstract string GetDescription();
-    public abstract Sprite GetLogo();
 }
 
 public interface IProjectileModifier

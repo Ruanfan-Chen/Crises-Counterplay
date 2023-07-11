@@ -86,17 +86,17 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
             projectilScript.SetTarget(others.ElementAt(Random.Range(0, others.Count())));
     }
 
-    public override string GetDescription()
+    public static string GetDescription()
     {
         return description;
     }
 
-    public override Sprite GetLogo()
+    public static Sprite GetLogo()
     {
         return Resources.Load<Sprite>(logoPath);
     }
 
-    public override string GetName()
+    public static string GetName()
     {
         return itemName;
     }

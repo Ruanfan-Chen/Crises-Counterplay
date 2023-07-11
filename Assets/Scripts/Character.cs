@@ -23,7 +23,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMaxHealth(float value) { maxHealth = value; }
 
-    public float GetMoveSpeed() {
+    public float GetMoveSpeed()
+    {
         float bonus = 0.0f;
         foreach (ISpeedBonus buff in GetComponents<ISpeedBonus>())
             bonus += buff.GetValue();
@@ -84,17 +85,17 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         }
         return false;
     }
-    public PassiveItem GiveItem<T>() where T : PassiveItem
+    public T GiveItem<T>() where T : PassiveItem
     {
-        PassiveItem item = gameObject.AddComponent<T>();
+        T item = gameObject.AddComponent<T>();
         passiveItems.Add(item);
         return item;
     }
 
-    public ActiveItem GiveItem<T>(KeyCode keyCode) where T : ActiveItem
+    public T GiveItem<T>(KeyCode keyCode) where T : ActiveItem
     {
         RemoveItem(keyCode);
-        ActiveItem item = gameObject.AddComponent<T>();
+        T item = gameObject.AddComponent<T>();
         activeItems.Add(keyCode, item);
         return item;
     }
