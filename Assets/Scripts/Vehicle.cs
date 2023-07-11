@@ -33,8 +33,8 @@ public class Vehicle : MonoBehaviour
     public static IEnumerator Instantiate(Vector3 startPos, Vector3 targetPos, float traceDuration, float delay, float speed, float contactDamage, bool hostility)
     {
         Vector3 bias = Quaternion.Euler(0, 0, 90) * (targetPos - startPos).normalized * Resources.Load<GameObject>(prefabPath).transform.lossyScale.x / 2;
-        Destroy(DrawLine("VehicleTrace", startPos + bias, targetPos + bias, Color.green), traceDuration);
-        Destroy(DrawLine("VehicleTrace", startPos - bias, targetPos - bias, Color.green), traceDuration);
+        Destroy(DrawLine("VehicleTrace", startPos + bias, targetPos + bias, Color.red), traceDuration);
+        Destroy(DrawLine("VehicleTrace", startPos - bias, targetPos - bias, Color.red), traceDuration);
         yield return new WaitForSeconds(delay);
         GameObject vehicle = Instantiate(Resources.Load<GameObject>(prefabPath), startPos, Quaternion.LookRotation(Vector3.forward, targetPos - startPos));
         vehicle.tag = "Disposable";

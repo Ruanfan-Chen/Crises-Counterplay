@@ -2454,7 +2454,7 @@ MonoBehaviour:
   m_activeL: {fileID: 699989869}
   m_manaBar: {fileID: 1701607900}
   m_player: {fileID: 1713116184}
-  m_maxTime: 10
+  m_maxTime: 25
   m_levelNum: 1
 --- !u!4 &1151485480
 Transform:
