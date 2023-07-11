@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     {
         GetComponent<ConstraintInsideOfMap>().SetOffset(1.5f);
         character = Instantiate(Resources.Load<GameObject>(characterPrefabPath), gameObject.transform);
-        character.GetComponent<SpriteRenderer>().color = Color.red;
+        character.GetComponent<SpriteRenderer>().color = Color.white;
     }
     // Update is called once per frame
     void Update()

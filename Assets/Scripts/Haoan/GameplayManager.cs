@@ -30,6 +30,7 @@ public class GameplayManager : MonoBehaviour
     [SerializeField] private int m_levelNum = 1;
     private float m_timer = 0.0f;
     private MapManager m_mapManager;
+    private int m_mapToLoad;
 
     //delegate for dynamic button action assignment
     delegate void ButtonAction();
@@ -115,31 +116,34 @@ public class GameplayManager : MonoBehaviour
         {
             case 1:
                 {
-                    //ActiveItem candidate = null;
-                    //int randint = Random.Range(0, 2);
-                    //switch (randint)
-                    //{
-                    //    case 0:
-                    //        candidate = new ActiveItem_2();
-                    //        break;
-                    //    case 1:
-                    //        candidate = new ActiveItem_2_0();
-                    //        break;
-                    //}
-
-                    //itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = candidate.GetName();
-                    //itemButton.GetComponent<Image>().sprite = candidate.GetLogo();
-                    //m_actionItem = delegate ()
-                    //{
-                    //    GiveTrainActive(randint);
-                    //};
-
-                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_0.GetName();
-                    itemButton.GetComponent<Image>().sprite = ActiveItem_0.GetLogo();
+                    ActiveItem candidate = null;
+                    int randint = Random.Range(0, 2);
+                    switch (randint)
+                    {
+                        case 0:
+                            candidate = new ActiveItem_2();
+                            itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_2.GetName();
+                            itemButton.GetComponent<Image>().sprite = ActiveItem_2.GetLogo();
+                            break;
+                        case 1:
+                            candidate = new ActiveItem_2_0();
+                            itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_2_0.GetName();
+                            itemButton.GetComponent<Image>().sprite = ActiveItem_2_0.GetLogo();
+                            break;
+                    }
                     m_actionItem = delegate ()
                     {
-                        GiveElectricActive();
+                        GiveTrainActive(randint);
+                        m_mapToLoad = 20 + randint;
                     };
+
+                    //itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_0.GetName();
+                    //itemButton.GetComponent<Image>().sprite = ActiveItem_0.GetLogo();
+                    //m_actionItem = delegate ()
+                    //{
+                    //    GiveElectricActive();
+                    //    m_mapToLoad = 22;
+                    //};
                     break;
                 }
 
@@ -178,7 +182,7 @@ public class GameplayManager : MonoBehaviour
     public void ResetGame()
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
-        m_mapManager.LoadLevel(m_levelNum);
+        m_mapManager.LoadLevel(m_mapToLoad);
 
         Time.timeScale = 1.0f;
     }
@@ -242,7 +246,7 @@ public class GameplayManager : MonoBehaviour
             case 1:
                 break;
             case 2:
-                GiveTrainActive(-1);
+                GiveTrainActive(1);
                 break;
             case 3:
                 LoadLevel(2);

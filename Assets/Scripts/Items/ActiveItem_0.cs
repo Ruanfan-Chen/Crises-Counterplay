@@ -22,8 +22,10 @@ public class ActiveItem_0 : ActiveItem
     {
         if (IsUsable())
         {
+            GetComponent<SpriteRenderer>().color = Color.yellow;
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
             charge -= cost;
+            GetComponent<SpriteRenderer>().color = Color.white;
         }
     }
 

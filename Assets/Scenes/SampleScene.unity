@@ -2488,6 +2488,9 @@ MonoBehaviour:
   m_wasd: {fileID: 3939680195493970209, guid: 8357caf99df4242feb02d3e5a94c564f, type: 3}
   m_tilePrefab: {fileID: 6155072850709128335, guid: 8c739a45968404bec8c51cf4178e4bd1, type: 3}
   m_sprite: {fileID: 21300000, guid: bb87efd8125e54b4291caf5821589bfd, type: 3}
+  m_trainboundSprite: {fileID: 21300000, guid: 40ca90c29d15cf0469e3780eb9dd2962, type: 3}
+  m_chistrikeSprite: {fileID: 21300000, guid: 01d5ec96de548f244a44bc3b619453d0, type: 3}
+  m_superchargeSprite: {fileID: 21300000, guid: 924f737aab4e78d41aac274a04298b87, type: 3}
 --- !u!114 &1151485482
 MonoBehaviour:
   m_ObjectHideFlags: 0
