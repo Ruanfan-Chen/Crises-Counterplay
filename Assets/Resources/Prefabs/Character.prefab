@@ -316,7 +316,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
-  gameplayManager: {fileID: 0}
   maxHealth: 100
 --- !u!1 &6930388361264973155
 GameObject:
@@ -407,8 +406,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb3c1308e3d762c46936c1d156b4d024, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_character: {fileID: 2637130711552437442}
+  m_target: {fileID: 2637130711552437442}
   m_rectTransform: {fileID: 4958398115270660745}
   m_parentRectTransform: {fileID: 0}
   m_offset: 10
   m_maxWidth: 0
+  m_usage: 0
