@@ -21,6 +21,7 @@ public class SpellCooldown : MonoBehaviour
     public void SetActiveItem(ActiveItem activeItem, Sprite logo)
     {
         m_activeItem = activeItem;
+        m_icon = GetComponent<Image>();
         m_icon.sprite = logo;
     }
     public void SetCooldownTime(float cd) { m_cooldownTime = cd; }
@@ -30,8 +31,6 @@ public class SpellCooldown : MonoBehaviour
         m_textCooldown.gameObject.SetActive(false);
         m_imageEdge.gameObject.SetActive(false);
         m_imageCooldown.fillAmount = 0.0f;
-
-        m_icon = GetComponent<Image>();
     }
 
     // Update is called once per frame
