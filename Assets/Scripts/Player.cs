@@ -21,7 +21,10 @@ public class Player : MonoBehaviour
         if (character != null)
         {
             // Move Player
-            transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
+            if (GetCharacter().GetComponent<Waterblight>())
+                transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized);
+            else
+                transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
             transform.position += character.transform.localPosition;
             transform.rotation *= character.transform.localRotation;
             character.transform.localPosition = Vector3.zero;
