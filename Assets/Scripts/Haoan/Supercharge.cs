@@ -35,7 +35,7 @@ public class Supercharge : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_textCooldown.text = Mathf.Round(m_activeItem.GetChargeProgress() * 5.0f).ToString();
+        m_textCooldown.text = Mathf.Round(m_activeItem.GetChargeProgress() * 5.0f).ToString() + "s";
         if (m_activeItem.IsUsable())
         {
             m_imageCooldown.fillAmount = 0.0f;

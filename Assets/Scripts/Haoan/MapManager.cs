@@ -9,7 +9,13 @@ public class MapManager : MonoBehaviour
     [SerializeField] private int m_heightNum;
     [SerializeField] GameObject m_wasd;
     [SerializeField] GameObject m_tilePrefab;
+
+    [Space(10)]
+    [Header("Sprites")]
     [SerializeField] private Sprite m_sprite;
+    [SerializeField] private Sprite m_trainboundSprite;
+    [SerializeField] private Sprite m_chistrikeSprite;
+    [SerializeField] private Sprite m_superchargeSprite;
     private SpriteRenderer m_spriteRenderer;
 
     public static readonly float MAP_DEPTH = 0.5f;
@@ -18,10 +24,10 @@ public class MapManager : MonoBehaviour
 
     public void CreateMap()
     {
-        CreateMapBySprite();
+        CreateMapBySprite(m_sprite);
     }
 
-    public void CreateMapBySprite()
+    public void CreateMapBySprite(Sprite sprite)
     {
         m_spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
         if (!m_spriteRenderer)
@@ -29,9 +35,9 @@ public class MapManager : MonoBehaviour
             m_spriteRenderer = gameObject.AddComponent<SpriteRenderer>();
         }
         transform.position = new Vector3(0.0f, 0.0f, MAP_DEPTH);
-        m_spriteRenderer.sprite = m_sprite;
+        m_spriteRenderer.sprite = sprite;
         transform.localScale = new Vector3(10.0f, 10.0f, 1.0f);
-        m_bounds = new Bounds(Vector3.zero, new Vector3(60.7f, 30.4f));
+        m_bounds = new Bounds(Vector3.zero, new Vector3(60.7f, 52.8f));
     }
 
     public void CreateMapByTile()
@@ -52,8 +58,24 @@ public class MapManager : MonoBehaviour
 
     public void LoadLevel(int levelNum)
     {
-        m_level = levelNum;
-        CreateMap();
+        switch(levelNum)
+        {
+            case 1:
+                CreateMapBySprite(m_sprite);
+                break;
+            case 2:
+                CreateMapBySprite(m_trainboundSprite);
+                break;
+            case 20:
+                CreateMapBySprite(m_trainboundSprite);
+                break;
+            case 21:
+                CreateMapBySprite(m_chistrikeSprite);
+                break;
+            case 22:
+                CreateMapBySprite(m_superchargeSprite);
+                break;
+        }
     }
 
     /// <summary>

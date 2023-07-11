@@ -9,7 +9,7 @@ public class ActiveItem_0 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
     private float maxCharge = 5.0f;
-    private float charge = 5.0f;
+    private float charge = 0.0f;
     private float cost = 5.0f;
     private float duration = 10.0f;
 
@@ -61,6 +61,18 @@ public class ActiveItem_0 : ActiveItem
         private float initialKnockbackSpeed = 10.0f;
         private float knockbackDuration = 1.0f;
         private float speedBonus = 5.0f;
+        private Color colorDifference;
+
+        private void OnEnable()
+        {
+            colorDifference = Color.yellow - GetComponent<SpriteRenderer>().color;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+
+        private void OnDisable()
+        {
+            GetComponent<SpriteRenderer>().color -= colorDifference;
+        }
 
         public float GetValue()
         {

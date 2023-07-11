@@ -13,7 +13,7 @@ public class Player : MonoBehaviour
     {
         GetComponent<ConstraintInsideOfMap>().SetOffset(1.5f);
         character = Instantiate(Resources.Load<GameObject>(characterPrefabPath), gameObject.transform);
-        character.GetComponent<SpriteRenderer>().color = Color.red;
+        character.GetComponent<SpriteRenderer>().color = Color.white;
     }
     // Update is called once per frame
     void Update()
@@ -21,7 +21,10 @@ public class Player : MonoBehaviour
         if (character != null)
         {
             // Move Player
-            transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
+            if (GetCharacter().GetComponent<Waterblight>())
+                transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized);
+            else
+                transform.Translate(character.GetComponent<Character>().GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
             transform.position += character.transform.localPosition;
             transform.rotation *= character.transform.localRotation;
             character.transform.localPosition = Vector3.zero;

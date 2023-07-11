@@ -2,7 +2,7 @@ using UnityEngine;
 using static Utility;
 public class PassiveItem_0 : PassiveItem
 {
-    private static string itemName = "Name Placeholder";
+    private static string itemName = "Toxic Footprint";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Toxic Footprint";
     private GameObject trailObj;

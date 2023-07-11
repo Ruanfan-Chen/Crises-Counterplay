@@ -8,7 +8,6 @@ public class SpellCooldown : MonoBehaviour
 {
     [Header("UI items for Spell Cooldown")]
     [SerializeField] private Image m_imageCooldown;
-    [SerializeField] private TMP_Text m_textCooldown;
     [SerializeField] private Image m_imageEdge;
 
     [Space(10)]
@@ -28,7 +27,6 @@ public class SpellCooldown : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        m_textCooldown.gameObject.SetActive(false);
         m_imageEdge.gameObject.SetActive(false);
         m_imageCooldown.fillAmount = 0.0f;
     }
@@ -55,21 +53,17 @@ public class SpellCooldown : MonoBehaviour
 
         if (m_imageCooldown.fillAmount == 0.0f)
         {
-            m_textCooldown.gameObject.SetActive(false);
             m_imageEdge.gameObject.SetActive(false);
         }
         else
         {
             if (progress != 1.0f)
             {
-                m_textCooldown.gameObject.SetActive(true);
                 m_imageEdge.gameObject.SetActive(true);
-                m_textCooldown.text = Mathf.Round(m_cooldownTime - m_cooldownTime * progress).ToString();
                 m_imageEdge.transform.localEulerAngles = new Vector3(0, 0, 360.0f * (1.0f - progress));
             }
             else
             {
-                m_textCooldown.gameObject.SetActive(false);
                 m_imageEdge.gameObject.SetActive(false);
             }
         }
