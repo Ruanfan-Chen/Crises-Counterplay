@@ -52,8 +52,8 @@ public class ElectricField : MonoBehaviour
                     shapeGroup.GetShapeVertices(shapeIndex, vertices);
                     GameObject lineObj1 = DrawLine("ForkedLightning", position, vertex, Color.yellow);
                     GameObject lineObj2 = DrawLine("ForkedLightning", vertices, false, Color.yellow);
-                    lineObj1.AddComponent<ElectricField>();
-                    lineObj2.AddComponent<ElectricField>();
+                    lineObj1.AddComponent<ElectricField>().SetDamage(damage);
+                    lineObj2.AddComponent<ElectricField>().SetDamage(damage);
                     lineObj1.AddComponent<EdgeCollider2D>().SetPoints(new List<Vector2>() { position, vertex });
                     lineObj2.AddComponent<EdgeCollider2D>().SetPoints(vertices);
                     Destroy(lineObj1, forkedLightningDuration);
