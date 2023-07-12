@@ -15,7 +15,8 @@ public class SendToGoogle : MonoBehaviour
     private long sessionID_Dam;
 
     private int levelCount;
-    private int playerSelection;
+    private int selectionAttri;
+	private int selectionSkill;
 
 
 
@@ -26,9 +27,9 @@ public class SendToGoogle : MonoBehaviour
     }
 
    
-    public void Send(int levelCount, int APitem, int playerSelection)
+    public void Send(int levelCount, int APitem, int selectionAttri ,int selectionSkill)
     {
-        StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), playerSelection.ToString(), APitem.ToString()));
+        StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), selectionAttri.ToString(), selectionSkill.ToString(),APitem.ToString()));
     }
     
 	 public int GetLevelCount()
@@ -38,12 +39,13 @@ public class SendToGoogle : MonoBehaviour
 
 
 
-     private IEnumerator Post(string sessionID, string levelCount, string playerSelection, string APitem)
+     private IEnumerator Post(string sessionID, string levelCount, string selectionAttri, string selectionSkill, string APitem)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1477553278", sessionID);
         form.AddField("entry.1570433801", levelCount);
-        form.AddField("entry.1212750405", playerSelection);
+        form.AddField("entry.1212750405", selectionAttri);
+        form.AddField("entry.1882634750", selectionSkill);
         form.AddField("entry.360297603", APitem);
 
         // Send responses and verify result

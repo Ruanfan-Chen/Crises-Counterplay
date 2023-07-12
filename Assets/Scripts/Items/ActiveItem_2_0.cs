@@ -13,6 +13,7 @@ public class ActiveItem_2_0 : ActiveItem
     private float cooldown = 3.0f;
     [SerializeField] private TextMeshProUGUI timerText;
     private float orbitRadius = 5.0f;
+	private int ActivationCount = 0;
 
     private void Start()
     {
@@ -53,9 +54,6 @@ public class ActiveItem_2_0 : ActiveItem
 					ActivationCount += 1;
 					int LvlCount =	GetComponent<SendToGoogle>().GetLevelCount();
 					GetComponent<SendToGoogle>().Send(LvlCount, Random.Range(0, 5),ActivationCount);
-
-
-
 
                     vehicle.GetComponent<Vehicle>().SetHostility(false);
                     Captured script = vehicle.AddComponent<Captured>();
