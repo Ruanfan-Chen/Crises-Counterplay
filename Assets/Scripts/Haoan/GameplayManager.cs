@@ -185,6 +185,7 @@ public class GameplayManager : MonoBehaviour
         m_mapManager.LoadLevel(m_mapToLoad);
 
         Time.timeScale = 1.0f;
+        SceneManager.LoadScene("LevelSelection");
     }
 
     public void ResetGame(int levelNum)

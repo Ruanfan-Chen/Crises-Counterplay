@@ -8,4 +8,46 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/SampleScene.unity
     guid: 2cda990e2423bbf4892e6590ba056729
+  - enabled: 1
+    path: Assets/Scenes/LevelSelection.unity
+    guid: 83f954120a785416589257c9fe3753de
+  - enabled: 1
+    path: Assets/Scenes/Train1.unity
+    guid: 3cf07fc1748a9427e905a17b3d0c861e
+  - enabled: 1
+    path: Assets/Scenes/Thunder1.unity
+    guid: 88eff3195450d40e391c96363d710253
+  - enabled: 1
+    path: Assets/Scenes/Tsunami1.unity
+    guid: 2acd69422037f437a89e02d6edf453fe
+  - enabled: 1
+    path: Assets/Scenes/Train2.unity
+    guid: 50fc66db009854d29ae15403d5287d75
+  - enabled: 1
+    path: Assets/Scenes/Thunder2.unity
+    guid: ef2a3fa373a004f6ebe9c3a134a26eb8
+  - enabled: 1
+    path: Assets/Scenes/Tsunami2.unity
+    guid: 71db4cffc3a614bad841b7fd89ff3310
+  - enabled: 1
+    path: Assets/Scenes/Train3.unity
+    guid: 4890910d193b44b86ba476023b3f9021
+  - enabled: 1
+    path: Assets/Scenes/Thunder3.unity
+    guid: f2a29f17ac87f44b58690a89af5f70ef
+  - enabled: 1
+    path: Assets/Scenes/Tsunami3.unity
+    guid: c33a79f10e4024badb43cf4408c8930e
+  - enabled: 1
+    path: Assets/Scenes/TrainThunder.unity
+    guid: ae20350ed8749486ca24d2821cab75c7
+  - enabled: 1
+    path: Assets/Scenes/TrainTsunami.unity
+    guid: 7dc54b1a3b4b54e55a044b1d8505499f
+  - enabled: 1
+    path: Assets/Scenes/ThunderTsunami.unity
+    guid: dba9c8fe2b35544f1a2ed115337eb8a8
+  - enabled: 1
+    path: Assets/Scenes/FullLevel.unity
+    guid: 70b4e72b7a27548368ab735cd144576f
   m_configObjects: {}
