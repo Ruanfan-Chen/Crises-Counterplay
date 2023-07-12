@@ -49,6 +49,14 @@ public class ActiveItem_2_0 : ActiveItem
             {
                 if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
                 {
+					
+					ActivationCount += 1;
+					int LvlCount =	GetComponent<SendToGoogle>().GetLevelCount();
+					GetComponent<SendToGoogle>().Send(LvlCount, Random.Range(0, 5),ActivationCount);
+
+
+
+
                     vehicle.GetComponent<Vehicle>().SetHostility(false);
                     Captured script = vehicle.AddComponent<Captured>();
                     script.SetCenter(gameObject);
