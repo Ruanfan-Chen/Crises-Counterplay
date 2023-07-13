@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class LevelSelectionManager : MonoBehaviour
 {
-    public Button[] levelButtons; // length = 13
+    public Button[] levelButtons; // length = 13 or 10 (for now)
     public static Dictionary<int, List<int>> levelsPrereqs = new Dictionary<int, List<int>>()
     {
         {2, new List<int> {} },
@@ -19,10 +19,11 @@ public class LevelSelectionManager : MonoBehaviour
         {8, new List<int> {5} },
         {9, new List<int> {6} },
         {10, new List<int> {7} },
-        {11, new List<int> {8, 9} },
-        {12, new List<int> {8, 10} },
-        {13, new List<int> {9, 10} },
-        {14, new List<int> {11, 12, 13} }
+        // {11, new List<int> {8, 9} },
+        // {12, new List<int> {8, 10} },
+        // {13, new List<int> {9, 10} },
+        // {14, new List<int> {11, 12, 13}
+        {11, new List<int> {8, 9, 10} }
     };
 
 
@@ -55,10 +56,10 @@ public class LevelSelectionManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("Button8").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(8); });
         GameObject.FindGameObjectWithTag("Button9").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(9); });
         GameObject.FindGameObjectWithTag("Button10").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(10); });
+        // GameObject.FindGameObjectWithTag("Button11").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(11); });
+        // GameObject.FindGameObjectWithTag("Button12").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(12); });
+        // GameObject.FindGameObjectWithTag("Button13").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(13); });
         GameObject.FindGameObjectWithTag("Button11").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(11); });
-        GameObject.FindGameObjectWithTag("Button12").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(12); });
-        GameObject.FindGameObjectWithTag("Button13").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(13); });
-        GameObject.FindGameObjectWithTag("Button14").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(14); });
 
 
 
@@ -96,7 +97,7 @@ public class LevelSelectionManager : MonoBehaviour
         //     GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
         // }
 
-        for (int i = 0; i < 13; i++)
+        for (int i = 0; i < 10; i++)
         {
             int levelNum = i + 2;
             if (NextLevelManager.completed.Contains(levelNum))

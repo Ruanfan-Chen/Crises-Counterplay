@@ -60,7 +60,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
-
+        m_levelNum = (NextLevelManager.GetCurrLevel() + 1) / 3;
         m_mapManager.LoadLevel((NextLevelManager.GetCurrLevel() + 1) / 3);
         Debug.Log("GP Managr loading level = " + (NextLevelManager.GetCurrLevel() + 1) / 3);
         Time.timeScale = 0.0f;
