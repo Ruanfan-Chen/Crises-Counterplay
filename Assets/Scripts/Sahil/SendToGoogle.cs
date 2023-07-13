@@ -44,7 +44,7 @@ public class SendToGoogle : MonoBehaviour
      private IEnumerator Post(string sessionID_MX1, string levelCount, string DamageCount, string DamageName)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.1477553278", sessionID);
+        form.AddField("entry.1477553278", sessionID_Mx1);
         form.AddField("entry.1570433801", levelCount);
         form.AddField("entry.1212750405", DamageCount);
         form.AddField("entry.916383983", DamageName);
@@ -75,7 +75,7 @@ public class SendToGoogle : MonoBehaviour
     private IEnumerator PostMatrix2(string sessionID_Mx2, string TrainSpeed, string TrainHit)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.366340186", sessionID_Dam);
+        form.AddField("entry.366340186", sessionID_Mx2);
         form.AddField("entry.582082116", TrainSpeed); 
         form.AddField("entry.401126771", TrainHit); 
         
@@ -105,7 +105,7 @@ public class SendToGoogle : MonoBehaviour
     private IEnumerator PostMatrix2(string sessionID_Mx3, string LevelName, ,string TrainDash, string SuperCH_count)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.366340186", sessionID_Dam);
+        form.AddField("entry.366340186", sessionID_Mx3);
         form.AddField("entry.1848486491", LevelName); 
         form.AddField("entry.465445524",  TrainDash); 
         form.AddField("entry.1833994225",  SuperCH_count); 
@@ -135,7 +135,7 @@ public class SendToGoogle : MonoBehaviour
 	private IEnumerator PostMatrix2(string sessionID_Mx4, string ChoiceName,string HPCount)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.366340186", sessionID_Dam);
+        form.AddField("entry.366340186", sessionID_Mx4);
         form.AddField("entry.1210868527", ChoiceName); 
         form.AddField("entry.1840849645", HPCount); 
         
