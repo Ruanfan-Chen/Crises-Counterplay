@@ -15,10 +15,10 @@ public class SendToGoogle : MonoBehaviour
     private string URL_MX4 ="https://docs.google.com/forms/u/0/d/e/1FAIpQLSeEzHgxjpqBoyEot6PUlrw3up1ISi4DLLavK2LIZPQSIri-IA/formResponse";
 
 
-    private long sessionID_Mx1;
-    private long sessionID_Mx2;
-    private long sessionID_Mx3;
-    private long sessionID_Mx4;
+    private long sessionID_MX1;
+    private long sessionID_MX2;
+    private long sessionID_MX3;
+    private long sessionID_MX4;
 
     private int levelCount;
     private int DamageCount;
@@ -37,14 +37,14 @@ public class SendToGoogle : MonoBehaviour
    
     public void Send(int levelCount, int DamageCount, string DamageName)
     {
-        StartCoroutine(Post(sessionID.ToString(), levelCount.ToString(), DamageCount.ToString(), DamageName.ToString()));
+        StartCoroutine(Post(sessionID_MX1.ToString(), levelCount.ToString(), DamageCount.ToString(), DamageName.ToString()));
     }
     
 
      private IEnumerator Post(string sessionID_MX1, string levelCount, string DamageCount, string DamageName)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.1477553278", sessionID_Mx1);
+        form.AddField("entry.1477553278", sessionID_MX1);
         form.AddField("entry.1570433801", levelCount);
         form.AddField("entry.1212750405", DamageCount);
         form.AddField("entry.916383983", DamageName);
@@ -68,14 +68,14 @@ public class SendToGoogle : MonoBehaviour
 //Matrix 2
     public void SendMatrix2(string TrainSpeed, string TrainHit)
     {
-        StartCoroutine(PostDamageSource(sessionID.ToString(), TrainSpeed.ToString(), TrainHit.ToString()));
+        StartCoroutine(PostMatrix2(sessionID_MX2.ToString(), TrainSpeed.ToString(), TrainHit.ToString()));
     }
 
     
-    private IEnumerator PostMatrix2(string sessionID_Mx2, string TrainSpeed, string TrainHit)
+    private IEnumerator PostMatrix2(string sessionID_MX2, string TrainSpeed, string TrainHit)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.366340186", sessionID_Mx2);
+        form.AddField("entry.366340186", sessionID_MX2);
         form.AddField("entry.582082116", TrainSpeed); 
         form.AddField("entry.401126771", TrainHit); 
         
@@ -98,14 +98,14 @@ public class SendToGoogle : MonoBehaviour
 //Matrix 3
 	public void SendMatrix3(string LevelName, string TrainDash, string SuperCH_count)
     {
-        StartCoroutine(PostDamageSource(sessionID.ToString(), LevelName.ToString(), SuperCH_count.ToString()));
+        StartCoroutine(PostMatrix3(sessionID_MX3.ToString(), LevelName.ToString(), TrainDash.ToString(), SuperCH_count.ToString()));
     }
 
     
-    private IEnumerator PostMatrix2(string sessionID_Mx3, string LevelName, ,string TrainDash, string SuperCH_count)
+    private IEnumerator PostMatrix3(string sessionID_MX3, string LevelName ,string TrainDash, string SuperCH_count)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.366340186", sessionID_Mx3);
+        form.AddField("entry.366340186", sessionID_MX3);
         form.AddField("entry.1848486491", LevelName); 
         form.AddField("entry.465445524",  TrainDash); 
         form.AddField("entry.1833994225",  SuperCH_count); 
@@ -130,12 +130,12 @@ public class SendToGoogle : MonoBehaviour
 //Matrix 4
 	public void SendMatrix4(string ChoiceName, string HPCount)
     {
-        StartCoroutine(PostDamageSource(sessionID.ToString(), ChoiceName.ToString(), HPCount.ToString()));
+        StartCoroutine(PostMatrix4(sessionID_MX4.ToString(), ChoiceName.ToString(), HPCount.ToString()));
     }
-	private IEnumerator PostMatrix2(string sessionID_Mx4, string ChoiceName,string HPCount)
+	private IEnumerator PostMatrix4(string sessionID_MX4, string ChoiceName,string HPCount)
     {
         WWWForm form = new WWWForm();
-        form.AddField("entry.366340186", sessionID_Mx4);
+        form.AddField("entry.366340186", sessionID_MX4);
         form.AddField("entry.1210868527", ChoiceName); 
         form.AddField("entry.1840849645", HPCount); 
         
