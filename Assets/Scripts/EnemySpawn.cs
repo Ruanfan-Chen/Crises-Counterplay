@@ -25,8 +25,8 @@ public class EnemySpawn : MonoBehaviour
         } while ((position - player.transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, Quaternion.identity);
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
-        int move = Random.Range(0, 4);
-        //int move = 1;
+        //int move = Random.Range(0, 4);
+        int move = 2;
         switch (move)
         {
             case 0:
@@ -71,7 +71,8 @@ public class EnemySpawn : MonoBehaviour
                 enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 0.0f, 0.0f, 1.0f);
                 break;
         }
-        switch (Random.Range(0, 2))
+        int water = 0;
+        switch (water)
         {
             case 0:
                 break;

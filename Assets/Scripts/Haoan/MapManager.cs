@@ -75,6 +75,9 @@ public class MapManager : MonoBehaviour
             case 210:
                 CreateMapBySprite(m_superchargeSprite);
                 break;
+            default:
+                CreateMapBySprite(m_sprite);
+                break;
         }
     }
 

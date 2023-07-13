@@ -178,6 +178,8 @@ public class GameplayManager : MonoBehaviour
                     m_actionItem = delegate ()
                     {
                         GiveToxicFootprint();
+                        PassiveItem_Weapon_0 gun = GetCharacterObject().GetComponent<PassiveItem_Weapon_0>();
+                        Destroy(gun);
                     };
                     break;
                 }
@@ -269,7 +271,7 @@ public class GameplayManager : MonoBehaviour
                 GiveTrainActive(1);
                 break;
             case 3:
-                LoadLevel(2);
+                //LoadLevel(2);
                 gameObject.GetComponent<EnemySpawn>().enabled = true;
                 break;
             case 4:
