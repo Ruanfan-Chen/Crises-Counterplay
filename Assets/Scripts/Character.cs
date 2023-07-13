@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
@@ -118,10 +119,16 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     void Start()
     {
         GiveItem<PassiveItem_Weapon_0>();
+        GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
     }
 
     void Update()
     {
+        // Move
+        if (GetComponent<Waterblight>())
+            transform.Translate(GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized);
+        else
+            transform.Translate(GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
         foreach (KeyValuePair<KeyCode, ActiveItem> keyValuePair in activeItems.GetTUDict())
         {
             if (Input.GetKeyDown(keyValuePair.Key))

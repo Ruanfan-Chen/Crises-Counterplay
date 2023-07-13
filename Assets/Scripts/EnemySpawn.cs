@@ -5,24 +5,34 @@ using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public GameObject player;
     [SerializeField] private float offset = 2.0f;
     [SerializeField] private float startDelay = 3.0f;
     [SerializeField] private float spawnInterval = 0.3f;
-    // Start is called before the first frame update
+
+    private float timer;
     void Start()
     {
-        InvokeRepeating("SpawnRandomEnemy", startDelay, spawnInterval);
+
+        timer = startDelay;
+    }
+    void Update()
+    {
+        timer -= Time.deltaTime;
+        if (timer <= 0.0f && LevelManager.GetSpawnEnemy())
+        {
+            SpawnRandomEnemy();
+            timer = spawnInterval;
+        }
     }
 
     public GameObject SpawnRandomEnemy()
     {
         Vector3 position;
-        Bounds bounds = MapManager.GetMapBounds(offset);
+        Bounds bounds = MapManager.GetBounds(offset);
         do
         {
-            position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);
-        } while ((position - player.transform.position).magnitude <= offset);
+            position = MapManager.GetRandomPointInMap();
+        } while ((position - GameplayManager.getCharacter().transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, Quaternion.identity);
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
         switch (Random.Range(0, 4))
@@ -34,14 +44,14 @@ public class EnemySpawn : MonoBehaviour
                 break;
             case 2:
                 enemy.AddComponent<DirectlyMoveToward>();
-                enemy.GetComponent<DirectlyMoveToward>().SetTarget(player);
+                enemy.GetComponent<DirectlyMoveToward>().SetTarget(GameplayManager.getCharacter());
                 break;
             case 3:
                 enemy.AddComponent<MoveInCircle>();
-                enemy.GetComponent<MoveInCircle>().SetCenter(player);
+                enemy.GetComponent<MoveInCircle>().SetCenter(GameplayManager.getCharacter());
                 enemy.GetComponent<MoveInCircle>().SetRadius(5.0f);
                 break;
-        }        
+        }
         switch (Random.Range(0, 3))
         {
             case 0:
@@ -51,7 +61,7 @@ public class EnemySpawn : MonoBehaviour
                 break;
             case 2:
                 enemy.AddComponent<FocusedAttack>();
-                enemy.GetComponent<FocusedAttack>().SetTarget(player);
+                enemy.GetComponent<FocusedAttack>().SetTarget(GameplayManager.getCharacter());
                 break;
         }
         switch (Random.Range(0, 3))
@@ -155,9 +165,9 @@ public class EnemySpawn : MonoBehaviour
         private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
         public GameObject GetCenter() { return center; }
 
-        public float GetRadius()        {            return radius;        }
+        public float GetRadius() { return radius; }
 
-        public void SetRadius(float value)        {            radius = value;        }
+        public void SetRadius(float value) { radius = value; }
 
         public void SetCenter(GameObject value) { center = value; }
 

@@ -12,7 +12,6 @@ public class ConstraintInsideOfMap : MonoBehaviour
 
     private void LateUpdate()
     {
-
-        transform.position = MapManager.PosInMap(transform.position, GetOffset());
+        transform.position = MapManager.GetBounds(offset).ClosestPoint(transform.position);
     }
 }

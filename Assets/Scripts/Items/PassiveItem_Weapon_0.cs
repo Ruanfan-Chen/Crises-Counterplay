@@ -86,7 +86,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 
         public float GetAttackInterval() { return attackInterval; }
 
-        internal void SetAttackInterval(float value) { attackInterval = value; }
+        public void SetAttackInterval(float value) { attackInterval = value; }
 
         private void OnTriggerStay2D(Collider2D collision)
         {
