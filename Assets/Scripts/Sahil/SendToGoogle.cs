@@ -41,7 +41,7 @@ public class SendToGoogle : MonoBehaviour
     }
     
 
-     private IEnumerator Post(string sessionID, string levelCount, string DamageCount, string DamageName)
+     private IEnumerator Post(string sessionID_MX1, string levelCount, string DamageCount, string DamageName)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1477553278", sessionID);
