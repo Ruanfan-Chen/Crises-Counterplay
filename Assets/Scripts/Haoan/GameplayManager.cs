@@ -61,7 +61,8 @@ public class GameplayManager : MonoBehaviour
         m_levelText.text = "Level " + m_levelNum.ToString();
         m_mapManager = gameObject.GetComponent<MapManager>();
 
-        m_mapManager.LoadLevel(m_levelNum);
+        m_mapManager.LoadLevel((NextLevelManager.GetCurrLevel() + 1) / 3);
+        Debug.Log("GP Managr loading level = " + (NextLevelManager.GetCurrLevel() + 1) / 3);
         Time.timeScale = 0.0f;
     }
 
@@ -74,6 +75,7 @@ public class GameplayManager : MonoBehaviour
         if (GetCharacter() && GetCharacter().GetComponent<Character>().GetHealth() <= 0.0f)
         {
             ResetGame(1);
+            NextLevelManager.ResetCompletedLevels();
             return;
         }
         if (timeLeft <= 0)

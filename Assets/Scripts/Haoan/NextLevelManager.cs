@@ -37,6 +37,11 @@ public class NextLevelManager
 
     }
 
+    public static void ResetCompletedLevels()
+    {
+        completed = new HashSet<int>() { };
+    }
+
     public static void SetCurrLevel(int levelNum)
     {
         currLevel = levelNum;

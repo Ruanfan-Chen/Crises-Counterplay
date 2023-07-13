@@ -35,7 +35,7 @@ public class LevelSelectionManager : MonoBehaviour
 
         UpdateButtons();
         string[] levelNames = { "Train1", "Thunder1", "Tsunami1", "Train2", "Thunder2", "Tsunami2", "Train3", "Thunder3", "Tsunami3", "TrainThunder", "TrainTsunami", "ThunderTsunami", "FullLevel" };
-        print("levelNames[0] = " + levelNames[0]);
+        // print("levelNames[0] = " + levelNames[0]);
         // for (int i = 0; i < levelButtons.Length; i++)
         // {
         //     Debug.Log("levelNames[i] = " + levelNames[i]);
@@ -75,12 +75,12 @@ public class LevelSelectionManager : MonoBehaviour
     private void UpdateButtons()
     // TODO: make sure levelNum is within the range [2, 14]. Might need alignments in MapManager.cs
     {
-        Debug.Log("in UpdateButtons(), levelButtons.Length = " + levelButtons.Length);
+        // Debug.Log("in UpdateButtons(), levelButtons.Length = " + levelButtons.Length);
         for (int i = 0; i < levelButtons.Length; i++)
         {
             if (levelsPrereqs[i + 2].AsQueryable().Any(prereq => !NextLevelManager.completed.Contains(prereq)))
             {
-                Debug.Log("button set to false : " + i);
+                // Debug.Log("button set to false : " + i);
                 levelButtons[i].interactable = false;
             }
             else
@@ -89,11 +89,28 @@ public class LevelSelectionManager : MonoBehaviour
             }
         }
 
-        foreach (int levelNum in NextLevelManager.completed)
+        // foreach (int levelNum in NextLevelManager.completed)
+        // {
+        //     GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = Color.green;
+        //     Debug.Log("Button set to green: " + levelNum);
+        //     GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
+        // }
+
+        for (int i = 0; i < 13; i++)
         {
-            GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = Color.green;
-            Debug.Log("Button set to green: " + levelNum);
-            GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
+            int levelNum = i + 2;
+            if (NextLevelManager.completed.Contains(levelNum))
+            {
+                GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = Color.green;
+                // Debug.Log("Button set to green: " + levelNum);
+                GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
+            }
+            else
+            {
+                GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = Color.white;
+                // Debug.Log("Button set to white: " + levelNum);
+                GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = true;
+            }
         }
 
     }
