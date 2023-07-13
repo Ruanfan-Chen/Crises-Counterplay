@@ -1,4 +1,5 @@
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
@@ -14,8 +15,8 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_levelText = GameObject.FindWithTag("LevelText").GetComponent<TextMeshProUGUI>();
         UIManager.m_gameplayPanel = GameObject.FindWithTag("GameplayPanel");
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
-        UIManager.m_start = GameObject.FindWithTag("Start");
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
+        UIManager.m_start = GameObject.FindWithTag("Start");
         UIManager.m_activeJ = GameObject.FindWithTag("ActiveJ");
         UIManager.m_activeK = GameObject.FindWithTag("ActiveK");
         UIManager.m_activeL = GameObject.FindWithTag("ActiveL");
@@ -25,6 +26,9 @@ public class GameplayManager : MonoBehaviour
         LevelManager.Reset();
         m_timer = float.PositiveInfinity;
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermark());
+        UIManager.m_gameplayPanel.SetActive(false);
+        UIManager.m_shopPanel.SetActive(false);
+        UIManager.m_completePanel.SetActive(false);
         Pause();
     }
 
@@ -46,7 +50,8 @@ public class GameplayManager : MonoBehaviour
         }
     }
 
-    public static GameObject getCharacter() {
+    public static GameObject getCharacter()
+    {
         return m_character;
     }
 
@@ -55,7 +60,7 @@ public class GameplayManager : MonoBehaviour
         Clear();
         UIManager.UpdateLevelText(LevelManager.GetLevelName());
         m_timer = LevelManager.GetTimeLimit();
-        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermark());        
+        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermark());
     }
 
     private static void GameOver()
@@ -69,6 +74,8 @@ public class GameplayManager : MonoBehaviour
         foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
             Destroy(o);
         m_character.transform.position = Vector3.zero;
+        foreach (TrailRenderer trailRenderer in m_character.GetComponentsInChildren<TrailRenderer>())
+            trailRenderer.Clear();
     }
 
     public static float getTimer() { return m_timer; }

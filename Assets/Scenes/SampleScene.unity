@@ -897,7 +897,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &432010353
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2287,14 +2287,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_startDelay: 2
-  m_vehicleIntervalMin: 0
-  m_vehicleIntervalMax: 0
+  m_vehicleIntervalMin: 1
+  m_vehicleIntervalMax: 3
   m_vehicleTraceDuration: 2
   m_vehicleStartDelay: 2
   m_vehicleSpeed: 30
   m_vehicleContactDamage: 25
-  m_electricFieldIntervalMin: 0
-  m_electricFieldIntervalMax: 0
+  m_electricFieldIntervalMin: 1
+  m_electricFieldIntervalMax: 3
   m_electricFieldTraceDuration: 2
   m_electricFieldStartDelay: 2
   m_electricFieldRadius: 5
@@ -2680,7 +2680,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &1692158497
 RectTransform:
   m_ObjectHideFlags: 0

@@ -28,8 +28,8 @@ public static class UIManager
 
     public static void ClearShopPanel()
     {
-        while (m_shopPanel.transform.childCount > 0)
-            Object.Destroy(m_shopPanel.transform.GetChild(0));
+        for (int i = 0; i < m_shopPanel.transform.childCount; i++)
+            Object.Destroy(m_shopPanel.transform.GetChild(i).gameObject);
     }
 
     public static void SetShopOptions(IReadOnlyList<LevelManager.ShopOption> shopOptions)
@@ -37,20 +37,25 @@ public static class UIManager
         for (int i = 0; i < shopOptions.Count; i++)
         {
             LevelManager.ShopOption option = shopOptions[i];
+            float xRatio = (float)(i + 1) / (shopOptions.Count + 1);
             GameObject optionObj = new GameObject(option.GetName());
             optionObj.transform.SetParent(m_shopPanel.transform);
-            optionObj.GetComponent<RectTransform>().anchoredPosition = new Vector2((float)(i + 1) / (shopOptions.Count + 1), 0.5f);
-            optionObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 300.0f);
-            optionObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 300.0f);
+            optionObj.AddComponent<RectTransform>();
+            optionObj.GetComponent<RectTransform>().anchorMin = new Vector2(xRatio, 0.5f);
+            optionObj.GetComponent<RectTransform>().anchorMax = new Vector2(xRatio, 0.5f);
+            optionObj.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            optionObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 100.0f);
+            optionObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100.0f);
             optionObj.AddComponent<Image>().sprite = option.GetLogo();
             optionObj.AddComponent<Button>().onClick.AddListener(() =>
             {
-                option.GetAction();
+                option.GetAction()();
                 ClearShopPanel();
                 GameplayManager.CloseShop();
             });
             GameObject label = new GameObject(option.GetName() + "Label");
             label.transform.SetParent(optionObj.transform);
+            label.AddComponent<RectTransform>();
             label.GetComponent<RectTransform>().localPosition = Vector3.down * 30.0f;
         }
     }

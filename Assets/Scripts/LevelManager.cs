@@ -14,7 +14,7 @@ public class LevelManager
     private static bool spawnVehicle;
     private static bool spawnElectricityField;
     private static bool spawnEnemy;
-    private static List<ShopOption> shopOptions;
+    private static List<ShopOption> shopOptions = new();
 
     public static string GetLevelName() => levelName;
 
@@ -42,6 +42,8 @@ public class LevelManager
         Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
         tile = Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
         watermark = Resources.Load<Sprite>(wasdSpritePath);
+        shopOptions.Add(new ShopOption(UnityEngine.Random.Range(15, 36)));
+        shopOptions.Add(new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>(); }));
         switch (UnityEngine.Random.Range(0, 3))
         {
             case 0:
@@ -86,9 +88,10 @@ public class LevelManager
         public ShopOption(int hpRecovery)
         {
             description = "+" + hpRecovery.ToString() + " HP";
-            logo = Resources.Load<Sprite>("");
+            logo = Resources.Load<Sprite>("Sprites/HPRecovery");
             name = "+" + hpRecovery.ToString() + " HP";
-            action = delegate {
+            action = delegate
+            {
                 Character script = GameplayManager.getCharacter().GetComponent<Character>();
                 script.SetHealth(Mathf.Clamp(script.GetHealth() + hpRecovery, 0.0f, script.GetMaxHealth()));
             };
