@@ -1,11 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
-public class Charger : MonoBehaviour
+public class ElectricCharge : MonoBehaviour
 {
-
     private void OnTriggerEnter2D(Collider2D collision)
     {
         ActiveItem_0 item = collision.gameObject.GetComponent<ActiveItem_0>();
@@ -19,7 +17,7 @@ public class Charger : MonoBehaviour
             Destroy(script);
     }
 
-    public class Charging: MonoBehaviour
+    public class Charging : MonoBehaviour
     {
     }
 }

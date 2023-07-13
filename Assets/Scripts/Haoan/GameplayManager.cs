@@ -166,7 +166,7 @@ public class GameplayManager : MonoBehaviour
                 }
 
             case 4:
-                GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
+                //GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
                 m_shopPanel.SetActive(false);
                 m_completePanel.SetActive(true);
                 break;
@@ -201,7 +201,7 @@ public class GameplayManager : MonoBehaviour
             case 1:
                 {
 
-                    GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
+                    //GetComponent<SendToGoogle>().Send(m_levelNum, Random.Range(0, 5), Random.Range(0, 10));
                     Scene scene = SceneManager.GetActiveScene();
                     SceneManager.LoadScene(scene.name);
                     break;

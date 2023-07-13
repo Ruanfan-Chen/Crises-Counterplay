@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 7588678923360650195}
   - component: {fileID: 7537719491813626287}
   m_Layer: 0
-  m_Name: GameObject
+  m_Name: Mask
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -347,7 +347,7 @@ GameObject:
   - component: {fileID: 6682547538269859815}
   - component: {fileID: 5393869908214846560}
   m_Layer: 0
-  m_Name: Charger
+  m_Name: ElectricCharge
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
