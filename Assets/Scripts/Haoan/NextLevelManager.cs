@@ -42,6 +42,11 @@ public class NextLevelManager
         currLevel = levelNum;
     }
 
+    public static int GetCurrLevel()
+    {
+        return currLevel;
+    }
+
 
 
 

@@ -175,7 +175,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_gameplayPanel.SetActive(true);
         m_shopPanel.SetActive(false);
-        NextLevelManager.addCompletedLevel(); // TODO: need to align m_levelNum to be within [2,14]
+        // NextLevelManager.addCompletedLevel(); // TODO: need to align m_levelNum to be within [2,14]
         m_levelNum++;
         ResetGame();
     }
@@ -187,7 +187,9 @@ public class GameplayManager : MonoBehaviour
         m_mapManager.LoadLevel(m_mapToLoad);
 
         Time.timeScale = 1.0f;
-        SceneManager.LoadScene("LevelSelection");
+        // SceneManager.LoadScene("LevelSelection");
+        NextLevelManager.addCompletedLevel();
+        NextLevelManager.SetCurrLevel(NextLevelManager.nextLevels[NextLevelManager.GetCurrLevel()]);
     }
 
     public void ResetGame(int levelNum)
