@@ -15,7 +15,7 @@ public class ActiveItem_0 : ActiveItem
 
     void Update()
     {
-        if (!GetComponent<Buff>())
+        if (!GetComponent<Buff>() && GetComponent<Charger.Charging>())
             charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
     }
     public override void Activate()
