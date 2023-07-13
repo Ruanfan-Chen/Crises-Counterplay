@@ -109,6 +109,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void IProjectileModifier.Modify(GameObject projectile)
     {
+        projectile.GetComponent<SpriteRenderer>().sprite =Resources.Load<Sprite>("Sprites/FriendlyBullet");
         Projectile script = projectile.GetComponent<Projectile>();
         script.SetHostility(false);
         script.SetColor(GetComponent<SpriteRenderer>().color);
