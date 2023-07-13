@@ -175,7 +175,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_gameplayPanel.SetActive(true);
         m_shopPanel.SetActive(false);
-        NextLevelManager.addCompletedLevel(m_levelNum + 1); // TODO: need to align m_levelNum to be within [2,14]
+        NextLevelManager.addCompletedLevel(); // TODO: need to align m_levelNum to be within [2,14]
         m_levelNum++;
         ResetGame();
     }

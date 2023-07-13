@@ -20,12 +20,14 @@ public class NextLevelManager
         // {13, new List<int> {9, 10} },
         // {14, new List<int> {11, 12, 13} }
     };
+    public static int currLevel;
 
     public static HashSet<int> completed = new HashSet<int>() { };
 
-    public static void addCompletedLevel(int levelNum)
+    public static void addCompletedLevel()
     {
-        completed.Add(levelNum);
+        completed.Add(currLevel);
+
         // PrepareButtons();
         // Debug.Log("here we are adding levelNum =" + levelNum);
         // Debug.Log("levelButtons has length =" + levelButtons.Count);
@@ -34,4 +36,13 @@ public class NextLevelManager
         // UpdateButtons();
 
     }
+
+    public static void SetCurrLevel(int levelNum)
+    {
+        currLevel = levelNum;
+    }
+
+
+
+
 }

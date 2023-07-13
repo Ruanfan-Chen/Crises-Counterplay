@@ -46,19 +46,19 @@ public class LevelSelectionManager : MonoBehaviour
         // }
 
         // TODO: Ugly codes, need to resolve OutOfBound error occurs above
-        GameObject.FindGameObjectWithTag("Button2").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
-        GameObject.FindGameObjectWithTag("Button3").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
-        GameObject.FindGameObjectWithTag("Button4").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene("SampleScene"));
-        GameObject.FindGameObjectWithTag("Button5").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[3]));
-        GameObject.FindGameObjectWithTag("Button6").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[4]));
-        GameObject.FindGameObjectWithTag("Button7").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[5]));
-        GameObject.FindGameObjectWithTag("Button8").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[6]));
-        GameObject.FindGameObjectWithTag("Button9").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[7]));
-        GameObject.FindGameObjectWithTag("Button10").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[8]));
-        GameObject.FindGameObjectWithTag("Button11").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[9]));
-        GameObject.FindGameObjectWithTag("Button12").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[10]));
-        GameObject.FindGameObjectWithTag("Button13").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[11]));
-        GameObject.FindGameObjectWithTag("Button14").GetComponent<Button>().onClick.AddListener(() => SceneManager.LoadScene(levelNames[12]));
+        GameObject.FindGameObjectWithTag("Button2").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(2); });
+        GameObject.FindGameObjectWithTag("Button3").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(3); });
+        GameObject.FindGameObjectWithTag("Button4").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(4); });
+        GameObject.FindGameObjectWithTag("Button5").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(5); });
+        GameObject.FindGameObjectWithTag("Button6").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(6); });
+        GameObject.FindGameObjectWithTag("Button7").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(7); });
+        GameObject.FindGameObjectWithTag("Button8").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(8); });
+        GameObject.FindGameObjectWithTag("Button9").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(9); });
+        GameObject.FindGameObjectWithTag("Button10").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(10); });
+        GameObject.FindGameObjectWithTag("Button11").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(11); });
+        GameObject.FindGameObjectWithTag("Button12").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(12); });
+        GameObject.FindGameObjectWithTag("Button13").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(13); });
+        GameObject.FindGameObjectWithTag("Button14").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(14); });
 
 
 
@@ -93,6 +93,7 @@ public class LevelSelectionManager : MonoBehaviour
         {
             GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = Color.green;
             Debug.Log("Button set to green: " + levelNum);
+            GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
         }
 
     }
