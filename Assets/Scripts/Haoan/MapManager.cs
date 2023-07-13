@@ -66,13 +66,13 @@ public class MapManager : MonoBehaviour
             case 2:
                 CreateMapBySprite(m_trainboundSprite);
                 break;
-            case 20:
+            case 110:
                 CreateMapBySprite(m_trainboundSprite);
                 break;
-            case 21:
+            case 111:
                 CreateMapBySprite(m_chistrikeSprite);
                 break;
-            case 22:
+            case 210:
                 CreateMapBySprite(m_superchargeSprite);
                 break;
         }

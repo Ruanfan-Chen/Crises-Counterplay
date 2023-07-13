@@ -19,6 +19,17 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_electricFieldRadius;
     [SerializeField] private float m_electricFieldDuration;
     [SerializeField] private float m_electricFieldDamage;
+
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float m_trainWeight;
+    public void SetTrainWeight(float trainWeight) { m_trainWeight = trainWeight; }
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float m_thunderboltWeight;
+    public void SetThunderWeight(float thunderboltWeight) { m_thunderboltWeight = thunderboltWeight; }
+    [Range(0.0f, 1.0f)]
+    [SerializeField] private float m_waveWeight;
+    public void SetWaveWeight(float waveWeight) { m_waveWeight = waveWeight; }
+
     private float eventTimer;
 
     void Start()
@@ -38,8 +49,8 @@ public class CrisisManager : MonoBehaviour
         {
             switch (Utility.WeightedRandom(new Dictionary<int, float>()
             {
-                [0] = 1.0f,
-                [1] = 1.0f
+                [0] = m_trainWeight,
+                [1] = m_thunderboltWeight
             }))
             {
                 case 0:
@@ -65,7 +76,7 @@ public class CrisisManager : MonoBehaviour
     void SpawnElectricField()
     {
         Bounds bound = MapManager.GetMapBounds(5.0f);
-        Vector3 position = new(Random.Range(bound.min.x, bound.max.x), Random.Range(bound.min.y, bound.max.y), 0);
+        Vector3 position = m_player.transform.position + new Vector3(Random.Range(-10.0f, 10.0f), Random.Range(-10.0f, 10.0f), 0.0f);
         StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 

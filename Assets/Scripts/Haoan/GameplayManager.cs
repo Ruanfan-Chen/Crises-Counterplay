@@ -26,11 +26,12 @@ public class GameplayManager : MonoBehaviour
     [Header("Gameplay and level")]
     [SerializeField] private float m_maxTime = 45.0f;
     [Tooltip("Start level, it can be any number other than 1 if configured.")]
-    [Range(1, 4)]
     [SerializeField] private int m_levelNum = 1;
     private float m_timer = 0.0f;
     private MapManager m_mapManager;
     private int m_mapToLoad;
+    private bool m_isPaused = false;
+    private GameObject m_goal = null;
 
     //delegate for dynamic button action assignment
     delegate void ButtonAction();
@@ -47,13 +48,6 @@ public class GameplayManager : MonoBehaviour
         return GetCharacterObject() ? GetCharacterObject().GetComponent<Character>() : null;
     }
 
-    struct Item
-    {
-        public string m_name;
-        public int m_index;
-        public bool m_active;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
@@ -67,7 +61,10 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        m_timer += Time.deltaTime;
+        if(m_goal == null)
+        {
+            m_timer += Time.deltaTime;
+        }
         float timeLeft = m_maxTime - m_timer;
         m_timerText.text = Mathf.Round(timeLeft).ToString() + "s";
         if (GetCharacter() && GetCharacter().GetComponent<Character>().GetHealth() <= 0.0f)
@@ -100,18 +97,18 @@ public class GameplayManager : MonoBehaviour
         Character c = GetCharacter();
 
         //show hp recovery regardless of the level
-        int hpRecovery = Random.Range(15, 36);
-        string description = "+" + hpRecovery.ToString() + " HP";
-        attributeButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = description;
-        m_actionAttribute = delegate ()
-        {
-            if (c)
-            {
-                c.SetHealth(c.GetHealth() + (float)hpRecovery);
-            }
-        };
+        //int hpRecovery = Random.Range(15, 36);
+        //string description = "+" + hpRecovery.ToString() + " HP";
+        //attributeButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = description;
+        //m_actionAttribute = delegate ()
+        //{
+        //    if (c)
+        //    {
+        //        c.SetHeah(c.GetHealth() + (float)hpRecovery);
+        //    }
+        //};
 
-        //show items based on the level
+        //show ims based on the level
         switch (m_levelNum)
         {
             case 1:
@@ -131,10 +128,33 @@ public class GameplayManager : MonoBehaviour
                             itemButton.GetComponent<Image>().sprite = ActiveItem_2_0.GetLogo();
                             break;
                     }
+
+                    attributeButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_2.GetName();
+                    attributeButton.GetComponent<Image>().sprite = ActiveItem_2.GetLogo();
+                    m_actionAttribute = delegate ()
+                    {
+                        GiveTrainActive(0);
+                        m_mapToLoad = 110;
+                        Vector3 enemyPos = new Vector3(-15.0f, 0.0f, 0.0f);
+                        GameObject enemy = Enemy.Instantiate(enemyPos, Quaternion.identity);
+                        enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
+                        m_goal = enemy;
+                        PassiveItem_Weapon_0 gun = GetCharacterObject().GetComponent<PassiveItem_Weapon_0>();
+                        Destroy(gun);
+                    };
+
+                    itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_2_0.GetName();
+                    itemButton.GetComponent<Image>().sprite = ActiveItem_2_0.GetLogo();
                     m_actionItem = delegate ()
                     {
-                        GiveTrainActive(randint);
-                        m_mapToLoad = 20 + randint;
+                        GiveTrainActive(1);
+                        m_mapToLoad = 111;
+                        Vector3 enemyPos = new Vector3(15.0f, 0.0f, 0.0f);
+                        GameObject enemy = Enemy.Instantiate(enemyPos, Quaternion.identity);
+                        enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
+                        m_goal = enemy;
+                        PassiveItem_Weapon_0 gun = GetCharacterObject().GetComponent<PassiveItem_Weapon_0>();
+                        Destroy(gun);
                     };
 
                     //itemButton.transform.GetChild(0).gameObject.GetComponent<TextMeshProUGUI>().text = ActiveItem_0.GetName();
@@ -255,6 +275,15 @@ public class GameplayManager : MonoBehaviour
             case 4:
                 LoadLevel(3);
                 GiveToxicFootprint();
+                break;
+            case 111:
+                //Chistrike level
+                GiveTrainActive(1);
+                m_mapManager.LoadLevel(21);
+                CrisisManager crisisManager = gameObject.GetComponent<CrisisManager>();
+                crisisManager.SetTrainWeight(1.0f);
+                crisisManager.SetThunderWeight(0.0f);
+                crisisManager.SetWaveWeight(0.0f);
                 break;
         }
     }
