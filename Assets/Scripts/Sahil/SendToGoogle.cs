@@ -35,19 +35,19 @@ public class SendToGoogle : MonoBehaviour
     }
 //Matrix 1
    
-    public void Send(int levelCount, int DamageCount, string DamageName)
+    public void Send(int levelName, int DamageCount, string DamageType)
     {
-        StartCoroutine(Post(sessionID_MX1.ToString(), levelCount.ToString(), DamageCount.ToString(), DamageName.ToString()));
+        StartCoroutine(Post(sessionID_MX1.ToString(), levelName.ToString(), DamageCount.ToString(), DamageType.ToString()));
     }
     
 
-     private IEnumerator Post(string sessionID_MX1, string levelCount, string DamageCount, string DamageName)
+     private IEnumerator Post(string sessionID_MX1, string levelName, string DamageCount, string DamageType)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1477553278", sessionID_MX1);
-        form.AddField("entry.1570433801", levelCount);
+        form.AddField("entry.1570433801", levelName);//Level Name
         form.AddField("entry.1212750405", DamageCount);
-        form.AddField("entry.916383983", DamageName);
+        form.AddField("entry.916383983", DamageType);// type of the source of damage
        
         using (UnityWebRequest www = UnityWebRequest.Post(URL_MX1, form))
         {
@@ -66,18 +66,17 @@ public class SendToGoogle : MonoBehaviour
 
 
 //Matrix 2
-    public void SendMatrix2(string TrainSpeed, string TrainHit)
+    public void SendMatrix2(string TrainSpeed)
     {
-        StartCoroutine(PostMatrix2(sessionID_MX2.ToString(), TrainSpeed.ToString(), TrainHit.ToString()));
+        StartCoroutine(PostMatrix2(sessionID_MX2.ToString(), TrainSpeed.ToString()));
     }
 
     
-    private IEnumerator PostMatrix2(string sessionID_MX2, string TrainSpeed, string TrainHit)
+    private IEnumerator PostMatrix2(string sessionID_MX2, string TrainSpeed)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.366340186", sessionID_MX2);
-        form.AddField("entry.582082116", TrainSpeed); 
-        form.AddField("entry.401126771", TrainHit); 
+        form.AddField("entry.582082116", TrainSpeed);
         
         using (UnityWebRequest www = UnityWebRequest.Post(URL_MX2, form))
         {
@@ -96,19 +95,22 @@ public class SendToGoogle : MonoBehaviour
 	
 
 //Matrix 3
-	public void SendMatrix3(string LevelName, string TrainDash, string SuperCH_count)
+	public void SendMatrix3(string LevelName, int TrainDash, int SuperCH_count , bool isTrainDash, bool isSuperCH)// change type as per data
     {
-        StartCoroutine(PostMatrix3(sessionID_MX3.ToString(), LevelName.ToString(), TrainDash.ToString(), SuperCH_count.ToString()));
+        StartCoroutine(PostMatrix3(sessionID_MX3.ToString(), LevelName.ToString(), TrainDash.ToString(), SuperCH_count.ToString(), isTrainDash.ToString(), isSuperCH.ToString()));
+        
     }
 
     
-    private IEnumerator PostMatrix3(string sessionID_MX3, string LevelName ,string TrainDash, string SuperCH_count)
+    private IEnumerator PostMatrix3(string sessionID_MX3, string LevelName ,string TrainDash, string SuperCH_count, string isTrainDash, string isSuperCH )
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.366340186", sessionID_MX3);
         form.AddField("entry.1848486491", LevelName); 
         form.AddField("entry.465445524",  TrainDash); 
-        form.AddField("entry.1833994225",  SuperCH_count); 
+        form.AddField("entry.1833994225",  SuperCH_count); // add 2 booleans where they have this active skills or not
+        form.AddField("entry.1698635392",  isTrainDash); 
+        form.AddField("entry.1177681711",  isSuperCH); 
         
         using (UnityWebRequest www = UnityWebRequest.Post(URL_MX3, form))
         {
@@ -128,13 +130,14 @@ public class SendToGoogle : MonoBehaviour
 
 
 //Matrix 4
-	public void SendMatrix4(string ChoiceName, string HPCount)
+	public void SendMatrix4(string ChoiceName, int HPCount)// type change
     {
         StartCoroutine(PostMatrix4(sessionID_MX4.ToString(), ChoiceName.ToString(), HPCount.ToString()));
     }
 	private IEnumerator PostMatrix4(string sessionID_MX4, string ChoiceName,string HPCount)
     {
         WWWForm form = new WWWForm();
+
         form.AddField("entry.366340186", sessionID_MX4);
         form.AddField("entry.1210868527", ChoiceName); 
         form.AddField("entry.1840849645", HPCount); 
