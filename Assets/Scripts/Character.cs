@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.SearchService;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
@@ -14,6 +16,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public static readonly float knockbackDurationOnDmg = 0.5f;
     public static readonly float knockbackDistanceOnDmg = 3.0f;
     public static readonly float initialKnockbackSpeedOnDmg = 50.0f;
+    public static int damageCount = 0;
 
     public float GetHealth() { return health; }
 
@@ -36,6 +39,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public void ReceiveDamage(Damage damage)
     {
         if (GetComponent<IInvulnerable>() != null) return;
+        damageCount++;
+        StartCoroutine(SendToGoogle.Send(SceneManager.GetActiveScene().name, damageCount, damage.GetSource().name));
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
         IEnumerator coroutine = damage.GetCoroutine();

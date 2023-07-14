@@ -31,13 +31,7 @@ public class LevelSelection : MonoBehaviour
     {
         // int currLevel = PlayerPrefs.GetInt("levelAt", 2);
         updateButtons();
-
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-
+        SendToGoogle.Initialize();;
     }
 
     public static void addCompletedLevel(int levelNum)
@@ -45,7 +39,7 @@ public class LevelSelection : MonoBehaviour
         completed.Add(levelNum);
         levelButtons[levelNum - 2].GetComponent<Image>().color = Color.green;
         updateButtons();
-
+        Character.damageCount = 0;
     }
 
     private static void updateButtons()

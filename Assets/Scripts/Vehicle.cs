@@ -23,7 +23,10 @@ public class Vehicle : MonoBehaviour
     public bool GetHostility() { return hostility; }
 
     public void SetHostility(bool value) { hostility = value; }
-
+    private void Start()
+    {
+        StartCoroutine(SendToGoogle.SendMatrix2(speed, "Train spawn"));
+    }
     // Update is called once per frame
     void Update()
     {
@@ -51,6 +54,7 @@ public class Vehicle : MonoBehaviour
         if (damageable != null && damageable.GetHostility() != hostility)
         {
             new Damage(gameObject, null, damageable, contactDamage).Apply();
+            StartCoroutine(SendToGoogle.SendMatrix2(speed, "Train hit"));
         }
     }
 
