@@ -10,7 +10,7 @@ public class LevelManager
     private static float timeLimit;
     private static Vector2 mapSize;
     private static Sprite tile;
-    private static Sprite watermark;
+    private static List<Sprite> watermarks = new();
     private static bool spawnVehicle;
     private static bool spawnElectricityField;
     private static bool spawnEnemy;
@@ -24,7 +24,7 @@ public class LevelManager
 
     public static Sprite GetTile() => tile;
 
-    public static Sprite GetWatermark() => watermark;
+    public static IReadOnlyList<Sprite> GetWatermarks() => watermarks;
 
     public static bool GetSpawnVehicle() => spawnVehicle;
 
@@ -41,7 +41,7 @@ public class LevelManager
         mapSize = new Vector2(50.0f, 50.0f);
         Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
         tile = Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
-        watermark = Resources.Load<Sprite>(wasdSpritePath);
+        //watermarks.Add(Resources.Load<Sprite>(wasdSpritePath));
         shopOptions.Add(new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>(); }));
         shopOptions.Add(new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K); }));
         shopOptions.Add(new ShopOption(ActiveItem_2.GetDescription(), ActiveItem_2.GetLogo(), ActiveItem_2.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2>(KeyCode.L); }));

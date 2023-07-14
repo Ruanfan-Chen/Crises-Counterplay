@@ -53,7 +53,7 @@ public class ActiveItem_2 : ActiveItem
         {
             StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, dashDuration));
             StartCoroutine(RepelVehicles(dashDuration));
-            StartCoroutine(ForcedMovement(transform.parent, (OverlapVehicle().ElementAt(Random.Range(0, OverlapVehicle().Count())).transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
+            StartCoroutine(ForcedMovement(transform, (OverlapVehicle().ElementAt(Random.Range(0, OverlapVehicle().Count())).transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
             charge -= cost;
         }
     }

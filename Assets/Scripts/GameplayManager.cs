@@ -21,7 +21,7 @@ public class GameplayManager : MonoBehaviour
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
         m_timer = float.PositiveInfinity;
-        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermark());
+        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
         UIManager.m_gameplayPanel.SetActive(false);
         UIManager.m_shopPanel.SetActive(false);
         UIManager.m_completePanel.SetActive(false);
@@ -56,7 +56,7 @@ public class GameplayManager : MonoBehaviour
     {
         Clear();
         m_timer = LevelManager.GetTimeLimit();
-        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermark());
+        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
     }
 
     private static void GameOver()

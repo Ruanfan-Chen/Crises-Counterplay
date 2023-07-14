@@ -5,10 +5,11 @@ using static Utility;
 public static class MapManager
 {
     public static readonly float MAP_DEPTH = 0.5f;
+    public static readonly float WATERMARK_DEPTH = 0.4f;
     private static Bounds bounds;
     private static GameObject map;
 
-    public static void Initialize(Vector2 size, Sprite tile, Sprite watermark)
+    public static void Initialize(Vector2 size, Sprite tile, IReadOnlyList<Sprite> watermarks)
     {
         if (map)
             Object.Destroy(map);
@@ -22,12 +23,28 @@ public static class MapManager
         mapRenderer.drawMode = SpriteDrawMode.Tiled;
         mapRenderer.size = size;
 
-        GameObject watermarkObj = new GameObject("Watermark");
-        watermarkObj.transform.SetParent(map.transform, false);
+        int rowCount = 1;
+        int colCount = Mathf.RoundToInt(size.x * rowCount / size.y);
+        while (watermarks.Count > (rowCount - 1) * (colCount - 1))
+        {
+            rowCount++;
+            colCount = Mathf.RoundToInt(size.x * rowCount / size.y);
+        }
+        Debug.Log(watermarks.Count);
+        Debug.Log(rowCount);
+        Debug.Log(colCount);
 
-        SpriteRenderer watermarkRenderer = watermarkObj.AddComponent<SpriteRenderer>();
-        watermarkRenderer.sprite = watermark;
-        watermarkRenderer.color = new Color(1.0f, 1.0f, 1.0f, 0.5f);
+        for (int row = 1; row < rowCount; row++)
+            for (int col = 1; col < colCount; col++)
+            {
+                int index = (row - 1) * (colCount - 1) + col - 1;
+                if (index >= watermarks.Count) return;
+                GameObject watermarkObj = new GameObject("Watermark");
+                watermarkObj.transform.SetParent(map.transform);
+                watermarkObj.transform.localPosition = new(((float)col / colCount - 0.5f) * size.x, (0.5f - (float)row / rowCount) * size.y, WATERMARK_DEPTH - MAP_DEPTH);
+                watermarkObj.transform.localScale = Vector2.one * Mathf.Min(size.x / watermarks[index].bounds.size.x / colCount, size.y / watermarks[index].bounds.size.y / rowCount);
+                watermarkObj.AddComponent<SpriteRenderer>().sprite = watermarks[index];
+            }
     }
 
     static public Bounds GetBounds(float offset = 0.0f)
