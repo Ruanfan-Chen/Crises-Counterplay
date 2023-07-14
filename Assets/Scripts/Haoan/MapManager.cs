@@ -60,20 +60,23 @@ public class MapManager : MonoBehaviour
     {
         switch(levelNum)
         {
-            case 1:
+            //case 1:
+            //    CreateMapBySprite(m_sprite);
+            //    break;
+            //case 2:
+            //    CreateMapBySprite(m_trainboundSprite);
+            //    break;
+            //case 20:
+            //    CreateMapBySprite(m_trainboundSprite);
+            //    break;
+            //case 21:
+            //    CreateMapBySprite(m_chistrikeSprite);
+            //    break;
+            //case 22:
+            //    CreateMapBySprite(m_superchargeSprite);
+            //    break;
+            default:
                 CreateMapBySprite(m_sprite);
-                break;
-            case 2:
-                CreateMapBySprite(m_trainboundSprite);
-                break;
-            case 20:
-                CreateMapBySprite(m_trainboundSprite);
-                break;
-            case 21:
-                CreateMapBySprite(m_chistrikeSprite);
-                break;
-            case 22:
-                CreateMapBySprite(m_superchargeSprite);
                 break;
         }
     }

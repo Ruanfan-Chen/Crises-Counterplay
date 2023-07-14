@@ -19,6 +19,8 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_electricFieldRadius;
     [SerializeField] private float m_electricFieldDuration;
     [SerializeField] private float m_electricFieldDamage;
+    [SerializeField] private float m_train;
+    [SerializeField] private float m_thunder;
     private float eventTimer;
 
     void Start()
@@ -38,8 +40,8 @@ public class CrisisManager : MonoBehaviour
         {
             switch (Utility.WeightedRandom(new Dictionary<int, float>()
             {
-                [0] = 1.0f,
-                [1] = 1.0f
+                [0] = m_train,
+                [1] = m_thunder
             }))
             {
                 case 0:

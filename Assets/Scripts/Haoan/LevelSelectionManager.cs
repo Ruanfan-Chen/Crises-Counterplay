@@ -47,13 +47,13 @@ public class LevelSelectionManager : MonoBehaviour
         // }
 
         // TODO: Ugly codes, need to resolve OutOfBound error occurs above
-        GameObject.FindGameObjectWithTag("Button2").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(2); });
-        GameObject.FindGameObjectWithTag("Button3").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(3); });
-        GameObject.FindGameObjectWithTag("Button4").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(4); });
-        GameObject.FindGameObjectWithTag("Button5").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(5); });
+        GameObject.FindGameObjectWithTag("Button2").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("Train1"); NextLevelManager.SetCurrLevel(2); });
+        GameObject.FindGameObjectWithTag("Button3").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("Thunder1"); NextLevelManager.SetCurrLevel(3); });
+        GameObject.FindGameObjectWithTag("Button4").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("Tsunami1"); NextLevelManager.SetCurrLevel(4); });
+        GameObject.FindGameObjectWithTag("Button5").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("Train2"); NextLevelManager.SetCurrLevel(5); });
         GameObject.FindGameObjectWithTag("Button6").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(6); });
         GameObject.FindGameObjectWithTag("Button7").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(7); });
-        GameObject.FindGameObjectWithTag("Button8").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(8); });
+        GameObject.FindGameObjectWithTag("Button8").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("Train3"); NextLevelManager.SetCurrLevel(8); });
         GameObject.FindGameObjectWithTag("Button9").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(9); });
         GameObject.FindGameObjectWithTag("Button10").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(10); });
         // GameObject.FindGameObjectWithTag("Button11").GetComponent<Button>().onClick.AddListener(() => { SceneManager.LoadScene("SampleScene"); NextLevelManager.SetCurrLevel(11); });

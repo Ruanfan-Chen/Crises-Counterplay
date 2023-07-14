@@ -120,7 +120,8 @@ public class GameplayManager : MonoBehaviour
             case 1:
                 {
                     ActiveItem candidate = null;
-                    int randint = Random.Range(0, 2);
+                    //int randint = Random.Range(0, 2);
+                    int randint = 1;
                     switch (randint)
                     {
                         case 0:
@@ -189,7 +190,7 @@ public class GameplayManager : MonoBehaviour
         m_mapManager.LoadLevel(m_mapToLoad);
 
         Time.timeScale = 1.0f;
-        // SceneManager.LoadScene("LevelSelection");
+        SceneManager.LoadScene("LevelSelection");
         NextLevelManager.addCompletedLevel();
         NextLevelManager.SetCurrLevel(NextLevelManager.nextLevels[NextLevelManager.GetCurrLevel()]);
     }
