@@ -12,15 +12,11 @@ public class GameplayManager : MonoBehaviour
     {
         m_character = GameObject.FindWithTag("Character");
         UIManager.m_timerText = GameObject.FindWithTag("TimerText").GetComponent<TextMeshProUGUI>();
-        UIManager.m_levelText = GameObject.FindWithTag("LevelText").GetComponent<TextMeshProUGUI>();
         UIManager.m_gameplayPanel = GameObject.FindWithTag("GameplayPanel");
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
-        UIManager.m_start = GameObject.FindWithTag("Start");
-        UIManager.m_activeJ = GameObject.FindWithTag("ActiveJ");
-        UIManager.m_activeK = GameObject.FindWithTag("ActiveK");
-        UIManager.m_activeL = GameObject.FindWithTag("ActiveL");
-        UIManager.m_manaBar = GameObject.FindWithTag("ManaBar");
+        UIManager.m_startButton = GameObject.FindWithTag("Start");
+        UIManager.m_activeSkillPanel = GameObject.FindWithTag("ActiveSkillPanel");
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
@@ -37,6 +33,7 @@ public class GameplayManager : MonoBehaviour
     {
         m_timer -= Time.deltaTime;
         UIManager.UpdateTimerText();
+        UIManager.UpdateActiveSkills(m_character.GetComponent<Character>().GetKeyCodeActiveItemPairs());
         if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
         {
             GameOver();
@@ -58,7 +55,6 @@ public class GameplayManager : MonoBehaviour
     private static void LoadLevel()
     {
         Clear();
-        UIManager.UpdateLevelText(LevelManager.GetLevelName());
         m_timer = LevelManager.GetTimeLimit();
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermark());
     }
@@ -86,7 +82,7 @@ public class GameplayManager : MonoBehaviour
     }
     public static void Continue()
     {
-        UIManager.m_start.SetActive(false);
+        UIManager.m_startButton.SetActive(false);
         UIManager.m_gameplayPanel.SetActive(true);
         LoadLevel();
         Time.timeScale = 1.0f;

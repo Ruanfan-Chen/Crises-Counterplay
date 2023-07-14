@@ -7,15 +7,11 @@ TagManager:
   - Disposable
   - Character
   - TimerText
-  - LevelText
   - GameplayPanel
   - ShopPanel
   - CompletePanel
-  - ActiveJ
-  - ActiveK
-  - ActiveL
-  - ManaBar
   - Start
+  - ActiveSkillPanel
   layers:
   - Default
   - TransparentFX

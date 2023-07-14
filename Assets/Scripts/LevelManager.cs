@@ -37,33 +37,15 @@ public class LevelManager
     public static void Reset()
     {
         levelName = "Level 1";
-        timeLimit = 30.0f;
+        timeLimit = 7.0f;
         mapSize = new Vector2(50.0f, 50.0f);
         Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
         tile = Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
         watermark = Resources.Load<Sprite>(wasdSpritePath);
-        shopOptions.Add(new ShopOption(UnityEngine.Random.Range(15, 36)));
         shopOptions.Add(new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>(); }));
-        switch (UnityEngine.Random.Range(0, 3))
-        {
-            case 0:
-                spawnVehicle = true;
-                spawnElectricityField = false;
-                spawnEnemy = false;
-
-                break;
-            case 1:
-                spawnVehicle = false;
-                spawnElectricityField = true;
-                spawnEnemy = false;
-                break;
-            case 2:
-                spawnVehicle = false;
-                spawnElectricityField = false;
-                spawnEnemy = true;
-                break;
-        }
-
+        shopOptions.Add(new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K); }));
+        shopOptions.Add(new ShopOption(ActiveItem_2.GetDescription(), ActiveItem_2.GetLogo(), ActiveItem_2.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2>(KeyCode.L); }));
+        spawnVehicle = true;
     }
 
     public static void MoveNext()

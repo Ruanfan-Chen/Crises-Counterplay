@@ -102,6 +102,11 @@ public class ActiveItem_2_0 : ActiveItem
         return itemName;
     }
 
+    public override Sprite GetUISprite()
+    {
+        return GetLogo();
+    }
+
     private IEnumerable<GameObject> OverlapVehicle() {
         return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
     }

@@ -8,7 +8,6 @@ public class ActiveItem_0 : ActiveItem
     private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
-    private float maxCharge = 5.0f;
     private float charge = 0.0f;
     private float cost = 5.0f;
     private float duration = 10.0f;
@@ -16,7 +15,7 @@ public class ActiveItem_0 : ActiveItem
     void Update()
     {
         if (!GetComponent<Buff>())
-            charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
+            charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, GameplayManager.getTimer());
     }
     public override void Activate()
     {
@@ -31,7 +30,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override float GetChargeProgress()
     {
-        return charge / maxCharge;
+        return charge / GameplayManager.getTimer();
     }
 
     public static string GetDescription()
@@ -52,6 +51,11 @@ public class ActiveItem_0 : ActiveItem
     public override bool IsUsable()
     {
         return charge >= cost;
+    }
+
+    public override Sprite GetUISprite()
+    {
+        return GetLogo();
     }
 
     private class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus

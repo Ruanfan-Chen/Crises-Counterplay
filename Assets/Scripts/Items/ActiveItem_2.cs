@@ -96,6 +96,11 @@ public class ActiveItem_2 : ActiveItem
         return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
     }
 
+    public override Sprite GetUISprite()
+    {
+        return GetLogo();
+    }
+
     private class ViewBehavior : MonoBehaviour
     {
         private bool repelVehicle;

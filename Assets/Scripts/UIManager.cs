@@ -1,25 +1,18 @@
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public static class UIManager
 {
+    public static readonly string ActiveSkillPrefabPath = "Prefabs/ActiveSkill";
     public static TextMeshProUGUI m_timerText;
-    public static TextMeshProUGUI m_levelText;
     public static GameObject m_gameplayPanel;
     public static GameObject m_shopPanel;
-    public static GameObject m_start;
     public static GameObject m_completePanel;
-    public static GameObject m_activeJ;
-    public static GameObject m_activeK;
-    public static GameObject m_activeL;
-    public static GameObject m_manaBar;
-
-    public static void UpdateLevelText(string levelName)
-    {
-        m_levelText.text = levelName;
-    }
+    public static GameObject m_startButton;
+    public static GameObject m_activeSkillPanel;
 
     public static void UpdateTimerText()
     {
@@ -57,6 +50,39 @@ public static class UIManager
             label.transform.SetParent(optionObj.transform);
             label.AddComponent<RectTransform>();
             label.GetComponent<RectTransform>().localPosition = Vector3.down * 30.0f;
+        }
+    }
+
+    public static void UpdateActiveSkills(IReadOnlyDictionary<KeyCode, ActiveItem> readOnlyDictionary)
+    {
+        List<KeyCode> KeyCodes = readOnlyDictionary.Keys.ToList();
+        KeyCodes.Sort();
+        if (m_activeSkillPanel.transform.childCount != KeyCodes.Count)
+        {
+            for (int i = 0; i < m_activeSkillPanel.transform.childCount; i++)
+                Object.Destroy(m_activeSkillPanel.transform.GetChild(i).gameObject);
+
+            for (int i = 0; i < KeyCodes.Count; i++)
+            {
+                GameObject activeSkill = Object.Instantiate(Resources.Load<GameObject>(ActiveSkillPrefabPath), m_activeSkillPanel.transform);
+                activeSkill.name = "ActiveSkill_" + KeyCodes[i];
+                activeSkill.GetComponent<RectTransform>().anchorMin = new Vector2(0.5f, 0.0f);
+                activeSkill.GetComponent<RectTransform>().anchorMax = new Vector2(0.5f, 0.0f);
+                activeSkill.GetComponent<RectTransform>().anchoredPosition = new Vector2(i * 200.0f - KeyCodes.Count * 100.0f + 100.0f, 50.0f);
+            }
+        }
+        for (int i = 0; i < KeyCodes.Count; i++)
+        {
+            KeyCode keyCode = KeyCodes[i];
+            ActiveItem item = readOnlyDictionary[keyCode];
+            ActiveSkill UIScript = m_activeSkillPanel.transform.GetChild(i).GetComponent<ActiveSkill>();
+            UIScript.SetLogo(item.GetUISprite());
+            UIScript.SetFrameActive(item.IsUsable());
+            UIScript.SetKey(keyCode);
+            UIScript.SetText("");
+            float chargeProgress = item.GetChargeProgress();
+            UIScript.SetSpinner(Mathf.Ceil(chargeProgress)-chargeProgress);
+            UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));
         }
     }
 }
