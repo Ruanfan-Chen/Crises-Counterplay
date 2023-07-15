@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.TextCore.Text;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -76,7 +78,12 @@ public class GameplayManager : MonoBehaviour
     {
         Clear();
         LevelManager.Reset();
-        m_character.GetComponent<Character>().SetHealth(m_character.GetComponent<Character>().GetMaxHealth());
+        Character script = m_character.GetComponent<Character>();
+        script.SetHealth(script.GetMaxHealth());
+        foreach (PassiveItem item in script.GetPassiveItems().ToList())
+            script.RemoveItem(item);
+        foreach (ActiveItem item in script.GetActiveItemKeyCodePairs().Keys.ToList())
+            script.RemoveItem(item);
         LoadLevel();
     }
 
