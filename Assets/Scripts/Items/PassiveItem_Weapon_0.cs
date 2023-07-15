@@ -59,9 +59,8 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
     {
         projectile.AddComponent<Projectile.DamageOnCollision>().SetDamage(damage);
         projectile.GetComponent<Projectile>().SetSpeed(projectileSpeed);
-        DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
-        timer.SetTimer(range / projectileSpeed);
-        timer.Activate();
+        if (float.IsFinite(range / projectileSpeed))
+            Destroy(projectile, range / projectileSpeed);
     }
 
     public static string GetDescription()
@@ -90,7 +89,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier, IWeapon
 
         private void OnTriggerStay2D(Collider2D collision)
         {
-            if (timer > 0) return;
+            if (timer > 0 || LevelManager.GetCharaterDisarm()) return;
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null && damageable.GetHostility() != GetComponentInParent<Character>().GetHostility())
             {

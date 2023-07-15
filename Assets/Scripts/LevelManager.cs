@@ -7,18 +7,6 @@ public class LevelManager
 {
     private static string tileTexturePath = "Sprites/TilesetFloor";
     private static string wasdSpritePath = "Sprites/wasd";
-    //private static string levelName;
-    //private static float timeLimit;
-    //private static Vector2 mapSize;
-    //private static Sprite tile;
-    //private static readonly List<Sprite> watermarks = new();
-    //private static bool spawnVehicle;
-    //private static bool spawnElectricityField;
-    //private static bool spawnEnemy;
-    //private static bool characterDisarm;
-    //private static bool enemieDisarm;
-    //private static readonly List<ShopOption> shopOptions = new();
-    //private static readonly Dictionary<Vector2, Type[]> initEneimies= new();
 
     private static int levelNum;
 

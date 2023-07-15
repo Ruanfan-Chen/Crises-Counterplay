@@ -6,8 +6,6 @@ using static Utility;
 public class ElectricField : MonoBehaviour
 {
     private static string prefabPath = "Prefabs/ElectricField";
-    private static float forkedLightningSearchRadius = 5.0f;
-    private static float forkedLightningDuration = 3.0f;
 
     private float damage;
 
@@ -30,14 +28,13 @@ public class ElectricField : MonoBehaviour
     {
         Destroy(DrawCircle("ElectricField", position, radius, Color.yellow), traceDuration);
         yield return new WaitForSeconds(delay);
+        Destroy(Battery.Instantiate(position, Quaternion.identity), electricFieldDuration);
         GameObject electricField = Instantiate(Resources.Load<GameObject>(prefabPath), position, Quaternion.identity);
         electricField.transform.localScale = new Vector3(radius * 2.0f, radius * 2.0f, 1.0f);
         electricField.tag = "Disposable";
         ElectricField driverScript = electricField.GetComponent<ElectricField>();
         driverScript.SetDamage(damage);
-        DestroyOutOfTime destroyScript = electricField.GetComponent<DestroyOutOfTime>();
-        destroyScript.SetTimer(electricFieldDuration);
-        destroyScript.Activate();
+        Destroy(electricField, electricFieldDuration);
 
         PhysicsShapeGroup2D shapeGroup = ColliderManager.GetShapeGroup<Waterblight.WaterLayer>();
         for (int shapeIndex = 0; shapeIndex < shapeGroup.shapeCount; shapeIndex++)
@@ -46,7 +43,7 @@ public class ElectricField : MonoBehaviour
             for (int vertexIndex = 0; vertexIndex < shape.vertexCount; vertexIndex++)
             {
                 Vector2 vertex = shapeGroup.GetShapeVertex(shapeIndex, vertexIndex);
-                if ((vertex - (Vector2)position).magnitude <= forkedLightningSearchRadius)
+                if ((vertex - (Vector2)position).magnitude <= 5.0f)
                 {
                     List<Vector2> vertices = new();
                     shapeGroup.GetShapeVertices(shapeIndex, vertices);
@@ -56,8 +53,8 @@ public class ElectricField : MonoBehaviour
                     lineObj2.AddComponent<ElectricField>().SetDamage(damage);
                     lineObj1.AddComponent<EdgeCollider2D>().SetPoints(new List<Vector2>() { position, vertex });
                     lineObj2.AddComponent<EdgeCollider2D>().SetPoints(vertices);
-                    Destroy(lineObj1, forkedLightningDuration);
-                    Destroy(lineObj2, forkedLightningDuration);
+                    Destroy(lineObj1, 1.0f);
+                    Destroy(lineObj2, 1.0f);
                     break;
                 }
             }

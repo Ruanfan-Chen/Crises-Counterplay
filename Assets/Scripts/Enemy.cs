@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
@@ -84,8 +81,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         script.SetSpeed(projectileSpeed);
         script.SetHostility(true);
         script.SetSource(gameObject);
-        DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
-        timer.SetTimer(range / projectileSpeed);
-        timer.Activate();
+        if (float.IsFinite(range / projectileSpeed))
+            Destroy(projectile, range / projectileSpeed);
     }
 }
