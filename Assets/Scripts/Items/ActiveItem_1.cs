@@ -25,7 +25,7 @@ public class ActiveItem_1 : ActiveItem
         for (int i = positions.Count - 1; i > 0 ; i--)
         {
             Vector3 displacement = positions[i - 1] - positions[i];
-            transform.position += displacement;
+            transform.position = positions[i];
             yield return new WaitForSeconds(displacement.magnitude / speed);
         }
     }
