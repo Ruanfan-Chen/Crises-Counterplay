@@ -44,10 +44,13 @@ public class GameplayManager : MonoBehaviour
         }
         if (m_timer <= 0)
         {
-            if(LevelManager.GetShopOptions().Count > 0)
+            if (LevelManager.GetShopOptions().Count > 0)
                 OpenShop();
-            LevelManager.MoveNext();
-            LoadLevel();
+            else
+            {
+                LevelManager.MoveNext();
+                LoadLevel();
+            }
         }
     }
 
@@ -98,6 +101,8 @@ public class GameplayManager : MonoBehaviour
     {
         UIManager.m_gameplayPanel.SetActive(true);
         Time.timeScale = 1.0f;
+        LevelManager.MoveNext();
+        LoadLevel();
     }
     public static void OpenShop()
     {

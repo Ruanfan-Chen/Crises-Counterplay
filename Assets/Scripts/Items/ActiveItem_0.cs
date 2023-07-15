@@ -58,7 +58,7 @@ public class ActiveItem_0 : ActiveItem
         charge += value;
     }
 
-    private class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
+    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
     {
         private float damage = 50.0f;
         private float knockbackDistance = 3.0f;

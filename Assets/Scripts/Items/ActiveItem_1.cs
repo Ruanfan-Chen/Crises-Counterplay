@@ -22,12 +22,14 @@ public class ActiveItem_1 : ActiveItem
 
     private IEnumerator Back(List<Vector3> positions)
     {
+        ActiveItem_0.Buff buff = gameObject.AddComponent<ActiveItem_0.Buff>();
         for (int i = positions.Count - 1; i > 0 ; i--)
         {
             Vector3 displacement = positions[i - 1] - positions[i];
             transform.position = positions[i];
             yield return new WaitForSeconds(displacement.magnitude / speed);
         }
+        Destroy(buff);
     }
 
     public override void Deactivate() { }

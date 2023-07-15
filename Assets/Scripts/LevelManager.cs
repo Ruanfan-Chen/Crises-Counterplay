@@ -194,6 +194,17 @@ public class LevelManager
 
     public static void MoveNext()
     {
+        if (levelNum == 0)
+        {
+            levelNum = GameplayManager.getCharacter().GetComponent<ActiveItem_2>() ? 1 : 2;
+            return;
+
+        }
+        if (levelNum == 1)
+        {
+            levelNum = 3;
+            return;
+        }
         levelNum++;
     }
 
