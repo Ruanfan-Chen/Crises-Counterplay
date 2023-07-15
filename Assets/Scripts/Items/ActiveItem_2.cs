@@ -9,6 +9,7 @@ public class ActiveItem_2 : ActiveItem
     private static string itemName = "Trainbound";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Trainbound";
+    public static int activateCounter = 0;
     private GameObject view;
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
@@ -55,6 +56,7 @@ public class ActiveItem_2 : ActiveItem
             StartCoroutine(RepelVehicles(dashDuration));
             StartCoroutine(ForcedMovement(transform, (OverlapVehicle().ElementAt(Random.Range(0, OverlapVehicle().Count())).transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
             charge -= cost;
+            activateCounter++;
         }
     }
 

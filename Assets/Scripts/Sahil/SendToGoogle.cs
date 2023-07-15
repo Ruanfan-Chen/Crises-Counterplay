@@ -19,9 +19,6 @@ public class SendToGoogle : MonoBehaviour
     private long sessionID_MX2;
     private long sessionID_MX3;
     private long sessionID_MX4;
-
-    private int levelCount;
-    private int DamageCount;
 	
 
 
@@ -66,7 +63,7 @@ public class SendToGoogle : MonoBehaviour
 
 
 //Matrix 2
-    public void SendMatrix2(string TrainSpeed)
+    public void SendMatrix2(float TrainSpeed)
     {
         StartCoroutine(PostMatrix2(sessionID_MX2.ToString(), TrainSpeed.ToString()));
     }

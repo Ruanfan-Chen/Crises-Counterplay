@@ -51,6 +51,7 @@ public class Vehicle : MonoBehaviour
         if (damageable != null && damageable.GetHostility() != hostility)
         {
             new Damage(gameObject, null, damageable, contactDamage).Apply();
+            GameplayManager.GetGoogleSender().SendMatrix2(speed);
         }
     }
 

@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable

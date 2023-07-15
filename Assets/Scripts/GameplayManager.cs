@@ -8,11 +8,13 @@ public class GameplayManager : MonoBehaviour
     private static GameObject m_character;
     private static readonly HashSet<HaltTimer> halts = new();
     private static float m_timer;
+    private static SendToGoogle m_googleSender;
 
     // Start is called before the first frame update
     void Start()
     {
         m_character = GameObject.FindWithTag("Character");
+        m_googleSender = GetComponent<SendToGoogle>();
         UIManager.m_timerText = GameObject.FindWithTag("TimerText").GetComponent<TextMeshProUGUI>();
         UIManager.m_gameplayPanel = GameObject.FindWithTag("GameplayPanel");
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
@@ -44,20 +46,16 @@ public class GameplayManager : MonoBehaviour
         }
         if (m_timer <= 0)
         {
+            //m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
             if (LevelManager.GetShopOptions().Count > 0)
                 OpenShop();
-            else
-            {
-                LevelManager.MoveNext();
-                LoadLevel();
-            }
+            LevelManager.MoveNext();
+            LoadLevel();
         }
     }
 
-    public static GameObject getCharacter()
-    {
-        return m_character;
-    }
+    public static GameObject getCharacter() => m_character;
+    public static SendToGoogle GetGoogleSender() => m_googleSender;
 
     private static void LoadLevel()
     {
@@ -89,6 +87,8 @@ public class GameplayManager : MonoBehaviour
         m_character.transform.position = Vector3.zero;
         foreach (TrailRenderer trailRenderer in m_character.GetComponentsInChildren<TrailRenderer>())
             trailRenderer.Clear();
+        ActiveItem_0.activateCounter = 0;
+        ActiveItem_2.activateCounter = 0;
     }
 
     public static float getTimer() { return m_timer; }
@@ -101,8 +101,6 @@ public class GameplayManager : MonoBehaviour
     {
         UIManager.m_gameplayPanel.SetActive(true);
         Time.timeScale = 1.0f;
-        LevelManager.MoveNext();
-        LoadLevel();
     }
     public static void OpenShop()
     {

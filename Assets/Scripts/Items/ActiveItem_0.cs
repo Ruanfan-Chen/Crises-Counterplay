@@ -8,6 +8,7 @@ public class ActiveItem_0 : ActiveItem
     private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
+    public static int activateCounter = 0;
     private float charge = 0.0f;
     private float cost = 5.0f;
     private float duration = 5.0f;
@@ -18,6 +19,7 @@ public class ActiveItem_0 : ActiveItem
         {
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
             charge -= cost;
+            activateCounter++;
         }
     }
 
