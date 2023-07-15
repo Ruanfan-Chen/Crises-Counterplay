@@ -11,6 +11,15 @@ public class Waterblight : MonoBehaviour
     private float width = 2.0f;
     private float trialDuration = 4.0f;
 
+    public List<Vector3> GetTrail()
+    {
+        TrailRenderer trailRenderer = trailObj.GetComponent<TrailRenderer>();
+        Vector3[] positions = new Vector3[trailRenderer.positionCount];
+        trailRenderer.GetVisiblePositions(positions);
+        List<Vector3> positionList = new();
+        positionList.AddRange(positions);
+        return positionList;
+    } 
 
     private void OnEnable()
     {

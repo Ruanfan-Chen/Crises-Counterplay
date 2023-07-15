@@ -73,7 +73,9 @@ public class GameplayManager : MonoBehaviour
 
     private static void GameOver()
     {
+        Clear();
         LevelManager.Reset();
+        m_character.GetComponent<Character>().SetHealth(m_character.GetComponent<Character>().GetMaxHealth());
         LoadLevel();
     }
 
