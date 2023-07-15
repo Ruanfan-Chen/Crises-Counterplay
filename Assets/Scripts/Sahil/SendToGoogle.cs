@@ -35,13 +35,13 @@ public class SendToGoogle : MonoBehaviour
     }
 //Matrix 1
    
-    public void Send(int levelName, int DamageCount, string DamageType)
+    public void SendMatrix1(int levelName, int DamageCount, string DamageType)
     {
-        StartCoroutine(Post(sessionID_MX1.ToString(), levelName.ToString(), DamageCount.ToString(), DamageType.ToString()));
+        StartCoroutine(PostMatrix1(sessionID_MX1.ToString(), levelName.ToString(), DamageCount.ToString(), DamageType.ToString()));
     }
     
 
-     private IEnumerator Post(string sessionID_MX1, string levelName, string DamageCount, string DamageType)
+     private IEnumerator PostMatrix1(string sessionID_MX1, string levelName, string DamageCount, string DamageType)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1477553278", sessionID_MX1);
