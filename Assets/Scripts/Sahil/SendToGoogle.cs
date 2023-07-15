@@ -35,18 +35,17 @@ public class SendToGoogle : MonoBehaviour
     }
 //Matrix 1
    
-    public void SendMatrix1(int levelName, int DamageCount, string DamageType)
+    public void SendMatrix1(int levelName,  string DamageType)
     {
-        StartCoroutine(PostMatrix1(sessionID_MX1.ToString(), levelName.ToString(), DamageCount.ToString(), DamageType.ToString()));
+        StartCoroutine(PostMatrix1(sessionID_MX1.ToString(), levelName.ToString(), DamageType.ToString()));
     }
     
 
-     private IEnumerator PostMatrix1(string sessionID_MX1, string levelName, string DamageCount, string DamageType)
+     private IEnumerator PostMatrix1(string sessionID_MX1, string levelName,  string DamageType)
     {
         WWWForm form = new WWWForm();
         form.AddField("entry.1477553278", sessionID_MX1);
         form.AddField("entry.1570433801", levelName);//Level Name
-        form.AddField("entry.1212750405", DamageCount);
         form.AddField("entry.916383983", DamageType);// type of the source of damage
        
         using (UnityWebRequest www = UnityWebRequest.Post(URL_MX1, form))
@@ -130,17 +129,16 @@ public class SendToGoogle : MonoBehaviour
 
 
 //Matrix 4
-	public void SendMatrix4(string ChoiceName, int HPCount)// type change
+	public void SendMatrix4(string ChoiceName)// type change
     {
-        StartCoroutine(PostMatrix4(sessionID_MX4.ToString(), ChoiceName.ToString(), HPCount.ToString()));
+        StartCoroutine(PostMatrix4(sessionID_MX4.ToString(), ChoiceName.ToString()));
     }
-	private IEnumerator PostMatrix4(string sessionID_MX4, string ChoiceName,string HPCount)
+	private IEnumerator PostMatrix4(string sessionID_MX4, string ChoiceName)
     {
         WWWForm form = new WWWForm();
 
         form.AddField("entry.366340186", sessionID_MX4);
         form.AddField("entry.1210868527", ChoiceName); 
-        form.AddField("entry.1840849645", HPCount); 
         
         using (UnityWebRequest www = UnityWebRequest.Post(URL_MX4, form))
         {
