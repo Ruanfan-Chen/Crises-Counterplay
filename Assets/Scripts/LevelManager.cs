@@ -93,7 +93,7 @@ public class LevelManager
         5 => false,
         6 => true,
         7 => true,
-        8 => true,
+        8 => false,
         9 => true,
         10 => false,
         11 => true,
