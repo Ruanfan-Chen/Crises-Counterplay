@@ -8,7 +8,8 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_vehicleIntervalMax;
     [SerializeField] private float m_vehicleTraceDuration;
     [SerializeField] private float m_vehicleStartDelay;
-    [SerializeField] private float m_vehicleSpeed;
+    [SerializeField] private float m_vehicleSpeedMin;
+    [SerializeField] private float m_vehicleSpeedMax;
     [SerializeField] private float m_vehicleContactDamage;
 
     [SerializeField] private float m_electricFieldIntervalMin;
@@ -50,7 +51,7 @@ public class CrisisManager : MonoBehaviour
         Vector3 startPos = MapManager.GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (GameplayManager.getCharacter().transform.position - startPos).normalized * length;
 
-        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, m_vehicleSpeed, m_vehicleContactDamage, true));
+        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, Random.Range(m_electricFieldIntervalMin, m_vehicleSpeedMax), m_vehicleContactDamage, true));
     }
 
     void SpawnElectricField()
