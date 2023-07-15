@@ -32,7 +32,7 @@ public class SendToGoogle : MonoBehaviour
     }
 //Matrix 1
    
-    public void SendMatrix1(int levelName,  string DamageType)
+    public void SendMatrix1(string levelName,  string DamageType)
     {
         StartCoroutine(PostMatrix1(sessionID_MX1.ToString(), levelName.ToString(), DamageType.ToString()));
     }

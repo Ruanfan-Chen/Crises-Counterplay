@@ -43,6 +43,7 @@ public static class UIManager
             {
                 option.GetAction()();
                 ClearShopPanel();
+                GameplayManager.GetGoogleSender().SendMatrix4(option.GetName());
                 GameplayManager.CloseShop();
             });
             GameObject label = new GameObject(option.GetName() + "Label");

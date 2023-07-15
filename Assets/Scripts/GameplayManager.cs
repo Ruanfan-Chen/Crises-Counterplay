@@ -46,7 +46,7 @@ public class GameplayManager : MonoBehaviour
         }
         if (m_timer <= 0)
         {
-            //m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
+            m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
             if (LevelManager.GetShopOptions().Count > 0)
                 OpenShop();
             LevelManager.MoveNext();
