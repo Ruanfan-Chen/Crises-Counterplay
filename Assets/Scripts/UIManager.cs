@@ -11,7 +11,6 @@ public static class UIManager
     public static GameObject m_gameplayPanel;
     public static GameObject m_shopPanel;
     public static GameObject m_completePanel;
-    public static GameObject m_startButton;
     public static GameObject m_activeSkillPanel;
 
     public static void UpdateTimerText()

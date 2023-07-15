@@ -30,9 +30,6 @@ public static class MapManager
             rowCount++;
             colCount = Mathf.RoundToInt(size.x * rowCount / size.y);
         }
-        Debug.Log(watermarks.Count);
-        Debug.Log(rowCount);
-        Debug.Log(colCount);
 
         for (int row = 1; row < rowCount; row++)
             for (int col = 1; col < colCount; col++)

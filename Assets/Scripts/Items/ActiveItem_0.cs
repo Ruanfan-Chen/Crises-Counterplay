@@ -30,7 +30,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override float GetChargeProgress()
     {
-        return charge / GameplayManager.getTimer();
+        return Mathf.Clamp(charge / GameplayManager.getTimer(), 0.0f, 1.0f);
     }
 
     public static string GetDescription()

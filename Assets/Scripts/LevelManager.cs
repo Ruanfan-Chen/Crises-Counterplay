@@ -1,59 +1,236 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class LevelManager
 {
     private static string tileTexturePath = "Sprites/TilesetFloor";
     private static string wasdSpritePath = "Sprites/wasd";
-    private static string levelName;
-    private static float timeLimit;
-    private static Vector2 mapSize;
-    private static Sprite tile;
-    private static List<Sprite> watermarks = new();
-    private static bool spawnVehicle;
-    private static bool spawnElectricityField;
-    private static bool spawnEnemy;
-    private static List<ShopOption> shopOptions = new();
+    //private static string levelName;
+    //private static float timeLimit;
+    //private static Vector2 mapSize;
+    //private static Sprite tile;
+    //private static readonly List<Sprite> watermarks = new();
+    //private static bool spawnVehicle;
+    //private static bool spawnElectricityField;
+    //private static bool spawnEnemy;
+    //private static bool characterDisarm;
+    //private static bool enemieDisarm;
+    //private static readonly List<ShopOption> shopOptions = new();
+    //private static readonly Dictionary<Vector2, Type[]> initEneimies= new();
 
-    public static string GetLevelName() => levelName;
+    private static int levelNum;
 
-    public static float GetTimeLimit() => timeLimit;
+    public static string GetLevelName() => levelNum switch
+    {
+        0 => "tarin 1",
+        1 => "tarin 2-1",
+        2 => "tarin 2-2",
+        3 => "tarin 3",
+        4 => "thunder 1",
+        5 => "thunder 2",
+        6 => "thunder 3",
+        7 => "rain 1",
+        8 => "rain 2",
+        9 => "rain 3",
+        10 => "trainthunder",
+        11 => "trainrain",
+        12 => "thunderrain",
+        _ => "Infinite"
+    };
 
-    public static Vector2 GetMapSize() => mapSize;
+    public static float GetTimeLimit() => 30.0f;
 
-    public static Sprite GetTile() => tile;
+    public static Vector2 GetMapSize() => new(75.0f, 50.0f);
 
-    public static IReadOnlyList<Sprite> GetWatermarks() => watermarks;
+    public static Sprite GetTile()
+    {
+        Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
+        return Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
+    }
 
-    public static bool GetSpawnVehicle() => spawnVehicle;
+    public static IReadOnlyList<Sprite> GetWatermarks() => levelNum switch
+    {
+        1 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Trainbound_1"), Resources.Load<Sprite>("Sprites/Tutorial/Trainbound_2") },
+        2 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Chistrike_1"), Resources.Load<Sprite>("Sprites/Tutorial/Chistrike_2") },
+        5 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Supercharge_1"), Resources.Load<Sprite>("Sprites/Tutorial/Supercharge_2") },
+        8 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Ebbtide_1"), Resources.Load<Sprite>("Sprites/Tutorial/Ebbtide_2") },
+        _ => new List<Sprite>() { Resources.Load<Sprite>(wasdSpritePath) }
+    };
 
-    public static bool GetSpawnElectricityField() => spawnElectricityField;
+    public static bool GetSpawnVehicle() => levelNum switch
+    {
+        0 => true,
+        1 => true,
+        2 => true,
+        3 => true,
+        4 => false,
+        5 => false,
+        6 => false,
+        7 => false,
+        8 => false,
+        9 => false,
+        10 => true,
+        11 => true,
+        12 => false,
+        _ => true
+    };
 
-    public static bool GetSpawnEnemy() => spawnEnemy;
+    public static bool GetSpawnElectricityField() => levelNum switch
+    {
+        0 => false,
+        1 => false,
+        2 => false,
+        3 => false,
+        4 => true,
+        5 => true,
+        6 => true,
+        7 => false,
+        8 => false,
+        9 => false,
+        10 => true,
+        11 => false,
+        12 => true,
+        _ => true
+    };
 
-    public static IReadOnlyList<ShopOption> GetShopOptions() => shopOptions;
+    public static bool GetSpawnEnemy() => levelNum switch
+    {
+        0 => false,
+        1 => false,
+        2 => false,
+        3 => true,
+        4 => false,
+        5 => false,
+        6 => true,
+        7 => true,
+        8 => true,
+        9 => true,
+        10 => false,
+        11 => true,
+        12 => true,
+        _ => true
+    };
+
+    public static bool GetCharaterDisarm() => levelNum switch
+    {
+        0 => true,
+        1 => true,
+        2 => true,
+        3 => false,
+        4 => true,
+        5 => true,
+        6 => false,
+        7 => true,
+        8 => true,
+        9 => false,
+        10 => false,
+        11 => false,
+        12 => false,
+        _ => false
+    };
+
+    public static bool GetEnemieDisarm() => levelNum switch
+    {
+        0 => false,
+        1 => false,
+        2 => false,
+        3 => false,
+        4 => false,
+        5 => false,
+        6 => false,
+        7 => true,
+        8 => true,
+        9 => false,
+        10 => false,
+        11 => false,
+        12 => false,
+        _ => false
+    };
+
+    public static IReadOnlyList<ShopOption> GetShopOptions()
+    {
+        List<ShopOption> options = levelNum switch
+        {
+            0 => new() { ShopOption.TRAINBOUND, ShopOption.CHISTRIKE },
+            1 => new(),
+            2 => new(),
+            3 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            4 => new() { ShopOption.SUPERCHARGE },
+            5 => new(),
+            6 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            7 => new() { ShopOption.EBBTIDE },
+            8 => new(),
+            9 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            10 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            11 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            12 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            _ => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT }
+        };
+        if (GameplayManager.getCharacter().GetComponent<PassiveItem_0>())
+            options.Remove(ShopOption.TOXICFOOTPRINT);
+        if (GameplayManager.getCharacter().GetComponent<ActiveItem_0>())
+            options.Remove(ShopOption.SUPERCHARGE);
+        if (GameplayManager.getCharacter().GetComponent<ActiveItem_1>())
+            options.Remove(ShopOption.EBBTIDE);
+        if (GameplayManager.getCharacter().GetComponent<ActiveItem_2>())
+            options.Remove(ShopOption.TRAINBOUND);
+        if (GameplayManager.getCharacter().GetComponent<ActiveItem_2_0>())
+            options.Remove(ShopOption.CHISTRIKE);
+        return options;
+    }
+
+    public static IReadOnlyDictionary<Vector2, Type[]> GetInitEneimies() => levelNum switch
+    {
+        0 => new Dictionary<Vector2, Type[]>(),
+        1 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        2 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        3 => new(),
+        4 => new(),
+        5 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        6 => new(),
+        7 => new(),
+        8 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol) }, [new Vector2(-15.0f, 0.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol) } },
+        9 => new(),
+        10 => new(),
+        11 => new(),
+        12 => new(),
+        _ => new()
+    };
 
     public static void Reset()
     {
-        levelName = "Level 1";
-        timeLimit = 7.0f;
-        mapSize = new Vector2(50.0f, 50.0f);
-        Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
-        tile = Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
-        //watermarks.Add(Resources.Load<Sprite>(wasdSpritePath));
-        shopOptions.Add(new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>(); }));
-        shopOptions.Add(new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K); }));
-        shopOptions.Add(new ShopOption(ActiveItem_2.GetDescription(), ActiveItem_2.GetLogo(), ActiveItem_2.GetName(), () => { GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2>(KeyCode.L); }));
-        spawnVehicle = true;
+        levelNum = 0;
     }
 
     public static void MoveNext()
     {
-        Debug.Log("NotImplemented");
+        levelNum++;
     }
+
     public class ShopOption
     {
+        public static readonly ShopOption TRAINBOUND = new ShopOption(ActiveItem_2.GetDescription(), ActiveItem_2.GetLogo(), ActiveItem_2.GetName(), delegate
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2>(KeyCode.K);
+        });
+        public static readonly ShopOption CHISTRIKE = new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), delegate
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K);
+        });
+        public static readonly ShopOption TOXICFOOTPRINT = new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), delegate
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>();
+        });
+        public static readonly ShopOption SUPERCHARGE = new ShopOption(ActiveItem_0.GetDescription(), ActiveItem_0.GetLogo(), ActiveItem_0.GetName(), delegate
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_0>(KeyCode.J);
+        });
+        public static readonly ShopOption EBBTIDE = new ShopOption(ActiveItem_1.GetDescription(), ActiveItem_1.GetLogo(), ActiveItem_1.GetName(), delegate
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_1>(KeyCode.L);
+        });
         private readonly string description;
         private readonly Sprite logo;
         private readonly string name;

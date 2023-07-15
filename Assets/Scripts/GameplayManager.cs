@@ -1,10 +1,12 @@
+using System;
+using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class GameplayManager : MonoBehaviour
 {
     private static GameObject m_character;
+    private static readonly HashSet<HaltTimer> halts = new();
     private static float m_timer;
 
     // Start is called before the first frame update
@@ -15,23 +17,24 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_gameplayPanel = GameObject.FindWithTag("GameplayPanel");
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
-        UIManager.m_startButton = GameObject.FindWithTag("Start");
         UIManager.m_activeSkillPanel = GameObject.FindWithTag("ActiveSkillPanel");
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
         m_timer = float.PositiveInfinity;
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
-        UIManager.m_gameplayPanel.SetActive(false);
+        //UIManager.m_gameplayPanel.SetActive(false);
         UIManager.m_shopPanel.SetActive(false);
         UIManager.m_completePanel.SetActive(false);
-        Pause();
+        //Pause();
+        LoadLevel();
     }
 
     // Update is called once per frame
     void Update()
     {
-        m_timer -= Time.deltaTime;
+        if (halts.Count == 0)
+            m_timer -= Time.deltaTime;
         UIManager.UpdateTimerText();
         UIManager.UpdateActiveSkills(m_character.GetComponent<Character>().GetKeyCodeActiveItemPairs());
         if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
@@ -41,7 +44,8 @@ public class GameplayManager : MonoBehaviour
         }
         if (m_timer <= 0)
         {
-            OpenShop();
+            if(LevelManager.GetShopOptions().Count > 0)
+                OpenShop();
             LevelManager.MoveNext();
             LoadLevel();
         }
@@ -57,6 +61,14 @@ public class GameplayManager : MonoBehaviour
         Clear();
         m_timer = LevelManager.GetTimeLimit();
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
+        foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
+        {
+            GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity);
+            foreach (Type componentType in kvp.Value)
+            {
+                enemy.AddComponent(componentType);
+            }
+        }
     }
 
     private static void GameOver()
@@ -82,9 +94,7 @@ public class GameplayManager : MonoBehaviour
     }
     public static void Continue()
     {
-        UIManager.m_startButton.SetActive(false);
         UIManager.m_gameplayPanel.SetActive(true);
-        LoadLevel();
         Time.timeScale = 1.0f;
     }
     public static void OpenShop()
@@ -98,5 +108,15 @@ public class GameplayManager : MonoBehaviour
     {
         UIManager.m_shopPanel.SetActive(false);
         Continue();
+    }
+
+    public static void AddHalt(HaltTimer halt)
+    {
+        halts.Add(halt);
+    }
+
+    public static void RemoveHalt(HaltTimer halt)
+    {
+        halts.Remove(halt);
     }
 }
