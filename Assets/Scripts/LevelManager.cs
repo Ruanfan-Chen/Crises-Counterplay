@@ -179,7 +179,7 @@ public class LevelManager
         5 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
         6 => new(),
         7 => new(),
-        8 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol) }, [new Vector2(-15.0f, 0.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol) } },
+        8 => new() { [new Vector2(0.0f, 15.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol) } },
         9 => new(),
         10 => new(),
         11 => new(),
