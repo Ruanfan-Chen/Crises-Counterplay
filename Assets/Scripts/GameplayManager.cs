@@ -3,7 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.TextCore.Text;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -25,6 +28,7 @@ public class GameplayManager : MonoBehaviour
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
+        LevelManager.SetLevelNum(LevelButtonsManager.currLevel);
         m_timer = float.PositiveInfinity;
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
         //UIManager.m_gameplayPanel.SetActive(false);
@@ -35,7 +39,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    async void Update()
     {
         if (halts.Count == 0)
             m_timer -= Time.deltaTime;
@@ -49,10 +53,20 @@ public class GameplayManager : MonoBehaviour
         if (m_timer <= 0)
         {
             m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
+            Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
             if (LevelManager.GetShopOptions().Count > 0)
+            {
+                // var task = OpenShop();
                 OpenShop();
-            LevelManager.MoveNext();
+
+
+            }
+            LevelButtonsManager.AddCompletedLevel();
+            LevelButtonsManager.updated = false;
+            SceneManager.LoadScene("LevelSelection");
             LoadLevel();
+
+
         }
     }
 
@@ -62,8 +76,11 @@ public class GameplayManager : MonoBehaviour
     private static void LoadLevel()
     {
         Clear();
+        Debug.Log("here at level = " + LevelButtonsManager.currLevel);
         m_timer = LevelManager.GetTimeLimit();
+        Debug.Log("LevelManager.GetTimeLimit(); complete");
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
+        Debug.Log("map init complete");
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
             GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity);
@@ -72,6 +89,7 @@ public class GameplayManager : MonoBehaviour
                 enemy.AddComponent(componentType);
             }
         }
+        Debug.Log("load complete");
     }
 
     private static void GameOver()

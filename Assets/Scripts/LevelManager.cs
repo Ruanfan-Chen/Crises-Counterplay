@@ -28,7 +28,7 @@ public class LevelManager
         _ => "Infinite"
     };
 
-    public static float GetTimeLimit() => 30.0f;
+    public static float GetTimeLimit() => 3.0f;
 
     public static Vector2 GetMapSize() => new(75.0f, 50.0f);
 
@@ -139,6 +139,7 @@ public class LevelManager
 
     public static IReadOnlyList<ShopOption> GetShopOptions()
     {
+        levelNum = LevelButtonsManager.currLevel;
         List<ShopOption> options = levelNum switch
         {
             0 => new() { ShopOption.TRAINBOUND, ShopOption.CHISTRIKE },
@@ -166,6 +167,7 @@ public class LevelManager
             options.Remove(ShopOption.TRAINBOUND);
         if (GameplayManager.getCharacter().GetComponent<ActiveItem_2_0>())
             options.Remove(ShopOption.CHISTRIKE);
+        Debug.Log("GetShopOptions curr level = " + levelNum);
         return options;
     }
 
@@ -274,5 +276,15 @@ public class LevelManager
         {
             return action;
         }
+    }
+
+    public static void SetLevelNum(int level)
+    {
+        levelNum = level;
+    }
+
+    public static int GetLevelNum()
+    {
+        return levelNum;
     }
 }
