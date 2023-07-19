@@ -63,7 +63,6 @@ public class GameplayManager : MonoBehaviour
             }
             LevelButtonsManager.AddCompletedLevel();
             LevelButtonsManager.updated = false;
-            SceneManager.LoadScene("LevelSelection");
             LoadLevel();
 
 
@@ -138,6 +137,9 @@ public class GameplayManager : MonoBehaviour
     {
         UIManager.m_shopPanel.SetActive(false);
         Continue();
+        int currLevel = LevelButtonsManager.currLevel;
+        SceneManager.LoadScene("LevelSelection");
+
     }
 
     public static void AddHalt(HaltTimer halt)

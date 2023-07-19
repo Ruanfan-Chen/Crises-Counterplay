@@ -28,7 +28,7 @@ public class LevelManager
         _ => "Infinite"
     };
 
-    public static float GetTimeLimit() => 3.0f;
+    public static float GetTimeLimit() => 10.0f;
 
     public static Vector2 GetMapSize() => new(75.0f, 50.0f);
 
