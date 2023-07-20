@@ -1,11 +1,9 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
 
 public class EnemySpawn : MonoBehaviour
 {
+    private static readonly HashSet<BlockEnemySpawn> blockers = new();
     [SerializeField] private float offset = 2.0f;
     [SerializeField] private float startDelay = 3.0f;
     [SerializeField] private float spawnInterval = 0.3f;
@@ -19,7 +17,7 @@ public class EnemySpawn : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        if (timer <= 0.0f && LevelManager.GetSpawnEnemy())
+        if (timer <= 0.0f && LevelManager.GetSpawnEnemy() && blockers.Count == 0)
         {
             SpawnRandomEnemy();
             timer = spawnInterval;
@@ -29,7 +27,6 @@ public class EnemySpawn : MonoBehaviour
     public GameObject SpawnRandomEnemy()
     {
         Vector3 position;
-        Bounds bounds = MapManager.GetBounds(offset);
         do
         {
             position = MapManager.GetRandomPointInMap();
@@ -92,6 +89,15 @@ public class EnemySpawn : MonoBehaviour
         return enemy;
     }
 
+    internal static void AddBlocker(BlockEnemySpawn blockEnemySpawn)
+    {
+        blockers.Add(blockEnemySpawn);
+    }
+
+    internal static void RemoveBlocker(BlockEnemySpawn blockEnemySpawn)
+    {
+        blockers.Remove(blockEnemySpawn);
+    }
 
     private class AimlesslyMove : MonoBehaviour
     {

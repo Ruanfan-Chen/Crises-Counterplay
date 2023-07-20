@@ -107,7 +107,7 @@ public class ActiveItem_2 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
+        return IsUsable() ? GetLogo() : GetLogo();
     }
 
     private class ViewBehavior : MonoBehaviour

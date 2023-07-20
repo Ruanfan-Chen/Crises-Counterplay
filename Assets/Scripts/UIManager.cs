@@ -101,6 +101,7 @@ public static class UIManager
             UIScript.SetLogo(item.GetUISprite());
             UIScript.SetKey(keyCode);
             UIScript.SetText("");
+            UIScript.SetUsable(item.IsUsable());
             float chargeProgress = item.GetChargeProgress();
             UIScript.SetSpinner(Mathf.Ceil(chargeProgress)-chargeProgress);
             UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));

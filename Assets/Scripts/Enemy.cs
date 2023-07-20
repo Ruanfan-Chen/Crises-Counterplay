@@ -11,7 +11,8 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = float.PositiveInfinity;
-    Animator anim;
+    private Animator anim;
+    [SerializeField] private Bar healthBar;
 
     public float GetHealth() { return health; }
 
@@ -90,5 +91,17 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         script.SetSource(gameObject);
         if (float.IsFinite(range / projectileSpeed))
             Destroy(projectile, range / projectileSpeed);
+    }
+
+    void Update()
+    {
+        float value = health / maxHealth;
+        if (health > 0.0f && health < maxHealth)
+        {
+            healthBar.SetIsHidden(false);
+            healthBar.SetValue(health / maxHealth);
+        }
+        else
+            healthBar.SetIsHidden(true);
     }
 }
