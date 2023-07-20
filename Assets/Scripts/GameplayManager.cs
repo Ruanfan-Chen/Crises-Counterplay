@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.TextCore.Text;
+using UnityEngine.SceneManagement;
+using System.Threading.Tasks;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -21,20 +25,26 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
         UIManager.m_activeSkillPanel = GameObject.FindWithTag("ActiveSkillPanel");
+        UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
+        UIManager.m_losePanel = GameObject.FindWithTag("LosePanel");
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
+        LevelManager.SetLevelNum(LevelManager.GetLevelNum());
         m_timer = float.PositiveInfinity;
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
-        //UIManager.m_gameplayPanel.SetActive(false);
+        UIManager.m_gameplayPanel.SetActive(false);
         UIManager.m_shopPanel.SetActive(false);
         UIManager.m_completePanel.SetActive(false);
-        //Pause();
-        LoadLevel();
+        UIManager.m_losePanel.SetActive(false);
+        UIManager.m_levelSelectionPanel.SetActive(true);
+        CrisisManager.Deactivate();
+        // Pause();
+        // LoadLevel();
     }
 
     // Update is called once per frame
-    void Update()
+    async void Update()
     {
         if (halts.Count == 0)
             m_timer -= Time.deltaTime;
@@ -48,17 +58,44 @@ public class GameplayManager : MonoBehaviour
         if (m_timer <= 0)
         {
             m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
-            if (LevelManager.GetShopOptions().Count > 0)
-                OpenShop();
-            LevelManager.MoveNext();
-            LoadLevel();
+            Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
+            if (LevelManager.GetLevelNum() == LevelButtonsManager.numOfLevels - 1)
+            {
+                Pause();
+                UIManager.m_completePanel.SetActive(true);
+                LevelButtonsManager.AddCompletedLevel();
+                LevelButtonsManager.updated = false;
+            }
+            else
+            {
+                if (LevelManager.GetShopOptions().Count > 0)
+                {
+                    // var task = OpenShop();
+                    OpenShop();
+
+
+                }
+                else
+                {
+                    Pause();
+                    UIManager.m_activeSkillPanel.SetActive(false);
+                    UIManager.m_levelSelectionPanel.SetActive(true);
+                }
+                LevelButtonsManager.AddCompletedLevel();
+                LevelButtonsManager.updated = false;
+                LoadLevel();
+
+            }
+
+
+
         }
     }
 
     public static GameObject getCharacter() => m_character;
     public static SendToGoogle GetGoogleSender() => m_googleSender;
 
-    private static void LoadLevel()
+    public static void LoadLevel()
     {
         Clear();
         m_timer = LevelManager.GetTimeLimit();
@@ -71,6 +108,7 @@ public class GameplayManager : MonoBehaviour
                 enemy.AddComponent(componentType);
             }
         }
+        Debug.Log("load complete");
     }
 
     private static void GameOver()
@@ -83,7 +121,8 @@ public class GameplayManager : MonoBehaviour
             script.RemoveItem(item);
         foreach (ActiveItem item in script.GetActiveItemKeyCodePairs().Keys.ToList())
             script.RemoveItem(item);
-        LoadLevel();
+        Pause();
+        UIManager.m_losePanel.SetActive(true);
     }
 
     private static void Clear()
@@ -118,7 +157,11 @@ public class GameplayManager : MonoBehaviour
     public static void CloseShop()
     {
         UIManager.m_shopPanel.SetActive(false);
-        Continue();
+        // Continue();
+        UIManager.m_activeSkillPanel.SetActive(false);
+        UIManager.m_levelSelectionPanel.SetActive(true);
+
+
     }
 
     public static void AddHalt(HaltTimer halt)
