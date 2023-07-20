@@ -59,21 +59,34 @@ public class GameplayManager : MonoBehaviour
         {
             m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
             Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
-            if (LevelManager.GetShopOptions().Count > 0)
+            if (LevelManager.GetLevelNum() == LevelButtonsManager.numOfLevels - 1)
             {
-                // var task = OpenShop();
-                OpenShop();
-
-
+                Pause();
+                UIManager.m_completePanel.SetActive(true);
+                LevelButtonsManager.AddCompletedLevel();
+                LevelButtonsManager.updated = false;
             }
             else
             {
-                Pause();
-                UIManager.m_levelSelectionPanel.SetActive(true);
+                if (LevelManager.GetShopOptions().Count > 0)
+                {
+                    // var task = OpenShop();
+                    OpenShop();
+
+
+                }
+                else
+                {
+                    Pause();
+                    UIManager.m_activeSkillPanel.SetActive(false);
+                    UIManager.m_levelSelectionPanel.SetActive(true);
+                }
+                LevelButtonsManager.AddCompletedLevel();
+                LevelButtonsManager.updated = false;
+                LoadLevel();
+
             }
-            LevelButtonsManager.AddCompletedLevel();
-            LevelButtonsManager.updated = false;
-            LoadLevel();
+
 
 
         }
@@ -147,6 +160,7 @@ public class GameplayManager : MonoBehaviour
     {
         UIManager.m_shopPanel.SetActive(false);
         // Continue();
+        UIManager.m_activeSkillPanel.SetActive(false);
         UIManager.m_levelSelectionPanel.SetActive(true);
 
 

@@ -31,6 +31,7 @@ public class LevelButtonsManager : MonoBehaviour
     public static HashSet<int> completed = new HashSet<int>() { };
 
     public static bool updated;
+    private static bool shouldReset;
 
 
 
@@ -58,10 +59,12 @@ public class LevelButtonsManager : MonoBehaviour
             {
                 if (levelsPrereqs[levelNum].AsQueryable().Any(prereq => !completed.Contains(prereq)))
                 {
+                    Debug.Log("level " + levelNum + " cannot be played, deactivated");
                     DeactivateButton(levelNum, Color.white);
                 }
                 else
                 {
+                    Debug.Log("level " + levelNum + " can be played, activated");
                     ActivateButton(levelNum, Color.white);
                 }
 
@@ -71,11 +74,13 @@ public class LevelButtonsManager : MonoBehaviour
             {
                 if (completed.Contains(levelNum))
                 {
+                    Debug.Log("level " + levelNum + " is in completed, deactivated");
                     DeactivateButton(levelNum, Color.green);
                 }
 
             }
             updated = true;
+            Debug.Log("completed length = " + completed.Count);
 
         }
     }
@@ -88,6 +93,7 @@ public class LevelButtonsManager : MonoBehaviour
             LevelManager.SetLevelNum(levelNum);
             Debug.Log("cLicked button " + levelNum);
             UIManager.m_levelSelectionPanel.SetActive(false);
+            UIManager.m_activeSkillPanel.SetActive(true);
             CrisisManager.Activate();
             GameplayManager.LoadLevel();
             GameplayManager.Continue();
@@ -131,7 +137,16 @@ public class LevelButtonsManager : MonoBehaviour
     public static void ResetCompletedLevels()
     {
         completed = new HashSet<int>() { };
+
+        Debug.Log("reseting buttons");
+        for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
+        {
+            Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
+            GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = Color.white);
+
+        }
         updated = false;
+
 
     }
 
