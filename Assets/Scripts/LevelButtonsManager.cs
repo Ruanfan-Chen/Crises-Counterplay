@@ -38,12 +38,23 @@ public class LevelButtonsManager : MonoBehaviour
 
     void Start()
     {
+        ActivateButton(0, Color.white);
+        ActivateButton(4, Color.white);
+        ActivateButton(7, Color.white);
+        updated = false;
+    }
+
+    void Update()
+    {
+        UpdateButtons();
+    }
+
+    private void Initialize()
+    {
         for (int i = 0; i < numOfLevels; i++)
         {
             int levelNum = i;
             Debug.Log("finding button " + i);
-            string sceneName = "Scene" + i;
-            Debug.Log("sceneName = " + sceneName);
             if (levelNum == 0 || levelNum == 4 || levelNum == 7)
             {
                 buttons[levelNum].onClick.AddListener(() =>
@@ -67,76 +78,63 @@ public class LevelButtonsManager : MonoBehaviour
         updated = false;
     }
 
-    void Update()
-    {
-
-        UpdateButtons();
-    }
-
     // Update is called once per frame
     public void UpdateButtons()
 
     {
         if (!updated)
         {
-
             for (int i = 0; i < numOfLevels; i++)
             {
-                string sceneName = "Scene" + i;
                 int levelNum = i;
-                if (GameObject.FindGameObjectWithTag("Button" + i) != null)
-                {
-
-                }
                 if (levelsPrereqs[i].AsQueryable().Any(prereq => !completed.Contains(prereq)))
                 {
-                    Debug.Log("button set to false : " + i);
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().interactable = false;
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().onClick.RemoveAllListeners();
+                    DeactivateButton(levelNum, Color.white);
                 }
                 else
                 {
-                    Debug.Log("button set to true : " + i);
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().interactable = true;
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().onClick.AddListener(() =>
-                    {
-                        LevelManager.SetLevelNum(levelNum);
-                        Debug.Log("cLicked button " + i);
-                        currLevel = levelNum;
-                        UIManager.m_levelSelectionPanel.SetActive(false);
-                        CrisisManager.Activate();
-                        GameplayManager.LoadLevel();
-                        GameplayManager.Continue();
-                    });
+                    ActivateButton(levelNum, Color.white);
                 }
 
             }
 
             for (int i = 0; i < numOfLevels; i++)
             {
-                if (GameObject.FindGameObjectWithTag("Button" + i) != null)
-                {
 
-                }
-                string sceneName = "Scene" + i;
                 int levelNum = i;
                 if (completed.Contains(i))
                 {
-                    Debug.Log("button set to false and green : " + i);
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().GetComponent<Image>().color = Color.green;
-                    // Debug.Log("Button set to green: " + levelNum);
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().interactable = false;
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().onClick.RemoveAllListeners();
+                    DeactivateButton(levelNum, Color.green);
                 }
 
             }
             updated = true;
 
         }
-        // 
+    }
 
+    private void ActivateButton(int levelNum, Color color)
+    {
+        GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = true;
+        GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().onClick.AddListener(() =>
+        {
+            LevelManager.SetLevelNum(levelNum);
+            Debug.Log("cLicked button " + levelNum);
+            currLevel = levelNum;
+            UIManager.m_levelSelectionPanel.SetActive(false);
+            CrisisManager.Activate();
+            GameplayManager.LoadLevel();
+            GameplayManager.Continue();
+        });
+        GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = color;
+    }
 
-
+    private void DeactivateButton(int levelNum, Color color)
+    {
+        Debug.Log("button set to false : " + levelNum);
+        GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = color;
+        GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
+        GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().onClick.RemoveAllListeners();
     }
 
 
@@ -149,6 +147,9 @@ public class LevelButtonsManager : MonoBehaviour
     public static void ResetCompletedLevels()
     {
         completed = new HashSet<int>() { };
+        currLevel = 0;
+        updated = false;
+
     }
 
 }

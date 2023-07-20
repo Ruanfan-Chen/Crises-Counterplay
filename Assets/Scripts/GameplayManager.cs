@@ -26,6 +26,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
         UIManager.m_activeSkillPanel = GameObject.FindWithTag("ActiveSkillPanel");
         UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
+        UIManager.m_losePanel = GameObject.FindWithTag("LosePanel");
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
@@ -35,6 +36,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_gameplayPanel.SetActive(false);
         UIManager.m_shopPanel.SetActive(false);
         UIManager.m_completePanel.SetActive(false);
+        UIManager.m_losePanel.SetActive(false);
         UIManager.m_levelSelectionPanel.SetActive(true);
         CrisisManager.Deactivate();
         // Pause();
@@ -109,7 +111,8 @@ public class GameplayManager : MonoBehaviour
             script.RemoveItem(item);
         foreach (ActiveItem item in script.GetActiveItemKeyCodePairs().Keys.ToList())
             script.RemoveItem(item);
-        LoadLevel();
+        Pause();
+        UIManager.m_losePanel.SetActive(true);
     }
 
     private static void Clear()

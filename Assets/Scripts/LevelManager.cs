@@ -192,6 +192,7 @@ public class LevelManager
     public static void Reset()
     {
         levelNum = 0;
+        LevelButtonsManager.ResetCompletedLevels();
     }
 
     public static void MoveNext()
