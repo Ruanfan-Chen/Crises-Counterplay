@@ -56,8 +56,7 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-        Bounds bound = MapManager.GetBounds(5.0f);
-        Vector3 position = new(Random.Range(bound.min.x, bound.max.x), Random.Range(bound.min.y, bound.max.y), 0);
+        Vector3 position = GameplayManager.getCharacter().transform.position + (Vector3)Random.insideUnitCircle * m_electricFieldRadius;
         StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 }
