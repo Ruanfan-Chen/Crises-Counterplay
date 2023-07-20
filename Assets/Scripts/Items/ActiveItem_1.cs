@@ -9,6 +9,8 @@ public class ActiveItem_1 : ActiveItem
     private static string itemName = "EbbTide";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Ebbtide";
+    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
 
     private float speed = 10.0f;
     public override void Activate()
@@ -41,7 +43,7 @@ public class ActiveItem_1 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     public override bool IsUsable()
@@ -62,5 +64,10 @@ public class ActiveItem_1 : ActiveItem
     public static string GetName()
     {
         return itemName;
+    }
+
+    public static Sprite GetTutorial()
+    {
+        return Resources.Load<Sprite>(tutorialPath);
     }
 }

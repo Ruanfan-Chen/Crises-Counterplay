@@ -9,6 +9,8 @@ public class ActiveItem_2 : ActiveItem
     private static string itemName = "Trainbound";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Trainbound";
+    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
     public static int activateCounter = 0;
     private GameObject view;
     private ViewBehavior viewScript;
@@ -94,13 +96,18 @@ public class ActiveItem_2 : ActiveItem
         return itemName;
     }
 
+    public static Sprite GetTutorial()
+    {
+        return Resources.Load<Sprite>(tutorialPath);
+    }
+
     private IEnumerable<GameObject> OverlapVehicle() {
         return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
     }
 
     public override Sprite GetUISprite()
     {
-        return GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     private class ViewBehavior : MonoBehaviour

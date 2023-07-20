@@ -51,7 +51,7 @@ public class CrisisManager : MonoBehaviour
         Vector3 startPos = MapManager.GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (GameplayManager.getCharacter().transform.position - startPos).normalized * length;
 
-        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, Random.Range(m_electricFieldIntervalMin, m_vehicleSpeedMax), m_vehicleContactDamage, true));
+        StartCoroutine(Vehicle.Instantiate(startPos, targetPos, m_vehicleTraceDuration, m_vehicleStartDelay, Random.Range(m_vehicleSpeedMin, m_vehicleSpeedMax), m_vehicleContactDamage, true));
     }
 
     void SpawnElectricField()

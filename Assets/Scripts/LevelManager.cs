@@ -1,12 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 
 public class LevelManager
 {
     private static string tileTexturePath = "Sprites/TilesetFloor";
-    private static string wasdSpritePath = "Sprites/wasd";
 
     private static int levelNum;
 
@@ -37,15 +35,6 @@ public class LevelManager
         Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
         return Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
     }
-
-    public static IReadOnlyList<Sprite> GetWatermarks() => levelNum switch
-    {
-        1 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Trainbound_1"), Resources.Load<Sprite>("Sprites/Tutorial/Trainbound_2") },
-        2 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Chistrike_1"), Resources.Load<Sprite>("Sprites/Tutorial/Chistrike_2") },
-        5 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Supercharge_1"), Resources.Load<Sprite>("Sprites/Tutorial/Supercharge_2") },
-        8 => new List<Sprite>() { Resources.Load<Sprite>("Sprites/Tutorial/Ebbtide_1"), Resources.Load<Sprite>("Sprites/Tutorial/Ebbtide_2") },
-        _ => new List<Sprite>() { Resources.Load<Sprite>(wasdSpritePath) }
-    };
 
     public static bool GetSpawnVehicle() => levelNum switch
     {
@@ -213,34 +202,36 @@ public class LevelManager
         public static readonly ShopOption TRAINBOUND = new ShopOption(ActiveItem_2.GetDescription(), ActiveItem_2.GetLogo(), ActiveItem_2.GetName(), delegate
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2>(KeyCode.K);
-        });
+        }, ActiveItem_2.GetTutorial());
         public static readonly ShopOption CHISTRIKE = new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), delegate
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K);
-        });
+        }, ActiveItem_2_0.GetTutorial());
         public static readonly ShopOption TOXICFOOTPRINT = new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), delegate
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>();
-        });
+        }, null);
         public static readonly ShopOption SUPERCHARGE = new ShopOption(ActiveItem_0.GetDescription(), ActiveItem_0.GetLogo(), ActiveItem_0.GetName(), delegate
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_0>(KeyCode.J);
-        });
+        }, ActiveItem_0.GetTutorial());
         public static readonly ShopOption EBBTIDE = new ShopOption(ActiveItem_1.GetDescription(), ActiveItem_1.GetLogo(), ActiveItem_1.GetName(), delegate
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_1>(KeyCode.L);
-        });
+        }, ActiveItem_1.GetTutorial());
         private readonly string description;
         private readonly Sprite logo;
         private readonly string name;
         private readonly Action action;
+        private readonly Sprite tutorial;
 
-        public ShopOption(string description, Sprite logo, string name, Action action)
+        public ShopOption(string description, Sprite logo, string name, Action action, Sprite tutorial)
         {
             this.description = description;
             this.logo = logo;
             this.name = name;
             this.action = action;
+            this.tutorial = tutorial;
         }
 
         public ShopOption(int hpRecovery)
@@ -253,6 +244,7 @@ public class LevelManager
                 Character script = GameplayManager.getCharacter().GetComponent<Character>();
                 script.SetHealth(Mathf.Clamp(script.GetHealth() + hpRecovery, 0.0f, script.GetMaxHealth()));
             };
+            tutorial = null;
         }
 
         public string GetDescription()
@@ -273,6 +265,11 @@ public class LevelManager
         public Action GetAction()
         {
             return action;
+        }
+
+        public Sprite GetTutorial()
+        {
+            return tutorial;
         }
     }
 }

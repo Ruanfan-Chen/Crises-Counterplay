@@ -8,6 +8,8 @@ public class ActiveItem_0 : ActiveItem
     private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
+    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
     public static int activateCounter = 0;
     private float charge = 0.0f;
     private float cost = 5.0f;
@@ -45,6 +47,11 @@ public class ActiveItem_0 : ActiveItem
         return itemName;
     }
 
+    public static Sprite GetTutorial()
+    {
+        return Resources.Load<Sprite>(tutorialPath);
+    }
+
     public override bool IsUsable()
     {
         return charge >= cost;
@@ -52,7 +59,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     public void Charge(float value)

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.TextCore.Text;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -26,7 +25,7 @@ public class GameplayManager : MonoBehaviour
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
         m_timer = float.PositiveInfinity;
-        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
+        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         //UIManager.m_gameplayPanel.SetActive(false);
         UIManager.m_shopPanel.SetActive(false);
         UIManager.m_completePanel.SetActive(false);
@@ -63,7 +62,7 @@ public class GameplayManager : MonoBehaviour
     {
         Clear();
         m_timer = LevelManager.GetTimeLimit();
-        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
+        MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
             GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity);

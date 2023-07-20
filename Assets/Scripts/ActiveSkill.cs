@@ -8,7 +8,6 @@ public class ActiveSkill : MonoBehaviour
 {
     [SerializeField] GameObject m_image;
     [SerializeField] GameObject m_mask;
-    [SerializeField] GameObject m_frame;
     [SerializeField] GameObject m_text;
     [SerializeField] GameObject m_key;
     [SerializeField] GameObject m_chargeCount;
@@ -21,11 +20,6 @@ public class ActiveSkill : MonoBehaviour
     public void SetSpinner(float value)
     {
         m_mask.GetComponent<Image>().fillAmount = value;
-    }
-
-    public void SetFrameActive(bool value)
-    {
-        m_frame.SetActive(value);
     }
 
     public void SetText(string text)

@@ -29,27 +29,49 @@ public static class UIManager
         for (int i = 0; i < shopOptions.Count; i++)
         {
             LevelManager.ShopOption option = shopOptions[i];
-            float xRatio = (float)(i + 1) / (shopOptions.Count + 1);
-            GameObject optionObj = new GameObject(option.GetName());
-            optionObj.transform.SetParent(m_shopPanel.transform);
-            optionObj.AddComponent<RectTransform>();
-            optionObj.GetComponent<RectTransform>().anchorMin = new Vector2(xRatio, 0.5f);
-            optionObj.GetComponent<RectTransform>().anchorMax = new Vector2(xRatio, 0.5f);
-            optionObj.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            optionObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 100.0f);
-            optionObj.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 100.0f);
-            optionObj.AddComponent<Image>().sprite = option.GetLogo();
-            optionObj.AddComponent<Button>().onClick.AddListener(() =>
+            float xAnchor = (i + 1.0f) / (shopOptions.Count + 1);
+
+            GameObject logo = new(option.GetName() + "Logo");
+            logo.AddComponent<RectTransform>();
+            logo.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
+            logo.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.8f);
+            logo.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.8f);
+            logo.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            logo.AddComponent<Image>().sprite = option.GetLogo();
+            logo.AddComponent<Button>().onClick.AddListener(() =>
             {
                 option.GetAction()();
                 ClearShopPanel();
                 GameplayManager.GetGoogleSender().SendMatrix4(option.GetName());
                 GameplayManager.CloseShop();
             });
-            GameObject label = new GameObject(option.GetName() + "Label");
-            label.transform.SetParent(optionObj.transform);
+
+
+            GameObject label = new(option.GetName() + "Label");
             label.AddComponent<RectTransform>();
-            label.GetComponent<RectTransform>().localPosition = Vector3.down * 30.0f;
+            label.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
+            label.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.6f);
+            label.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.6f);
+            label.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            label.AddComponent<TextMeshProUGUI>().text = option.GetName();
+
+
+            GameObject tutorial = new(option.GetName() + "Tutorial");
+            tutorial.AddComponent<RectTransform>();
+            tutorial.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
+            tutorial.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.4f);
+            tutorial.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.4f);
+            tutorial.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            tutorial.AddComponent<Image>().sprite = option.GetTutorial();
+
+
+            GameObject description = new(option.GetName() + "Description");
+            description.AddComponent<RectTransform>();
+            description.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
+            description.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.2f);
+            description.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.2f);
+            description.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
+            description.AddComponent<TextMeshProUGUI>().text = option.GetDescription();
         }
     }
 
@@ -77,7 +99,6 @@ public static class UIManager
             ActiveItem item = readOnlyDictionary[keyCode];
             ActiveSkill UIScript = m_activeSkillPanel.transform.GetChild(i).GetComponent<ActiveSkill>();
             UIScript.SetLogo(item.GetUISprite());
-            UIScript.SetFrameActive(item.IsUsable());
             UIScript.SetKey(keyCode);
             UIScript.SetText("");
             float chargeProgress = item.GetChargeProgress();
