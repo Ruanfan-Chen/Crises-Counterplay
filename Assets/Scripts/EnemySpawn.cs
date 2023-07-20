@@ -31,10 +31,9 @@ public class EnemySpawn : MonoBehaviour
         {
             position = MapManager.GetRandomPointInMap();
         } while ((position - GameplayManager.getCharacter().transform.position).magnitude <= offset);
-        int attackScript = Random.Range(0, 4);
-        GameObject enemy = Enemy.Instantiate(position, Quaternion.identity, attackScript != 0);
+        GameObject enemy = Enemy.Instantiate(position, Quaternion.identity);
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
-        switch (attackScript)
+        switch (Random.Range(0, 4))
         {
             case 0:
                 break;

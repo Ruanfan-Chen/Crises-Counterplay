@@ -3,7 +3,6 @@ using UnityEngine;
 public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 {
     private static string prefabPath = "Prefabs/Enemy";
-    private static string noShootPrefabPath = "Prefabs/EnemyNoShoot";
     private float health = 50.0f;
     private float maxHealth = 50.0f;
     private float moveSpeed = 2.5f;
@@ -75,9 +74,9 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         }
     }
 
-    public static GameObject Instantiate(Vector3 position, Quaternion rotation, bool shoot)
+    public static GameObject Instantiate(Vector3 position, Quaternion rotation)
     {
-        GameObject enemy = Instantiate(Resources.Load<GameObject>(shoot ? prefabPath : noShootPrefabPath), position, rotation);
+        GameObject enemy = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
         enemy.tag = "Disposable";
         enemy.GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
         return enemy;
