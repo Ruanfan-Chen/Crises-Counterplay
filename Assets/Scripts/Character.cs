@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static Utility;
 
@@ -14,6 +15,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public static readonly float knockbackDurationOnDmg = 0.5f;
     public static readonly float knockbackDistanceOnDmg = 3.0f;
     public static readonly float initialKnockbackSpeedOnDmg = 50.0f;
+    private Vector3 velocity = Vector3.zero;
 
     public float GetHealth() { return health; }
 
@@ -129,9 +131,10 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     {
         // Move
         if (GetComponent<Waterblight>())
-            transform.Translate(GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized);
+            velocity = Vector3.MoveTowards(velocity, GetMoveSpeed() * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized, GetMoveSpeed() * Time.deltaTime / 0.5f);
         else
-            transform.Translate(GetMoveSpeed() * Time.deltaTime * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized);
+            velocity = GetMoveSpeed() * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        transform.Translate(Time.deltaTime * velocity);
         foreach (KeyValuePair<KeyCode, ActiveItem> keyValuePair in activeItems.GetTUDict())
         {
             if (Input.GetKeyDown(keyValuePair.Key))
