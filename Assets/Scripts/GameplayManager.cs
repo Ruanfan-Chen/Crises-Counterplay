@@ -30,7 +30,7 @@ public class GameplayManager : MonoBehaviour
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
-        LevelManager.SetLevelNum(LevelButtonsManager.currLevel);
+        LevelManager.SetLevelNum(LevelManager.GetLevelNum());
         m_timer = float.PositiveInfinity;
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
         UIManager.m_gameplayPanel.SetActive(false);
@@ -85,7 +85,6 @@ public class GameplayManager : MonoBehaviour
     public static void LoadLevel()
     {
         Clear();
-        Debug.Log("here at level = " + LevelButtonsManager.currLevel);
         m_timer = LevelManager.GetTimeLimit();
         Debug.Log("LevelManager.GetTimeLimit(); complete");
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
@@ -149,7 +148,6 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_shopPanel.SetActive(false);
         // Continue();
         UIManager.m_levelSelectionPanel.SetActive(true);
-        int currLevel = LevelButtonsManager.currLevel;
 
 
     }

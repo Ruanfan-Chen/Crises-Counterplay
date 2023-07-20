@@ -30,8 +30,6 @@ public class LevelButtonsManager : MonoBehaviour
 
     public static HashSet<int> completed = new HashSet<int>() { };
 
-    public static int currLevel;
-
     public static bool updated;
 
 
@@ -49,34 +47,6 @@ public class LevelButtonsManager : MonoBehaviour
         UpdateButtons();
     }
 
-    private void Initialize()
-    {
-        for (int i = 0; i < numOfLevels; i++)
-        {
-            int levelNum = i;
-            Debug.Log("finding button " + i);
-            if (levelNum == 0 || levelNum == 4 || levelNum == 7)
-            {
-                buttons[levelNum].onClick.AddListener(() =>
-                {
-                    Debug.Log("cLicked button " + i);
-                    LevelManager.SetLevelNum(levelNum);
-                    UIManager.m_levelSelectionPanel.SetActive(false);
-                    GameplayManager.Continue();
-                    GameplayManager.LoadLevel();
-                    CrisisManager.Activate();
-                    currLevel = levelNum;
-                });
-            }
-            else
-            {
-                buttons[levelNum].onClick.AddListener(() => { });
-            }
-
-            Debug.Log("i = " + i + " and current level = " + LevelManager.GetLevelNum());
-        }
-        updated = false;
-    }
 
     // Update is called once per frame
     public void UpdateButtons()
@@ -84,10 +54,9 @@ public class LevelButtonsManager : MonoBehaviour
     {
         if (!updated)
         {
-            for (int i = 0; i < numOfLevels; i++)
+            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
             {
-                int levelNum = i;
-                if (levelsPrereqs[i].AsQueryable().Any(prereq => !completed.Contains(prereq)))
+                if (levelsPrereqs[levelNum].AsQueryable().Any(prereq => !completed.Contains(prereq)))
                 {
                     DeactivateButton(levelNum, Color.white);
                 }
@@ -98,11 +67,9 @@ public class LevelButtonsManager : MonoBehaviour
 
             }
 
-            for (int i = 0; i < numOfLevels; i++)
+            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
             {
-
-                int levelNum = i;
-                if (completed.Contains(i))
+                if (completed.Contains(levelNum))
                 {
                     DeactivateButton(levelNum, Color.green);
                 }
@@ -120,7 +87,6 @@ public class LevelButtonsManager : MonoBehaviour
         {
             LevelManager.SetLevelNum(levelNum);
             Debug.Log("cLicked button " + levelNum);
-            currLevel = levelNum;
             UIManager.m_levelSelectionPanel.SetActive(false);
             CrisisManager.Activate();
             GameplayManager.LoadLevel();
@@ -147,7 +113,6 @@ public class LevelButtonsManager : MonoBehaviour
     public static void ResetCompletedLevels()
     {
         completed = new HashSet<int>() { };
-        currLevel = 0;
         updated = false;
 
     }

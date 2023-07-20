@@ -139,7 +139,6 @@ public class LevelManager
 
     public static IReadOnlyList<ShopOption> GetShopOptions()
     {
-        levelNum = LevelButtonsManager.currLevel;
         List<ShopOption> options = levelNum switch
         {
             0 => new() { ShopOption.TRAINBOUND, ShopOption.CHISTRIKE },
