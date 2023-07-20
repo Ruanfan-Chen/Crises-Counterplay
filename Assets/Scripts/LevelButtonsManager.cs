@@ -93,6 +93,12 @@ public class LevelButtonsManager : MonoBehaviour
             GameplayManager.Continue();
         });
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = color;
+        if (levelNum < numOfLevels - 1)
+            GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
+
+        // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
+        // GameObject.FindGameObjectWithTag("D" + levelNum).GetComponent<Image>().GetComponent<Image>().color = color;
+
     }
 
     private void DeactivateButton(int levelNum, Color color)
@@ -101,6 +107,18 @@ public class LevelButtonsManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = color;
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().onClick.RemoveAllListeners();
+        if (levelNum < numOfLevels - 1)
+        {
+            foreach (GameObject obj in GameObject.FindGameObjectsWithTag("D" + levelNum))
+            {
+                obj.GetComponent<Image>().GetComponent<Image>().color = color;
+            }
+        }
+        // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
+
+        // GameObject.FindGameObjectWithTag("D" + levelNum).GetComponent<Image>().GetComponent<Image>().color = color;
+        Debug.Log("length typeof = " + GameObject.FindGameObjectsWithTag("D" + levelNum));
+        // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
     }
 
 
