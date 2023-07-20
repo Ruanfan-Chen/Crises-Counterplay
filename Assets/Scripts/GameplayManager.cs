@@ -25,17 +25,20 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
         UIManager.m_activeSkillPanel = GameObject.FindWithTag("ActiveSkillPanel");
+        UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
         LevelManager.SetLevelNum(LevelButtonsManager.currLevel);
         m_timer = float.PositiveInfinity;
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile(), LevelManager.GetWatermarks());
-        //UIManager.m_gameplayPanel.SetActive(false);
+        UIManager.m_gameplayPanel.SetActive(false);
         UIManager.m_shopPanel.SetActive(false);
         UIManager.m_completePanel.SetActive(false);
-        //Pause();
-        LoadLevel();
+        UIManager.m_levelSelectionPanel.SetActive(true);
+        CrisisManager.Deactivate();
+        // Pause();
+        // LoadLevel();
     }
 
     // Update is called once per frame
@@ -61,6 +64,11 @@ public class GameplayManager : MonoBehaviour
 
 
             }
+            else
+            {
+                Pause();
+                UIManager.m_levelSelectionPanel.SetActive(true);
+            }
             LevelButtonsManager.AddCompletedLevel();
             LevelButtonsManager.updated = false;
             LoadLevel();
@@ -72,7 +80,7 @@ public class GameplayManager : MonoBehaviour
     public static GameObject getCharacter() => m_character;
     public static SendToGoogle GetGoogleSender() => m_googleSender;
 
-    private static void LoadLevel()
+    public static void LoadLevel()
     {
         Clear();
         Debug.Log("here at level = " + LevelButtonsManager.currLevel);
@@ -136,9 +144,10 @@ public class GameplayManager : MonoBehaviour
     public static void CloseShop()
     {
         UIManager.m_shopPanel.SetActive(false);
-        Continue();
+        // Continue();
+        UIManager.m_levelSelectionPanel.SetActive(true);
         int currLevel = LevelButtonsManager.currLevel;
-        SceneManager.LoadScene("LevelSelection");
+
 
     }
 

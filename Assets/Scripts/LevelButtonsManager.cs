@@ -28,27 +28,6 @@ public class LevelButtonsManager : MonoBehaviour
         {13, new List<int> {10, 11, 12} }
     };
 
-    // public static Dictionary<int, int> nextLevels = new Dictionary<int, int>()
-    // // Need to update when more complex / higher levels have been desiged
-    // {
-    //     {0,1},
-    //     {1,2},
-    //     {2,3},
-    //     {5, 8},
-    //     {6, 9},
-    //     {7, 10},
-    //     {8, 11},
-    //     {9, 11},
-    //     {10, 11}
-    //     // {8, 11},
-    //     // {9, 11},
-    //     // {10, 13},
-    //     // {11, new List<int> {8, 9} },
-    //     // {12, new List<int> {8, 10} },
-    //     // {13, new List<int> {9, 10} },
-    //     // {14, new List<int> {11, 12, 13} }
-    // };
-
     public static HashSet<int> completed = new HashSet<int>() { };
 
     public static int currLevel;
@@ -67,7 +46,16 @@ public class LevelButtonsManager : MonoBehaviour
             Debug.Log("sceneName = " + sceneName);
             if (levelNum == 0 || levelNum == 4 || levelNum == 7)
             {
-                buttons[levelNum].onClick.AddListener(() => { LevelManager.SetLevelNum(levelNum); SceneManager.LoadScene(sceneName); LevelManager.SetLevelNum(levelNum); Debug.Log("Clicked button i = " + levelNum + ". Now level number = " + LevelManager.GetLevelNum()); currLevel = levelNum; });
+                buttons[levelNum].onClick.AddListener(() =>
+                {
+                    Debug.Log("cLicked button " + i);
+                    LevelManager.SetLevelNum(levelNum);
+                    UIManager.m_levelSelectionPanel.SetActive(false);
+                    GameplayManager.Continue();
+                    GameplayManager.LoadLevel();
+                    CrisisManager.Activate();
+                    currLevel = levelNum;
+                });
             }
             else
             {
@@ -110,7 +98,16 @@ public class LevelButtonsManager : MonoBehaviour
                 {
                     Debug.Log("button set to true : " + i);
                     GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().interactable = true;
-                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().onClick.AddListener(() => { LevelManager.SetLevelNum(levelNum); SceneManager.LoadScene(sceneName); LevelManager.SetLevelNum(levelNum); Debug.Log("Clicked button i = " + levelNum + ". Now level number = " + LevelManager.GetLevelNum()); currLevel = levelNum; });
+                    GameObject.FindGameObjectWithTag("Button" + i).GetComponent<Button>().onClick.AddListener(() =>
+                    {
+                        LevelManager.SetLevelNum(levelNum);
+                        Debug.Log("cLicked button " + i);
+                        currLevel = levelNum;
+                        UIManager.m_levelSelectionPanel.SetActive(false);
+                        CrisisManager.Activate();
+                        GameplayManager.LoadLevel();
+                        GameplayManager.Continue();
+                    });
                 }
 
             }

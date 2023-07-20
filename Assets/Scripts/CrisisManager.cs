@@ -23,6 +23,8 @@ public class CrisisManager : MonoBehaviour
     private float vehicleTimer;
     private float electricField;
 
+    private static bool activated;
+
     void Start()
     {
         vehicleTimer = m_startDelay;
@@ -31,18 +33,22 @@ public class CrisisManager : MonoBehaviour
 
     void Update()
     {
-        vehicleTimer -= Time.deltaTime;
-        if (vehicleTimer <= 0.0f && LevelManager.GetSpawnVehicle())
+        if (activated)
         {
-            SpawnVehicle();
-            vehicleTimer = Random.Range(m_vehicleIntervalMin, m_vehicleIntervalMax);
+            vehicleTimer -= Time.deltaTime;
+            if (vehicleTimer <= 0.0f && LevelManager.GetSpawnVehicle())
+            {
+                SpawnVehicle();
+                vehicleTimer = Random.Range(m_vehicleIntervalMin, m_vehicleIntervalMax);
+            }
+            electricField -= Time.deltaTime;
+            if (electricField <= 0.0f && LevelManager.GetSpawnElectricityField())
+            {
+                SpawnElectricField();
+                electricField = Random.Range(m_electricFieldIntervalMin, m_electricFieldIntervalMax);
+            }
         }
-        electricField -= Time.deltaTime;
-        if (electricField <= 0.0f && LevelManager.GetSpawnElectricityField())
-        {
-            SpawnElectricField();
-            electricField = Random.Range(m_electricFieldIntervalMin, m_electricFieldIntervalMax);
-        }
+
     }
 
     void SpawnVehicle()
@@ -59,5 +65,15 @@ public class CrisisManager : MonoBehaviour
         Bounds bound = MapManager.GetBounds(5.0f);
         Vector3 position = new(Random.Range(bound.min.x, bound.max.x), Random.Range(bound.min.y, bound.max.y), 0);
         StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
+    }
+
+    public static void Activate()
+    {
+        activated = true;
+    }
+
+    public static void Deactivate()
+    {
+        activated = false;
     }
 }

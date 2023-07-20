@@ -12,6 +12,7 @@ public static class UIManager
     public static GameObject m_shopPanel;
     public static GameObject m_completePanel;
     public static GameObject m_activeSkillPanel;
+    public static GameObject m_levelSelectionPanel;
 
     public static void UpdateTimerText()
     {
@@ -81,7 +82,7 @@ public static class UIManager
             UIScript.SetKey(keyCode);
             UIScript.SetText("");
             float chargeProgress = item.GetChargeProgress();
-            UIScript.SetSpinner(Mathf.Ceil(chargeProgress)-chargeProgress);
+            UIScript.SetSpinner(Mathf.Ceil(chargeProgress) - chargeProgress);
             UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));
         }
     }

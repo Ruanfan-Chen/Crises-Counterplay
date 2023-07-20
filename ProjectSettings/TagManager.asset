@@ -26,6 +26,7 @@ TagManager:
   - Button0
   - Button1
   - Button12
+  - LevelSelectionPanel
   layers:
   - Default
   - TransparentFX
