@@ -8,6 +8,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
+    [SerializeField] private Bar healthBar;
     private float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
     private BiDictionary<KeyCode, ActiveItem> activeItems = new();
@@ -129,6 +130,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Update()
     {
+        healthBar.SetValue(health / maxHealth);
         // Move
         if (GetComponent<Waterblight>())
             velocity = Vector3.MoveTowards(velocity, GetMoveSpeed() * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized, GetMoveSpeed() * Time.deltaTime / 0.5f);

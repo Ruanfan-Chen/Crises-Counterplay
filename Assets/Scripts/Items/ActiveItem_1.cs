@@ -43,7 +43,7 @@ public class ActiveItem_1 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
+        return IsUsable() ? GetLogo() : GetLogo();
     }
 
     public override bool IsUsable()
