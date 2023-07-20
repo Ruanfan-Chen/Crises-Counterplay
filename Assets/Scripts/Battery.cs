@@ -10,14 +10,17 @@ public class Battery : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         ActiveItem_0 item = collision.GetComponent<ActiveItem_0>();
-        if (item != null )
+        if (item != null)
         {
             item.Charge(VALUE);
             Destroy(gameObject);
         }
     }
 
-    public static GameObject Instantiate(Vector3 position, Quaternion rotation) {
-        return Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+    public static GameObject Instantiate(Vector3 position, Quaternion rotation)
+    {
+        GameObject battery = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
+        battery.tag = "Disposable";
+        return battery;
     }
 }
