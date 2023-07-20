@@ -62,7 +62,10 @@ public static class UIManager
             tutorial.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.4f);
             tutorial.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.4f);
             tutorial.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            tutorial.AddComponent<Image>().sprite = option.GetTutorial();
+            Sprite sprite = option.GetTutorial();
+            tutorial.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 235.0f);
+            tutorial.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 125.0f);
+            tutorial.AddComponent<Image>().sprite = sprite;
 
 
             GameObject description = new(option.GetName() + "Description");
@@ -103,7 +106,7 @@ public static class UIManager
             UIScript.SetText("");
             UIScript.SetUsable(item.IsUsable());
             float chargeProgress = item.GetChargeProgress();
-            UIScript.SetSpinner(Mathf.Ceil(chargeProgress)-chargeProgress);
+            UIScript.SetSpinner(Mathf.Ceil(chargeProgress) - chargeProgress);
             UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));
         }
     }

@@ -9,7 +9,7 @@ public class ActiveItem_1 : ActiveItem
     private static string itemName = "EbbTide";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Ebbtide";
-    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string tutorialPath = "Sprites/Tutorial/Tutorial_EbbTide";
     private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
 
     private float speed = 10.0f;

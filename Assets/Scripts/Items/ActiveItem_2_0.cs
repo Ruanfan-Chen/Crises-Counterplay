@@ -9,7 +9,7 @@ public class ActiveItem_2_0 : ActiveItem
     private static string itemName = "Chistrike";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Chistrike";
-    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string tutorialPath = "Sprites/Tutorial/Tutorial_Chistrike";
     private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
     private GameObject view;
     private CircleCollider2D viewTrigger;

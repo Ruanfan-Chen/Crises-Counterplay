@@ -8,7 +8,7 @@ public class ActiveItem_0 : ActiveItem
     private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
-    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string tutorialPath = "Sprites/Tutorial/Tutorial_Supercharge";
     private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
     public static int activateCounter = 0;
     private float charge = 0.0f;
