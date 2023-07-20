@@ -11,6 +11,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = float.PositiveInfinity;
+    Animator anim;
 
     public float GetHealth() { return health; }
 
@@ -50,11 +51,17 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         if (health <= 0) Die();
     }
 
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     private void Die()
     {
         foreach (IOnDeathEffect component in GetComponents<IOnDeathEffect>())
             component.OnDeath();
-        Destroy(gameObject);
+        anim.SetBool("isDead", true);
+        Destroy(gameObject, anim.GetCurrentAnimatorStateInfo(0).length);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
