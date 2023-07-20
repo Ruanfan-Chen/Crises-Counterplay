@@ -65,7 +65,7 @@ public class GameplayManager : MonoBehaviour
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
-            GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity);
+            GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity, false);
             foreach (Type componentType in kvp.Value)
             {
                 enemy.AddComponent(componentType);
