@@ -16,6 +16,9 @@ public class GameplayManager : MonoBehaviour
     {
         m_character = GameObject.FindWithTag("Character");
         m_googleSender = GetComponent<SendToGoogle>();
+        UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
+        UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
+        UIManager.m_losePanel = GameObject.FindWithTag("LosePanel");
         UIManager.m_timerText = GameObject.FindWithTag("TimerText").GetComponent<TextMeshProUGUI>();
         UIManager.m_gameplayPanel = GameObject.FindWithTag("GameplayPanel");
         UIManager.m_shopPanel = GameObject.FindWithTag("ShopPanel");
