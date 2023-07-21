@@ -62,7 +62,7 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-        Vector3 position = GameplayManager.getCharacter().transform.position + (Vector3)Random.insideUnitCircle * m_electricFieldRadius;
+        Vector3 position = GameplayManager.getCharacter().transform.position + (Vector3)Random.insideUnitCircle * m_electricFieldRadius * 1.5f;
         StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
     }
 
