@@ -29,6 +29,7 @@ public class LevelButtonsManager : MonoBehaviour
 
     public static bool updated;
     private static bool shouldReset;
+    private static bool infiniteLevelAttempted;
 
 
 
@@ -37,7 +38,8 @@ public class LevelButtonsManager : MonoBehaviour
         ActivateButton(0, Color.white);
         ActivateButton(3, Color.white);
         ActivateButton(6, Color.white);
-        updated = false;
+        // updated = false;
+        infiniteLevelChallenged = false;
     }
 
     void Update()
@@ -66,6 +68,7 @@ public class LevelButtonsManager : MonoBehaviour
             updated = false;
 
         }
+
         if (!updated)
         {
             for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
@@ -102,6 +105,14 @@ public class LevelButtonsManager : MonoBehaviour
             //Debug.Log("completed length = " + completed.Count);
 
         }
+
+        if (!infiniteLevelAttempted)
+        {
+            ActivateButton(12, Color.white);
+            infiniteLevelAttempted = true;
+            updated = true;
+        }
+
     }
 
     private void ActivateButton(int levelNum, Color color)
