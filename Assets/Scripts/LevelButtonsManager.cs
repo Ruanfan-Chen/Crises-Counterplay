@@ -50,12 +50,29 @@ public class LevelButtonsManager : MonoBehaviour
     public void UpdateButtons()
 
     {
+        if (shouldReset)
+        {
+            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
+            {
+                // Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
+                GameObject[] objs = GameObject.FindGameObjectsWithTag("D" + levelNum);
+                foreach (GameObject obj in objs)
+                {
+                    obj.GetComponent<Image>().GetComponent<Image>().color = Color.white;
+                }
+            }
+            // Debug.Log("reset 0 color = " + GameObject.FindGameObjectWithTag("D0").GetComponent<Image>().GetComponent<Image>().color);
+            shouldReset = false;
+            updated = false;
+
+        }
         if (!updated)
         {
             for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
             {
                 bool advancable = true;
-                foreach (int prereq in levelsPrereqs[levelNum]){
+                foreach (int prereq in levelsPrereqs[levelNum])
+                {
                     if (!completed.Contains(prereq))
                         advancable = false;
                 }
@@ -76,7 +93,7 @@ public class LevelButtonsManager : MonoBehaviour
             {
                 if (completed.Contains(levelNum))
                 {
-                    //Debug.Log("level " + levelNum + " is in completed, deactivated");
+                    // Debug.Log("level " + levelNum + " is in completed, deactivated to green");
                     DeactivateButton(levelNum, Color.green);
                 }
 
@@ -122,11 +139,7 @@ public class LevelButtonsManager : MonoBehaviour
                 obj.GetComponent<Image>().GetComponent<Image>().color = color;
             }
         }
-        // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
 
-        // GameObject.FindGameObjectWithTag("D" + levelNum).GetComponent<Image>().GetComponent<Image>().color = color;
-        //Debug.Log("length typeof = " + GameObject.FindGameObjectsWithTag("D" + levelNum));
-        // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
     }
 
 
@@ -139,14 +152,7 @@ public class LevelButtonsManager : MonoBehaviour
     public static void ResetCompletedLevels()
     {
         completed = new HashSet<int>() { };
-
-        //Debug.Log("reseting buttons");
-        for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
-        {
-            //Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
-            GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = Color.white);
-
-        }
+        shouldReset = true;
         updated = false;
 
 

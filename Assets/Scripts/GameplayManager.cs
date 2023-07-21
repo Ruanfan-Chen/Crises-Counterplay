@@ -25,7 +25,6 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
         UIManager.m_activeSkillPanel = GameObject.FindWithTag("ActiveSkillPanel");
         UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
-        UIManager.m_losePanel = GameObject.FindWithTag("LosePanel");
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
@@ -107,6 +106,7 @@ public class GameplayManager : MonoBehaviour
                 enemy.AddComponent(componentType);
             }
         }
+        Debug.Log("curr level = " + LevelManager.GetLevelNum());
         //Debug.Log("load complete");
     }
 
@@ -114,6 +114,7 @@ public class GameplayManager : MonoBehaviour
     {
         Clear();
         LevelManager.Reset();
+        LevelButtonsManager.ResetCompletedLevels();
         Character script = m_character.GetComponent<Character>();
         script.SetHealth(script.GetMaxHealth());
         foreach (PassiveItem item in script.GetPassiveItems().ToList())
