@@ -6,6 +6,7 @@ using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
+    public static readonly string projectilePrefabPath = "Sprites/PlayerBullet";
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
     [SerializeField] private Bar healthBar;
@@ -116,6 +117,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void IProjectileModifier.Modify(GameObject projectile)
     {
+        projectile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(projectilePrefabPath);
         Projectile script = projectile.GetComponent<Projectile>();
         script.SetHostility(false);
         script.SetColor(GetComponent<SpriteRenderer>().color);

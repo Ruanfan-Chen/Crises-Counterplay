@@ -51,8 +51,6 @@ public class ActiveItem_2_0 : ActiveItem
             if (charge <= 0.0f)
                 Deactivate();
         }
-        //float val = Mathf.Clamp(timer, 0.0f, cooldown);
-        //timerText.text = Mathf.Round(val).ToString() + "s";
     }
     public override void Activate()
     {
