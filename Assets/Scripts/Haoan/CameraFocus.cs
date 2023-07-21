@@ -4,17 +4,22 @@ using UnityEngine;
 
 public class CameraFocus : MonoBehaviour
 {
-    public GameObject player;
+    private GameObject focus;
     private Vector3 offset = new Vector3(0.0f, 0.0f, -50.0f);
-    // Start is called before the first frame update
-    void Start()
-    {
 
+    public GameObject GetFocus()
+    {
+        return focus;
+    }
+
+    public void SetFocus(GameObject value)
+    {
+        focus = value;
     }
 
     // Update is called once per frame
     void LateUpdate()
     {
-        transform.position = player.transform.position + offset;
+        transform.position = focus.transform.position + offset;
     }
 }

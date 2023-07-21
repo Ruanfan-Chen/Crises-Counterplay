@@ -1,28 +1,36 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class EnemySpawn : MonoBehaviour
 {
-    public GameObject player;
+    private static readonly HashSet<BlockEnemySpawn> blockers = new();
     [SerializeField] private float offset = 2.0f;
     [SerializeField] private float startDelay = 3.0f;
     [SerializeField] private float spawnInterval = 0.3f;
-    // Start is called before the first frame update
+
+    private float timer;
     void Start()
     {
-        InvokeRepeating("SpawnRandomEnemy", startDelay, spawnInterval);
+
+        timer = startDelay;
+    }
+    void Update()
+    {
+        timer -= Time.deltaTime;
+        if (timer <= 0.0f && LevelManager.GetSpawnEnemy() && blockers.Count == 0)
+        {
+            SpawnRandomEnemy();
+            timer = spawnInterval;
+        }
     }
 
     public GameObject SpawnRandomEnemy()
     {
         Vector3 position;
-        Bounds bounds = MapManager.GetMapBounds(offset);
         do
         {
-            position = new Vector3(Random.Range(bounds.min.x, bounds.max.x), Random.Range(bounds.min.y, bounds.max.y), 0);
-        } while ((position - player.transform.position).magnitude <= offset);
+            position = MapManager.GetRandomPointInMap();
+        } while ((position - GameplayManager.getCharacter().transform.position).magnitude <= offset);
         GameObject enemy = Enemy.Instantiate(position, Quaternion.identity);
         enemy.GetComponent<SpriteRenderer>().color = new Color(1.0f, 1.0f, 0.0f, 1.0f);
         switch (Random.Range(0, 4))
@@ -34,25 +42,28 @@ public class EnemySpawn : MonoBehaviour
                 break;
             case 2:
                 enemy.AddComponent<DirectlyMoveToward>();
-                enemy.GetComponent<DirectlyMoveToward>().SetTarget(player);
+                enemy.GetComponent<DirectlyMoveToward>().SetTarget(GameplayManager.getCharacter().transform);
                 break;
             case 3:
                 enemy.AddComponent<MoveInCircle>();
-                enemy.GetComponent<MoveInCircle>().SetCenter(player);
+                enemy.GetComponent<MoveInCircle>().SetCenter(GameplayManager.getCharacter().transform);
                 enemy.GetComponent<MoveInCircle>().SetRadius(5.0f);
                 break;
-        }        
-        switch (Random.Range(0, 3))
+        }
+        if (!LevelManager.GetEnemieDisarm())
         {
-            case 0:
-                break;
-            case 1:
-                enemy.AddComponent<RandomlyAttack>();
-                break;
-            case 2:
-                enemy.AddComponent<FocusedAttack>();
-                enemy.GetComponent<FocusedAttack>().SetTarget(player);
-                break;
+            switch (Random.Range(0, 3))
+            {
+                case 0:
+                    break;
+                case 1:
+                    enemy.AddComponent<RandomlyAttack>();
+                    break;
+                case 2:
+                    enemy.AddComponent<FocusedAttack>();
+                    enemy.GetComponent<FocusedAttack>().SetTarget(GameplayManager.getCharacter().transform);
+                    break;
+            }
         }
         switch (Random.Range(0, 3))
         {
@@ -78,6 +89,15 @@ public class EnemySpawn : MonoBehaviour
         return enemy;
     }
 
+    internal static void AddBlocker(BlockEnemySpawn blockEnemySpawn)
+    {
+        blockers.Add(blockEnemySpawn);
+    }
+
+    internal static void RemoveBlocker(BlockEnemySpawn blockEnemySpawn)
+    {
+        blockers.Remove(blockEnemySpawn);
+    }
 
     private class AimlesslyMove : MonoBehaviour
     {
@@ -127,43 +147,33 @@ public class EnemySpawn : MonoBehaviour
 
     private class DirectlyMoveToward : MonoBehaviour
     {
-        private GameObject target;
+        private Transform target;
 
         private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
 
-        public GameObject GetTarget() { return target; }
-
-        public void SetTarget(GameObject value) { target = value; }
+        public void SetTarget(Transform value) { target = value; }
 
         // Update is called once per frame
         void Update()
         {
-            Vector3 displacement = target.transform.position - transform.position;
-            float speed = GetSpeed();
-            if (speed * Time.deltaTime < displacement.magnitude)
-                transform.Translate(speed * Time.deltaTime * displacement.normalized);
-            else
-                transform.Translate(displacement);
+            transform.position = Vector3.MoveTowards(transform.position, target.position, GetSpeed() * Time.deltaTime);
         }
     }
 
     private class MoveInCircle : MonoBehaviour
     {
-        private GameObject center;
+        private Transform center;
         private float radius;
 
         private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
-        public GameObject GetCenter() { return center; }
 
-        public float GetRadius()        {            return radius;        }
+        public void SetRadius(float value) { radius = value; }
 
-        public void SetRadius(float value)        {            radius = value;        }
-
-        public void SetCenter(GameObject value) { center = value; }
+        public void SetCenter(Transform value) { center = value; }
 
         void Update()
         {
-            Vector3 relativePos = transform.position - center.transform.position;
+            Vector3 relativePos = transform.position - center.position;
             transform.Translate(GetSpeed() * Time.deltaTime * (Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, radius) * Mathf.Rad2Deg) * relativePos.normalized));
         }
     }
@@ -188,14 +198,12 @@ public class EnemySpawn : MonoBehaviour
 
     private class FocusedAttack : MonoBehaviour
     {
-        private GameObject target;
+        private Transform target;
         private float minAttackInterval = 1.0f;
         private float maxAttackInterval = 3.0f;
         private float timer = 0.0f;
 
-        public GameObject GetTarget() { return target; }
-
-        public void SetTarget(GameObject value) { target = value; }
+        public void SetTarget(Transform value) { target = value; }
 
         void Update()
         {
@@ -203,7 +211,7 @@ public class EnemySpawn : MonoBehaviour
                 timer -= Time.deltaTime;
             else
             {
-                Projectile.Instantiate(transform.position, target.transform.position, GetComponents<IProjectileModifier>());
+                Projectile.Instantiate(transform.position, target.position, GetComponents<IProjectileModifier>());
                 timer = Random.Range(minAttackInterval, maxAttackInterval);
             }
         }
@@ -222,6 +230,34 @@ public class EnemySpawn : MonoBehaviour
         void IOnDeathEffect.OnDeath()
         {
             Projectile.InstantiateRing(transform.position, Random.Range(0.0f, 360.0f), GetComponents<IProjectileModifier>(), 6);
+        }
+    }
+
+    public class Patrol : MonoBehaviour
+    {
+        private Vector3 patrolPointA = new(0.0f, 15.0f);
+        private Vector3 patrolPointB = new(0.0f, -15.0f);
+        private bool status = false;
+
+        private float GetSpeed() { return GetComponent<Enemy>().GetMoveSpeed(); }
+
+        private Vector3 GetTargetPos() { return status ? patrolPointA : patrolPointB; }
+
+        public void SetPatrolPointA(Vector3 value)
+        {
+            patrolPointA = value;
+        }
+
+        public void SetPatrolPointB(Vector3 value)
+        {
+            patrolPointB = value;
+        }
+
+        void Update()
+        {
+            transform.position = Vector3.MoveTowards(transform.position, GetTargetPos(), GetSpeed() * Time.deltaTime);
+            if (transform.position == GetTargetPos())
+                status = !status;
         }
     }
 }

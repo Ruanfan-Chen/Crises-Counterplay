@@ -8,22 +8,20 @@ public class ActiveItem_0 : ActiveItem
     private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
-    private float maxCharge = 5.0f;
+    private static string tutorialPath = "Sprites/Tutorial/Tutorial_Supercharge";
+    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
+    public static int activateCounter = 0;
     private float charge = 0.0f;
     private float cost = 5.0f;
-    private float duration = 10.0f;
+    private float duration = 5.0f;
 
-    void Update()
-    {
-        if (!GetComponent<Buff>())
-            charge = Mathf.Clamp(charge + Time.deltaTime, 0.0f, maxCharge);
-    }
     public override void Activate()
     {
         if (IsUsable())
         {
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
             charge -= cost;
+            activateCounter++;
         }
     }
 
@@ -31,7 +29,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override float GetChargeProgress()
     {
-        return charge / maxCharge;
+        return charge / cost;
     }
 
     public static string GetDescription()
@@ -49,12 +47,27 @@ public class ActiveItem_0 : ActiveItem
         return itemName;
     }
 
+    public static Sprite GetTutorial()
+    {
+        return Resources.Load<Sprite>(tutorialPath);
+    }
+
     public override bool IsUsable()
     {
         return charge >= cost;
     }
 
-    private class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
+    public override Sprite GetUISprite()
+    {
+        return IsUsable() ? GetLogo() : GetLogo();
+    }
+
+    public void Charge(float value)
+    {
+        charge += value;
+    }
+
+    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
     {
         private float damage = 50.0f;
         private float knockbackDistance = 3.0f;

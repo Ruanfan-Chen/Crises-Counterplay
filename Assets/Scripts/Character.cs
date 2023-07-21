@@ -1,12 +1,15 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
+    public static readonly string projectilePrefabPath = "Sprites/PlayerBullet";
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
+    [SerializeField] private Bar healthBar;
     private float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
     private BiDictionary<KeyCode, ActiveItem> activeItems = new();
@@ -14,6 +17,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public static readonly float knockbackDurationOnDmg = 0.5f;
     public static readonly float knockbackDistanceOnDmg = 3.0f;
     public static readonly float initialKnockbackSpeedOnDmg = 50.0f;
+    private Vector3 velocity = Vector3.zero;
 
     public float GetHealth() { return health; }
 
@@ -50,6 +54,10 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         }
         StartCoroutine(coroutine);
         StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, invDurationOnDmg));
+        if (damage.GetSource())
+            GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetSource().name);
+        else if (damage.GetMedium())
+            GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetMedium().name);
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
@@ -109,6 +117,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void IProjectileModifier.Modify(GameObject projectile)
     {
+        projectile.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(projectilePrefabPath);
         Projectile script = projectile.GetComponent<Projectile>();
         script.SetHostility(false);
         script.SetColor(GetComponent<SpriteRenderer>().color);
@@ -118,10 +127,18 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     void Start()
     {
         GiveItem<PassiveItem_Weapon_0>();
+        GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
     }
 
     void Update()
     {
+        healthBar.SetValue(health / maxHealth);
+        // Move
+        if (GetComponent<Waterblight>())
+            velocity = Vector3.MoveTowards(velocity, GetMoveSpeed() * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized, GetMoveSpeed() * Time.deltaTime / 0.5f);
+        else
+            velocity = GetMoveSpeed() * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+        transform.Translate(Time.deltaTime * velocity);
         foreach (KeyValuePair<KeyCode, ActiveItem> keyValuePair in activeItems.GetTUDict())
         {
             if (Input.GetKeyDown(keyValuePair.Key))

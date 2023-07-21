@@ -13,6 +13,7 @@ public abstract class ActiveItem : MonoBehaviour
     public abstract void Deactivate();
     public abstract bool IsUsable();
     public abstract float GetChargeProgress();
+    public abstract Sprite GetUISprite();
 }
 
 public interface IProjectileModifier

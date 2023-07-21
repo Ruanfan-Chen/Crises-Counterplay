@@ -4,13 +4,29 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Utility;
 
-public class Waterblight : MonoBehaviour
+public class Waterblight : MonoBehaviour, ISpeedBonus
 {
     private GameObject trailObj;
     private Color color = Color.blue;
     private float width = 2.0f;
     private float trialDuration = 4.0f;
+    private float speedBonus = 2.5f;
 
+    private void Start()
+    {
+        if (GetComponent<Character>())
+            color = Color.cyan;
+    }
+
+    public List<Vector3> GetTrail()
+    {
+        TrailRenderer trailRenderer = trailObj.GetComponent<TrailRenderer>();
+        Vector3[] positions = new Vector3[trailRenderer.positionCount];
+        trailRenderer.GetVisiblePositions(positions);
+        List<Vector3> positionList = new();
+        positionList.AddRange(positions);
+        return positionList;
+    }
 
     private void OnEnable()
     {
@@ -37,6 +53,11 @@ public class Waterblight : MonoBehaviour
             Destroy(trailObj.GetComponent<KeepRelativelyStatic>());
             trailObj.GetComponent<TrailRenderer>().autodestruct = true;
         }
+    }
+
+    public float GetValue()
+    {
+        return speedBonus;
     }
 
     public class WaterLayer : MonoBehaviour

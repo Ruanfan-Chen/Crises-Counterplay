@@ -9,6 +9,9 @@ public class ActiveItem_2 : ActiveItem
     private static string itemName = "Trainbound";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Trainbound";
+    private static string tutorialPath = "Sprites/Tutorial/Placeholder";
+    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
+    public static int activateCounter = 0;
     private GameObject view;
     private ViewBehavior viewScript;
     private CircleCollider2D viewTrigger;
@@ -53,8 +56,9 @@ public class ActiveItem_2 : ActiveItem
         {
             StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, dashDuration));
             StartCoroutine(RepelVehicles(dashDuration));
-            StartCoroutine(ForcedMovement(transform.parent, (OverlapVehicle().ElementAt(Random.Range(0, OverlapVehicle().Count())).transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
+            StartCoroutine(ForcedMovement(transform, (OverlapVehicle().ElementAt(Random.Range(0, OverlapVehicle().Count())).transform.position - transform.position).normalized * dashDistance, initialDashSpeed, dashDuration));
             charge -= cost;
+            activateCounter++;
         }
     }
 
@@ -92,8 +96,18 @@ public class ActiveItem_2 : ActiveItem
         return itemName;
     }
 
+    public static Sprite GetTutorial()
+    {
+        return Resources.Load<Sprite>(tutorialPath);
+    }
+
     private IEnumerable<GameObject> OverlapVehicle() {
         return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
+    }
+
+    public override Sprite GetUISprite()
+    {
+        return IsUsable() ? GetLogo() : GetLogo();
     }
 
     private class ViewBehavior : MonoBehaviour

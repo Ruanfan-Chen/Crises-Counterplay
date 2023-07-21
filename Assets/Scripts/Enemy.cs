@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
@@ -14,6 +11,8 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = float.PositiveInfinity;
+    private Animator anim;
+    [SerializeField] private Bar healthBar;
 
     public float GetHealth() { return health; }
 
@@ -53,11 +52,17 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         if (health <= 0) Die();
     }
 
+    void Start()
+    {
+        anim = GetComponent<Animator>();
+    }
+
     private void Die()
     {
         foreach (IOnDeathEffect component in GetComponents<IOnDeathEffect>())
             component.OnDeath();
-        Destroy(gameObject);
+        anim.SetBool("isDead", true);
+        Destroy(gameObject, anim.GetCurrentAnimatorStateInfo(0).length);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -84,8 +89,19 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         script.SetSpeed(projectileSpeed);
         script.SetHostility(true);
         script.SetSource(gameObject);
-        DestroyOutOfTime timer = projectile.AddComponent<DestroyOutOfTime>();
-        timer.SetTimer(range / projectileSpeed);
-        timer.Activate();
+        if (float.IsFinite(range / projectileSpeed))
+            Destroy(projectile, range / projectileSpeed);
+    }
+
+    void Update()
+    {
+        float value = health / maxHealth;
+        if (health > 0.0f && health < maxHealth)
+        {
+            healthBar.SetIsHidden(false);
+            healthBar.SetValue(health / maxHealth);
+        }
+        else
+            healthBar.SetIsHidden(true);
     }
 }

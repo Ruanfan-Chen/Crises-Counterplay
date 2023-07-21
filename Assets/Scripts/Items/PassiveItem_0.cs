@@ -19,7 +19,6 @@ public class PassiveItem_0 : PassiveItem
         trailObj.transform.localRotation = Quaternion.identity;
         trailObj.transform.localScale = Vector3.one;
         TrailRenderer trailRenderer = trailObj.AddComponent<TrailRenderer>();
-        trailRenderer.tag = "Disposable";
         trailRenderer.time = trailDuration;
         trailRenderer.numCapVertices = 8;
         trailRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
