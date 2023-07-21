@@ -39,7 +39,7 @@ public class LevelButtonsManager : MonoBehaviour
         ActivateButton(3, Color.white);
         ActivateButton(6, Color.white);
         // updated = false;
-        infiniteLevelChallenged = false;
+        infiniteLevelAttempted = false;
     }
 
     void Update()
