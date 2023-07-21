@@ -124,7 +124,7 @@ public class LevelManager
     {
         List<ShopOption> options = levelNum switch
         {
-            0 => new() { ShopOption.TRAINBOUND, ShopOption.CHISTRIKE },
+            0 => new() {ShopOption.CHISTRIKE },
             1 => new(),
             2 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
             3 => new() { ShopOption.SUPERCHARGE },
