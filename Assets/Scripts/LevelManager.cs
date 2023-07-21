@@ -11,22 +11,21 @@ public class LevelManager
     public static string GetLevelName() => levelNum switch
     {
         0 => "tarin 1",
-        1 => "tarin 2-1",
-        2 => "tarin 2-2",
-        3 => "tarin 3",
-        4 => "thunder 1",
-        5 => "thunder 2",
-        6 => "thunder 3",
-        7 => "rain 1",
-        8 => "rain 2",
-        9 => "rain 3",
-        10 => "trainthunder",
-        11 => "trainrain",
-        12 => "thunderrain",
+        1 => "tarin 2",
+        2 => "tarin 3",
+        3 => "thunder 1",
+        4 => "thunder 2",
+        5 => "thunder 3",
+        6 => "rain 1",
+        7 => "rain 2",
+        8 => "rain 3",
+        9 => "trainthunder",
+        10 => "trainrain",
+        11 => "thunderrain",
         _ => "Infinite"
     };
 
-    public static float GetTimeLimit() => 10.0f;
+    public static float GetTimeLimit() => 30.0f;
 
     public static Vector2 GetMapSize() => new(75.0f, 50.0f);
 
@@ -41,16 +40,15 @@ public class LevelManager
         0 => true,
         1 => true,
         2 => true,
-        3 => true,
+        3 => false,
         4 => false,
         5 => false,
         6 => false,
         7 => false,
         8 => false,
-        9 => false,
+        9 => true,
         10 => true,
-        11 => true,
-        12 => false,
+        11 => false,
         _ => true
     };
 
@@ -59,16 +57,15 @@ public class LevelManager
         0 => false,
         1 => false,
         2 => false,
-        3 => false,
+        3 => true,
         4 => true,
         5 => true,
-        6 => true,
+        6 => false,
         7 => false,
         8 => false,
-        9 => false,
-        10 => true,
-        11 => false,
-        12 => true,
+        9 => true,
+        10 => false,
+        11 => true,
         _ => true
     };
 
@@ -76,17 +73,16 @@ public class LevelManager
     {
         0 => false,
         1 => false,
-        2 => false,
-        3 => true,
+        2 => true,
+        3 => false,
         4 => false,
-        5 => false,
+        5 => true,
         6 => true,
         7 => true,
         8 => true,
-        9 => true,
-        10 => false,
+        9 => false,
+        10 => true,
         11 => true,
-        12 => true,
         _ => true
     };
 
@@ -94,17 +90,16 @@ public class LevelManager
     {
         0 => true,
         1 => true,
-        2 => true,
-        3 => false,
+        2 => false,
+        3 => true,
         4 => true,
-        5 => true,
-        6 => false,
+        5 => false,
+        6 => true,
         7 => true,
-        8 => true,
+        8 => false,
         9 => false,
         10 => false,
         11 => false,
-        12 => false,
         _ => false
     };
 
@@ -116,13 +111,12 @@ public class LevelManager
         3 => false,
         4 => false,
         5 => false,
-        6 => false,
+        6 => true,
         7 => true,
-        8 => true,
+        8 => false,
         9 => false,
         10 => false,
         11 => false,
-        12 => false,
         _ => false
     };
 
@@ -132,17 +126,16 @@ public class LevelManager
         {
             0 => new() { ShopOption.TRAINBOUND, ShopOption.CHISTRIKE },
             1 => new(),
-            2 => new(),
-            3 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            4 => new() { ShopOption.SUPERCHARGE },
-            5 => new(),
-            6 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            7 => new() { ShopOption.EBBTIDE },
-            8 => new(),
+            2 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            3 => new() { ShopOption.SUPERCHARGE },
+            4 => new(),
+            5 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
+            6 => new() { ShopOption.EBBTIDE },
+            7 => new(),
+            8 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
             9 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
             10 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
             11 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            12 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
             _ => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT }
         };
         if (GameplayManager.getCharacter().GetComponent<PassiveItem_0>())
@@ -163,17 +156,16 @@ public class LevelManager
     {
         0 => new Dictionary<Vector2, Type[]>(),
         1 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
-        2 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        2 => new(),
         3 => new(),
-        4 => new(),
-        5 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        4 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        5 => new(),
         6 => new(),
-        7 => new(),
-        8 => new() { [new Vector2(0.0f, 15.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol), typeof(BlockEnemySpawn) } },
+        7 => new() { [new Vector2(0.0f, 15.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol), typeof(BlockEnemySpawn) } },
+        8 => new(),
         9 => new(),
         10 => new(),
         11 => new(),
-        12 => new(),
         _ => new()
     };
 
@@ -183,21 +175,6 @@ public class LevelManager
         LevelButtonsManager.ResetCompletedLevels();
     }
 
-    public static void MoveNext()
-    {
-        if (levelNum == 0)
-        {
-            levelNum = GameplayManager.getCharacter().GetComponent<ActiveItem_2>() ? 1 : 2;
-            return;
-
-        }
-        if (levelNum == 1)
-        {
-            levelNum = 3;
-            return;
-        }
-        levelNum++;
-    }
 
     public class ShopOption
     {

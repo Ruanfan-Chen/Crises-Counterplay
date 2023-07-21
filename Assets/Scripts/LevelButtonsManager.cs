@@ -7,25 +7,24 @@ using UnityEngine.SceneManagement;
 
 public class LevelButtonsManager : MonoBehaviour
 {
-    public static int numOfLevels = 14;
+    public static int numOfLevels = 13;
 
     public Button[] buttons;
 
     public static Dictionary<int, List<int>> levelsPrereqs = new Dictionary<int, List<int>>()
     {   {0, new List<int> {} },
         {1, new List<int> {0} },
-        {2, new List<int> {0} },
-        {3, new List<int> {1,2} },
-        {4, new List<int> {} },
+        {2, new List<int> {1} },
+        {3, new List<int> {} },
+        {4, new List<int> {3} },
         {5, new List<int> {4} },
-        {6, new List<int> {5} },
-        {7, new List<int> {} },
+        {6, new List<int> {} },
+        {7, new List<int> {6} },
         {8, new List<int> {7} },
-        {9, new List<int> {8} },
-        {10, new List<int> {3, 6} },
-        {11, new List<int> {3, 9} },
-        {12, new List<int> {6, 9} },
-        {13, new List<int> {10, 11, 12} }
+        {9, new List<int> {2, 5} },
+        {10, new List<int> {2, 8} },
+        {11, new List<int> {5, 8} },
+        {12, new List<int> {9, 10, 11} }
     };
 
     public static HashSet<int> completed = new HashSet<int>() { };
@@ -38,8 +37,8 @@ public class LevelButtonsManager : MonoBehaviour
     void Start()
     {
         ActivateButton(0, Color.white);
-        ActivateButton(4, Color.white);
-        ActivateButton(7, Color.white);
+        ActivateButton(3, Color.white);
+        ActivateButton(6, Color.white);
         updated = false;
     }
 
@@ -57,7 +56,12 @@ public class LevelButtonsManager : MonoBehaviour
         {
             for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
             {
-                if (levelsPrereqs[levelNum].AsQueryable().Any(prereq => !completed.Contains(prereq)))
+                bool advancable = true;
+                foreach (int prereq in levelsPrereqs[levelNum]){
+                    if (!completed.Contains(prereq))
+                        advancable = false;
+                }
+                if (!advancable)
                 {
                     //Debug.Log("level " + levelNum + " cannot be played, deactivated");
                     DeactivateButton(levelNum, Color.white);
