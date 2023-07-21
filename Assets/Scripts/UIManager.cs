@@ -76,7 +76,7 @@ public static class UIManager
             description.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.2f);
             description.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.2f);
             description.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            description.AddComponent<TextMeshProUGUI>().text = option.GetDescription();
+            //description.AddComponent<TextMeshProUGUI>().text = option.GetDescription();
         }
     }
 
