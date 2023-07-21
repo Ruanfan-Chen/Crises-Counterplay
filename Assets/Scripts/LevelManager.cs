@@ -155,7 +155,7 @@ public class LevelManager
             options.Remove(ShopOption.TRAINBOUND);
         if (GameplayManager.getCharacter().GetComponent<ActiveItem_2_0>())
             options.Remove(ShopOption.CHISTRIKE);
-        Debug.Log("GetShopOptions curr level = " + levelNum);
+        //Debug.Log("GetShopOptions curr level = " + levelNum);
         return options;
     }
 

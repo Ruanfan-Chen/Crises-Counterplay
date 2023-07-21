@@ -59,12 +59,12 @@ public class LevelButtonsManager : MonoBehaviour
             {
                 if (levelsPrereqs[levelNum].AsQueryable().Any(prereq => !completed.Contains(prereq)))
                 {
-                    Debug.Log("level " + levelNum + " cannot be played, deactivated");
+                    //Debug.Log("level " + levelNum + " cannot be played, deactivated");
                     DeactivateButton(levelNum, Color.white);
                 }
                 else
                 {
-                    Debug.Log("level " + levelNum + " can be played, activated");
+                    //Debug.Log("level " + levelNum + " can be played, activated");
                     ActivateButton(levelNum, Color.white);
                 }
 
@@ -74,13 +74,13 @@ public class LevelButtonsManager : MonoBehaviour
             {
                 if (completed.Contains(levelNum))
                 {
-                    Debug.Log("level " + levelNum + " is in completed, deactivated");
+                    //Debug.Log("level " + levelNum + " is in completed, deactivated");
                     DeactivateButton(levelNum, Color.green);
                 }
 
             }
             updated = true;
-            Debug.Log("completed length = " + completed.Count);
+            //Debug.Log("completed length = " + completed.Count);
 
         }
     }
@@ -91,7 +91,7 @@ public class LevelButtonsManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().onClick.AddListener(() =>
         {
             LevelManager.SetLevelNum(levelNum);
-            Debug.Log("cLicked button " + levelNum);
+            //Debug.Log("cLicked button " + levelNum);
             UIManager.m_levelSelectionPanel.SetActive(false);
             UIManager.m_activeSkillPanel.SetActive(true);
             CrisisManager.Activate();
@@ -109,7 +109,7 @@ public class LevelButtonsManager : MonoBehaviour
 
     private void DeactivateButton(int levelNum, Color color)
     {
-        Debug.Log("button set to false : " + levelNum);
+        //Debug.Log("button set to false : " + levelNum);
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().GetComponent<Image>().color = color;
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().interactable = false;
         GameObject.FindGameObjectWithTag("Button" + levelNum).GetComponent<Button>().onClick.RemoveAllListeners();
@@ -123,7 +123,7 @@ public class LevelButtonsManager : MonoBehaviour
         // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
 
         // GameObject.FindGameObjectWithTag("D" + levelNum).GetComponent<Image>().GetComponent<Image>().color = color;
-        Debug.Log("length typeof = " + GameObject.FindGameObjectsWithTag("D" + levelNum));
+        //Debug.Log("length typeof = " + GameObject.FindGameObjectsWithTag("D" + levelNum));
         // GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = color);
     }
 
@@ -138,10 +138,10 @@ public class LevelButtonsManager : MonoBehaviour
     {
         completed = new HashSet<int>() { };
 
-        Debug.Log("reseting buttons");
+        //Debug.Log("reseting buttons");
         for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
         {
-            Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
+            //Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
             GameObject.FindGameObjectsWithTag("D" + levelNum).Select(obj => obj.GetComponent<Image>().GetComponent<Image>().color = Color.white);
 
         }

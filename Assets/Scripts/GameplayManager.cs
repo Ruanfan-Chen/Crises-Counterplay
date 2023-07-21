@@ -3,10 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
-using UnityEngine.TextCore.Text;
-using UnityEngine.SceneManagement;
-using System.Threading.Tasks;
 
 public class GameplayManager : MonoBehaviour
 {
@@ -44,7 +40,7 @@ public class GameplayManager : MonoBehaviour
     }
 
     // Update is called once per frame
-    async void Update()
+    void Update()
     {
         if (halts.Count == 0)
             m_timer -= Time.deltaTime;
@@ -58,7 +54,7 @@ public class GameplayManager : MonoBehaviour
         if (m_timer <= 0)
         {
             m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
-            Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
+            //Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
             if (LevelManager.GetLevelNum() == LevelButtonsManager.numOfLevels - 1)
             {
                 Pause();
@@ -108,7 +104,7 @@ public class GameplayManager : MonoBehaviour
                 enemy.AddComponent(componentType);
             }
         }
-        Debug.Log("load complete");
+        //Debug.Log("load complete");
     }
 
     private static void GameOver()
