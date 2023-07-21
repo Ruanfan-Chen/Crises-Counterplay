@@ -55,7 +55,7 @@ public class GameplayManager : MonoBehaviour
             GameOver();
             return;
         }
-        if (m_timer <= 0)
+        else if (m_timer <= 0)
         {
             m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
             Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
