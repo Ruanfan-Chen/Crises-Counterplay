@@ -29,11 +29,7 @@ public class LevelManager
 
     public static Vector2 GetMapSize() => new(75.0f, 50.0f);
 
-    public static Sprite GetTile()
-    {
-        Texture2D tileTexture = Resources.Load<Texture2D>(tileTexturePath);
-        return Sprite.Create(tileTexture, new Rect(0, 0, tileTexture.width, tileTexture.height), Vector2.one * 0.5f, 10.0f);
-    }
+    public static Sprite GetTile() => Resources.Load<Sprite>(tileTexturePath);
 
     public static bool GetSpawnVehicle() => levelNum switch
     {
