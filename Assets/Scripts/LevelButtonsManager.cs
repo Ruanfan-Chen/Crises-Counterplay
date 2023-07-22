@@ -29,19 +29,29 @@ public class LevelButtonsManager : MonoBehaviour
     private static bool shouldReset;
     private static bool infiniteLevelAttempted;
     private List<GameObject> infLevelDependencies;
+    public bool inspectorMode;
 
 
 
     void Start()
     {
-        ActivateButton(0, Color.white);
-        ActivateButton(3, Color.white);
-        ActivateButton(6, Color.white);
-        // updated = false;
-        infLevelDependencies = new List<GameObject> { };
-        foreach (int levelNum in levelsPrereqs[numOfLevels - 1])
-            infLevelDependencies.Add(GameObject.FindWithTag("D" + levelNum));
-        infiniteLevelAttempted = false;
+        if (inspectorMode)
+        {
+            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
+                ActivateButton(levelNum, Color.white);
+        }
+        else
+        {
+            ActivateButton(0, Color.white);
+            ActivateButton(3, Color.white);
+            ActivateButton(6, Color.white);
+            // updated = false;
+            infLevelDependencies = new List<GameObject> { };
+            foreach (int levelNum in levelsPrereqs[numOfLevels - 1])
+                infLevelDependencies.Add(GameObject.FindWithTag("D" + levelNum));
+            infiniteLevelAttempted = false;
+        }
+
     }
 
     void Update()
@@ -54,67 +64,70 @@ public class LevelButtonsManager : MonoBehaviour
     public void UpdateButtons()
 
     {
-        if (shouldReset)
+        if (!inspectorMode)
         {
-            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
+            if (shouldReset)
             {
-                // Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
-                GameObject[] objs = GameObject.FindGameObjectsWithTag("D" + levelNum);
-                foreach (GameObject obj in objs)
+                for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
                 {
-                    obj.GetComponent<Image>().GetComponent<Image>().color = Color.white;
+                    // Debug.Log("levelNum = " + levelNum + ", number of resets = " + GameObject.FindGameObjectsWithTag("D" + levelNum).Length);
+                    GameObject[] objs = GameObject.FindGameObjectsWithTag("D" + levelNum);
+                    foreach (GameObject obj in objs)
+                    {
+                        obj.GetComponent<Image>().GetComponent<Image>().color = Color.white;
+                    }
                 }
-            }
-            // Debug.Log("reset 0 color = " + GameObject.FindGameObjectWithTag("D0").GetComponent<Image>().GetComponent<Image>().color);
-            shouldReset = false;
-            updated = false;
-
-        }
-
-        if (!updated)
-        {
-            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
-            {
-                bool advancable = true;
-                foreach (int prereq in levelsPrereqs[levelNum])
-                {
-                    if (!completed.Contains(prereq))
-                        advancable = false;
-                }
-                if (!advancable)
-                {
-                    //Debug.Log("level " + levelNum + " cannot be played, deactivated");
-                    DeactivateButton(levelNum, Color.white);
-                }
-                else
-                {
-                    //Debug.Log("level " + levelNum + " can be played, activated");
-                    ActivateButton(levelNum, Color.white);
-                }
+                // Debug.Log("reset 0 color = " + GameObject.FindGameObjectWithTag("D0").GetComponent<Image>().GetComponent<Image>().color);
+                shouldReset = false;
+                updated = false;
 
             }
 
-            for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
+            if (!updated)
             {
-                if (completed.Contains(levelNum))
+                for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
                 {
-                    // Debug.Log("level " + levelNum + " is in completed, deactivated to green");
-                    DeactivateButton(levelNum, Color.green);
+                    bool advancable = true;
+                    foreach (int prereq in levelsPrereqs[levelNum])
+                    {
+                        if (!completed.Contains(prereq))
+                            advancable = false;
+                    }
+                    if (!advancable)
+                    {
+                        //Debug.Log("level " + levelNum + " cannot be played, deactivated");
+                        DeactivateButton(levelNum, Color.white);
+                    }
+                    else
+                    {
+                        //Debug.Log("level " + levelNum + " can be played, activated");
+                        ActivateButton(levelNum, Color.white);
+                    }
+
                 }
 
+                for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
+                {
+                    if (completed.Contains(levelNum))
+                    {
+                        // Debug.Log("level " + levelNum + " is in completed, deactivated to green");
+                        DeactivateButton(levelNum, Color.green);
+                    }
+
+                }
+                ShowDependencies(infLevelDependencies);
+                updated = true;
+                //Debug.Log("completed length = " + completed.Count);
+
             }
-            ShowDependencies(infLevelDependencies);
-            updated = true;
-            //Debug.Log("completed length = " + completed.Count);
 
-        }
-
-        if (!infiniteLevelAttempted)
-        {
-            ActivateButton(12, Color.white);
-            infiniteLevelAttempted = true;
-            HideDependencies(infLevelDependencies);
-            updated = true;
+            if (!infiniteLevelAttempted)
+            {
+                ActivateButton(12, Color.white);
+                infiniteLevelAttempted = true;
+                HideDependencies(infLevelDependencies);
+                updated = true;
+            }
         }
 
     }
