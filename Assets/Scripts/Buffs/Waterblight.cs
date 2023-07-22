@@ -7,16 +7,9 @@ using static Utility;
 public class Waterblight : MonoBehaviour, ISpeedBonus
 {
     private GameObject trailObj;
-    private Color color = Color.blue;
     private float width = 2.0f;
     private float trialDuration = 4.0f;
     private float speedBonus = 2.5f;
-
-    private void Start()
-    {
-        if (GetComponent<Character>())
-            color = Color.cyan;
-    }
 
     public List<Vector3> GetTrail()
     {
@@ -26,6 +19,11 @@ public class Waterblight : MonoBehaviour, ISpeedBonus
         List<Vector3> positionList = new();
         positionList.AddRange(positions);
         return positionList;
+    }
+
+    private Color getColor()
+    {
+        return GetComponent<ActiveItem_1>() ? Color.cyan : Color.blue;
     }
 
     private void OnEnable()
@@ -40,9 +38,9 @@ public class Waterblight : MonoBehaviour, ISpeedBonus
         trailRenderer.time = trialDuration;
         trailRenderer.numCapVertices = 8;
         trailRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));
-        trailRenderer.startColor = color;
+        trailRenderer.startColor = getColor();
         trailRenderer.startWidth = width;
-        trailRenderer.endColor = new Color(color.r, color.g, color.b, 0.5f);
+        trailRenderer.endColor = new Color(trailRenderer.startColor.r, trailRenderer.startColor.g, trailRenderer.startColor.b, 0.5f);
         trailRenderer.endWidth = width;
         ColliderManager.AddSharedCollider<WaterLayer>(trailRenderer);
     }
