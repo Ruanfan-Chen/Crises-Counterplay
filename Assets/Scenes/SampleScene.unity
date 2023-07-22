@@ -4119,8 +4119,8 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: ButtonsManager, Assembly-CSharp
+      - m_Target: {fileID: 1151485479}
+        m_TargetAssemblyTypeName: GameplayManager, Assembly-CSharp
         m_MethodName: BackToMain
         m_Mode: 1
         m_Arguments:
