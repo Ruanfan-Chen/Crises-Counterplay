@@ -4,7 +4,7 @@ public class PassiveItem_0 : PassiveItem
 {
     private static string itemName = "Toxic Footprint";
     private static string description = "Description Placeholder";
-    private static string logoPath = "Sprites/Skills/Toxic Footprint";
+    private static string logoPath = "Sprites/Skills/ToxicFootprint";
     private GameObject trailObj;
     private Color color = Color.green;
     private float width = 1.0f;
@@ -55,7 +55,7 @@ public class PassiveItem_0 : PassiveItem
         {
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null && !collision.GetComponent<Character>())
-                new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime).Apply();
+                new Damage(gameObject, null, damageable, contactDPS * Time.deltaTime, Vector3.zero).Apply();
         }
     }
 }

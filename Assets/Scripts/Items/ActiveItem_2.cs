@@ -10,7 +10,7 @@ public class ActiveItem_2 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Trainbound";
     private static string tutorialPath = "Sprites/Tutorial/Placeholder";
-    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
+    private static string notUsablePath = "Sprites/Skills/Trainbound";
     public static int activateCounter = 0;
     private GameObject view;
     private ViewBehavior viewScript;
@@ -107,7 +107,7 @@ public class ActiveItem_2 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return IsUsable() ? GetLogo() : GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     private class ViewBehavior : MonoBehaviour

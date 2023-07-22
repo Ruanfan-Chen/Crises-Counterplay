@@ -8,7 +8,7 @@ public class Lava : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
     // Update is called once per frame
@@ -17,12 +17,12 @@ public class Lava : MonoBehaviour
 
     }
 
-    private void OnTriggerStay2D(Collider2D other)
+    private void OnTriggerStay2D(Collider2D collision)
     {
-        IDamageable damageable = other.GetComponent<IDamageable>();
+        IDamageable damageable = collision.GetComponent<IDamageable>();
         if (damageable != null)
         {
-            new Damage(gameObject, null, damageable, m_DPS * Time.deltaTime).Apply();
+            new Damage(gameObject, null, damageable, m_DPS * Time.deltaTime, Vector3.zero).Apply();
         }
     }
 }

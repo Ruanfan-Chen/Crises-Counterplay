@@ -50,7 +50,7 @@ public class Vehicle : MonoBehaviour
         IDamageable damageable = collision.GetComponent<IDamageable>();
         if (damageable != null && damageable.GetHostility() != hostility)
         {
-            new Damage(gameObject, null, damageable, contactDamage).Apply();
+            new Damage(gameObject, null, damageable, contactDamage, collision.transform.position - transform.position).Apply();
             GameplayManager.GetGoogleSender().SendMatrix2(speed);
         }
     }

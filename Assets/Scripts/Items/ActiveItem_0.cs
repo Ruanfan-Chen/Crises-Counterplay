@@ -9,7 +9,7 @@ public class ActiveItem_0 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
     private static string tutorialPath = "Sprites/Tutorial/Tutorial_Supercharge";
-    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
+    private static string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
     private float charge = 0.0f;
     private float cost = 5.0f;
@@ -59,7 +59,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return IsUsable() ? GetLogo() : GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     public void Charge(float value)
@@ -70,9 +70,6 @@ public class ActiveItem_0 : ActiveItem
     public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
     {
         private float damage = 50.0f;
-        private float knockbackDistance = 3.0f;
-        private float initialKnockbackSpeed = 10.0f;
-        private float knockbackDuration = 1.0f;
         private float speedBonus = 5.0f;
         private Color colorDifference;
 
@@ -95,13 +92,10 @@ public class ActiveItem_0 : ActiveItem
         private void OnTriggerEnter2D(Collider2D collision)
         {
             IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null)
+            if (damageable != null && damageable.GetHostility() != GetComponent<Character>().GetHostility())
             {
-                Vector3 displacement = (collision.transform.position - transform.position).normalized * knockbackDistance;
-                IEnumerator coroutine = ForcedMovement(collision.transform, displacement, initialKnockbackSpeed, knockbackDuration);
-                damageable.StartCoroutine(coroutine);
-                if (damageable.GetHostility() != GetComponent<Character>().GetHostility())
-                    new Damage(gameObject, null, damageable, damage).Apply();
+                Vector3 direction = (collision.transform.position - transform.position).normalized;
+                new Damage(gameObject, null, damageable, damage, direction).Apply();
             }
         }
     }
