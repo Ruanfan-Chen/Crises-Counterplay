@@ -156,7 +156,7 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
             IDamageable damageable = collision.GetComponent<IDamageable>();
             if (damageable != null && damageable.GetHostility() != hostility)
             {
-                new Damage(controller.gameObject, gameObject, damageable, contactDPS * Time.deltaTime).Apply();
+                new Damage(controller.gameObject, gameObject, damageable, contactDPS * Time.deltaTime, Vector3.zero).Apply();
             }
         }
     }

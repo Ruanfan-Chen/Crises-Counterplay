@@ -37,9 +37,8 @@ public class ElectricArc : MonoBehaviour
         Character character = collision.GetComponent<Character>();
         if (character)
         {
-            Vector3 displacement = ((Vector2)collision.transform.position - GetComponent<Collider2D>().ClosestPoint(collision.transform.position)).normalized * Character.knockbackDistanceOnDmg;
-            IEnumerator coroutine = ForcedMovement(character.transform, displacement, Character.initialKnockbackSpeedOnDmg, Character.knockbackDurationOnDmg);
-            new Damage(gameObject, null, character, damage, coroutine).Apply();
+            Vector3 direction = ((Vector2)collision.transform.position - GetComponent<Collider2D>().ClosestPoint(collision.transform.position)).normalized;
+            new Damage(gameObject, null, character, damage, direction).Apply();
         }
     }
 

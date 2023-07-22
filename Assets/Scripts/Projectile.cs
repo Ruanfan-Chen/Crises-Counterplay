@@ -77,7 +77,7 @@ public class Projectile : MonoBehaviour
             IDamageable damageable = other.GetComponent<IDamageable>();
             if (damageable != null && damageable.GetHostility() != script.GetHostility())
             {
-                new Damage(script.GetSource(), gameObject, damageable, damage).Apply();
+                new Damage(script.GetSource(), gameObject, damageable, damage, transform.rotation * Vector3.up).Apply();
                 Destroy(gameObject);
             }
         }

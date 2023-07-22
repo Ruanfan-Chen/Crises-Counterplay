@@ -10,7 +10,7 @@ public class ActiveItem_1 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Ebbtide";
     private static string tutorialPath = "Sprites/Tutorial/Tutorial_EbbTide";
-    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
+    private static string notUsablePath = "Sprites/Skills/Ebbtide";
 
     private float speed = 10.0f;
     public override void Activate()
@@ -25,7 +25,7 @@ public class ActiveItem_1 : ActiveItem
     private IEnumerator Back(List<Vector3> positions)
     {
         ActiveItem_0.Buff buff = gameObject.AddComponent<ActiveItem_0.Buff>();
-        for (int i = positions.Count - 1; i > 0 ; i--)
+        for (int i = positions.Count - 1; i > 0; i--)
         {
             Vector3 displacement = positions[i - 1] - positions[i];
             transform.position = positions[i];
@@ -43,7 +43,7 @@ public class ActiveItem_1 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return IsUsable() ? GetLogo() : GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     public override bool IsUsable()

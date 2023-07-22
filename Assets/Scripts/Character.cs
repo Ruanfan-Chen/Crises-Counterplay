@@ -1,6 +1,4 @@
-using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 using static Utility;
 
@@ -42,17 +40,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         if (GetComponent<IInvulnerable>() != null) return;
         health -= damage.GetValue();
         health = Mathf.Clamp(health, 0.0f, maxHealth);
-        IEnumerator coroutine = damage.GetCoroutine();
-        if (coroutine == null)
-        {
-            Vector3 sourcePos = transform.position;
-            if (damage.GetSource())
-                sourcePos = damage.GetSource().transform.position;
-            if (damage.GetMedium())
-                sourcePos = damage.GetMedium().transform.position;
-            coroutine = ForcedMovement(transform, (transform.position - sourcePos).normalized * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg);
-        }
-        StartCoroutine(coroutine);
+        StartCoroutine(ForcedMovement(transform, damage.GetDiretcion() * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
         StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, invDurationOnDmg));
         if (damage.GetSource())
             GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetSource().name);

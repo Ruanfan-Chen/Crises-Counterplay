@@ -25,8 +25,6 @@ public interface IDamageable
 {
     bool GetHostility();
 
-    public Coroutine StartCoroutine(IEnumerator routine);
-
     void ReceiveDamage(Damage damage);
 }
 
@@ -63,51 +61,31 @@ public class Damage
     private GameObject medium;
     private IDamageable target;
     private float value;
-    private IEnumerator coroutine;
+    private Vector3 diretcion;
 
-    public Damage(GameObject source, GameObject medium, IDamageable target, float value)
+    public Damage(GameObject source, GameObject medium, IDamageable target, float value, Vector3 diretcion)
     {
         this.source = source;
         this.medium = medium;
         this.target = target;
         this.value = value;
-        this.coroutine = null;
-    }
-
-    public Damage(GameObject source, GameObject medium, IDamageable target, float value, IEnumerator coroutine)
-    {
-        this.source = source;
-        this.medium = medium;
-        this.target = target;
-        this.value = value;
-        this.coroutine = coroutine;
+        this.diretcion = diretcion.normalized;
     }
 
     public GameObject GetSource() { return source; }
 
-    public void SetSource(GameObject value) { source = value; }
 
     public GameObject GetMedium() { return medium; }
 
-    public void SetMedium(GameObject value) { medium = value; }
-
     public IDamageable GetTarget() { return target; }
-
-    public void SetTarget(IDamageable value) { target = value; }
 
     public float GetValue() { return value; }
 
-    public void SetValue(float value) { this.value = value; }
-
-    public IEnumerator GetCoroutine() { return coroutine; }
-
-    public void SetCoroutine(IEnumerator value) { coroutine = value; }
+    public Vector3 GetDiretcion() { return diretcion; }
 
     public void Apply()
     {
         target.ReceiveDamage(this);
-        if (coroutine != null)
-            target.StartCoroutine(coroutine);
     }
 
     public static void Apply(Damage damage) { damage.Apply(); }
