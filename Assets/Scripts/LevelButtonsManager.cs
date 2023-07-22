@@ -30,6 +30,7 @@ public class LevelButtonsManager : MonoBehaviour
     public static bool updated;
     private static bool shouldReset;
     private static bool infiniteLevelAttempted;
+    private List<GameObject> infLevelDependencies;
 
 
 
@@ -39,6 +40,9 @@ public class LevelButtonsManager : MonoBehaviour
         ActivateButton(3, Color.white);
         ActivateButton(6, Color.white);
         // updated = false;
+        infLevelDependencies = new List<GameObject> { };
+        foreach (int levelNum in levelsPrereqs[numOfLevels - 1])
+            infLevelDependencies.Add(GameObject.FindWithTag("D" + levelNum));
         infiniteLevelAttempted = false;
     }
 
@@ -101,6 +105,7 @@ public class LevelButtonsManager : MonoBehaviour
                 }
 
             }
+            ShowDependencies(infLevelDependencies);
             updated = true;
             //Debug.Log("completed length = " + completed.Count);
 
@@ -110,6 +115,7 @@ public class LevelButtonsManager : MonoBehaviour
         {
             ActivateButton(12, Color.white);
             infiniteLevelAttempted = true;
+            HideDependencies(infLevelDependencies);
             updated = true;
         }
 
@@ -167,6 +173,18 @@ public class LevelButtonsManager : MonoBehaviour
         updated = false;
 
 
+    }
+
+    private void ShowDependencies(List<GameObject> dependencies)
+    {
+        foreach (GameObject obj in dependencies)
+            obj.SetActive(true);
+    }
+
+    private void HideDependencies(List<GameObject> dependencies)
+    {
+        foreach (GameObject obj in dependencies)
+            obj.SetActive(false);
     }
 
 }
