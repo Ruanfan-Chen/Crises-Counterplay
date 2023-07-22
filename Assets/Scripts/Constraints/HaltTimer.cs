@@ -1,16 +1,23 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class HaltTimer : MonoBehaviour
 {
+    private static readonly HashSet<HaltTimer> instances = new();
     private void OnEnable()
     {
-        GameplayManager.AddHalt(this);
+        instances.Add(this);
     }
 
     private void OnDisable()
     {
-        GameplayManager.RemoveHalt(this);
+        instances.Remove(this);
+    }
+
+    public static bool ExistInstance()
+    {
+        return instances.Count > 0;
     }
 }

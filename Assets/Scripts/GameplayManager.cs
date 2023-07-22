@@ -7,7 +7,6 @@ using UnityEngine;
 public class GameplayManager : MonoBehaviour
 {
     private static GameObject m_character;
-    private static readonly HashSet<HaltTimer> halts = new();
     private static float m_timer;
     private static SendToGoogle m_googleSender;
 
@@ -44,7 +43,7 @@ public class GameplayManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (halts.Count == 0)
+        if (!HaltTimer.ExistInstance())
             m_timer -= Time.deltaTime;
         UIManager.UpdateTimerText();
         UIManager.UpdateActiveSkills(m_character.GetComponent<Character>().GetKeyCodeActiveItemPairs());
@@ -164,13 +163,12 @@ public class GameplayManager : MonoBehaviour
 
     }
 
-    public static void AddHalt(HaltTimer halt)
+    public void BackToMain()
     {
-        halts.Add(halt);
-    }
-
-    public static void RemoveHalt(HaltTimer halt)
-    {
-        halts.Remove(halt);
+        Pause();
+        CrisisManager.Deactivate();
+        UIManager.m_completePanel.SetActive(false);
+        UIManager.m_losePanel.SetActive(false);
+        UIManager.m_levelSelectionPanel.SetActive(true);
     }
 }
