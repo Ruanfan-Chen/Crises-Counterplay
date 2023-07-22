@@ -54,25 +54,4 @@ public class Vehicle : MonoBehaviour
             GameplayManager.GetGoogleSender().SendMatrix2(speed);
         }
     }
-
-
-    //private static void drawTraces(Vector3 startPos, Vector3 targetPos, float vehicleWidth, float duration)
-    //{
-
-    //    //LineDrawer lineDrawer1 = new LineDrawer();
-    //    //lineDrawer1.DrawLineInGameView(startPos + bias, targetPos + bias, Color.green);
-    //    //lineDrawer1.Destroy(duration);
-    //    ////Debug.Log("Drew lines from p1 = " + traceStartVector1);
-
-    //    //LineDrawer lineDrawer2 = new LineDrawer();
-    //    //lineDrawer2.DrawLineInGameView(startPos - bias, targetPos - bias, Color.green);
-    //    //lineDrawer2.Destroy(duration);
-    //    //Debug.Log("Drew lines from p2 = " + traceStartVector2);
-
-    //    // lineDrawer.DrawLineInGameView(traceStartVector2, traceEndVector2, Color.green);
-
-    //    // Debug.DrawLine(traceStartVector1, traceEndVector1, Color.green, Vehicle.traceDuration);
-    //    // Debug.DrawLine(traceStartVector2, traceEndVector2, Color.green, Vehicle.traceDuration);
-
-    //}
 }
