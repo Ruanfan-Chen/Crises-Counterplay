@@ -105,7 +105,7 @@ public class GameplayManager : MonoBehaviour
                 enemy.AddComponent(componentType);
             }
         }
-        Debug.Log("curr level = " + LevelManager.GetLevelNum());
+        //Debug.Log("curr level = " + LevelManager.GetLevelNum());
         //Debug.Log("load complete");
     }
 

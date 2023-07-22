@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 using static Utility;
 
 public class ActiveItem_2_0 : ActiveItem
@@ -18,17 +19,7 @@ public class ActiveItem_2_0 : ActiveItem
     private float charge = 5.0f;
     private float costRate = 1.0f;
     private List<Captured> scripts = new();
-    //[SerializeField] private TextMeshProUGUI timerText;
     private float orbitRadius = 5.0f;
-
-    //private void Start()
-    //{
-    //    //GameObject cooldown = GameObject.Find("Cooldown");
-    //    //if (cooldown != null)
-    //    //{
-    //    //    timerText = cooldown.GetComponent<TextMeshProUGUI>();
-    //    //}
-    //}
 
     void OnEnable()
     {
@@ -50,23 +41,14 @@ public class ActiveItem_2_0 : ActiveItem
             charge = Mathf.Clamp(charge - i * costRate * Time.deltaTime, 0.0f, maxCharge);
             if (charge <= 0.0f)
                 Deactivate();
+            CaptureNearbyVehicles();
         }
     }
     public override void Activate()
     {
         if (IsUsable())
         {
-            foreach (GameObject vehicle in OverlapVehicle())
-            {
-                if (vehicle.activeInHierarchy && vehicle.GetComponent<Vehicle>().GetHostility() != GetComponent<Character>().GetHostility())
-                {
-                    vehicle.GetComponent<Vehicle>().SetHostility(false);
-                    Captured script = vehicle.AddComponent<Captured>();
-                    script.SetCenter(gameObject);
-                    script.SetOrbitRadius(orbitRadius);
-                    scripts.Add(script);
-                }
-            };
+            CaptureNearbyVehicles();
         }
     }
 
@@ -117,6 +99,21 @@ public class ActiveItem_2_0 : ActiveItem
         return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
     }
 
+    private void CaptureNearbyVehicles()
+    {
+        foreach (GameObject vehicle in OverlapVehicle())
+        {
+            if (vehicle.GetComponent<Vehicle>().GetHostility())
+            {
+                vehicle.GetComponent<Vehicle>().SetHostility(false);
+                Captured script = vehicle.AddComponent<Captured>();
+                script.SetCenter(gameObject);
+                script.SetOrbitRadius(orbitRadius);
+                scripts.Add(script);
+            }
+        };
+    }
+
     private class Captured : MonoBehaviour
     {
         private GameObject center;
@@ -133,7 +130,10 @@ public class ActiveItem_2_0 : ActiveItem
         void Update()
         {
             Vector3 relativePos = transform.position - center.transform.position;
-            transform.rotation = Quaternion.LookRotation(Vector3.forward, Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, orbitRadius) * Mathf.Rad2Deg) * relativePos.normalized);
+            if (Vector3.Cross(relativePos, transform.rotation * Vector3.up).z >= 0.0f)
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, Quaternion.Euler(0, 0, 2 * Mathf.Atan2(relativePos.magnitude, orbitRadius) * Mathf.Rad2Deg) * relativePos.normalized);
+            else
+                transform.rotation = Quaternion.LookRotation(Vector3.forward, Quaternion.Euler(0, 0, -2 * Mathf.Atan2(relativePos.magnitude, orbitRadius) * Mathf.Rad2Deg) * relativePos.normalized);
         }
     }
 }
