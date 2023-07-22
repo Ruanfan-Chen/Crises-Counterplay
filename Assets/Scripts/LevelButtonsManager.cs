@@ -7,8 +7,6 @@ public class LevelButtonsManager : MonoBehaviour
 {
     public static int numOfLevels = 13;
 
-    public Button[] buttons;
-
     public static Dictionary<int, List<int>> levelsPrereqs = new Dictionary<int, List<int>>()
     {   {0, new List<int> {} },
         {1, new List<int> {0} },
