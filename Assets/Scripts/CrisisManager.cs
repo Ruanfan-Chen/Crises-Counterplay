@@ -53,7 +53,7 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnVehicle()
     {
-        float length = 2.24f * 30.0f;
+        float length = MapManager.GetBounds().size.magnitude;
         Vector3 startPos = MapManager.GetRandomPointOnEdge();
         Vector3 targetPos = startPos + (GameplayManager.getCharacter().transform.position - startPos).normalized * length;
 
