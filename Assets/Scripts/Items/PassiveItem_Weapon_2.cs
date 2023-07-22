@@ -101,7 +101,7 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
                     IDamageable damageable = g.GetComponent<IDamageable>();
                     if (damageable.GetHostility() != script.GetHostility())
                     {
-                        new Damage(script.GetSource(), gameObject, damageable, damage).Apply();
+                        new Damage(script.GetSource(), gameObject, damageable, damage, g.transform.position - transform.position).Apply();
                     }
                 }
                 Destroy(gameObject);

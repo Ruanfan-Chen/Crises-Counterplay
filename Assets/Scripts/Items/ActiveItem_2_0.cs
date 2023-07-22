@@ -11,7 +11,7 @@ public class ActiveItem_2_0 : ActiveItem
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Chistrike";
     private static string tutorialPath = "Sprites/Tutorial/Tutorial_Chistrike";
-    private static string notUsablePath = "Sprites/Skills/SkillsNotUsable";
+    private static string notUsablePath = "Sprites/Skills/Chistrike";
     private GameObject view;
     private CircleCollider2D viewTrigger;
     private float viewRadius = 10.0f;
@@ -91,7 +91,7 @@ public class ActiveItem_2_0 : ActiveItem
 
     public override Sprite GetUISprite()
     {
-        return IsUsable() ? GetLogo() : GetLogo();
+        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
     private IEnumerable<GameObject> OverlapVehicle()
