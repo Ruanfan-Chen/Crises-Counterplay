@@ -99,11 +99,7 @@ public class GameplayManager : MonoBehaviour
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
-            GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity);
-            foreach (Type componentType in kvp.Value)
-            {
-                enemy.AddComponent(componentType);
-            }
+            GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity, kvp.Value);
         }
         //Debug.Log("curr level = " + LevelManager.GetLevelNum());
         //Debug.Log("load complete");

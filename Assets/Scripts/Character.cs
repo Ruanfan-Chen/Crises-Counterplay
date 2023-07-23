@@ -4,7 +4,7 @@ using static Utility;
 
 public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 {
-    public static readonly string projectilePrefabPath = "Sprites/PlayerBullet";
+    public static readonly string projectilePrefabPath = "Sprites/playerBullet";
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
     [SerializeField] private Bar healthBar;
