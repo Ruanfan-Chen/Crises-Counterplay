@@ -108,7 +108,7 @@ public static class UIManager
             UIScript.SetText("");
             UIScript.SetUsable(item.IsUsable());
             float chargeProgress = item.GetChargeProgress();
-            UIScript.SetSpinner(Mathf.Ceil(chargeProgress) - chargeProgress);
+            UIScript.SetSpinner(chargeProgress > 0.0f ? Mathf.Ceil(chargeProgress) - chargeProgress : 1.0f);
             UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));
         }
     }

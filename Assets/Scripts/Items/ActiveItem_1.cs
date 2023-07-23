@@ -24,7 +24,7 @@ public class ActiveItem_1 : ActiveItem
 
     private IEnumerator Back(List<Vector3> positions)
     {
-        ActiveItem_0.Buff buff = gameObject.AddComponent<ActiveItem_0.Buff>();
+        Buff buff = gameObject.AddComponent<Buff>();
         for (int i = positions.Count - 1; i > 0; i--)
         {
             Vector3 displacement = positions[i - 1] - positions[i];
@@ -69,5 +69,38 @@ public class ActiveItem_1 : ActiveItem
     public static Sprite GetTutorial()
     {
         return Resources.Load<Sprite>(tutorialPath);
+    }
+
+    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
+    {
+        private float damage = 50.0f;
+        private float speedBonus = 5.0f;
+        private Color colorDifference;
+
+        private void OnEnable()
+        {
+            colorDifference = Color.yellow - GetComponent<SpriteRenderer>().color;
+            GetComponent<SpriteRenderer>().color = Color.yellow;
+        }
+
+        private void OnDisable()
+        {
+            GetComponent<SpriteRenderer>().color -= colorDifference;
+        }
+
+        public float GetValue()
+        {
+            return speedBonus;
+        }
+
+        private void OnTriggerEnter2D(Collider2D collision)
+        {
+            IDamageable damageable = collision.GetComponent<IDamageable>();
+            if (damageable != null && damageable.GetHostility() != GetComponent<Character>().GetHostility())
+            {
+                Vector3 direction = (collision.transform.position - transform.position).normalized;
+                new Damage(gameObject, null, damageable, damage, direction).Apply();
+            }
+        }
     }
 }

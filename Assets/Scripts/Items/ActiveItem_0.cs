@@ -12,8 +12,8 @@ public class ActiveItem_0 : ActiveItem
     private static string tutorialPath = "Sprites/Tutorial/Tutorial_Supercharge";
     private static string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
-    private float charge = 0.0f;
-    private float cost = 5.0f;
+    private int charge = 0;
+    private float chargeBuffer = 0.0f;
     private float duration = 5.0f;
     private void OnEnable()
     {
@@ -32,7 +32,8 @@ public class ActiveItem_0 : ActiveItem
         if (IsUsable())
         {
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
-            charge -= cost;
+            charge--;
+            StartCoroutine(AddChargeBuffer(1.0f, duration));
             activateCounter++;
         }
     }
@@ -41,7 +42,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override float GetChargeProgress()
     {
-        return charge / cost;
+        return charge + chargeBuffer;
     }
 
     public static string GetDescription()
@@ -66,7 +67,7 @@ public class ActiveItem_0 : ActiveItem
 
     public override bool IsUsable()
     {
-        return charge >= cost;
+        return charge > 0 && !GetComponent<Buff>();
     }
 
     public override Sprite GetUISprite()
@@ -74,9 +75,23 @@ public class ActiveItem_0 : ActiveItem
         return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
     }
 
-    public void Charge(float value)
+    public void Charge()
     {
-        charge += value;
+        charge++;
+        StartCoroutine(AddChargeBuffer(-1.0f, 0.5f));
+    }
+
+    private IEnumerator AddChargeBuffer(float value, float duration)
+    {
+        chargeBuffer += value;
+        float changeRate = value / duration;
+        while (Mathf.Abs(value) > Mathf.Abs(changeRate) * Time.deltaTime)
+        {
+            value -= changeRate * Time.deltaTime;
+            chargeBuffer -= changeRate * Time.deltaTime;
+            yield return null;
+        }
+        chargeBuffer -= value;
     }
 
     public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus

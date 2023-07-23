@@ -6,31 +6,31 @@ using UnityEngine.UI;
 
 public class ActiveSkill : MonoBehaviour
 {
-    [SerializeField] GameObject m_image;
-    [SerializeField] GameObject m_mask;
-    [SerializeField] GameObject m_text;
-    [SerializeField] GameObject m_key;
+    [SerializeField] Image m_image;
+    [SerializeField] Image m_mask;
+    [SerializeField] TextMeshProUGUI m_text;
+    [SerializeField] TextMeshProUGUI m_key;
     [SerializeField] GameObject m_chargeCount;
     [SerializeField] GameObject m_notUsable;
 
     public void SetLogo(Sprite sprite)
     {
-        m_image.GetComponent<Image>().sprite = sprite;
+        m_image.sprite = sprite;
     }
 
     public void SetSpinner(float value)
     {
-        m_mask.GetComponent<Image>().fillAmount = value;
+        m_mask.fillAmount = value;
     }
 
     public void SetText(string text)
     {
-        m_text.GetComponent<TextMeshProUGUI>().text = text;
+        m_text.text = text;
     }
 
     public void SetKey(KeyCode keyCode)
     {
-        m_key.GetComponent<TextMeshProUGUI>().text = keyCode.ToString();
+        m_key.text = keyCode.ToString();
     }
 
     public void SetChargeCount(int value)
