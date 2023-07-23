@@ -162,6 +162,7 @@ public class GameplayManager : MonoBehaviour
     public void BackToMain()
     {
         Pause();
+        Clear();
         CrisisManager.Deactivate();
         UIManager.m_completePanel.SetActive(false);
         UIManager.m_losePanel.SetActive(false);

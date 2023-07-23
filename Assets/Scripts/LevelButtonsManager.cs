@@ -85,6 +85,8 @@ public class LevelButtonsManager : MonoBehaviour
 
             if (!updated)
             {
+                UIManager.m_completePanel.SetActive(false);
+                UIManager.m_losePanel.SetActive(false);
                 for (int levelNum = 0; levelNum < numOfLevels; levelNum++)
                 {
                     bool advancable = true;
