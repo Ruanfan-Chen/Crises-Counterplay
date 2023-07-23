@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CrisisManager : MonoBehaviour
@@ -22,6 +24,7 @@ public class CrisisManager : MonoBehaviour
 
     private float vehicleTimer;
     private float electricField;
+    private readonly Queue<Vector3> electircFields = new();
 
     private static bool activated;
 
@@ -62,8 +65,19 @@ public class CrisisManager : MonoBehaviour
 
     void SpawnElectricField()
     {
-        Vector3 position = GameplayManager.getCharacter().transform.position + (Vector3)Random.insideUnitCircle * m_electricFieldRadius * 1.5f;
+        Vector3 position = GameplayManager.getCharacter().transform.position + Random.Range(0.5f, 1.5f) * m_electricFieldRadius * (Vector3)Random.insideUnitCircle;
+        foreach (Vector3 fieldCenter in electircFields)
+            if ((fieldCenter - position).magnitude < m_electricFieldRadius * 1.5f)
+                position = GameplayManager.getCharacter().transform.position + Random.Range(0.5f, 1.5f) * m_electricFieldRadius * (Vector3)Random.insideUnitCircle;
         StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, m_electricFieldDuration, m_electricFieldDamage));
+        StartCoroutine(RecordElectricField(position));
+    }
+
+    private IEnumerator RecordElectricField(Vector3 position)
+    {
+        electircFields.Enqueue(position);
+        yield return new WaitForSeconds(m_electricFieldStartDelay + m_electricFieldDuration);
+        electircFields.Dequeue();
     }
 
     public static void Activate()
