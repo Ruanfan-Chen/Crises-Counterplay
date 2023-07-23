@@ -26,7 +26,22 @@ public class LevelManager
         _ => "Infinite"
     };
 
-    public static float GetTimeLimit() => 30.0f;
+    public static float GetTimeLimit() => levelNum switch
+    {
+        0 => 20.0f,
+        1 => 20.0f,
+        2 => 45.0f,
+        3 => 20.0f,
+        4 => 20.0f,
+        5 => 45.0f,
+        6 => 20.0f,
+        7 => 20.0f,
+        8 => 45.0f,
+        9 => 50.0f,
+        10 => 50.0f,
+        11 => 50.0f,
+        _ => 60.0f
+    };
 
     public static Vector2 GetMapSize() => new(75.0f, 50.0f);
 
