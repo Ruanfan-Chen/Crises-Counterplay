@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 1548275185939553965}
   - component: {fileID: 1988816019788025208}
   - component: {fileID: 1026744551353401894}
+  - component: {fileID: 586930244246564120}
   m_Layer: 5
-  m_Name: ItemPanel
+  m_Name: ShopOption
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -77,6 +78,23 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!114 &586930244246564120
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1351700352984567978}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a99361a803d2e574b8b1a4c96eb2f3fb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  icon: {fileID: 466156694640193957}
+  itemName: {fileID: 3654143218177637083}
+  usage: {fileID: 2276293222080602570}
+  description: {fileID: 8412209994267517969}
+  button: {fileID: 156881825229999556}
 --- !u!1 &1458734660709945603
 GameObject:
   m_ObjectHideFlags: 0
@@ -268,7 +286,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ancient Boomerang
+  m_text: Name Placeholder
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 01365082793f6c44d83e61cdc57053c0, type: 2}
   m_sharedMaterial: {fileID: -5114398403521560355, guid: 01365082793f6c44d83e61cdc57053c0, type: 2}
@@ -403,7 +421,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 169103a99149a8b4da780afd9a9596dc, type: 3}
+  m_Sprite: {fileID: 21300000, guid: d65cfab50a26a7548919d94d3e67dacf, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -479,10 +497,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'The character will throw the boomerang to the closest enemy, once reaching
-    the designated position, the boomerang will home to the character. The character
-    is unable to fire until the boomerang homing to the character. The attack timer
-    is reset once caught.
+  m_text: 'Description Placeholder
 
 '
   m_isRightToLeft: 0
@@ -619,7 +634,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Passive: Weapon'
+  m_text: Usage Placeholder
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 01365082793f6c44d83e61cdc57053c0, type: 2}
   m_sharedMaterial: {fileID: -5114398403521560355, guid: 01365082793f6c44d83e61cdc57053c0, type: 2}

@@ -54,7 +54,7 @@ public class GameplayManager : MonoBehaviour
         }
         if (m_timer <= 0)
         {
-            m_googleSender.SendMatrix3(LevelManager.GetLevelName(), ActiveItem_2.activateCounter, ActiveItem_0.activateCounter, m_character.GetComponent<ActiveItem_2>() != null, m_character.GetComponent<ActiveItem_0>() != null);
+            m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
             //Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
             if (LevelManager.GetLevelNum() == LevelButtonsManager.numOfLevels - 1)
             {
@@ -129,7 +129,6 @@ public class GameplayManager : MonoBehaviour
         foreach (TrailRenderer trailRenderer in m_character.GetComponentsInChildren<TrailRenderer>())
             trailRenderer.Clear();
         ActiveItem_0.activateCounter = 0;
-        ActiveItem_2.activateCounter = 0;
     }
 
     public static float getTimer() { return m_timer; }

@@ -140,8 +140,6 @@ public class LevelManager
             options.Remove(ShopOption.SUPERCHARGE);
         if (GameplayManager.getCharacter().GetComponent<ActiveItem_1>())
             options.Remove(ShopOption.EBBTIDE);
-        if (GameplayManager.getCharacter().GetComponent<ActiveItem_2>())
-            options.Remove(ShopOption.TRAINBOUND);
         if (GameplayManager.getCharacter().GetComponent<ActiveItem_2_0>())
             options.Remove(ShopOption.CHISTRIKE);
         //Debug.Log("GetShopOptions curr level = " + levelNum);
@@ -178,10 +176,6 @@ public class LevelManager
 
     public class ShopOption
     {
-        public static readonly ShopOption TRAINBOUND = new ShopOption(ActiveItem_2.GetDescription(), ActiveItem_2.GetLogo(), ActiveItem_2.GetName(), delegate
-        {
-            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2>(KeyCode.K);
-        }, ActiveItem_2.GetTutorial());
         public static readonly ShopOption CHISTRIKE = new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), delegate
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K);
