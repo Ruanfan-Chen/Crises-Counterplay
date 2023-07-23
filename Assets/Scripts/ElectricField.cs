@@ -27,7 +27,8 @@ public class ElectricField : MonoBehaviour
     {
         Destroy(DrawCircle("ElectricField", position, radius, Color.yellow), traceDuration);
         yield return new WaitForSeconds(delay);
-        Destroy(Battery.Instantiate(position, Quaternion.identity), electricFieldDuration);
+        if (ActiveItem_0.GetBatterySpawn())
+            Destroy(Battery.Instantiate(position, Quaternion.identity), electricFieldDuration);
         GameObject electricField = Instantiate(Resources.Load<GameObject>(prefabPath), position + Vector3.forward * MapManager.MAP_DEPTH / 2.0f, Quaternion.identity);
         electricField.transform.localScale = new Vector3(radius * 2.0f, radius * 2.0f, 1.0f);
         electricField.tag = "Disposable";
