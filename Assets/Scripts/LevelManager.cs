@@ -73,7 +73,7 @@ public class LevelManager
         3 => false,
         4 => false,
         5 => true,
-        6 => true,
+        6 => false,
         7 => true,
         8 => true,
         9 => false,
@@ -156,7 +156,12 @@ public class LevelManager
         3 => new(),
         4 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
         5 => new(),
-        6 => new(),
+        6 => new()
+        {
+            [new Vector2(0.0f, 15.0f)] = new[] { typeof(Waterblight), typeof(EnemySpawn.AimlesslyMove) },
+            [new Vector2(0.0f, -15.0f)] = new[] { typeof(Waterblight), typeof(EnemySpawn.DirectlyMoveToward) },
+            [new Vector2(15.0f, 0.0f)] = new[] { typeof(Waterblight), typeof(EnemySpawn.MoveInCircle) }
+        },
         7 => new() { [new Vector2(0.0f, 15.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol), typeof(BlockEnemySpawn) } },
         8 => new(),
         9 => new(),

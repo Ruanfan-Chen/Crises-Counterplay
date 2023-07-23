@@ -5,6 +5,7 @@ using static Utility;
 
 public class ActiveItem_0 : ActiveItem
 {
+    private static readonly HashSet<ActiveItem_0> instances = new();
     private static string itemName = "Supercharge";
     private static string description = "Description Placeholder";
     private static string logoPath = "Sprites/Skills/Supercharge";
@@ -14,6 +15,17 @@ public class ActiveItem_0 : ActiveItem
     private float charge = 0.0f;
     private float cost = 5.0f;
     private float duration = 5.0f;
+    private void OnEnable()
+    {
+        instances.Add(this);
+    }
+
+    private void OnDisable()
+    {
+        instances.Remove(this);
+    }
+
+    public static bool GetBatterySpawn() { return instances.Count > 0; }
 
     public override void Activate()
     {

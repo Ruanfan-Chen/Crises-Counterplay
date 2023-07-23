@@ -14,7 +14,6 @@ public class HaltTimer : MonoBehaviour
         logo = new("HaltTimerLogo", new[] { typeof(SpriteRenderer) });
         logo.transform.SetParent(transform);
         logo.transform.localPosition = new(1.0f, -0.75f, 0.0f);
-        logo.transform.localScale = new(0.5f, 0.5f, 1.0f);
         logo.GetComponent<SpriteRenderer>().sprite = Resources.Load<Sprite>(spritePath);
     }
 
