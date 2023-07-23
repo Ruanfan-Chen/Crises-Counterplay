@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public abstract class PassiveItem : MonoBehaviour
@@ -31,28 +28,6 @@ public interface IDamageable
 public interface IOnDeathEffect
 {
     void OnDeath();
-}
-
-public interface IWeapon
-{
-    public float GetDamage();
-    public void SetDamage(float value);
-
-    public float GetRange();
-
-    public void SetRange(float value);
-
-    public float GetProjectileSpeed();
-
-    public void SetProjectileSpeed(float value);
-
-    public float GetAngleOfView();
-
-    public void SetAngleOfView(float value);
-
-    public float GetAttackInterval();
-
-    public void SetAttackInterval(float value);
 }
 
 public class Damage

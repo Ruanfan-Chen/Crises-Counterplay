@@ -4,6 +4,11 @@ using UnityEngine;
 
 public interface IInvulnerable { }
 
-public interface ISpeedBonus {
+public interface ISpeedBonus
+{
     float GetValue();
 }
+
+public interface IDisarmed { }
+
+public interface IMoveDisabled { }

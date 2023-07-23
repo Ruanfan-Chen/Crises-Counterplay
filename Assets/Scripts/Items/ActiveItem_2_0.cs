@@ -1,32 +1,29 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static UnityEngine.RuleTile.TilingRuleOutput;
 using static Utility;
 
 public class ActiveItem_2_0 : ActiveItem
 {
-    private static string itemName = "Chistrike";
-    private static string description = "Description Placeholder";
-    private static string logoPath = "Sprites/Skills/Chistrike";
-    private static string tutorialPath = "Sprites/Tutorial/Tutorial_Chistrike";
-    private static string notUsablePath = "Sprites/Skills/Chistrike";
+    private static readonly string itemName = "Gravity Grasp";
+    private static readonly string description = "Hold activation key to capture nearby trains. Trains will rotate around the character, dealing damage to the enemies. Controling more trains costs more enegy.";
+    private static readonly string usage = "Active: Hold K";
+    private static readonly string logoPath = "Sprites/Skills/Chistrike";
+    private static readonly string notUsablePath = "Sprites/Skills/Chistrike";
+    private readonly float viewRadius = 10.0f;
+    private readonly float maxCharge = 5.0f;
+    private readonly float costRate = 1.0f;
+    private readonly List<Captured> scripts = new();
+    private readonly float orbitRadius = 5.0f;
     private GameObject view;
-    private CircleCollider2D viewTrigger;
-    private float viewRadius = 10.0f;
-    private float maxCharge = 5.0f;
     private float charge = 5.0f;
-    private float costRate = 1.0f;
-    private List<Captured> scripts = new();
-    private float orbitRadius = 5.0f;
 
     void OnEnable()
     {
         view = new GameObject("CaptureView");
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, new Quaternion());
-        viewTrigger = view.AddComponent<CircleCollider2D>();
+        CircleCollider2D viewTrigger = view.AddComponent<CircleCollider2D>();
         viewTrigger.radius = viewRadius;
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
@@ -59,45 +56,36 @@ public class ActiveItem_2_0 : ActiveItem
         scripts.Clear();
     }
 
-    public override float GetChargeProgress()
+    public override float GetChargeProgress() => charge / maxCharge;
+
+    public override bool IsUsable() => charge > 0.0f && OverlapVehicle().Count() > 0;
+
+    public static string GetDescription() => description;
+
+    public static Sprite GetLogo() => Resources.Load<Sprite>(logoPath);
+
+    public static string GetName() => itemName;
+
+    public static string GetUsage() => usage;
+
+    public override Sprite GetUISprite() => IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
+
+    public static GameObject getShopOption()
     {
-        return charge / maxCharge;
+        GameObject shopOption = ShopOption.Instantiate();
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(GetLogo());
+        script.SetItemName(GetName());
+        script.SetUsage(GetUsage());
+        script.SetDescription(GetDescription());
+        script.SetOnClickAction(() =>
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K);
+        });
+        return shopOption;
     }
 
-    public override bool IsUsable()
-    {
-        return charge > 0.0f && OverlapVehicle().Count() > 0;
-    }
-
-    public static string GetDescription()
-    {
-        return description;
-    }
-
-    public static Sprite GetLogo()
-    {
-        return Resources.Load<Sprite>(logoPath);
-    }
-
-    public static string GetName()
-    {
-        return itemName;
-    }
-
-    public static Sprite GetTutorial()
-    {
-        return Resources.Load<Sprite>(tutorialPath);
-    }
-
-    public override Sprite GetUISprite()
-    {
-        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
-    }
-
-    private IEnumerable<GameObject> OverlapVehicle()
-    {
-        return OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
-    }
+    private IEnumerable<GameObject> OverlapVehicle() => OverlapGameObject(view, collider => collider.GetComponent<Vehicle>());
 
     private void CaptureNearbyVehicles()
     {

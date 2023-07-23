@@ -6,15 +6,15 @@ using static Utility;
 public class ActiveItem_0 : ActiveItem
 {
     private static readonly HashSet<ActiveItem_0> instances = new();
-    private static string itemName = "Supercharge";
-    private static string description = "Description Placeholder";
-    private static string logoPath = "Sprites/Skills/Supercharge";
-    private static string tutorialPath = "Sprites/Tutorial/Tutorial_Supercharge";
-    private static string notUsablePath = "Sprites/Skills/Supercharge";
+    private static readonly string itemName = "Supercharge";
+    private static readonly string description = "Electricity zones now generate batteries which can charge this item. Releasing charged energy gains move speed bonus and deals damage to enemies colliding. Disarmed during activation.";
+    private static readonly string usage = "Active: Press J";
+    private static readonly string logoPath = "Sprites/Skills/Supercharge";
+    private static readonly string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
     private int charge = 0;
     private float chargeBuffer = 0.0f;
-    private float duration = 5.0f;
+    private readonly float duration = 5.0f;
     private void OnEnable()
     {
         instances.Add(this);
@@ -40,40 +40,19 @@ public class ActiveItem_0 : ActiveItem
 
     public override void Deactivate() { }
 
-    public override float GetChargeProgress()
-    {
-        return charge + chargeBuffer;
-    }
+    public override float GetChargeProgress() => charge + chargeBuffer;
 
-    public static string GetDescription()
-    {
-        return description;
-    }
+    public static string GetDescription() => description;
 
-    public static Sprite GetLogo()
-    {
-        return Resources.Load<Sprite>(logoPath);
-    }
+    public static Sprite GetLogo() => Resources.Load<Sprite>(logoPath);
 
-    public static string GetName()
-    {
-        return itemName;
-    }
+    public static string GetName() => itemName;
 
-    public static Sprite GetTutorial()
-    {
-        return Resources.Load<Sprite>(tutorialPath);
-    }
+    public static string GetUsage() => usage;
 
-    public override bool IsUsable()
-    {
-        return charge > 0 && !GetComponent<Buff>();
-    }
+    public override bool IsUsable() => charge > 0 && !GetComponent<Buff>();
 
-    public override Sprite GetUISprite()
-    {
-        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
-    }
+    public override Sprite GetUISprite() => IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
 
     public void Charge()
     {
@@ -94,7 +73,22 @@ public class ActiveItem_0 : ActiveItem
         chargeBuffer -= value;
     }
 
-    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
+    public static GameObject getShopOption()
+    {
+        GameObject shopOption = ShopOption.Instantiate();
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(GetLogo());
+        script.SetItemName(GetName());
+        script.SetUsage(GetUsage());
+        script.SetDescription(GetDescription());
+        script.SetOnClickAction(() =>
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_0>(KeyCode.J);
+        });
+        return shopOption;
+    }
+
+    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus, IDisarmed
     {
         private float damage = 50.0f;
         private float speedBonus = 5.0f;

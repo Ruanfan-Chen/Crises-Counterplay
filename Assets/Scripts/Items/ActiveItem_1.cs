@@ -1,18 +1,16 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class ActiveItem_1 : ActiveItem
 {
-    private static string itemName = "EbbTide";
-    private static string description = "Description Placeholder";
-    private static string logoPath = "Sprites/Skills/Ebbtide";
-    private static string tutorialPath = "Sprites/Tutorial/Tutorial_EbbTide";
-    private static string notUsablePath = "Sprites/Skills/Ebbtide";
+    private static readonly string itemName = "Surf Mania";
+    private static readonly string description = "Can be activated when having water trace, moving back along trace. Gains move speed bonus and deals damage to enemies colliding during activation.";
+    private static readonly string usage = "Active: Press L";
+    private static readonly string logoPath = "Sprites/Skills/Ebbtide";
+    private static readonly string notUsablePath = "Sprites/Skills/Ebbtide";
 
-    private float speed = 10.0f;
+    private readonly float speed = 10.0f;
     public override void Activate()
     {
         if (IsUsable())
@@ -25,53 +23,52 @@ public class ActiveItem_1 : ActiveItem
     private IEnumerator Back(List<Vector3> positions)
     {
         Buff buff = gameObject.AddComponent<Buff>();
+        float s = 0.0f;
         for (int i = positions.Count - 1; i > 0; i--)
         {
-            Vector3 displacement = positions[i - 1] - positions[i];
-            transform.position = positions[i];
-            yield return new WaitForSeconds(displacement.magnitude / speed);
+            s += (positions[i - 1] - positions[i]).magnitude;
+            transform.position += positions[i - 1] - positions[i];
+            if (s > speed * Time.deltaTime)
+            {
+                s -= speed * Time.deltaTime;
+                yield return null;
+            }
         }
         Destroy(buff);
     }
 
     public override void Deactivate() { }
 
-    public override float GetChargeProgress()
+    public override float GetChargeProgress() => 1.0f;
+
+    public override Sprite GetUISprite() => IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
+
+    public override bool IsUsable() => GetComponent<Waterblight>() != null && GetComponent<Buff>() == null;
+
+    public static string GetDescription() => description;
+
+    public static Sprite GetLogo() => Resources.Load<Sprite>(logoPath);
+
+    public static string GetName() => itemName;
+
+    public static string GetUsage() => usage;
+
+    public static GameObject getShopOption()
     {
-        return 1.0f;
+        GameObject shopOption = ShopOption.Instantiate();
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(GetLogo());
+        script.SetItemName(GetName());
+        script.SetUsage(GetUsage());
+        script.SetDescription(GetDescription());
+        script.SetOnClickAction(() =>
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_1>(KeyCode.L);
+        });
+        return shopOption;
     }
 
-    public override Sprite GetUISprite()
-    {
-        return IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
-    }
-
-    public override bool IsUsable()
-    {
-        return GetComponent<Waterblight>() != null;
-    }
-
-    public static string GetDescription()
-    {
-        return description;
-    }
-
-    public static Sprite GetLogo()
-    {
-        return Resources.Load<Sprite>(logoPath);
-    }
-
-    public static string GetName()
-    {
-        return itemName;
-    }
-
-    public static Sprite GetTutorial()
-    {
-        return Resources.Load<Sprite>(tutorialPath);
-    }
-
-    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus
+    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus, IMoveDisabled
     {
         private float damage = 50.0f;
         private float speedBonus = 5.0f;

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Utility;
 
-public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
+public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier
 {
     private static string itemName = "Name Placeholder";
     private static string description = "Description Placeholder";
@@ -15,26 +15,6 @@ public class PassiveItem_Weapon_2 : PassiveItem, IProjectileModifier, IWeapon
     private float explosionDelay = 3.0f;
     private float explosionRadius = 3.0f;
     private float attackTimer = 0.0f;
-
-
-    public float GetDamage() { return damage; }
-    public void SetDamage(float value) { damage = value; }
-
-    public float GetRange() { return range; }
-
-    public void SetRange(float value) { range = value; }
-
-    public float GetProjectileSpeed() { return projectileSpeed; }
-
-    public void SetProjectileSpeed(float value) { projectileSpeed = value; }
-
-    public float GetAngleOfView() { return 120.0f; }
-
-    public void SetAngleOfView(float value) { }
-
-    public float GetAttackInterval() { return attackInterval; }
-
-    public void SetAttackInterval(float value) { attackInterval = value; }
 
     void Update()
     {

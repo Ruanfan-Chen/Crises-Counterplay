@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class LevelManager
 {
@@ -116,35 +117,22 @@ public class LevelManager
         _ => false
     };
 
-    public static IReadOnlyList<ShopOption> GetShopOptions()
+    public static IReadOnlyList<OptionConfig> GetShopConfig() => levelNum switch
     {
-        List<ShopOption> options = levelNum switch
-        {
-            0 => new() { ShopOption.CHISTRIKE },
-            1 => new(),
-            2 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            3 => new() { ShopOption.SUPERCHARGE },
-            4 => new(),
-            5 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            6 => new() { ShopOption.EBBTIDE },
-            7 => new(),
-            8 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            9 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            10 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            11 => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT },
-            _ => new() { new ShopOption(UnityEngine.Random.Range(15, 36)), ShopOption.TOXICFOOTPRINT }
-        };
-        if (GameplayManager.getCharacter().GetComponent<PassiveItem_0>())
-            options.Remove(ShopOption.TOXICFOOTPRINT);
-        if (GameplayManager.getCharacter().GetComponent<ActiveItem_0>())
-            options.Remove(ShopOption.SUPERCHARGE);
-        if (GameplayManager.getCharacter().GetComponent<ActiveItem_1>())
-            options.Remove(ShopOption.EBBTIDE);
-        if (GameplayManager.getCharacter().GetComponent<ActiveItem_2_0>())
-            options.Remove(ShopOption.CHISTRIKE);
-        //Debug.Log("GetShopOptions curr level = " + levelNum);
-        return options;
-    }
+            0 => new List<OptionConfig>() { OptionConfig.GRAVITYGRASP },
+            1 => new List<OptionConfig>(),
+            2 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
+            3 => new List<OptionConfig>() { OptionConfig.SUPERCHARGE },
+            4 => new List<OptionConfig>(),
+            5 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
+            6 => new List<OptionConfig>() { OptionConfig.SURFMANIA },
+            7 => new List<OptionConfig>(),
+            8 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
+            9 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
+            10 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
+            11 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
+            _ => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE }
+    };
 
     public static IReadOnlyDictionary<Vector2, Type[]> GetInitEneimies() => levelNum switch
     {
@@ -173,79 +161,6 @@ public class LevelManager
         levelNum = 0;
     }
 
-
-    public class ShopOption
-    {
-        public static readonly ShopOption CHISTRIKE = new ShopOption(ActiveItem_2_0.GetDescription(), ActiveItem_2_0.GetLogo(), ActiveItem_2_0.GetName(), delegate
-        {
-            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_2_0>(KeyCode.K);
-        }, ActiveItem_2_0.GetTutorial());
-        public static readonly ShopOption TOXICFOOTPRINT = new ShopOption(PassiveItem_0.GetDescription(), PassiveItem_0.GetLogo(), PassiveItem_0.GetName(), delegate
-        {
-            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>();
-        }, null);
-        public static readonly ShopOption SUPERCHARGE = new ShopOption(ActiveItem_0.GetDescription(), ActiveItem_0.GetLogo(), ActiveItem_0.GetName(), delegate
-        {
-            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_0>(KeyCode.J);
-        }, ActiveItem_0.GetTutorial());
-        public static readonly ShopOption EBBTIDE = new ShopOption(ActiveItem_1.GetDescription(), ActiveItem_1.GetLogo(), ActiveItem_1.GetName(), delegate
-        {
-            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<ActiveItem_1>(KeyCode.L);
-        }, ActiveItem_1.GetTutorial());
-        private readonly string description;
-        private readonly Sprite logo;
-        private readonly string name;
-        private readonly Action action;
-        private readonly Sprite tutorial;
-
-        public ShopOption(string description, Sprite logo, string name, Action action, Sprite tutorial)
-        {
-            this.description = description;
-            this.logo = logo;
-            this.name = name;
-            this.action = action;
-            this.tutorial = tutorial;
-        }
-
-        public ShopOption(int hpRecovery)
-        {
-            description = "+" + hpRecovery.ToString() + " HP";
-            logo = Resources.Load<Sprite>("Sprites/HPRecovery");
-            name = "+" + hpRecovery.ToString() + " HP";
-            action = delegate
-            {
-                Character script = GameplayManager.getCharacter().GetComponent<Character>();
-                script.SetHealth(Mathf.Clamp(script.GetHealth() + hpRecovery, 0.0f, script.GetMaxHealth()));
-            };
-            tutorial = null;
-        }
-
-        public string GetDescription()
-        {
-            return description;
-        }
-
-        public Sprite GetLogo()
-        {
-            return logo;
-        }
-
-        public string GetName()
-        {
-            return name;
-        }
-
-        public Action GetAction()
-        {
-            return action;
-        }
-
-        public Sprite GetTutorial()
-        {
-            return tutorial;
-        }
-    }
-
     public static void SetLevelNum(int level)
     {
         levelNum = level;
@@ -254,5 +169,21 @@ public class LevelManager
     public static int GetLevelNum()
     {
         return levelNum;
+    }
+
+    public class OptionConfig
+    {
+        public static readonly OptionConfig HPRECOVERY = new OptionConfig(() => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)));
+        public static readonly OptionConfig SUPERCHARGE = new OptionConfig(() => ActiveItem_0.getShopOption());
+        public static readonly OptionConfig SURFMANIA = new OptionConfig(() => ActiveItem_1.getShopOption());
+        public static readonly OptionConfig GRAVITYGRASP = new OptionConfig(() => ActiveItem_2_0.getShopOption());
+        public static readonly OptionConfig RANDOMPASSIVE = new OptionConfig(() => PassiveItem_0.getShopOption());
+        public static readonly OptionConfig RANDOMWEAPON = new OptionConfig(() => ShopOption.HPRecovery(1000));
+
+        private readonly Func<GameObject> generator;
+
+        private OptionConfig(Func<GameObject> generator) => this.generator = generator;
+
+        public GameObject Instantiate() => generator();
     }
 }

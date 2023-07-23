@@ -2,13 +2,14 @@ using UnityEngine;
 using static Utility;
 public class PassiveItem_0 : PassiveItem
 {
-    private static string itemName = "Toxic Footprint";
-    private static string description = "Description Placeholder";
-    private static string logoPath = "Sprites/Skills/ToxicFootprint";
+    private static readonly string itemName = "Toxic Footprint";
+    private static readonly string description = "Character leaves a trail of toxic footprints. Footprint fades over time and deals damage to enemies in contact.";
+    private static readonly string usage = "Passive";
+    private static readonly string logoPath = "Sprites/Items/Toxic Footprint";
+    private readonly float width = 1.0f;
+    private readonly float trailDuration = 5.0f;
     private GameObject trailObj;
     private Color color = Color.green;
-    private float width = 1.0f;
-    private float trailDuration = 5.0f;
 
 
     private void OnEnable()
@@ -33,19 +34,27 @@ public class PassiveItem_0 : PassiveItem
         Destroy(trailObj);
     }
 
-    public static string GetDescription()
-    {
-        return description;
-    }
+    public static string GetDescription() => description;
 
-    public static Sprite GetLogo()
-    {
-        return Resources.Load<Sprite>(logoPath);
-    }
+    public static Sprite GetLogo() => Resources.Load<Sprite>(logoPath);
 
-    public static string GetName()
+    public static string GetName() => itemName;
+
+    public static string GetUsage() => usage;
+
+    public static GameObject getShopOption()
     {
-        return itemName;
+        GameObject shopOption = ShopOption.Instantiate();
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(GetLogo());
+        script.SetItemName(GetName());
+        script.SetUsage(GetUsage());
+        script.SetDescription(GetDescription());
+        script.SetOnClickAction(() =>
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_0>();
+        });
+        return shopOption;
     }
 
     private class Foorprint:MonoBehaviour

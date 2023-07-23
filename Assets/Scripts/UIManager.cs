@@ -26,57 +26,15 @@ public static class UIManager
             Object.Destroy(m_shopPanel.transform.GetChild(i).gameObject);
     }
 
-    public static void SetShopOptions(IReadOnlyList<LevelManager.ShopOption> shopOptions)
+    public static void SetShopOptions(IReadOnlyList<LevelManager.OptionConfig> optionConfigs)
     {
-        for (int i = 0; i < shopOptions.Count; i++)
+        for (int i = 0; i < optionConfigs.Count; i++)
         {
-            LevelManager.ShopOption option = shopOptions[i];
-            float xAnchor = (i + 1.0f) / (shopOptions.Count + 1);
-
-            GameObject logo = new(option.GetName() + "Logo");
-            logo.AddComponent<RectTransform>();
-            logo.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
-            logo.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.8f);
-            logo.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.8f);
-            logo.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            logo.AddComponent<Image>().sprite = option.GetLogo();
-            logo.AddComponent<Button>().onClick.AddListener(() =>
-            {
-                option.GetAction()();
-                ClearShopPanel();
-                GameplayManager.GetGoogleSender().SendMatrix4(option.GetName());
-                GameplayManager.CloseShop();
-            });
-
-
-            GameObject label = new(option.GetName() + "Label");
-            label.AddComponent<RectTransform>();
-            label.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
-            label.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.6f);
-            label.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.6f);
-            label.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            label.AddComponent<TextMeshProUGUI>().text = option.GetName();
-
-
-            GameObject tutorial = new(option.GetName() + "Tutorial");
-            tutorial.AddComponent<RectTransform>();
-            tutorial.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
-            tutorial.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.4f);
-            tutorial.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.4f);
-            tutorial.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            Sprite sprite = option.GetTutorial();
-            tutorial.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 235.0f);
-            tutorial.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Vertical, 125.0f);
-            tutorial.AddComponent<Image>().sprite = sprite;
-
-
-            GameObject description = new(option.GetName() + "Description");
-            description.AddComponent<RectTransform>();
-            description.GetComponent<RectTransform>().parent = m_shopPanel.GetComponent<RectTransform>();
-            description.GetComponent<RectTransform>().anchorMin = new(xAnchor, 0.2f);
-            description.GetComponent<RectTransform>().anchorMax = new(xAnchor, 0.2f);
-            description.GetComponent<RectTransform>().anchoredPosition = Vector2.zero;
-            //description.AddComponent<TextMeshProUGUI>().text = option.GetDescription();
+            GameObject option = optionConfigs[i].Instantiate();
+            float xAnchor = (i + 1.0f) / (optionConfigs.Count + 1);
+            option.GetComponent<RectTransform>().SetParent(m_shopPanel.transform, false);
+            option.GetComponent<RectTransform>().anchorMin = new Vector2(xAnchor, 0.5f);
+            option.GetComponent<RectTransform>().anchorMax = new Vector2(xAnchor, 0.5f);
         }
     }
 

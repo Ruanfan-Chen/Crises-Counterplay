@@ -4,7 +4,7 @@ using System.Linq;
 using UnityEngine;
 using static Utility;
 
-public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
+public class PassiveItem_Weapon_3 : PassiveItem
 {
     private static string prefabPath = "Prefabs/Footprint";
     private static string itemName = "Name Placeholder";
@@ -17,25 +17,6 @@ public class PassiveItem_Weapon_3 : PassiveItem, IWeapon
     private float range = 10.0f;
     private float angleOfView = 120.0f;
     private int interpolationDensity = 4;
-
-    public float GetDamage() { return projectilScript.GetContactDPS(); }
-    public void SetDamage(float value) { projectilScript.SetContactDPS(value); }
-
-    public float GetRange() { return range; }
-
-    public void SetRange(float value) { range = value; UpdateCollider(); }
-
-    public float GetProjectileSpeed() { return projectilScript.GetSpeed(); }
-
-    public void SetProjectileSpeed(float value) { projectilScript.SetSpeed(value); }
-
-    public float GetAngleOfView() { return angleOfView; }
-
-    public void SetAngleOfView(float value) { angleOfView = value; UpdateCollider(); }
-
-    public float GetAttackInterval() { return float.NaN; }
-
-    public void SetAttackInterval(float value) { }
 
     private void OnEnable()
     {

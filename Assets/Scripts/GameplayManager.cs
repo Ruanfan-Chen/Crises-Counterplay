@@ -9,6 +9,7 @@ public class GameplayManager : MonoBehaviour
     private static GameObject m_character;
     private static float m_timer;
     private static SendToGoogle m_googleSender;
+    private static Disarmed characterDisarmed;
 
     // Start is called before the first frame update
     void Start()
@@ -65,12 +66,9 @@ public class GameplayManager : MonoBehaviour
             }
             else
             {
-                if (LevelManager.GetShopOptions().Count > 0)
+                if (LevelManager.GetShopConfig().Count > 0)
                 {
-                    // var task = OpenShop();
                     OpenShop();
-
-
                 }
                 else
                 {
@@ -99,10 +97,12 @@ public class GameplayManager : MonoBehaviour
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
-            GameObject enemy = Enemy.Instantiate(kvp.Key, Quaternion.identity, kvp.Value);
+            Enemy.Instantiate(kvp.Key, Quaternion.identity, kvp.Value);
         }
-        //Debug.Log("curr level = " + LevelManager.GetLevelNum());
-        //Debug.Log("load complete");
+        if (LevelManager.GetCharaterDisarm() && characterDisarmed == null)
+            characterDisarmed = getCharacter().AddComponent<Disarmed>();
+        if (!LevelManager.GetCharaterDisarm() && characterDisarmed != null)
+            Destroy(characterDisarmed);
     }
 
     private static void GameOver()
@@ -146,7 +146,7 @@ public class GameplayManager : MonoBehaviour
     {
         Pause();
         UIManager.m_shopPanel.SetActive(true);
-        UIManager.SetShopOptions(LevelManager.GetShopOptions());
+        UIManager.SetShopOptions(LevelManager.GetShopConfig());
     }
 
     public static void CloseShop()

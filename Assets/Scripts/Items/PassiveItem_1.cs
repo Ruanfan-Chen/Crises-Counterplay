@@ -1,13 +1,12 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PassiveItem_1 : PassiveItem
 {
     private static readonly string prefabPath = "Prefabs/BlackHole";
     private static readonly string itemName = "BlackHole";
-    private static readonly string description = "Description Placeholder";
-    private static readonly string logoPath = "Sprites/Skills/Placeholder";
+    private static readonly string description = "Summon three blackholes around the character. Blackholes will block projectiles.";
+    private static readonly string usage = "Passive";
+    private static readonly string logoPath = "Sprites/Items/Blackhole";
     private static readonly float radius = 1.25f;
     private static readonly float angularVelocity = 15.0f;
     private float angularDisplacement;
@@ -39,18 +38,26 @@ public class PassiveItem_1 : PassiveItem
                 Destroy(blackHoles[i]);
     }
 
-    public static string GetDescription()
-    {
-        return description;
-    }
+    public static string GetDescription() => description;
 
-    public static Sprite GetLogo()
-    {
-        return Resources.Load<Sprite>(logoPath);
-    }
+    public static Sprite GetLogo() => Resources.Load<Sprite>(logoPath);
 
-    public static string GetName()
+    public static string GetName() => itemName;
+
+    public static string GetUsage() => usage;
+
+    public static GameObject getShopOption()
     {
-        return itemName;
+        GameObject shopOption = ShopOption.Instantiate();
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(GetLogo());
+        script.SetItemName(GetName());
+        script.SetUsage(GetUsage());
+        script.SetDescription(GetDescription());
+        script.SetOnClickAction(() =>
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_1>();
+        });
+        return shopOption;
     }
 }

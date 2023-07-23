@@ -35,6 +35,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMoveSpeed(float value) { moveSpeed = value; }
 
+    public void Heal(int value) { health = Mathf.Clamp(health + value, 0.0f, maxHealth); }
+
     public void ReceiveDamage(Damage damage)
     {
         if (GetComponent<IInvulnerable>() != null) return;
@@ -122,11 +124,18 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     {
         healthBar.SetValue(health / maxHealth);
         // Move
-        if (GetComponent<Waterblight>())
-            velocity = Vector3.MoveTowards(velocity, GetMoveSpeed() * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized, GetMoveSpeed() * Time.deltaTime / 0.5f);
-        else
-            velocity = GetMoveSpeed() * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
-        transform.Translate(Time.deltaTime * velocity);
+        if (GetComponent<IMoveDisabled>() == null)
+        {
+            if (GetComponent<Waterblight>())
+            {
+                velocity = Vector3.MoveTowards(velocity, GetMoveSpeed() * new Vector3(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized, GetMoveSpeed() * Time.deltaTime / 0.5f);
+            }
+            else
+            {
+                velocity = GetMoveSpeed() * new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical")).normalized;
+            }
+            transform.Translate(Time.deltaTime * velocity);
+        }
         foreach (KeyValuePair<KeyCode, ActiveItem> keyValuePair in activeItems.GetTUDict())
         {
             if (Input.GetKeyDown(keyValuePair.Key))
