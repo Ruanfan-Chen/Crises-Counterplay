@@ -107,6 +107,7 @@ public class GameplayManager : MonoBehaviour
 
     private static void GameOver()
     {
+        CrisisManager.Deactivate();
         Clear();
         LevelManager.Reset();
         LevelButtonsManager.ResetCompletedLevels();
