@@ -15,6 +15,7 @@ public class ActiveItem_2_0 : ActiveItem
     private readonly float costRate = 1.0f;
     private readonly List<Captured> scripts = new();
     private readonly float orbitRadius = 5.0f;
+    private readonly float capturedSpeed = 35.0f;
     private GameObject view;
     private float charge;
 
@@ -104,10 +105,11 @@ public class ActiveItem_2_0 : ActiveItem
             if (vehicle.GetComponent<Vehicle>().GetHostility())
             {
                 vehicle.GetComponent<Vehicle>().SetHostility(false);
-                Captured script = vehicle.AddComponent<Captured>();
-                script.SetCenter(gameObject);
-                script.SetOrbitRadius(orbitRadius);
-                scripts.Add(script);
+                vehicle.GetComponent<Vehicle>().SetSpeed(capturedSpeed);
+                vehicle.AddComponent<Captured>();
+                vehicle.GetComponent<Captured>().SetCenter(gameObject);
+                vehicle.GetComponent<Captured>().SetOrbitRadius(orbitRadius);
+                scripts.Add(vehicle.GetComponent<Captured>());
             }
         };
     }
