@@ -123,7 +123,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GiveItem<PassiveItem_Weapon_0>();
         GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
     }
 

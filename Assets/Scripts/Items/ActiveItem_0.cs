@@ -13,7 +13,7 @@ public class ActiveItem_0 : ActiveItem
     private static readonly string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
     private int charge;
-    private float chargeBuffer = 0.0f;
+    private float displayedCharge;
     private readonly float duration = 5.0f;
 
     void Start()
@@ -21,9 +21,15 @@ public class ActiveItem_0 : ActiveItem
         ResetCharge();
     }
 
+    void Update()
+    {
+        displayedCharge = Mathf.MoveTowards(displayedCharge, charge, Time.deltaTime * 2.0f);
+    }
+
     public override void ResetCharge()
     {
         charge = 0;
+        displayedCharge = 0.0f;
     }
 
     private void OnEnable()
@@ -44,14 +50,13 @@ public class ActiveItem_0 : ActiveItem
         {
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
             charge--;
-            StartCoroutine(AddChargeBuffer(1.0f, duration));
             activateCounter++;
         }
     }
 
     public override void Deactivate() { }
 
-    public override float GetChargeProgress() => charge + chargeBuffer;
+    public override float GetChargeProgress() => displayedCharge;
 
     public static string GetDescription() => description;
 
@@ -68,20 +73,6 @@ public class ActiveItem_0 : ActiveItem
     public void Charge()
     {
         charge++;
-        StartCoroutine(AddChargeBuffer(-1.0f, 0.5f));
-    }
-
-    private IEnumerator AddChargeBuffer(float value, float duration)
-    {
-        chargeBuffer += value;
-        float changeRate = value / duration;
-        while (Mathf.Abs(value) > Mathf.Abs(changeRate) * Time.deltaTime)
-        {
-            value -= changeRate * Time.deltaTime;
-            chargeBuffer -= changeRate * Time.deltaTime;
-            yield return null;
-        }
-        chargeBuffer -= value;
     }
 
     public static GameObject GetShopOption()
