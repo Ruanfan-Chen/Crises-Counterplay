@@ -12,9 +12,20 @@ public class ActiveItem_0 : ActiveItem
     private static readonly string logoPath = "Sprites/Skills/Supercharge";
     private static readonly string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
-    private int charge = 0;
+    private int charge;
     private float chargeBuffer = 0.0f;
     private readonly float duration = 5.0f;
+
+    void Start()
+    {
+        ResetCharge();
+    }
+
+    public override void ResetCharge()
+    {
+        charge = 0;
+    }
+
     private void OnEnable()
     {
         instances.Add(this);

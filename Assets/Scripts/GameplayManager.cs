@@ -128,6 +128,8 @@ public class GameplayManager : MonoBehaviour
         m_character.transform.position = Vector3.zero;
         foreach (TrailRenderer trailRenderer in m_character.GetComponentsInChildren<TrailRenderer>())
             trailRenderer.Clear();
+        foreach (ActiveItem item in m_character.GetComponent<Character>().GetActiveItemKeyCodePairs().Keys.ToList())
+            item.ResetCharge();
         ActiveItem_0.activateCounter = 0;
     }
 

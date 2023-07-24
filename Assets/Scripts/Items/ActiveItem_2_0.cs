@@ -16,7 +16,17 @@ public class ActiveItem_2_0 : ActiveItem
     private readonly List<Captured> scripts = new();
     private readonly float orbitRadius = 5.0f;
     private GameObject view;
-    private float charge = 5.0f;
+    private float charge;
+
+    void Start()
+    {
+        ResetCharge();
+    }
+
+    public override void ResetCharge()
+    {
+        charge = 5.0f;
+    }
 
     void OnEnable()
     {

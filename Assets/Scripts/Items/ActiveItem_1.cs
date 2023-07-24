@@ -11,6 +11,7 @@ public class ActiveItem_1 : ActiveItem
     private static readonly string notUsablePath = "Sprites/Skills/Ebbtide";
 
     private readonly float speed = 10.0f;
+    public override void ResetCharge() { }
     public override void Activate()
     {
         if (IsUsable())
