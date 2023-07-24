@@ -40,7 +40,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public void ReceiveDamage(Damage damage)
     {
         if (GetComponent<IInvulnerable>() != null) return;
-        if (GetComponent<PassiveItem_2>() && GetComponent<PassiveItem_2>().Consume())
+        if (health <= damage.GetValue() && GetComponent<PassiveItem_2>() && GetComponent<PassiveItem_2>().Consume())
         {
             health += maxHealth / 2;
         }
