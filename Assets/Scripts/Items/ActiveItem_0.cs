@@ -73,7 +73,7 @@ public class ActiveItem_0 : ActiveItem
         chargeBuffer -= value;
     }
 
-    public static GameObject getShopOption()
+    public static GameObject GetShopOption()
     {
         GameObject shopOption = ShopOption.Instantiate();
         ShopOption script = shopOption.GetComponent<ShopOption>();

@@ -10,11 +10,7 @@ public class Bomb : MonoBehaviour
     private GameObject source;
     private bool hostility;
 
-    public GameObject GetSource() => source;
-
     public void SetSource(GameObject value) => source = value;
-
-    public bool GetHostility() => hostility;
 
     public void SetHostility(bool value) => hostility = value;
 

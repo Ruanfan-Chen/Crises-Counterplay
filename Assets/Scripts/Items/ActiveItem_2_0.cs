@@ -70,7 +70,7 @@ public class ActiveItem_2_0 : ActiveItem
 
     public override Sprite GetUISprite() => IsUsable() ? GetLogo() : Resources.Load<Sprite>(notUsablePath);
 
-    public static GameObject getShopOption()
+    public static GameObject GetShopOption()
     {
         GameObject shopOption = ShopOption.Instantiate();
         ShopOption script = shopOption.GetComponent<ShopOption>();

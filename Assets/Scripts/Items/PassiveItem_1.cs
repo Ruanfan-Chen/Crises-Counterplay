@@ -46,7 +46,7 @@ public class PassiveItem_1 : PassiveItem
 
     public static string GetUsage() => usage;
 
-    public static GameObject getShopOption()
+    public static GameObject GetShopOption()
     {
         GameObject shopOption = ShopOption.Instantiate();
         ShopOption script = shopOption.GetComponent<ShopOption>();

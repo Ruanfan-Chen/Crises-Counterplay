@@ -188,12 +188,12 @@ public class LevelManager
 
     public class OptionConfig
     {
-        public static readonly OptionConfig HPRECOVERY = new OptionConfig(() => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)));
-        public static readonly OptionConfig SUPERCHARGE = new OptionConfig(() => ActiveItem_0.getShopOption());
-        public static readonly OptionConfig SURFMANIA = new OptionConfig(() => ActiveItem_1.getShopOption());
-        public static readonly OptionConfig GRAVITYGRASP = new OptionConfig(() => ActiveItem_2_0.getShopOption());
-        public static readonly OptionConfig RANDOMPASSIVE = new OptionConfig(() => PassiveItem_0.getShopOption());
-        public static readonly OptionConfig RANDOMWEAPON = new OptionConfig(() => ShopOption.HPRecovery(1000));
+        public static readonly OptionConfig HPRECOVERY = new(() => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)));
+        public static readonly OptionConfig SUPERCHARGE = new(() => ActiveItem_0.GetShopOption());
+        public static readonly OptionConfig SURFMANIA = new(() => ActiveItem_1.GetShopOption());
+        public static readonly OptionConfig GRAVITYGRASP = new(() => ActiveItem_2_0.GetShopOption());
+        public static readonly OptionConfig RANDOMPASSIVE = new(() => PassiveItem_0.GetShopOption());
+        public static readonly OptionConfig RANDOMWEAPON = new(() => ShopOption.HPRecovery(1000));
 
         private readonly Func<GameObject> generator;
 

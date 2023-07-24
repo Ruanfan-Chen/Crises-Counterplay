@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -6,139 +5,75 @@ using static Utility;
 
 public class PassiveItem_Weapon_3 : PassiveItem
 {
-    private static string prefabPath = "Prefabs/Footprint";
-    private static string itemName = "Name Placeholder";
-    private static string description = "Description Placeholder";
-    private static string logoPath = "Resources/Placeholder";
-    private GameObject projectile;
-    private ProjectileBehavior projectilScript;
+    private static readonly string itemName = "Ancient Boomerang";
+    private static readonly string description = "The character throws the boomerang to a nearby enemy. Once upon hit, the boomerang will return. The character is unable to attack until the boomerang returns.";
+    private static readonly string usage = "Passive: Weapon";
+    private static readonly string logoPath = "Sprites/Items/Boomerang";
     private GameObject view;
-    private PolygonCollider2D viewTrigger;
+    private GameObject boomerang;
     private float range = 10.0f;
-    private float angleOfView = 120.0f;
-    private int interpolationDensity = 4;
+    private float speed = 7.5f;
+    private Transform target;
+
+    void Update()
+    {
+        boomerang.transform.position = Vector3.MoveTowards(boomerang.transform.position, target.position, speed * Time.deltaTime);
+        if (boomerang.transform.position == target.position || (boomerang.transform.position - transform.position).magnitude > range)
+            UpdateTarget();
+    }
 
     private void OnEnable()
     {
-        view = new GameObject("WeaponView");
+        view = new GameObject(itemName + "WeaponView");
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
-        viewTrigger = view.AddComponent<PolygonCollider2D>();
+        CircleCollider2D viewTrigger = view.AddComponent<CircleCollider2D>();
         viewTrigger.isTrigger = true;
+        viewTrigger.radius = range;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
-        UpdateCollider();
-        projectile = Instantiate(Resources.Load<GameObject>(prefabPath), transform.position, transform.rotation);
-        projectile.transform.localScale = new Vector3(0.5f, 0.5f, 1.0f);
-        projectilScript = projectile.AddComponent<ProjectileBehavior>();
-        projectilScript.SetController(this);
-        projectilScript.SetHostility(GetComponent<Character>().GetHostility());
-        projectilScript.SetTarget(gameObject);
+
+        boomerang = Boomerang.Instantiate(transform.position, Quaternion.identity, gameObject, GetComponent<Character>().GetHostility());
     }
 
     private void OnDisable()
     {
-        Destroy(projectile);
-        view = null;
-        viewTrigger = null;
-        projectile = null;
-        projectilScript = null;
+        Destroy(view);
+        Destroy(boomerang);
     }
 
-    private void UpdateCollider()
+    private void UpdateTarget()
     {
-        List<Vector2> points = new();
-        points.Add(Vector2.zero);
-        for (float i = 0; i <= interpolationDensity; i++)
+        if (GetComponent<IDisarmed>() != null || target != transform)
         {
-            points.Add(range * (Quaternion.Euler(0, 0, (i / interpolationDensity - 0.5f) * angleOfView) * Vector3.up));
-        }
-        viewTrigger.SetPath(0, points);
-    }
-
-    public void UpdateTarget()
-    {
-        if (projectilScript.GetTarget() != gameObject)
-        {
-            projectilScript.SetTarget(gameObject);
+            target = transform;
             return;
         }
-        IEnumerable<GameObject> others = OverlapDamageable().Where(damageable => damageable != gameObject);
-        if (others.Count() > 0)
-            projectilScript.SetTarget(others.ElementAt(Random.Range(0, others.Count())));
+
+        IEnumerable<GameObject> targetables = OverlapGameObject(view, collider => (collider.GetComponent<IDamageable>() != null) && (collider.GetComponent<IDamageable>().GetHostility() != GetComponent<Character>().GetHostility()));
+        if (targetables.Count() != 0)
+            target = targetables.ElementAt(Random.Range(0, targetables.Count())).transform;
     }
 
-    public static string GetDescription()
+    public static string GetDescription() => description;
+
+    public static Sprite GetLogo() => Resources.Load<Sprite>(logoPath);
+
+    public static string GetName() => itemName;
+
+    public static string GetUsage() => usage;
+
+    public static GameObject GetShopOption()
     {
-        return description;
-    }
-
-    public static Sprite GetLogo()
-    {
-        return Resources.Load<Sprite>(logoPath);
-    }
-
-    public static string GetName()
-    {
-        return itemName;
-    }
-
-    private IEnumerable<GameObject> OverlapDamageable()
-    {
-        return OverlapGameObject(view, collider => collider.GetComponent<IDamageable>() != null);
-    }
-    private class ProjectileBehavior : MonoBehaviour
-    {
-        private GameObject target;
-        private float speed = 7.5f;
-        private PassiveItem_Weapon_3 controller;
-        private float contactDPS = 100.0f;
-        private bool hostility;
-
-        public PassiveItem_Weapon_3 GetController() { return controller; }
-
-        public void SetController(PassiveItem_Weapon_3 value) { controller = value; }
-
-        public float GetSpeed() { return speed; }
-
-        public void SetSpeed(float value) { speed = value; }
-
-        public GameObject GetTarget() { return target; }
-
-        public void SetTarget(GameObject value) { target = value; }
-
-        public float GetContactDPS() { return contactDPS; }
-
-        public void SetContactDPS(float value) { contactDPS = value; }
-
-        public bool GetHostility() { return hostility; }
-
-        public void SetHostility(bool value) { hostility = value; }
-
-        private void Update()
+        GameObject shopOption = ShopOption.Instantiate();
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(GetLogo());
+        script.SetItemName(GetName());
+        script.SetUsage(GetUsage());
+        script.SetDescription(GetDescription());
+        script.SetOnClickAction(() =>
         {
-            if (target == null)
-            {
-                controller.UpdateTarget();
-                return;
-            }
-            Vector3 displacement = target.transform.position - transform.position;
-            float speed = GetSpeed();
-            if (speed * Time.deltaTime < displacement.magnitude)
-                transform.Translate(speed * Time.deltaTime * displacement.normalized);
-            else
-            {
-                transform.Translate(displacement);
-                controller.UpdateTarget();
-            }
-        }
-
-        private void OnTriggerStay2D(Collider2D collision)
-        {
-            IDamageable damageable = collision.GetComponent<IDamageable>();
-            if (damageable != null && damageable.GetHostility() != hostility)
-            {
-                new Damage(controller.gameObject, gameObject, damageable, contactDPS * Time.deltaTime, Vector3.zero).Apply();
-            }
-        }
+            GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_Weapon_3>();
+        });
+        return shopOption;
     }
 }
