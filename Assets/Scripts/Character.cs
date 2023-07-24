@@ -40,7 +40,14 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     public void ReceiveDamage(Damage damage)
     {
         if (GetComponent<IInvulnerable>() != null) return;
-        health -= damage.GetValue();
+        if (health <= damage.GetValue() && GetComponent<PassiveItem_2>() && GetComponent<PassiveItem_2>().Consume())
+        {
+            health += maxHealth / 2;
+        }
+        else
+        {
+            health -= damage.GetValue();
+        }
         health = Mathf.Clamp(health, 0.0f, maxHealth);
         StartCoroutine(ForcedMovement(transform, damage.GetDiretcion() * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
         StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, invDurationOnDmg));
@@ -116,7 +123,6 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     void Start()
     {
-        GiveItem<PassiveItem_Weapon_0>();
         GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
     }
 

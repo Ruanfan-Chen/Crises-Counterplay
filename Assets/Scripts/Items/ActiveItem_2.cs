@@ -19,18 +19,18 @@ public class ActiveItem_2 : ActiveItem
     private float initialDashSpeed = 50.0f;
     private float dashDistance = 5.0f;
     private float dashDuration = 0.5f;
-    private float charge = 3.0f;
+    private float charge;
     private float cost = 3.0f;
-    //[SerializeField] private TextMeshProUGUI timerText;
 
-    //private void Start()
-    //{
-    //    //GameObject cooldown = GameObject.Find("Cooldown");
-    //    //if (cooldown != null)
-    //    //{
-    //    //    timerText = cooldown.GetComponent<TextMeshProUGUI>();
-    //    //}
-    //}
+    void Start()
+    {
+        ResetCharge();
+    }
+
+    public override void ResetCharge()
+    {
+        charge = 3.0f;
+    }
 
     void OnEnable()
     {

@@ -11,6 +11,7 @@ public class ActiveItem_1 : ActiveItem
     private static readonly string notUsablePath = "Sprites/Skills/Ebbtide";
 
     private readonly float speed = 10.0f;
+    public override void ResetCharge() { }
     public override void Activate()
     {
         if (IsUsable())
@@ -53,7 +54,7 @@ public class ActiveItem_1 : ActiveItem
 
     public static string GetUsage() => usage;
 
-    public static GameObject getShopOption()
+    public static GameObject GetShopOption()
     {
         GameObject shopOption = ShopOption.Instantiate();
         ShopOption script = shopOption.GetComponent<ShopOption>();

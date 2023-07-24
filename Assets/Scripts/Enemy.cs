@@ -50,7 +50,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     public void ReceiveDamage(Damage damage)
     {
         health -= damage.GetValue();
-        if (health <= 0) Die();
+        if (health <= 0 && health + damage.GetValue() > 0) Die();
     }
 
     void Start()

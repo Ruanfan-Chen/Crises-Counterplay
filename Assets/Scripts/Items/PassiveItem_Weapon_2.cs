@@ -27,7 +27,7 @@ public class PassiveItem_Weapon_2 : PassiveItem
 
     public static string GetUsage() => usage;
 
-    public static GameObject getShopOption()
+    public static GameObject GetShopOption()
     {
         GameObject shopOption = ShopOption.Instantiate();
         ShopOption script = shopOption.GetComponent<ShopOption>();
@@ -38,9 +38,6 @@ public class PassiveItem_Weapon_2 : PassiveItem
         script.SetOnClickAction(() =>
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_Weapon_2>();
-            UIManager.ClearShopPanel();
-            GameplayManager.GetGoogleSender().SendMatrix4(GetName());
-            GameplayManager.CloseShop();
         });
         return shopOption;
     }

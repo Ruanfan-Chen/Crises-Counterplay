@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
+using static Utility;
 
 public class LevelManager
 {
-    private static string tileTexturePath = "Sprites/TilesetFloor";
+    private static readonly string tileTexturePath = "Sprites/TilesetFloor";
 
     private static int levelNum;
 
@@ -188,12 +188,32 @@ public class LevelManager
 
     public class OptionConfig
     {
-        public static readonly OptionConfig HPRECOVERY = new OptionConfig(() => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)));
-        public static readonly OptionConfig SUPERCHARGE = new OptionConfig(() => ActiveItem_0.getShopOption());
-        public static readonly OptionConfig SURFMANIA = new OptionConfig(() => ActiveItem_1.getShopOption());
-        public static readonly OptionConfig GRAVITYGRASP = new OptionConfig(() => ActiveItem_2_0.getShopOption());
-        public static readonly OptionConfig RANDOMPASSIVE = new OptionConfig(() => PassiveItem_0.getShopOption());
-        public static readonly OptionConfig RANDOMWEAPON = new OptionConfig(() => ShopOption.HPRecovery(1000));
+        public static readonly OptionConfig HPRECOVERY = new(() => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)));
+        public static readonly OptionConfig SUPERCHARGE = new(() => ActiveItem_0.GetShopOption());
+        public static readonly OptionConfig SURFMANIA = new(() => ActiveItem_1.GetShopOption());
+        public static readonly OptionConfig GRAVITYGRASP = new(() => ActiveItem_2_0.GetShopOption());
+        public static readonly OptionConfig RANDOMPASSIVE = new(() =>
+        {
+            GameObject character = GameplayManager.getCharacter();
+            HashSet<Func<GameObject>> generators = new();
+            if (character.GetComponent<PassiveItem_0>() == null)
+                generators.Add(PassiveItem_0.GetShopOption);
+            if (character.GetComponent<PassiveItem_1>() == null)
+                generators.Add(PassiveItem_1.GetShopOption);
+            if (character.GetComponent<PassiveItem_2>() == null)
+                generators.Add(PassiveItem_2.GetShopOption);
+            if (character.GetComponent<PassiveItem_Weapon_0>() == null)
+                generators.Add(PassiveItem_Weapon_0.GetShopOption);
+            if (character.GetComponent<PassiveItem_Weapon_2>() == null)
+                generators.Add(PassiveItem_Weapon_2.GetShopOption);
+            if (character.GetComponent<PassiveItem_Weapon_3>() == null)
+                generators.Add(PassiveItem_Weapon_3.GetShopOption);
+
+            if (generators.Count == 0)
+                return HPRECOVERY.Instantiate();
+            else
+                return RandomChoice(generators)();
+        });
 
         private readonly Func<GameObject> generator;
 

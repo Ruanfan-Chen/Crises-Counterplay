@@ -7,18 +7,17 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
     private static readonly string usage = "Passive: Weapon";
     private static string logoPath = "Sprites/Items/Regular Gun";
     private GameObject view;
-    private CircleCollider2D viewTrigger;
     private float damage = 25.0f;
     private float range = 10.0f;
     private float projectileSpeed = 20.0f;
 
     void OnEnable()
     {
-        view = new GameObject("WeaponView");
+        view = new GameObject(itemName + "WeaponView");
         view.transform.SetParent(gameObject.transform);
         view.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         view.AddComponent<ViewBehavior>();
-        viewTrigger = view.AddComponent<CircleCollider2D>();
+        CircleCollider2D viewTrigger = view.AddComponent<CircleCollider2D>();
         viewTrigger.isTrigger = true;
         view.AddComponent<Rigidbody2D>().isKinematic = true;
         viewTrigger.radius = range;
@@ -26,8 +25,6 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
     void OnDisable()
     {
         Destroy(view);
-        view = null;
-        viewTrigger = null;
     }
     public static string GetDescription() => description;
 
@@ -37,7 +34,7 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
 
     public static string GetUsage() => usage;
 
-    public static GameObject getShopOption()
+    public static GameObject GetShopOption()
     {
         GameObject shopOption = ShopOption.Instantiate();
         ShopOption script = shopOption.GetComponent<ShopOption>();
@@ -48,9 +45,6 @@ public class PassiveItem_Weapon_0 : PassiveItem, IProjectileModifier
         script.SetOnClickAction(() =>
         {
             GameplayManager.getCharacter().GetComponent<Character>().GiveItem<PassiveItem_Weapon_0>();
-            UIManager.ClearShopPanel();
-            GameplayManager.GetGoogleSender().SendMatrix4(GetName());
-            GameplayManager.CloseShop();
         });
         return shopOption;
     }
