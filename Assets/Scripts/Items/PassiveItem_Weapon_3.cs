@@ -15,11 +15,29 @@ public class PassiveItem_Weapon_3 : PassiveItem
     private float speed = 7.5f;
     private Transform target;
 
+    void Start()
+    {
+        target = transform;
+    }
     void Update()
     {
-        boomerang.transform.position = Vector3.MoveTowards(boomerang.transform.position, target.position, speed * Time.deltaTime);
-        if (boomerang.transform.position == target.position || (boomerang.transform.position - transform.position).magnitude > range)
-            UpdateTarget();
+        if (GetComponent<IDisarmed>() != null)
+            boomerang.transform.localPosition = Vector3.zero;
+        else
+        {
+            if (target == null || (boomerang.transform.position - transform.position).magnitude < speed * Time.deltaTime || (boomerang.transform.position - transform.position).magnitude > range)
+            {
+                if (target == transform)
+                {
+                    IEnumerable<GameObject> targetables = OverlapGameObject(view, collider => (collider.GetComponent<IDamageable>() != null) && (collider.GetComponent<IDamageable>().GetHostility() != GetComponent<Character>().GetHostility()));
+                    if (targetables.Count() != 0)
+                        target = targetables.ElementAt(Random.Range(0, targetables.Count())).transform;
+                }
+                else
+                    target = transform;
+            }
+            boomerang.transform.position = Vector3.MoveTowards(boomerang.transform.position, target.position, speed * Time.deltaTime);
+        }
     }
 
     private void OnEnable()
@@ -39,19 +57,6 @@ public class PassiveItem_Weapon_3 : PassiveItem
     {
         Destroy(view);
         Destroy(boomerang);
-    }
-
-    private void UpdateTarget()
-    {
-        if (GetComponent<IDisarmed>() != null || target != transform)
-        {
-            target = transform;
-            return;
-        }
-
-        IEnumerable<GameObject> targetables = OverlapGameObject(view, collider => (collider.GetComponent<IDamageable>() != null) && (collider.GetComponent<IDamageable>().GetHostility() != GetComponent<Character>().GetHostility()));
-        if (targetables.Count() != 0)
-            target = targetables.ElementAt(Random.Range(0, targetables.Count())).transform;
     }
 
     public static string GetDescription() => description;
