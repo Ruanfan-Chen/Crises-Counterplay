@@ -130,6 +130,11 @@ public class LevelButtonsManager : MonoBehaviour
                 HideDependencies(infLevelDependencies);
                 updated = true;
             }
+
+            if (GameplayManager.IsInInfiniteChallengeMode()){
+                ActivateButton(12, Color.green);
+                updated = true;
+            }
         }
 
     }

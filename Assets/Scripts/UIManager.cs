@@ -8,16 +8,27 @@ public static class UIManager
 {
     public static readonly string ActiveSkillPrefabPath = "Prefabs/ActiveSkill";
     public static TextMeshProUGUI m_timerText;
+    public static TextMeshProUGUI m_currentRecordText;
+    public static TextMeshProUGUI m_highestRecordText;
     public static GameObject m_gameplayPanel;
     public static GameObject m_shopPanel;
     public static GameObject m_completePanel;
     public static GameObject m_activeSkillPanel;
     public static GameObject m_levelSelectionPanel;
     public static GameObject m_losePanel;
+    public static GameObject m_infiniteModePanel;
+    public static GameObject m_recordsPanel;
+
 
     public static void UpdateTimerText()
     {
         m_timerText.text = Mathf.Round(GameplayManager.getTimer()).ToString() + "s";
+    }
+
+    public static void UpdateScoresText(float currentScore, int precision)
+    {
+        m_currentRecordText.text = RoundDecimal(currentScore, precision).ToString() + "s";
+        m_highestRecordText.text = RoundDecimal(GameplayManager.GetHighestRecord(), precision).ToString() + "s";
     }
 
     public static void ClearShopPanel()
@@ -69,5 +80,12 @@ public static class UIManager
             UIScript.SetSpinner(chargeProgress > 0.0f ? Mathf.Ceil(chargeProgress) - chargeProgress : 1.0f);
             UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));
         }
+    }
+
+    public static double RoundDecimal(float num, int precision){
+        double tmp = System.Math.Pow(10, precision);
+        return System.Math.Truncate(num * tmp) / tmp;  
+
+
     }
 }
