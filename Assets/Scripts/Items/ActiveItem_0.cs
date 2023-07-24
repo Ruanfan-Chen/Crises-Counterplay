@@ -90,7 +90,7 @@ public class ActiveItem_0 : ActiveItem
         return shopOption;
     }
 
-    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus, IDisarmed
+    public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus, IDisarmed, IDisposable
     {
         private float damage = 50.0f;
         private float speedBonus = 5.0f;

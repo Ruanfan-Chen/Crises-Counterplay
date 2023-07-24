@@ -4,7 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using static Utility;
 
-public class Waterblight : MonoBehaviour, ISpeedBonus
+public class Waterblight : MonoBehaviour, ISpeedBonus, IDisposable
 {
     private GameObject trailObj;
     private float width = 2.0f;
@@ -34,7 +34,6 @@ public class Waterblight : MonoBehaviour, ISpeedBonus
         constarint.SetReference(transform);
         constarint.SetBias();
         TrailRenderer trailRenderer = trailObj.AddComponent<TrailRenderer>();
-        trailRenderer.tag = "Disposable";
         trailRenderer.time = trialDuration;
         trailRenderer.numCapVertices = 8;
         trailRenderer.material = new Material(Shader.Find(DEAFULT_LINE_SHADER_PATH));

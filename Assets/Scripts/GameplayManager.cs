@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class GameplayManager : MonoBehaviour
 {
     private static GameObject m_character;
+    private static CrisisManager m_crisisManager;
     private static float m_timer;
     private static SendToGoogle m_googleSender;
     private static Disarmed characterDisarmed;
@@ -19,6 +20,7 @@ public class GameplayManager : MonoBehaviour
     void Start()
     {
         m_character = GameObject.FindWithTag("Character");
+        m_crisisManager = GetComponent<CrisisManager>();
         m_googleSender = GetComponent<SendToGoogle>();
         UIManager.m_completePanel = GameObject.FindWithTag("CompletePanel");
         UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
@@ -56,19 +58,20 @@ public class GameplayManager : MonoBehaviour
     void Update()
     {
         if (!HaltTimer.ExistInstance())
-            m_timer = infiniteChallengeMode? m_timer + Time.deltaTime : m_timer - Time.deltaTime;
+            m_timer = infiniteChallengeMode ? m_timer + Time.deltaTime : m_timer - Time.deltaTime;
         UIManager.UpdateTimerText();
         UIManager.UpdateActiveSkills(m_character.GetComponent<Character>().GetKeyCodeActiveItemPairs());
         if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
-        {   
+        {
             GameOver();
             return;
-            
+
         }
 
         if ((!infiniteChallengeMode && m_timer <= 0) || (infiniteChallengeMode && m_timer >= 999.0f))
         {
-            if (!matrixSent){
+            if (!matrixSent)
+            {
                 // Debug.Log("sending matrix");
                 m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
                 matrixSent = true;
@@ -82,8 +85,9 @@ public class GameplayManager : MonoBehaviour
                     UIManager.m_completePanel.SetActive(true);
                 LevelButtonsManager.AddCompletedLevel();
                 LevelButtonsManager.updated = false;
-                
-                if (infiniteChallengeMode){
+
+                if (infiniteChallengeMode)
+                {
                     Character script = m_character.GetComponent<Character>();
                     script.SetHealth(script.GetMaxHealth());
                     highestRecord = Math.Max(highestRecord, m_timer);
@@ -125,11 +129,12 @@ public class GameplayManager : MonoBehaviour
         Clear();
         matrixSent = false;
         // Debug.Log("LoadLevel() infiniteChallengeMode = " + infiniteChallengeMode);
-        if (LevelManager.GetLevelNum()<12){
+        if (LevelManager.GetLevelNum() < 12)
+        {
             infiniteChallengeMode = false;
         }
-            
-        m_timer = infiniteChallengeMode? 0.0f : LevelManager.GetTimeLimit();
+
+        m_timer = infiniteChallengeMode ? 0.0f : LevelManager.GetTimeLimit();
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
@@ -145,11 +150,12 @@ public class GameplayManager : MonoBehaviour
     {
         CrisisManager.Deactivate();
         Clear();
-        
+
         Character script = m_character.GetComponent<Character>();
         script.SetHealth(script.GetMaxHealth());
-        if (!infiniteChallengeMode){
-            
+        if (!infiniteChallengeMode)
+        {
+
             LevelManager.Reset();
             LevelButtonsManager.ResetCompletedLevels();
             foreach (PassiveItem item in script.GetPassiveItems().ToList())
@@ -160,13 +166,14 @@ public class GameplayManager : MonoBehaviour
         Pause();
         if (!infiniteChallengeMode)
             UIManager.m_losePanel.SetActive(true);
-        else{
+        else
+        {
             UIManager.m_infiniteModePanel.SetActive(true);
             highestRecord = Math.Max(highestRecord, m_timer);
             // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
             DisplayScores(m_timer);
         }
-            
+
 
     }
 
@@ -174,12 +181,15 @@ public class GameplayManager : MonoBehaviour
     {
         foreach (GameObject o in GameObject.FindGameObjectsWithTag("Disposable"))
             Destroy(o);
+        foreach (Component comp in FindObjectsOfType<MonoBehaviour>(true).OfType<IDisposable>().ToArray())
+            Destroy(comp);
         m_character.transform.position = Vector3.zero;
         foreach (TrailRenderer trailRenderer in m_character.GetComponentsInChildren<TrailRenderer>())
             trailRenderer.Clear();
         foreach (ActiveItem item in m_character.GetComponent<Character>().GetActiveItemKeyCodePairs().Keys.ToList())
             item.ResetCharge();
         ActiveItem_0.activateCounter = 0;
+        m_crisisManager.StopAllCoroutines();
     }
 
     public static float getTimer() { return m_timer; }
@@ -235,18 +245,21 @@ public class GameplayManager : MonoBehaviour
         Continue();
     }
 
-    public static bool IsInInfiniteChallengeMode(){
+    public static bool IsInInfiniteChallengeMode()
+    {
         return infiniteChallengeMode;
     }
 
-    private static void DisplayScores(float currentScore){
+    private static void DisplayScores(float currentScore)
+    {
         UIManager.m_recordsPanel.SetActive(true);
         UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
         UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();
         UIManager.UpdateScoresText(currentScore, 3);
     }
 
-    public static float GetHighestRecord(){
+    public static float GetHighestRecord()
+    {
         return highestRecord;
     }
 }

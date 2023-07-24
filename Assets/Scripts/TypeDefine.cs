@@ -31,6 +31,8 @@ public interface IOnDeathEffect
     void OnDeath();
 }
 
+public interface IDisposable { }
+
 public class Damage
 {
     private GameObject source;
