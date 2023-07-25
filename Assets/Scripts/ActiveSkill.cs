@@ -11,6 +11,7 @@ public class ActiveSkill : MonoBehaviour
     [SerializeField] TextMeshProUGUI m_text;
     [SerializeField] TextMeshProUGUI m_key;
     [SerializeField] GameObject m_chargeCount;
+    [SerializeField] GameObject m_chargeCountBackground;
     [SerializeField] GameObject m_notUsable;
 
     public void SetLogo(Sprite sprite)
@@ -36,10 +37,14 @@ public class ActiveSkill : MonoBehaviour
     public void SetChargeCount(int value)
     {
         if (value <= 1)
+        {
             m_chargeCount.SetActive(false);
+            m_chargeCountBackground.SetActive(false);
+        }
         else
         {
             m_chargeCount.SetActive(true);
+            m_chargeCountBackground.SetActive(true);
             m_chargeCount.GetComponent<TextMeshProUGUI>().text = value.ToString();
         }
     }
