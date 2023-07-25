@@ -16,7 +16,7 @@ public class PassiveItem_0 : PassiveItem
     {
         trailObj = new GameObject(itemName + "Trail");
         trailObj.transform.parent = transform;
-        trailObj.transform.localPosition = Vector3.forward * MapManager.MAP_DEPTH / 2.0f;
+        trailObj.transform.localPosition = Vector3.forward * MapManager.MAP_DEPTH / 3.0f;
         trailObj.transform.localRotation = Quaternion.identity;
         trailObj.transform.localScale = Vector3.one;
         TrailRenderer trailRenderer = trailObj.AddComponent<TrailRenderer>();
