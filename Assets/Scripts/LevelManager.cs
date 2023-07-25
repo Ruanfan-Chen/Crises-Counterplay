@@ -32,7 +32,7 @@ public class LevelManager
         1 => 20.0f,
         2 => 45.0f,
         3 => 20.0f,
-        4 => 20.0f,
+        4 => 15.0f,
         5 => 45.0f,
         6 => 20.0f,
         7 => 20.0f,
@@ -89,7 +89,7 @@ public class LevelManager
         3 => false,
         4 => false,
         5 => true,
-        6 => false,
+        6 => true,
         7 => true,
         8 => true,
         9 => false,
@@ -132,20 +132,28 @@ public class LevelManager
         _ => false
     };
 
+    public static bool GetEnemieRain() => levelNum switch
+    {
+        0 => false,
+        1 => false,
+        2 => false,
+        3 => false,
+        4 => false,
+        5 => false,
+        6 => true,
+        7 => true,
+        8 => true,
+        9 => false,
+        10 => true,
+        11 => true,
+        _ => true
+    };
+
     public static IReadOnlyList<OptionConfig> GetShopConfig() => levelNum switch
     {
             0 => new List<OptionConfig>() { OptionConfig.GRAVITYGRASP },
-            1 => new List<OptionConfig>(),
-            2 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
             3 => new List<OptionConfig>() { OptionConfig.SUPERCHARGE },
-            4 => new List<OptionConfig>(),
-            5 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
             6 => new List<OptionConfig>() { OptionConfig.SURFMANIA },
-            7 => new List<OptionConfig>(),
-            8 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
-            9 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
-            10 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
-            11 => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE },
             _ => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE }
     };
 
@@ -153,22 +161,46 @@ public class LevelManager
     {
         0 => new Dictionary<Vector2, Type[]>(),
         1 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
-        2 => new(),
-        3 => new(),
         4 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
-        5 => new(),
-        6 => new()
-        {
-            [new Vector2(0.0f, 15.0f)] = new[] { typeof(Waterblight), typeof(EnemySpawn.AimlesslyMove) },
-            [new Vector2(0.0f, -15.0f)] = new[] { typeof(Waterblight), typeof(EnemySpawn.DirectlyMoveToward) },
-            [new Vector2(15.0f, 0.0f)] = new[] { typeof(Waterblight), typeof(EnemySpawn.MoveInCircle) }
-        },
         7 => new() { [new Vector2(0.0f, 15.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol), typeof(BlockEnemySpawn) } },
-        8 => new(),
-        9 => new(),
-        10 => new(),
-        11 => new(),
         _ => new()
+    };
+
+    public static float GetVehicleSpeed() => levelNum switch
+    {
+        0 => UnityEngine.Random.Range(80.0f, 100.0f),
+        1 => UnityEngine.Random.Range(80.0f, 100.0f),
+        2 => UnityEngine.Random.Range(50.0f, 70.0f),
+        _ => UnityEngine.Random.Range(50.0f, 60.0f)
+    };
+
+    public static float GetVehicleDamage()=> levelNum switch
+    {
+        0 => 75.0f,
+        1 => 75.0f,
+        2 => 75.0f,
+        _ => 50.0f
+    };
+
+    public static float GetElectricFieldInterval() => levelNum switch
+    {
+        0 => UnityEngine.Random.Range(2.0f, 2.0f),
+        1 => UnityEngine.Random.Range(2.0f, 2.0f),
+        _ => UnityEngine.Random.Range(3.0f, 2.0f)
+    };
+
+    public static float GetElectricFieldDuration() => levelNum switch
+    {
+        0 => 3.5f,
+        1 => 3.5f,
+        2 => 3.5f,
+        3 => 3.5f,
+        4 => 3.5f,
+        5 => 3.5f,
+        6 => 3.5f,
+        7 => 3.5f,
+        8 => 3.5f,
+        _ => 2.0f
     };
 
     public static void Reset()
