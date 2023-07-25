@@ -6,19 +6,24 @@ public class PassiveItem_2 : PassiveItem
     private static readonly string description = "For one time, when having damages that could have killed the character, the character recover 50% HP instead.";
     private static readonly string usage = "Passive";
     private static readonly string logoPath = "Sprites/Items/Stand Still";
+    private static readonly string haloPrefab = "Prefabs/Halo";
+    private GameObject halo;
 
-    private bool active = true;
-
+    private void OnEnable()
+    {
+        halo = Instantiate(Resources.Load<GameObject>(haloPrefab), gameObject.transform);
+        halo.transform.localPosition = Vector3.up * 0.8f;
+    }
     public bool GetActive()
     {
-        return active;
+        return halo;
     }
 
     public bool Consume()
     {
-        if (active)
+        if (halo)
         {
-            active = false;
+            Destroy(halo);
             return true;
         }
         return false;

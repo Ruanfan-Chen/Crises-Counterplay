@@ -7,7 +7,7 @@ public class PassiveItem_Weapon_2 : PassiveItem
     private static readonly string usage = "Passive: Weapon";
     private static readonly string logoPath = "Sprites/Items/Bomb";
     private float attackInterval = 2.0f;
-    private float attackTimer = 0.0f;
+    private float attackTimer = 2.0f;
 
     void Update()
     {
