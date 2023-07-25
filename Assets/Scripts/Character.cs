@@ -8,7 +8,7 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
     [SerializeField] private float health;
     [SerializeField] private float maxHealth;
     [SerializeField] private Bar healthBar;
-    private float moveSpeed = 5.0f;
+    [SerializeField] private float moveSpeed = 5.0f;
     private List<PassiveItem> passiveItems = new();
     private BiDictionary<KeyCode, ActiveItem> activeItems = new();
     public static readonly float invDurationOnDmg = 0.7f;
