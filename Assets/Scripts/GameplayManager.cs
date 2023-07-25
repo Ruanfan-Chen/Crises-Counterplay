@@ -91,7 +91,7 @@ public class GameplayManager : MonoBehaviour
             if (!matrixSent)
             {
                 // Debug.Log("sending matrix");
-                // m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
+                m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
                 matrixSent = true;
             }
             //Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);

@@ -27,7 +27,7 @@ public class ShopOption : MonoBehaviour
         button.onClick.AddListener(() =>
         {
             UIManager.ClearShopPanel();
-            // GameplayManager.GetGoogleSender().SendMatrix4(itemName.text);
+            GameplayManager.GetGoogleSender().SendMatrix4(itemName.text);
             GameplayManager.CloseShop();
         });
     }

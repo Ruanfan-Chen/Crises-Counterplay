@@ -57,10 +57,10 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
         health = Mathf.Clamp(health, 0.0f, maxHealth);
         StartCoroutine(ForcedMovement(transform, damage.GetDiretcion() * knockbackDistanceOnDmg, initialKnockbackSpeedOnDmg, knockbackDurationOnDmg));
         StartCoroutine(AddAndRemoveComponent<Invulnerable>(gameObject, invDurationOnDmg));
-        // if (damage.GetSource())
-        //     GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetSource().name);
-        // else if (damage.GetMedium())
-        //     GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetMedium().name);
+        if (damage.GetSource())
+            GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetSource().name);
+        else if (damage.GetMedium())
+            GameplayManager.GetGoogleSender().SendMatrix1(LevelManager.GetLevelName(), damage.GetMedium().name);
     }
     public IReadOnlyList<PassiveItem> GetPassiveItems() { return passiveItems; }
     public IReadOnlyDictionary<KeyCode, ActiveItem> GetKeyCodeActiveItemPairs() { return activeItems.GetTUDict(); }
