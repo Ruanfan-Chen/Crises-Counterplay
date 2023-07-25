@@ -93,7 +93,7 @@ public class GameplayManager : MonoBehaviour
                     highestRecord = Math.Max(highestRecord, m_timer);
                     // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
                     // DisplayScores(m_timer);
-
+                    m_googleSender.SendMatrix5(m_timer);
                     DisplayScores(m_timer);
                 }
                 infiniteChallengeMode = true;
@@ -175,6 +175,7 @@ public class GameplayManager : MonoBehaviour
         {
             // UIManager.m_infiniteModePanel.SetActive(true);
             highestRecord = Math.Max(highestRecord, m_timer);
+            m_googleSender.SendMatrix5(m_timer);
             // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
             DisplayScores(m_timer);
         }
