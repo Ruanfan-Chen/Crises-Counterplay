@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using static UnityEngine.GraphicsBuffer;
 using static Utility;
 
 public class PassiveItem_Weapon_3 : PassiveItem
@@ -9,34 +10,37 @@ public class PassiveItem_Weapon_3 : PassiveItem
     private static readonly string description = "The character throws the boomerang to a nearby enemy. Once upon hit, the boomerang will return. The character is unable to attack until the boomerang returns.";
     private static readonly string usage = "Passive: Weapon";
     private static readonly string logoPath = "Sprites/Items/Boomerang";
+    private readonly float range = 10.0f;
+    private readonly float initSpeed = 7.5f;
+    private readonly float g = 5.0f;
     private GameObject view;
     private GameObject boomerang;
-    private float range = 10.0f;
-    private float speed = 7.5f;
-    private Transform target;
-
-    void Start()
-    {
-        target = transform;
-    }
+    private Vector3 boomerangVelocity = Vector3.zero;
     void Update()
     {
         if (GetComponent<IDisarmed>() != null)
-            boomerang.transform.localPosition = Vector3.zero;
+        {
+            boomerang.transform.position = transform.position;
+            return;
+        }
+
+        Vector3 relativPos = boomerang.transform.position - transform.position;
+        if (boomerang.GetComponent<Collider2D>().IsTouching(GetComponent<Collider2D>()))
+        {
+            IEnumerable<GameObject> targetables = OverlapGameObject(view, collider => (collider.GetComponent<IDamageable>() != null) && (collider.GetComponent<IDamageable>().GetHostility() != GetComponent<Character>().GetHostility()));
+            if (targetables.Count() == 0)
+            {
+                boomerangVelocity = Vector3.zero;
+            }
+            else
+            {
+                boomerangVelocity = (targetables.ElementAt(Random.Range(0, targetables.Count())).transform.position - transform.position).normalized * initSpeed;
+            }
+        }
         else
         {
-            if (target == null || (boomerang.transform.position - transform.position).magnitude < speed * Time.deltaTime || (boomerang.transform.position - transform.position).magnitude > range)
-            {
-                if (target == transform)
-                {
-                    IEnumerable<GameObject> targetables = OverlapGameObject(view, collider => (collider.GetComponent<IDamageable>() != null) && (collider.GetComponent<IDamageable>().GetHostility() != GetComponent<Character>().GetHostility()));
-                    if (targetables.Count() != 0)
-                        target = targetables.ElementAt(Random.Range(0, targetables.Count())).transform;
-                }
-                else
-                    target = transform;
-            }
-            boomerang.transform.position = Vector3.MoveTowards(boomerang.transform.position, target.position, speed * Time.deltaTime);
+            boomerangVelocity -= Time.deltaTime * g * relativPos;
+            boomerang.transform.position += boomerangVelocity * Time.deltaTime;
         }
     }
 
