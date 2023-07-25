@@ -41,7 +41,7 @@ public class ActiveItem_0 : ActiveItem
         instances.Remove(this);
     }
 
-    public static bool GetBatterySpawn() => instances.Count != 0 && (LevelManager.GetLevelName() == "thunder 2" || WeightedRandom(new Dictionary<bool, float>() { [true] = 0.25f, [false] = 0.75f }));
+    public static bool GetBatterySpawn() => instances.Count != 0 && (ForcedBatterySpawn.ExistInstance() || WeightedRandom(new Dictionary<bool, float>() { [true] = 0.25f, [false] = 0.75f }));
 
     public override void Activate()
     {

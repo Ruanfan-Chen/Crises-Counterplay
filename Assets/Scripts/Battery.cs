@@ -5,6 +5,7 @@ using UnityEngine;
 public class Battery : MonoBehaviour
 {
     private static string prefabPath = "Prefabs/Battery";
+    private static string tracePrefabPath = "Prefabs/BatteryTrace";
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -21,5 +22,12 @@ public class Battery : MonoBehaviour
         GameObject battery = Instantiate(Resources.Load<GameObject>(prefabPath), position, rotation);
         battery.tag = "Disposable";
         return battery;
+    }
+
+    public static GameObject InstantiateTrace(Vector3 position, Quaternion rotation)
+    {
+        GameObject batteryTrace = Instantiate(Resources.Load<GameObject>(tracePrefabPath), position, rotation);
+        batteryTrace.tag = "Disposable";
+        return batteryTrace;
     }
 }

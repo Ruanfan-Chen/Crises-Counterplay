@@ -161,7 +161,7 @@ public class LevelManager
     {
         0 => new Dictionary<Vector2, Type[]>(),
         1 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
-        4 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer) } },
+        4 => new() { [new Vector2(15.0f, 0.0f)] = new[] { typeof(HaltTimer), typeof(ForcedBatterySpawn) } },
         7 => new() { [new Vector2(0.0f, 15.0f)] = new[] { typeof(HaltTimer), typeof(Waterblight), typeof(EnemySpawn.Patrol), typeof(BlockEnemySpawn) } },
         _ => new()
     };

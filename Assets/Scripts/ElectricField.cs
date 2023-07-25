@@ -26,8 +26,11 @@ public class ElectricField : MonoBehaviour
     public static IEnumerator Instantiate(Vector3 position, float traceDuration, float delay, float radius, float electricFieldDuration, float damage)
     {
         Destroy(DrawCircle("ElectricField", position, radius, Color.yellow), traceDuration);
+        bool batterySpawn = ActiveItem_0.GetBatterySpawn();
+        if (batterySpawn)
+            Destroy(Battery.InstantiateTrace(position, Quaternion.identity), traceDuration);
         yield return new WaitForSeconds(delay);
-        if (ActiveItem_0.GetBatterySpawn())
+        if (batterySpawn)
             Destroy(Battery.Instantiate(position, Quaternion.identity), electricFieldDuration);
         GameObject electricField = Instantiate(Resources.Load<GameObject>(prefabPath), position + Vector3.forward * MapManager.MAP_DEPTH / 2.0f, Quaternion.identity);
         electricField.transform.localScale = new Vector3(radius * 2.0f, radius * 2.0f, 1.0f);
