@@ -40,7 +40,7 @@ public class LevelManager
         9 => 50.0f,
         10 => 50.0f,
         11 => 50.0f,
-        _ => 10.0f
+        _ => 60.0f
     };
 
     public static Vector2 GetMapSize() => new(75.0f, 50.0f);
