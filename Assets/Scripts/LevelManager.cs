@@ -234,6 +234,8 @@ public class LevelManager
                 generators.Add(PassiveItem_1.GetShopOption);
             if (character.GetComponent<PassiveItem_2>() == null)
                 generators.Add(PassiveItem_2.GetShopOption);
+            if (character.GetComponent<PassiveItem_3>() == null)
+                generators.Add(PassiveItem_3.GetShopOption);
             if (character.GetComponent<PassiveItem_Weapon_0>() == null)
                 generators.Add(PassiveItem_Weapon_0.GetShopOption);
             if (character.GetComponent<PassiveItem_Weapon_2>() == null)
