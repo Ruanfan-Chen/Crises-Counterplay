@@ -31,8 +31,7 @@ public class Bomb : MonoBehaviour
         {
             GameObject explosion = Instantiate(Resources.Load<GameObject>(explosionPrefabPath), transform.position + Vector3.forward * MapManager.MAP_DEPTH / 2.0f, Quaternion.identity);
             Destroy(explosion, 0.5f);
-            float radius = GetComponent<CircleCollider2D>().radius;
-            explosion.transform.localScale = new Vector3(radius * 2.0f, radius * 2.0f, 1.0f);
+            explosion.transform.localScale = new Vector3(12.0f, 12.0f, 1.0f);
             explosion.tag = "Disposable";
             foreach (GameObject g in OverlapGameObject(gameObject, collision => collision.GetComponent<IDamageable>() != null))
             {
