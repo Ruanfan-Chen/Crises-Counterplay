@@ -37,7 +37,11 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMoveSpeed(float value) { moveSpeed = value; }
 
-    public void Heal(int value) { health = Mathf.Clamp(health + value, 0.0f, maxHealth); }
+    public void Heal(int value)
+    {
+        health = Mathf.Clamp(health + value, 0.0f, maxHealth);
+        Instantiate(Resources.Load<GameObject>("Prefabs/HealAnim"), transform);
+    }
 
     public void ReceiveDamage(Damage damage)
     {
