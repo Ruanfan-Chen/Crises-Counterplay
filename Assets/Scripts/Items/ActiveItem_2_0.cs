@@ -114,7 +114,7 @@ public class ActiveItem_2_0 : ActiveItem
         };
     }
 
-    private class Captured : MonoBehaviour
+    private class Captured : MonoBehaviour, IDamageable
     {
         private GameObject center;
         private float orbitRadius;
@@ -126,6 +126,10 @@ public class ActiveItem_2_0 : ActiveItem
         public GameObject GetCenter() { return center; }
 
         public void SetCenter(GameObject value) { center = value; }
+
+        public bool GetHostility() => GetComponent<Vehicle>().GetHostility();
+
+        public void ReceiveDamage(Damage damage) { }
 
         void Update()
         {
