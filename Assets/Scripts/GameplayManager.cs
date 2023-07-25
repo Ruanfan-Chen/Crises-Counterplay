@@ -58,7 +58,7 @@ public class GameplayManager : MonoBehaviour
     void Update()
     {
         if (!HaltTimer.ExistInstance())
-            m_timer = infiniteChallengeMode ? m_timer + Time.deltaTime : m_timer - Time.deltaTime;
+            m_timer = (infiniteChallengeMode && LevelManager.GetLevelNum() == 12) ? m_timer + Time.deltaTime : m_timer - Time.deltaTime;
         UIManager.UpdateTimerText();
         UIManager.UpdateActiveSkills(m_character.GetComponent<Character>().GetKeyCodeActiveItemPairs());
         if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
@@ -68,7 +68,7 @@ public class GameplayManager : MonoBehaviour
 
         }
 
-        if ((!infiniteChallengeMode && m_timer <= 0) || (infiniteChallengeMode && m_timer >= 999.0f))
+        if (((!infiniteChallengeMode || LevelManager.GetLevelNum() < 12) && m_timer <= 0) || (infiniteChallengeMode && m_timer >= 999.0f))
         {
             if (!matrixSent)
             {
@@ -86,14 +86,14 @@ public class GameplayManager : MonoBehaviour
                 LevelButtonsManager.AddCompletedLevel();
                 LevelButtonsManager.updated = false;
 
-                if (infiniteChallengeMode)
+                if (infiniteChallengeMode && LevelManager.GetLevelNum() == 12)
                 {
                     Character script = m_character.GetComponent<Character>();
                     script.SetHealth(script.GetMaxHealth());
                     highestRecord = Math.Max(highestRecord, m_timer);
                     // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
                     // DisplayScores(m_timer);
-                    UIManager.m_infiniteModePanel.SetActive(true);
+
                     DisplayScores(m_timer);
                 }
                 infiniteChallengeMode = true;
@@ -129,12 +129,12 @@ public class GameplayManager : MonoBehaviour
         Clear();
         matrixSent = false;
         // Debug.Log("LoadLevel() infiniteChallengeMode = " + infiniteChallengeMode);
-        if (LevelManager.GetLevelNum() < 12)
-        {
-            infiniteChallengeMode = false;
-        }
+        // if (LevelManager.GetLevelNum() < 12)
+        // {
+        //     infiniteChallengeMode = false;
+        // }
 
-        m_timer = infiniteChallengeMode ? 0.0f : LevelManager.GetTimeLimit();
+        m_timer = (infiniteChallengeMode && LevelManager.GetLevelNum() == 12) ? 0.0f : LevelManager.GetTimeLimit();
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
         foreach (KeyValuePair<Vector2, Type[]> kvp in LevelManager.GetInitEneimies())
         {
@@ -155,6 +155,11 @@ public class GameplayManager : MonoBehaviour
         script.SetHealth(script.GetMaxHealth());
         if (!infiniteChallengeMode)
         {
+            Debug.Log("resetting everything");
+            if (!LevelButtonsManager.GetInfiniteAttemptedAndLose() && LevelManager.GetLevelNum() == 12)
+            {
+                LevelButtonsManager.SetInfiniteAttemptedAndLose(true);
+            }
 
             LevelManager.Reset();
             LevelButtonsManager.ResetCompletedLevels();
@@ -164,11 +169,11 @@ public class GameplayManager : MonoBehaviour
                 script.RemoveItem(item);
         }
         Pause();
-        if (!infiniteChallengeMode)
+        if (!infiniteChallengeMode || LevelManager.GetLevelNum() < 12)
             UIManager.m_losePanel.SetActive(true);
         else
         {
-            UIManager.m_infiniteModePanel.SetActive(true);
+            // UIManager.m_infiniteModePanel.SetActive(true);
             highestRecord = Math.Max(highestRecord, m_timer);
             // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
             DisplayScores(m_timer);
@@ -252,6 +257,7 @@ public class GameplayManager : MonoBehaviour
 
     private static void DisplayScores(float currentScore)
     {
+        UIManager.m_infiniteModePanel.SetActive(true);
         UIManager.m_recordsPanel.SetActive(true);
         UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
         UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();

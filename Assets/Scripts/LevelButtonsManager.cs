@@ -27,7 +27,7 @@ public class LevelButtonsManager : MonoBehaviour
 
     public static bool updated;
     private static bool shouldReset;
-    private static bool infiniteLevelAttempted;
+    private static bool infiniteLevelAttemptedAndLose;
     private List<GameObject> infLevelDependencies;
     public bool inspectorMode;
 
@@ -49,7 +49,7 @@ public class LevelButtonsManager : MonoBehaviour
             infLevelDependencies = new List<GameObject> { };
             foreach (int levelNum in levelsPrereqs[numOfLevels - 1])
                 infLevelDependencies.Add(GameObject.FindWithTag("D" + levelNum));
-            infiniteLevelAttempted = false;
+            infiniteLevelAttemptedAndLose = false;
         }
 
     }
@@ -123,15 +123,24 @@ public class LevelButtonsManager : MonoBehaviour
 
             }
 
-            if (!infiniteLevelAttempted)
+            if (!infiniteLevelAttemptedAndLose)
             {
                 ActivateButton(12, Color.white);
-                infiniteLevelAttempted = true;
+                // infiniteLevelAttemptedAndLose = true;
                 HideDependencies(infLevelDependencies);
                 updated = true;
             }
 
-            if (GameplayManager.IsInInfiniteChallengeMode()){
+            else
+            {
+                DeactivateButton(12, Color.white);
+                // infiniteLevelAttemptedAndLose = true;
+                ShowDependencies(infLevelDependencies);
+                updated = true;
+            }
+
+            if (GameplayManager.IsInInfiniteChallengeMode())
+            {
                 ActivateButton(12, Color.green);
                 updated = true;
             }
@@ -204,5 +213,17 @@ public class LevelButtonsManager : MonoBehaviour
         foreach (GameObject obj in dependencies)
             obj.SetActive(false);
     }
+
+    public static void SetInfiniteAttemptedAndLose(bool attempted)
+    {
+        infiniteLevelAttemptedAndLose = attempted;
+    }
+
+    public static bool GetInfiniteAttemptedAndLose()
+    {
+        return infiniteLevelAttemptedAndLose;
+    }
+
+
 
 }
