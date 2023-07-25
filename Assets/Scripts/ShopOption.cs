@@ -64,7 +64,7 @@ public class ShopOption : MonoBehaviour
         script.SetDescription("Boost up your speed.");
         script.SetOnClickAction(() =>
         {
-            GameplayManager.getCharacter().GetComponent<Character>().SpeedBoost(0.5f);
+            GameplayManager.getCharacter().GetComponent<Character>().SpeedBoost(1.5f);
         });
         return shopOption;
     }
