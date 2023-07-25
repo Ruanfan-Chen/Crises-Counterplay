@@ -6,7 +6,7 @@ public class ActiveItem_0 : ActiveItem
 {
     private static readonly HashSet<ActiveItem_0> instances = new();
     private static readonly string itemName = "Supercharge";
-    private static readonly string description = "Electricity zones now generate batteries which can charge this item. Releasing charged energy gains move speed bonus and deals damage to enemies colliding. Disarmed during activation.";
+    private static readonly string description = "Electricity zones now have 25% chance generating batteries which can charge this ability. Releasing charged energy gains move speed bonus and deals damage to enemies colliding. Disarmed during activation.";
     private static readonly string usage = "Active: Press J";
     private static readonly string logoPath = "Sprites/Skills/Supercharge";
     private static readonly string notUsablePath = "Sprites/Skills/Supercharge";
