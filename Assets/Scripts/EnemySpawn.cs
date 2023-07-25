@@ -59,14 +59,11 @@ public class EnemySpawn : MonoBehaviour
                     break;
             }
         }
-        switch (Random.Range(0, 3))
+        switch (Random.Range(0, 2))
         {
             case 0:
                 break;
             case 1:
-                components.Add(typeof(RandomAttackOnDeath));
-                break;
-            case 2:
                 components.Add(typeof(RingAttackOnDeath));
                 break;
         }
@@ -195,14 +192,6 @@ public class EnemySpawn : MonoBehaviour
                 Projectile.Instantiate(transform.position, GetTarget().position, GetComponents<IProjectileModifier>());
                 timer = Enemy.GetAttackInterval();
             }
-        }
-    }
-
-    public class RandomAttackOnDeath : MonoBehaviour, IOnDeathEffect
-    {
-        void IOnDeathEffect.OnDeath()
-        {
-            Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f), GetComponents<IProjectileModifier>());
         }
     }
 
