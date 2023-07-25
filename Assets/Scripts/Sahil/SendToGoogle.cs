@@ -190,32 +190,6 @@ public class SendToGoogle : MonoBehaviour
 
     }
 
-    public static async void GetScores()
-    {
-        Debug.Log("getting scores");
-        string url = "https://csci-526-trinity.wl.r.appspot.com/getScores";
-        WebRequest request = HttpWebRequest.Create(url);
-        Debug.Log("crated request");
-        string scores;
-        using (WebResponse response = await request.GetResponseAsync())
-        {
-            using (StreamReader reader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8))
-            {
-                scores = reader.ReadToEnd();
-                Debug.Log("raw scores = " + scores);
-                GameplayManager.SetScoresStrings(scores);
-                GameplayManager.UpdateScores();
-
-            }
-        }
-
-
-        // WebResponse response = request.GetResponse();
-        // Debug.Log("got response");
-        // StreamReader reader = new StreamReader(response.GetResponseStream());
-
-    }
-
 
     //Matrix 6 get score
     public void GetMatrix6()
@@ -238,7 +212,7 @@ public class SendToGoogle : MonoBehaviour
             {
                 // Data has been successfully received
                 string data = webRequest.downloadHandler.text;
-                Debug.Log("Received data: " + data);
+                // Debug.Log("Received data: " + data);
                 GameplayManager.SetScoresStrings(data);
                 GameplayManager.UpdateScores();
 

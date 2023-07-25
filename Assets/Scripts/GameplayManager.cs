@@ -66,7 +66,7 @@ public class GameplayManager : MonoBehaviour
         m_googleSender.GetMatrix6();
         // highestRecord = scores[scores.Count - 1];
         UIManager.m_levelSelectionPanel.SetActive(true);
-        UIManager.UpdateRecordsLS(currBest, highestRecord);
+
         // Pause();
         // LoadLevel();
     }
@@ -180,7 +180,7 @@ public class GameplayManager : MonoBehaviour
         script.SetHealth(script.GetMaxHealth());
         if (!infiniteChallengeMode)
         {
-            Debug.Log("resetting everything");
+            // Debug.Log("resetting everything");
             if (!LevelButtonsManager.GetInfiniteAttemptedAndLose() && LevelManager.GetLevelNum() == 12)
             {
                 LevelButtonsManager.SetInfiniteAttemptedAndLose(true);
@@ -201,9 +201,9 @@ public class GameplayManager : MonoBehaviour
             currBest = Math.Max(currBest, m_timer);
             // UIManager.m_infiniteModePanel.SetActive(true);
             // highestRecord = Math.Max(highestRecord, m_timer);
-            Debug.Log("yo");
+            // Debug.Log("yo");
             m_googleSender.SendMatrix5(m_timer);
-            Debug.Log("5 sent");
+            // Debug.Log("5 sent");
             paused = true;
             // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
             DisplayScores(m_timer);
@@ -318,6 +318,8 @@ public class GameplayManager : MonoBehaviour
             UIManager.m_betPctText = GameObject.FindWithTag("BetPctText").GetComponent<TextMeshProUGUI>(); ;
             UIManager.UpdateScoresText(m_timer, betPct, 1);
         }
+        UIManager.UpdateRecordsLS(currBest, highestRecord);
+
 
     }
 
