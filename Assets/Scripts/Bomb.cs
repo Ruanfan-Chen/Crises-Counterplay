@@ -25,6 +25,8 @@ public class Bomb : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
+        float value = timer > 0.0f ? Mathf.PingPong(explosionDelay / timer, 1.0f) : 1.0f;
+        GetComponent<SpriteRenderer>().color = new(1.0f, value, value, 1.0f);
         if (timer <= 0)
         {
             GameObject explosion = Instantiate(Resources.Load<GameObject>(explosionPrefabPath), transform.position + Vector3.forward * MapManager.MAP_DEPTH / 2.0f, Quaternion.identity);
