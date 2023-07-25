@@ -86,14 +86,19 @@ public class GameplayManager : MonoBehaviour
 
         }
 
+        // Debug.Log("infiniteChallengeMode = " + infiniteChallengeMode);
+
+
         if (((!infiniteChallengeMode || LevelManager.GetLevelNum() < 12) && m_timer <= 0) || (infiniteChallengeMode && m_timer >= 999.0f))
         {
+            // Debug.Log("hiiii");
             if (!matrixSent)
             {
                 // Debug.Log("sending matrix");
                 m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
                 matrixSent = true;
             }
+            // Debug.Log("count = " + LevelButtonsManager.completed.Count);
             //Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
             if (LevelManager.GetLevelNum() == LevelButtonsManager.numOfLevels - 1)
             {
