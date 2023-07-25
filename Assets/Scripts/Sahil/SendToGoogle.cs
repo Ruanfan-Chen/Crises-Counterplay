@@ -18,7 +18,7 @@ public class SendToGoogle : MonoBehaviour
 
     private string URL_MX4 = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSeEzHgxjpqBoyEot6PUlrw3up1ISi4DLLavK2LIZPQSIri-IA/formResponse";
 
-    private string URL_MX5 = "https://docs.google.com/forms/d/e/1FAIpQLSf0TWlv15XbhbF5PsAkbB6y1YpulvTrGBAQcdO-ep-aAtTnvQ/formResponse";
+    private string URL_MX5 = "https://docs.google.com/forms/u/0/d/e/1FAIpQLSf0TWlv15XbhbF5PsAkbB6y1YpulvTrGBAQcdO-ep-aAtTnvQ/formResponse";
 
     private long sessionID_MX1;
     private long sessionID_MX2;
@@ -190,19 +190,30 @@ public class SendToGoogle : MonoBehaviour
 
     }
 
-    public static List<float> GetScores()
+    public static async void GetScores()
     {
-
-        string url = "https://csci-526-trinity.wl.r.appspot.com/getScores";//Paste ur url here  
+        Debug.Log("getting scores");
+        string url = "https://csci-526-trinity.wl.r.appspot.com/getScores";
         WebRequest request = HttpWebRequest.Create(url);
-        WebResponse response = request.GetResponse();
-        StreamReader reader = new StreamReader(response.GetResponseStream());
-        string scores = reader.ReadToEnd();
-        // Debug.Log("raw scores = " + scores);
-        List<float> result = new List<float> { };
-        foreach (string s in scores.Split(","))
-            result.Add((float)Convert.ToDouble(s));
-        return result;
+        Debug.Log("crated request");
+        string scores;
+        using (WebResponse response = await request.GetResponseAsync())
+        {
+            using (StreamReader reader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8))
+            {
+                scores = reader.ReadToEnd();
+                Debug.Log("raw scores = " + scores);
+                GameplayManager.SetScoresStrings(scores);
+                GameplayManager.UpdateScores();
+
+            }
+        }
+
+
+        // WebResponse response = request.GetResponse();
+        // Debug.Log("got response");
+        // StreamReader reader = new StreamReader(response.GetResponseStream());
+
     }
 
 

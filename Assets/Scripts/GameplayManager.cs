@@ -18,6 +18,8 @@ public class GameplayManager : MonoBehaviour
     private static bool matrixSent;
     private static bool recordsUpdatedGP;
 
+    private static string scoresStrings;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -86,7 +88,7 @@ public class GameplayManager : MonoBehaviour
             if (!matrixSent)
             {
                 // Debug.Log("sending matrix");
-                m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
+                // m_googleSender.SendMatrix3(LevelManager.GetLevelName(), 0, ActiveItem_0.activateCounter, false, m_character.GetComponent<ActiveItem_0>() != null);
                 matrixSent = true;
             }
             //Debug.Log("num of shop options = " + LevelManager.GetShopOptions().Count);
@@ -195,9 +197,16 @@ public class GameplayManager : MonoBehaviour
             currBest = Math.Max(currBest, m_timer);
             // UIManager.m_infiniteModePanel.SetActive(true);
             // highestRecord = Math.Max(highestRecord, m_timer);
+<<<<<<< Updated upstream
             Debug.Log("here");
             m_googleSender.SendMatrix5(m_timer);
             Debug.Log("current record = " + m_timer);
+=======
+            Debug.Log("yo");
+            m_googleSender.SendMatrix5(m_timer);
+            Debug.Log("5 sent");
+            // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
+>>>>>>> Stashed changes
             DisplayScores(m_timer);
         }
         recordsUpdatedGP = false;
@@ -284,8 +293,18 @@ public class GameplayManager : MonoBehaviour
     private static void DisplayScores(float currentScore)
     {
         UIManager.m_infiniteModePanel.SetActive(true);
-        List<float> scores = SendToGoogle.GetScores();
-        int countLessThanCurr = GetLessThanCurrCount(scores, currentScore);
+        SendToGoogle.GetScores();
+
+
+
+    }
+
+    public static void UpdateScores()
+    {
+        List<float> scores = new List<float> { };
+        foreach (string s in scoresStrings.Split(","))
+            scores.Add((float)Convert.ToDouble(s));
+        int countLessThanCurr = GetLessThanCurrCount(scores, m_timer);
         // Debug.Log("countLessThanCurr = " + countLessThanCurr);
         double betPct = (float)countLessThanCurr / scores.Count;
         // Debug.Log("Wow, you have bet " + betPct * 100 + "% of players gloablly!");
@@ -294,12 +313,17 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
         UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();
         UIManager.m_betPctText = GameObject.FindWithTag("BetPctText").GetComponent<TextMeshProUGUI>(); ;
-        UIManager.UpdateScoresText(currentScore, betPct, 1);
+        UIManager.UpdateScoresText(m_timer, betPct, 1);
     }
 
     public static float GetHighestRecord()
     {
         return highestRecord;
+    }
+
+    public static void SetScoresStrings(string s)
+    {
+        scoresStrings = s;
     }
 
     private static int GetLessThanCurrCount(List<float> scores, float currentScore)
