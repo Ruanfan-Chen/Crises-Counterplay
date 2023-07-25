@@ -10,7 +10,7 @@ public static class UIManager
     public static TextMeshProUGUI m_timerText;
     public static TextMeshProUGUI m_currentRecordText;
     public static TextMeshProUGUI m_highestRecordText;
-    public static TextMeshProUGUI m_betPctText;
+    public static TextMeshProUGUI m_beatPctText;
     public static TextMeshProUGUI m_currBestTextLS;
     public static TextMeshProUGUI m_highestRecordTextLS;
     public static TextMeshProUGUI m_currBestLabelGP;
@@ -32,11 +32,12 @@ public static class UIManager
         m_timerText.text = Mathf.Round(GameplayManager.GetTimer()).ToString() + "s";
     }
 
-    public static void UpdateScoresText(float currentScore, double betPct, int precision)
+    public static void UpdateScoresText(float currentScore, double beatPct, int precision)
     {
         m_currentRecordText.text = RoundDecimal(currentScore, precision).ToString() + "s";
         m_highestRecordText.text = RoundDecimal(GameplayManager.GetHighestRecord(), precision).ToString() + "s";
-        m_betPctText.text = (RoundDecimal((float)betPct, 4) * 100).ToString() + "%";
+        Debug.Log("beatPct = " + beatPct);
+        m_beatPctText.text = System.Math.Round(beatPct * 100, 2).ToString("0.00") + "%";
     }
 
     public static void ClearShopPanel()

@@ -919,8 +919,8 @@ GameObject:
   - component: {fileID: 188589723}
   - component: {fileID: 188589722}
   m_Layer: 5
-  m_Name: BetPctText
-  m_TagString: BetPctText
+  m_Name: BeatPctText
+  m_TagString: BeatPctText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -6657,7 +6657,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
-  m_AnchoredPosition: {x: 549.09973, y: -22.400183}
+  m_AnchoredPosition: {x: 549.09973, y: -22.400208}
   m_SizeDelta: {x: 187.3387, y: 42.2268}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1106417691

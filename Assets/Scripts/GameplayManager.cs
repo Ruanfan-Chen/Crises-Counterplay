@@ -151,7 +151,7 @@ public class GameplayManager : MonoBehaviour
         matrixSent = false;
         if (!recordsUpdatedGP)
         {
-            if (infiniteChallengeMode)
+            if (infiniteChallengeMode && LevelManager.GetLevelNum() == 12)
                 UIManager.ControlRecordsGP(currBest, highestRecord, true);
             else
                 UIManager.ControlRecordsGP(currBest, highestRecord, false);
@@ -308,16 +308,17 @@ public class GameplayManager : MonoBehaviour
             scores.Add((float)Convert.ToDouble(s));
         int countLessThanCurr = GetLessThanCurrCount(scores, m_timer);
         // Debug.Log("countLessThanCurr = " + countLessThanCurr);
-        double betPct = (float)countLessThanCurr / scores.Count;
-        // Debug.Log("Wow, you have bet " + betPct * 100 + "% of players gloablly!");
+        double beatPct = (double)countLessThanCurr / scores.Count;
+        // Debug.Log("Wow, you have bet " + beatPct * 100 + "% of players gloablly!");
+        Debug.Log("total = " + scores.Count + ", countLessThanCurr = " + countLessThanCurr);
         highestRecord = scores[scores.Count - 1];
         if (paused)
         {
             UIManager.m_recordsPanel.SetActive(true);
             UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
             UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();
-            UIManager.m_betPctText = GameObject.FindWithTag("BetPctText").GetComponent<TextMeshProUGUI>(); ;
-            UIManager.UpdateScoresText(m_timer, betPct, 1);
+            UIManager.m_beatPctText = GameObject.FindWithTag("BeatPctText").GetComponent<TextMeshProUGUI>(); ;
+            UIManager.UpdateScoresText(m_timer, beatPct, 1);
         }
         UIManager.UpdateRecordsLS(currBest, highestRecord);
 
