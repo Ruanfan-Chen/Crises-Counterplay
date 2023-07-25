@@ -226,6 +226,7 @@ MonoBehaviour:
   health: 100
   maxHealth: 100
   healthBar: {fileID: 6122086455569514424}
+  moveSpeed: 5
 --- !u!114 &4331280955110777213
 MonoBehaviour:
   m_ObjectHideFlags: 0
