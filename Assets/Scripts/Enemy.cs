@@ -57,6 +57,7 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         foreach (System.Type componentType in components)
             if (typeof(EnemySpawn.IAggressive).IsAssignableFrom(componentType))
                 aggressive = true;
+
         GameObject enemy = Instantiate(Resources.Load<GameObject>(aggressive ? prefabPath : noShootPrefabPath), position, rotation);
         enemy.tag = "Disposable";
         enemy.GetComponent<ConstraintInsideOfMap>().SetOffset(0.5f);
@@ -64,6 +65,13 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         {
             enemy.AddComponent(componentType);
         }
+
+        Color color = Color.white;
+        foreach (System.Type componentType in components)
+            if (typeof(IOnDeathEffect).IsAssignableFrom(componentType))
+                color = Color.red;
+
+        enemy.GetComponent<SpriteRenderer>().color = color;
         return enemy;
     }
 
