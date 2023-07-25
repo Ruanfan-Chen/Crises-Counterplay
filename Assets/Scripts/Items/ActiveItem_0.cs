@@ -11,7 +11,7 @@ public class ActiveItem_0 : ActiveItem
     private static readonly string logoPath = "Sprites/Skills/Supercharge";
     private static readonly string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
-    private readonly float duration = 2.2f;
+    private static readonly float duration = 2.2f;
     private int charge;
     private readonly HashSet<ChargeBuffer> buffers = new();
 
@@ -114,19 +114,19 @@ public class ActiveItem_0 : ActiveItem
 
     public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus, IDisarmed, IDisposable
     {
+        private static readonly float flashPeriod = 0.3f;
         private float damage = 50.0f;
         private float speedBonus = 2.5f;
-        private Color colorDifference;
+        private float timer = 0.0f;
 
-        private void OnEnable()
+        private void Update()
         {
-            colorDifference = Color.yellow - GetComponent<SpriteRenderer>().color;
-            GetComponent<SpriteRenderer>().color = Color.yellow;
+            timer += Time.deltaTime;
+            GetComponent<SpriteRenderer>().color = new(1.0f, 1.0f, Mathf.PingPong(timer / flashPeriod, 1.0f), 1.0f);
         }
-
         private void OnDisable()
         {
-            GetComponent<SpriteRenderer>().color -= colorDifference;
+            GetComponent<SpriteRenderer>().color = Color.white;
         }
 
         public float GetValue()
