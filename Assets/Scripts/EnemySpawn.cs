@@ -66,14 +66,15 @@ public class EnemySpawn : MonoBehaviour
                 components.Add(typeof(RingAttackOnDeath));
                 break;
         }
-        switch (Random.Range(0, 2))
-        {
-            case 0:
-                break;
-            case 1:
-                components.Add(typeof(Waterblight));
-                break;
-        }
+        if (LevelManager.GetEnemieRain())
+            switch (Random.Range(0, 2))
+            {
+                case 0:
+                    break;
+                case 1:
+                    components.Add(typeof(Waterblight));
+                    break;
+            }
         GameObject enemy = Enemy.Instantiate(position, Quaternion.identity, components.ToArray());
         return enemy;
     }
