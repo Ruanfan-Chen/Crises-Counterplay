@@ -4,6 +4,8 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 {
     private static string prefabPath = "Prefabs/Enemy";
     private static string noShootPrefabPath = "Prefabs/EnemyNoShoot";
+    public static readonly float minAttackInterval = 4.0f;
+    public static readonly float maxAttackInterval = 5.0f;
     private float health = 50.0f;
     private float maxHealth = 50.0f;
     private float moveSpeed = 2.5f;
@@ -15,37 +17,11 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private Animator anim;
     [SerializeField] private Bar healthBar;
 
-    public float GetHealth() { return health; }
-
-    public void SetHealth(float value) { health = value; }
-
-    public float GetMaxHealth() { return maxHealth; }
-
-    public void SetMaxHealth(float value) { maxHealth = value; }
+    public static float GetAttackInterval() => Random.Range(minAttackInterval, maxAttackInterval);
 
     public float GetMoveSpeed() { return moveSpeed; }
 
-    public void SetMoveSpeed(float value) { moveSpeed = value; }
-
     public bool GetHostility() { return hostility; }
-
-    public void SetHostility(bool value) { hostility = value; }
-
-    public float GetContactDamage() { return contactDamage; }
-
-    public void SetContactDamage(float value) { contactDamage = value; }
-
-    public float GetRange() { return range; }
-
-    public void SetRange(float value) { range = value; }
-
-    public float GetDamage() { return damage; }
-
-    public void SetDamage(float value) { damage = value; }
-
-    public float GetProjectileSpeed() { return projectileSpeed; }
-
-    public void SetProjectileSpeed(float value) { projectileSpeed = value; }
 
     public void ReceiveDamage(Damage damage)
     {

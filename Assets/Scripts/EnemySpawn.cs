@@ -166,8 +166,6 @@ public class EnemySpawn : MonoBehaviour
 
     public class RandomlyAttack : MonoBehaviour, IAggressive
     {
-        private float minAttackInterval = 1.0f;
-        private float maxAttackInterval = 3.0f;
         private float timer = 0.0f;
 
         void Update()
@@ -177,15 +175,13 @@ public class EnemySpawn : MonoBehaviour
             else
             {
                 Projectile.Instantiate(transform.position, Random.Range(0.0f, 360.0f), GetComponents<IProjectileModifier>());
-                timer = Random.Range(minAttackInterval, maxAttackInterval);
+                timer = Enemy.GetAttackInterval();
             }
         }
     }
 
     public class FocusedAttack : MonoBehaviour, IAggressive
     {
-        private float minAttackInterval = 1.0f;
-        private float maxAttackInterval = 3.0f;
         private float timer = 0.0f;
 
         public Transform GetTarget() { return GameplayManager.getCharacter().transform; }
@@ -197,7 +193,7 @@ public class EnemySpawn : MonoBehaviour
             else
             {
                 Projectile.Instantiate(transform.position, GetTarget().position, GetComponents<IProjectileModifier>());
-                timer = Random.Range(minAttackInterval, maxAttackInterval);
+                timer = Enemy.GetAttackInterval();
             }
         }
     }

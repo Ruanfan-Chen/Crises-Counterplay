@@ -7,7 +7,7 @@ public class PassiveItem_1 : PassiveItem
     private static readonly string description = "Summon three blackholes around the character. Blackholes will block projectiles.";
     private static readonly string usage = "Passive";
     private static readonly string logoPath = "Sprites/Items/Blackhole";
-    private static readonly float radius = 1.25f;
+    private static readonly float radius = 1.45f;
     private static readonly float angularVelocity = 15.0f;
     private float angularDisplacement;
 
