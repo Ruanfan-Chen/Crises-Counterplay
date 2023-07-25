@@ -81,7 +81,7 @@ public class LevelManager
         _ => true
     };
 
-    public static bool GetSpawnEnemy() => levelNum switch
+    public static bool GetEnemySpawn() => levelNum switch
     {
         0 => false,
         1 => false,
@@ -97,6 +97,8 @@ public class LevelManager
         11 => true,
         _ => true
     };
+
+    public static float GetEnemySpawnInterval() => Mathf.Lerp(3.0f, 0.5f, GameplayManager.GetTimerRatio());
 
     public static bool GetCharaterDisarm() => levelNum switch
     {
@@ -168,10 +170,10 @@ public class LevelManager
 
     public static float GetVehicleSpeed() => levelNum switch
     {
-        0 => UnityEngine.Random.Range(80.0f, 100.0f),
-        1 => UnityEngine.Random.Range(80.0f, 100.0f),
-        2 => UnityEngine.Random.Range(50.0f, 70.0f),
-        _ => UnityEngine.Random.Range(50.0f, 60.0f)
+        0 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(50.0f, 100.0f, GameplayManager.GetTimerRatio())),
+        1 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(50.0f, 100.0f, GameplayManager.GetTimerRatio())),
+        2 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 50.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(50.0f, 70.0f, GameplayManager.GetTimerRatio())),
+        _ => UnityEngine.Random.Range(Mathf.Lerp(30.0f, 60.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()))
     };
 
     public static float GetVehicleDamage() => levelNum switch

@@ -198,7 +198,8 @@ public class GameplayManager : MonoBehaviour
         m_crisisManager.StopAllCoroutines();
     }
 
-    public static float getTimer() { return m_timer; }
+    public static float GetTimer() => m_timer;
+    public static float GetTimerRatio() => 1.0f - (infiniteChallengeMode && LevelManager.GetLevelNum() == 12 ? 0.0f : m_timer / LevelManager.GetTimeLimit());
     public static void Pause()
     {
         UIManager.m_gameplayPanel.SetActive(false);

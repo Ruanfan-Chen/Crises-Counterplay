@@ -5,7 +5,6 @@ public class EnemySpawn : MonoBehaviour
 {
     [SerializeField] private float offset = 2.0f;
     [SerializeField] private float startDelay = 3.0f;
-    [SerializeField] private float spawnInterval = 0.3f;
 
     private float timer;
     void Start()
@@ -16,10 +15,10 @@ public class EnemySpawn : MonoBehaviour
     void Update()
     {
         timer -= Time.deltaTime;
-        if (timer <= 0.0f && LevelManager.GetSpawnEnemy() && !BlockEnemySpawn.ExistInstance())
+        if (timer <= 0.0f && LevelManager.GetEnemySpawn() && !BlockEnemySpawn.ExistInstance())
         {
             SpawnRandomEnemy();
-            timer = spawnInterval;
+            timer = LevelManager.GetEnemySpawnInterval();
         }
     }
 

@@ -22,7 +22,7 @@ public static class UIManager
 
     public static void UpdateTimerText()
     {
-        m_timerText.text = Mathf.Round(GameplayManager.getTimer()).ToString() + "s";
+        m_timerText.text = Mathf.Round(GameplayManager.GetTimer()).ToString() + "s";
     }
 
     public static void UpdateScoresText(float currentScore, int precision)
