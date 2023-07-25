@@ -3,9 +3,11 @@ from flask import Flask
 
 import traceback
 import requests
+from flask_cors import CORS
 import os
 
 app = Flask(__name__)
+CORS(app)
 
 SCOPES = "https://www.googleapis.com/auth/forms.responses.readonly"
 DISCOVERY_DOC = "https://forms.googleapis.com/$discovery/rest?version=v1"
@@ -34,7 +36,9 @@ def get_scores():
         print("l =", l)
         for item in l:
             print(item)
-            scores.append(float(item.split(",")[0][1:-1]))
+            tmp = item.split(",")[0][1:-1]
+            if isinstance(tmp, str):
+                scores.append(float(tmp))
         print("scores = ", scores)
     except:
         traceback.print_exc()

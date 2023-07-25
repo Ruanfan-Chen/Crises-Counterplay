@@ -19,6 +19,7 @@ public class GameplayManager : MonoBehaviour
     private static bool recordsUpdatedGP;
 
     private static string scoresStrings;
+    private static bool paused;
 
     // Start is called before the first frame update
     void Start()
@@ -59,9 +60,11 @@ public class GameplayManager : MonoBehaviour
         infiniteChallengeMode = false;
         matrixSent = false;
         recordsUpdatedGP = false;
+        paused = false;
         currBest = 0.0f;
-        List<float> scores = SendToGoogle.GetScores();
-        highestRecord = scores[scores.Count - 1];
+        // SendToGoogle.GetScores();
+        m_googleSender.GetMatrix6();
+        // highestRecord = scores[scores.Count - 1];
         UIManager.m_levelSelectionPanel.SetActive(true);
         UIManager.UpdateRecordsLS(currBest, highestRecord);
         // Pause();
@@ -110,6 +113,7 @@ public class GameplayManager : MonoBehaviour
                     // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
                     // DisplayScores(m_timer);
                     m_googleSender.SendMatrix5(m_timer);
+                    paused = true;
                     DisplayScores(m_timer);
                 }
                 infiniteChallengeMode = true;
@@ -197,16 +201,11 @@ public class GameplayManager : MonoBehaviour
             currBest = Math.Max(currBest, m_timer);
             // UIManager.m_infiniteModePanel.SetActive(true);
             // highestRecord = Math.Max(highestRecord, m_timer);
-<<<<<<< Updated upstream
-            Debug.Log("here");
-            m_googleSender.SendMatrix5(m_timer);
-            Debug.Log("current record = " + m_timer);
-=======
             Debug.Log("yo");
             m_googleSender.SendMatrix5(m_timer);
             Debug.Log("5 sent");
+            paused = true;
             // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
->>>>>>> Stashed changes
             DisplayScores(m_timer);
         }
         recordsUpdatedGP = false;
@@ -283,6 +282,7 @@ public class GameplayManager : MonoBehaviour
         recordsUpdatedGP = false;
         LoadLevel();
         Continue();
+        paused = false;
     }
 
     public static bool IsInInfiniteChallengeMode()
@@ -293,7 +293,8 @@ public class GameplayManager : MonoBehaviour
     private static void DisplayScores(float currentScore)
     {
         UIManager.m_infiniteModePanel.SetActive(true);
-        SendToGoogle.GetScores();
+        m_googleSender.GetMatrix6();
+        // SendToGoogle.GetScores();
 
 
 
@@ -309,11 +310,15 @@ public class GameplayManager : MonoBehaviour
         double betPct = (float)countLessThanCurr / scores.Count;
         // Debug.Log("Wow, you have bet " + betPct * 100 + "% of players gloablly!");
         highestRecord = scores[scores.Count - 1];
-        UIManager.m_recordsPanel.SetActive(true);
-        UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
-        UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();
-        UIManager.m_betPctText = GameObject.FindWithTag("BetPctText").GetComponent<TextMeshProUGUI>(); ;
-        UIManager.UpdateScoresText(m_timer, betPct, 1);
+        if (paused)
+        {
+            UIManager.m_recordsPanel.SetActive(true);
+            UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
+            UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();
+            UIManager.m_betPctText = GameObject.FindWithTag("BetPctText").GetComponent<TextMeshProUGUI>(); ;
+            UIManager.UpdateScoresText(m_timer, betPct, 1);
+        }
+
     }
 
     public static float GetHighestRecord()

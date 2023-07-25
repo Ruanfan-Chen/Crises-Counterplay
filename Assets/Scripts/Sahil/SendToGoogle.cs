@@ -217,6 +217,40 @@ public class SendToGoogle : MonoBehaviour
     }
 
 
+    //Matrix 6 get score
+    public void GetMatrix6()
+    {
+        StartCoroutine(GetMatrix6FromUrl());
+    }
+    private IEnumerator GetMatrix6FromUrl()
+    {
+        string url = "https://csci-526-trinity.wl.r.appspot.com/getScores";
+        using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
+        {
+            // Send the request and wait for a response
+            yield return webRequest.SendWebRequest();
+
+            if (webRequest.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("Error while fetching data: " + webRequest.error);
+            }
+            else
+            {
+                // Data has been successfully received
+                string data = webRequest.downloadHandler.text;
+                Debug.Log("Received data: " + data);
+                GameplayManager.SetScoresStrings(data);
+                GameplayManager.UpdateScores();
+
+
+                // You can process the 'data' string here or trigger other actions.
+            }
+        }
+
+
+    }
+
+
 }
 
 
