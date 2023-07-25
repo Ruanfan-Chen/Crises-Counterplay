@@ -10,7 +10,7 @@ public class PassiveItem_Weapon_3 : PassiveItem
     private static readonly string usage = "Passive: Weapon";
     private static readonly string logoPath = "Sprites/Items/Boomerang";
     private static readonly float g = 5.0f;
-    private static readonly float damp = 0.4f;
+    private static readonly float damp = 0.2f;
     private GameObject boomerang;
     private Vector3 boomerangVelocity = Vector3.zero;
     void Update()
