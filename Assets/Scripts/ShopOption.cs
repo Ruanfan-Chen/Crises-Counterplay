@@ -52,4 +52,20 @@ public class ShopOption : MonoBehaviour
         });
         return shopOption;
     }
+
+    public static GameObject SpeedBoost()
+    {
+        GameObject shopOption = Instantiate();
+
+        ShopOption script = shopOption.GetComponent<ShopOption>();
+        script.SetIcon(Resources.Load<Sprite>("Sprites/Items/Speed Boost"));
+        script.SetItemName("Speed Boost");
+        script.SetUsage("Instant");
+        script.SetDescription("Boost up your speed.");
+        script.SetOnClickAction(() =>
+        {
+            GameplayManager.getCharacter().GetComponent<Character>().SpeedBoost(0.5f);
+        });
+        return shopOption;
+    }
 }

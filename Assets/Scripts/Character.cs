@@ -25,6 +25,8 @@ public class Character : MonoBehaviour, IProjectileModifier, IDamageable
 
     public void SetMaxHealth(float value) { maxHealth = value; }
 
+    public void SpeedBoost(float value) { moveSpeed += value; }
+
     public float GetMoveSpeed()
     {
         float bonus = 0.0f;

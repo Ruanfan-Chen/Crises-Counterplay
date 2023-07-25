@@ -151,10 +151,10 @@ public class LevelManager
 
     public static IReadOnlyList<OptionConfig> GetShopConfig() => levelNum switch
     {
-            0 => new List<OptionConfig>() { OptionConfig.GRAVITYGRASP },
-            3 => new List<OptionConfig>() { OptionConfig.SUPERCHARGE },
-            6 => new List<OptionConfig>() { OptionConfig.SURFMANIA },
-            _ => new List<OptionConfig>() { OptionConfig.HPRECOVERY, OptionConfig.RANDOMPASSIVE }
+        0 => new List<OptionConfig>() { OptionConfig.GRAVITYGRASP },
+        3 => new List<OptionConfig>() { OptionConfig.SUPERCHARGE },
+        6 => new List<OptionConfig>() { OptionConfig.SURFMANIA },
+        _ => new List<OptionConfig>() { OptionConfig.RANDOMINSTANT, OptionConfig.RANDOMPASSIVE }
     };
 
     public static IReadOnlyDictionary<Vector2, Type[]> GetInitEneimies() => levelNum switch
@@ -174,7 +174,7 @@ public class LevelManager
         _ => UnityEngine.Random.Range(50.0f, 60.0f)
     };
 
-    public static float GetVehicleDamage()=> levelNum switch
+    public static float GetVehicleDamage() => levelNum switch
     {
         0 => 75.0f,
         1 => 75.0f,
@@ -220,7 +220,6 @@ public class LevelManager
 
     public class OptionConfig
     {
-        public static readonly OptionConfig HPRECOVERY = new(() => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)));
         public static readonly OptionConfig SUPERCHARGE = new(() => ActiveItem_0.GetShopOption());
         public static readonly OptionConfig SURFMANIA = new(() => ActiveItem_1.GetShopOption());
         public static readonly OptionConfig GRAVITYGRASP = new(() => ActiveItem_2_0.GetShopOption());
@@ -244,9 +243,16 @@ public class LevelManager
                 generators.Add(PassiveItem_Weapon_3.GetShopOption);
 
             if (generators.Count == 0)
-                return HPRECOVERY.Instantiate();
+                return RANDOMINSTANT.Instantiate();
             else
                 return RandomChoice(generators)();
+        });
+
+        public static readonly OptionConfig RANDOMINSTANT = new(() => UnityEngine.Random.Range(0, 2) switch
+        {
+            0 => ShopOption.HPRecovery(UnityEngine.Random.Range(15, 36)),
+            1 => ShopOption.SpeedBoost(),
+            _ => throw new Exception()
         });
 
         private readonly Func<GameObject> generator;
