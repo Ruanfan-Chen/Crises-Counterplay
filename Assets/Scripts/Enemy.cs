@@ -2,8 +2,10 @@ using UnityEngine;
 
 public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
 {
-    private static string prefabPath = "Prefabs/Enemy";
-    private static string noShootPrefabPath = "Prefabs/EnemyNoShoot";
+    private static readonly string prefabPath = "Prefabs/Enemy";
+    private static readonly string noShootPrefabPath = "Prefabs/EnemyNoShoot";
+    private static readonly string deathAnimPrefabPath = "Prefabs/OnDeathAnim";
+
     public static readonly float minAttackInterval = 4.0f;
     public static readonly float maxAttackInterval = 5.0f;
     private float health = 50.0f;
@@ -14,7 +16,6 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
     private float projectileSpeed = 2.5f;
     private float damage = 25.0f;
     private float range = float.PositiveInfinity;
-    private Animator anim;
     [SerializeField] private Bar healthBar;
 
     public static float GetAttackInterval() => Random.Range(minAttackInterval, maxAttackInterval);
@@ -29,17 +30,12 @@ public class Enemy : MonoBehaviour, IDamageable, IProjectileModifier
         if (health <= 0 && health + damage.GetValue() > 0) Die();
     }
 
-    void Start()
-    {
-        anim = GetComponent<Animator>();
-    }
-
     private void Die()
     {
         foreach (IOnDeathEffect component in GetComponents<IOnDeathEffect>())
             component.OnDeath();
-        anim.SetBool("isDead", true);
-        Destroy(gameObject, anim.GetCurrentAnimatorStateInfo(0).length);
+        Instantiate(Resources.Load<GameObject>(deathAnimPrefabPath), transform.position, Quaternion.identity);
+        Destroy(gameObject);
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
