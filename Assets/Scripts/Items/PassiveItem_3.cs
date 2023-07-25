@@ -9,7 +9,7 @@ public class PassiveItem_3 : PassiveItem
     private static readonly string usage = "Passive";
     private static readonly string logoPath = "Sprites/Items/Jade Figurine";
     private readonly float threshold = 1.0f;
-    private readonly int heal = 20;
+    private readonly int heal = 5;
     private float timer = 0.0f;
     private Vector3 lastFramePos = Vector3.zero;
 
