@@ -98,7 +98,7 @@ public class LevelManager
         _ => true
     };
 
-    public static float GetEnemySpawnInterval() => Mathf.Lerp(3.0f, 0.5f, GameplayManager.GetTimerRatio());
+    public static float GetEnemySpawnInterval() => Mathf.Lerp(1.5f, 0.5f, GameplayManager.GetTimerRatio());
 
     public static bool GetCharaterDisarm() => levelNum switch
     {
@@ -170,10 +170,10 @@ public class LevelManager
 
     public static float GetVehicleSpeed() => levelNum switch
     {
-        0 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(50.0f, 100.0f, GameplayManager.GetTimerRatio())),
-        1 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(50.0f, 100.0f, GameplayManager.GetTimerRatio())),
-        2 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 50.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(50.0f, 70.0f, GameplayManager.GetTimerRatio())),
-        _ => UnityEngine.Random.Range(Mathf.Lerp(30.0f, 60.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()))
+        0 => UnityEngine.Random.Range(Mathf.Lerp(40.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(80.0f, 100.0f, GameplayManager.GetTimerRatio())),
+        1 => UnityEngine.Random.Range(Mathf.Lerp(65.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(80.0f, 100.0f, GameplayManager.GetTimerRatio())),
+        2 => UnityEngine.Random.Range(Mathf.Lerp(65.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(70.0f, 90.0f, GameplayManager.GetTimerRatio())),
+        _ => UnityEngine.Random.Range(Mathf.Lerp(50.0f, 80.0f, GameplayManager.GetTimerRatio()), Mathf.Lerp(60.0f, 80.0f, GameplayManager.GetTimerRatio()))
     };
 
     public static float GetVehicleDamage() => levelNum switch
@@ -203,6 +203,23 @@ public class LevelManager
         7 => 3.5f,
         8 => 3.5f,
         _ => 2.0f
+    };
+
+    public static float GetElectricFieldDamage() => levelNum switch
+    {
+        0 => 35.0f,
+        1 => 35.0f,
+        2 => 35.0f,
+        3 => 75.0f,
+        4 => 75.0f,
+        5 => 75.0f,
+        6 => 35.0f,
+        7 => 35.0f,
+        8 => 35.0f,
+        9 => 50.0f,
+        10 => 50.0f,
+        11 => 50.0f,
+        _ => 35.0f
     };
 
     public static void Reset()

@@ -15,7 +15,6 @@ public class CrisisManager : MonoBehaviour
     [SerializeField] private float m_electricFieldTraceDuration;
     [SerializeField] private float m_electricFieldStartDelay;
     [SerializeField] private float m_electricFieldRadius;
-    [SerializeField] private float m_electricFieldDamage;
 
     private float vehicleTimer;
     private float electricField;
@@ -64,7 +63,7 @@ public class CrisisManager : MonoBehaviour
         foreach (Vector3 fieldCenter in electircFields)
             if ((fieldCenter - position).magnitude < m_electricFieldRadius * 1.5f)
                 position = GameplayManager.getCharacter().transform.position + Random.Range(0.5f, 1.5f) * m_electricFieldRadius * (Vector3)Random.insideUnitCircle;
-        StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, GetElectricFieldDuration(), m_electricFieldDamage));
+        StartCoroutine(ElectricField.Instantiate(position, m_electricFieldTraceDuration, m_electricFieldStartDelay, m_electricFieldRadius, GetElectricFieldDuration(), GetElectricFieldDamage()));
         StartCoroutine(RecordElectricField(position));
     }
 
