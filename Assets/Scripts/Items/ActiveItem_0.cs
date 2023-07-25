@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Utility;
@@ -12,9 +11,9 @@ public class ActiveItem_0 : ActiveItem
     private static readonly string logoPath = "Sprites/Skills/Supercharge";
     private static readonly string notUsablePath = "Sprites/Skills/Supercharge";
     public static int activateCounter = 0;
+    private readonly float duration = 2.2f;
     private int charge;
-    private float displayedCharge;
-    private readonly float duration = 5.0f;
+    private readonly HashSet<ChargeBuffer> buffers = new();
 
     void Start()
     {
@@ -23,13 +22,13 @@ public class ActiveItem_0 : ActiveItem
 
     void Update()
     {
-        displayedCharge = Mathf.MoveTowards(displayedCharge, charge, Time.deltaTime * 2.0f);
+        foreach (ChargeBuffer buffer in buffers)
+            buffer.Update();
+        buffers.RemoveWhere(buffer => buffer.GetValue() == 0.0f);
     }
-
     public override void ResetCharge()
     {
         charge = 0;
-        displayedCharge = 0.0f;
     }
 
     private void OnEnable()
@@ -42,7 +41,7 @@ public class ActiveItem_0 : ActiveItem
         instances.Remove(this);
     }
 
-    public static bool GetBatterySpawn() { return instances.Count > 0; }
+    public static bool GetBatterySpawn() => instances.Count != 0 && (LevelManager.GetLevelName() == "thunder 2" || WeightedRandom(new Dictionary<bool, float>() { [true] = 0.25f, [false] = 0.75f }));
 
     public override void Activate()
     {
@@ -50,13 +49,20 @@ public class ActiveItem_0 : ActiveItem
         {
             StartCoroutine(AddAndRemoveComponent<Buff>(gameObject, duration));
             charge--;
+            buffers.Add(new(1.0f, duration));
             activateCounter++;
         }
     }
 
     public override void Deactivate() { }
 
-    public override float GetChargeProgress() => displayedCharge;
+    public override float GetChargeProgress()
+    {
+        float sum = charge;
+        foreach (ChargeBuffer buffer in buffers)
+            sum += buffer.GetValue();
+        return sum;
+    }
 
     public static string GetDescription() => description;
 
@@ -73,6 +79,22 @@ public class ActiveItem_0 : ActiveItem
     public void Charge()
     {
         charge++;
+        buffers.Add(new(-1.0f, 0.5f));
+    }
+
+    private class ChargeBuffer
+    {
+        private float value;
+        private readonly float changeRate;
+
+        public ChargeBuffer(float value, float duration)
+        {
+            this.value = value;
+            changeRate = Mathf.Abs(value) / duration;
+        }
+        public void Update() => value = Mathf.MoveTowards(value, 0.0f, changeRate * Time.deltaTime);
+
+        public float GetValue() => value;
     }
 
     public static GameObject GetShopOption()
@@ -93,7 +115,7 @@ public class ActiveItem_0 : ActiveItem
     public class Buff : MonoBehaviour, IInvulnerable, ISpeedBonus, IDisarmed, IDisposable
     {
         private float damage = 50.0f;
-        private float speedBonus = 5.0f;
+        private float speedBonus = 2.5f;
         private Color colorDifference;
 
         private void OnEnable()
