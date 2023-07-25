@@ -47,6 +47,12 @@ TagManager:
   - RecordsPanel
   - InfiniteModePanel
   - BetPctText
+  - CurrBestTextLS
+  - CurrBestRecordLabelGP
+  - CurrBestRecordTextGP
+  - HighestRecordLabelGP
+  - HighestRecordTextLS
+  - HighestRecordTextGP
   layers:
   - Default
   - TransparentFX

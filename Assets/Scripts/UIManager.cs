@@ -11,6 +11,12 @@ public static class UIManager
     public static TextMeshProUGUI m_currentRecordText;
     public static TextMeshProUGUI m_highestRecordText;
     public static TextMeshProUGUI m_betPctText;
+    public static TextMeshProUGUI m_currBestTextLS;
+    public static TextMeshProUGUI m_highestRecordTextLS;
+    public static TextMeshProUGUI m_currBestLabelGP;
+    public static TextMeshProUGUI m_highestRecordLabelGP;
+    public static TextMeshProUGUI m_currBestTextGP;
+    public static TextMeshProUGUI m_highestRecordTextGP;
     public static GameObject m_gameplayPanel;
     public static GameObject m_shopPanel;
     public static GameObject m_completePanel;
@@ -82,6 +88,36 @@ public static class UIManager
             UIScript.SetSpinner(chargeProgress > 0.0f ? Mathf.Ceil(chargeProgress) - chargeProgress : 1.0f);
             UIScript.SetChargeCount(Mathf.FloorToInt(chargeProgress));
         }
+    }
+
+
+    public static void UpdateRecordsLS(float currBest, float highestRecord)
+    {
+        Debug.Log("UpdateRecordsLS()");
+        m_currBestTextLS.text = RoundDecimal(currBest, 1).ToString() + "s";
+        m_highestRecordTextLS.text = RoundDecimal(highestRecord, 1).ToString() + "s";
+    }
+
+    public static void ControlRecordsGP(float currBest, float highestRecord, bool show)
+    {
+        Debug.Log("ControlRecordsGP()");
+        if (show)
+        {
+            m_currBestLabelGP.text = "Current best:";
+            m_highestRecordLabelGP.text = "Highest record:";
+            m_currBestTextGP.text = RoundDecimal(currBest, 1).ToString() + "s";
+            m_highestRecordTextGP.text = RoundDecimal(highestRecord, 1).ToString() + "s";
+
+        }
+        else
+        {
+            m_currBestLabelGP.text = "";
+            m_highestRecordLabelGP.text = "";
+            m_currBestTextGP.text = "";
+            m_highestRecordTextGP.text = "";
+
+        }
+
     }
 
     public static double RoundDecimal(float num, int precision)

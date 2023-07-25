@@ -14,7 +14,9 @@ public class GameplayManager : MonoBehaviour
     private static Disarmed characterDisarmed;
     private static bool infiniteChallengeMode;
     private static float highestRecord;
+    private static float currBest;
     private static bool matrixSent;
+    private static bool recordsUpdatedGP;
 
     // Start is called before the first frame update
     void Start()
@@ -33,6 +35,12 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_levelSelectionPanel = GameObject.FindWithTag("LevelSelectionPanel");
         UIManager.m_infiniteModePanel = GameObject.FindWithTag("InfiniteModePanel");
         UIManager.m_recordsPanel = GameObject.FindWithTag("RecordsPanel");
+        UIManager.m_currBestTextLS = GameObject.FindWithTag("CurrBestTextLS").GetComponent<TextMeshProUGUI>(); ;
+        UIManager.m_highestRecordTextLS = GameObject.FindWithTag("HighestRecordTextLS").GetComponent<TextMeshProUGUI>(); ;
+        UIManager.m_currBestLabelGP = GameObject.FindWithTag("CurrBestRecordLabelGP").GetComponent<TextMeshProUGUI>(); ;
+        UIManager.m_highestRecordLabelGP = GameObject.FindWithTag("HighestRecordLabelGP").GetComponent<TextMeshProUGUI>(); ;
+        UIManager.m_currBestTextGP = GameObject.FindWithTag("CurrBestRecordTextGP").GetComponent<TextMeshProUGUI>(); ;
+        UIManager.m_highestRecordTextGP = GameObject.FindWithTag("HighestRecordTextGP").GetComponent<TextMeshProUGUI>(); ;
 
         Camera.main.GetComponent<CameraFocus>().SetFocus(m_character);
         LevelManager.Reset();
@@ -44,12 +52,16 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_completePanel.SetActive(false);
         UIManager.m_losePanel.SetActive(false);
         UIManager.m_infiniteModePanel.SetActive(false);
-        UIManager.m_levelSelectionPanel.SetActive(true);
         UIManager.m_recordsPanel.SetActive(false);
         CrisisManager.Deactivate();
         infiniteChallengeMode = false;
         matrixSent = false;
-        highestRecord = 0.0f;
+        recordsUpdatedGP = false;
+        currBest = 0.0f;
+        List<float> scores = SendToGoogle.GetScores();
+        highestRecord = scores[scores.Count - 1];
+        UIManager.m_levelSelectionPanel.SetActive(true);
+        UIManager.UpdateRecordsLS(currBest, highestRecord);
         // Pause();
         // LoadLevel();
     }
@@ -61,6 +73,7 @@ public class GameplayManager : MonoBehaviour
             m_timer = (infiniteChallengeMode && LevelManager.GetLevelNum() == 12) ? m_timer + Time.deltaTime : m_timer - Time.deltaTime;
         UIManager.UpdateTimerText();
         UIManager.UpdateActiveSkills(m_character.GetComponent<Character>().GetKeyCodeActiveItemPairs());
+
         if (m_character.GetComponent<Character>().GetHealth() <= 0.0f)
         {
             GameOver();
@@ -91,7 +104,7 @@ public class GameplayManager : MonoBehaviour
                 if (infiniteChallengeMode && LevelManager.GetLevelNum() == 12)
                 {
 
-                    // highestRecord = Math.Max(highestRecord, m_timer);
+                    currBest = Math.Max(currBest, m_timer);
                     // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
                     // DisplayScores(m_timer);
                     m_googleSender.SendMatrix5(m_timer);
@@ -110,6 +123,7 @@ public class GameplayManager : MonoBehaviour
                     Pause();
                     UIManager.m_activeSkillPanel.SetActive(false);
                     UIManager.m_levelSelectionPanel.SetActive(true);
+                    UIManager.UpdateRecordsLS(currBest, highestRecord);
                 }
                 LevelButtonsManager.AddCompletedLevel();
                 LevelButtonsManager.updated = false;
@@ -129,11 +143,15 @@ public class GameplayManager : MonoBehaviour
     {
         Clear();
         matrixSent = false;
-        // Debug.Log("LoadLevel() infiniteChallengeMode = " + infiniteChallengeMode);
-        // if (LevelManager.GetLevelNum() < 12)
-        // {
-        //     infiniteChallengeMode = false;
-        // }
+        if (!recordsUpdatedGP)
+        {
+            if (infiniteChallengeMode)
+                UIManager.ControlRecordsGP(currBest, highestRecord, true);
+            else
+                UIManager.ControlRecordsGP(currBest, highestRecord, false);
+            recordsUpdatedGP = true;
+        }
+
 
         m_timer = (infiniteChallengeMode && LevelManager.GetLevelNum() == 12) ? 0.0f : LevelManager.GetTimeLimit();
         MapManager.Initialize(LevelManager.GetMapSize(), LevelManager.GetTile());
@@ -174,12 +192,15 @@ public class GameplayManager : MonoBehaviour
             UIManager.m_losePanel.SetActive(true);
         else
         {
+            currBest = Math.Max(currBest, m_timer);
             // UIManager.m_infiniteModePanel.SetActive(true);
             // highestRecord = Math.Max(highestRecord, m_timer);
+            Debug.Log("here");
             m_googleSender.SendMatrix5(m_timer);
-            // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
+            Debug.Log("current record = " + m_timer);
             DisplayScores(m_timer);
         }
+        recordsUpdatedGP = false;
 
 
     }
@@ -223,6 +244,7 @@ public class GameplayManager : MonoBehaviour
         // Continue();
         UIManager.m_activeSkillPanel.SetActive(false);
         UIManager.m_levelSelectionPanel.SetActive(true);
+        UIManager.UpdateRecordsLS(currBest, highestRecord);
 
 
     }
@@ -238,6 +260,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_recordsPanel.SetActive(false);
         // Debug.Log("set to false: m_completePanel, m_losePanel, m_recordsPanel");
         UIManager.m_levelSelectionPanel.SetActive(true);
+        UIManager.UpdateRecordsLS(currBest, highestRecord);
     }
 
     public void ContinueInfiniteChallenge()
@@ -248,6 +271,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_recordsPanel.SetActive(false);
         UIManager.m_infiniteModePanel.SetActive(false);
         CrisisManager.Activate();
+        recordsUpdatedGP = false;
         LoadLevel();
         Continue();
     }
@@ -298,4 +322,8 @@ public class GameplayManager : MonoBehaviour
         return countLessThanCurr;
 
     }
+
+
+
+
 }
