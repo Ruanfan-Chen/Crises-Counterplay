@@ -198,6 +198,7 @@ public class LevelButtonsManager : MonoBehaviour
         completed = new HashSet<int>() { };
         shouldReset = true;
         updated = false;
+        Debug.Log("reset all");
 
 
     }

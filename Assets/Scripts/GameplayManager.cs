@@ -178,7 +178,7 @@ public class GameplayManager : MonoBehaviour
 
         Character script = m_character.GetComponent<Character>();
         script.SetHealth(script.GetMaxHealth());
-        if (!infiniteChallengeMode)
+        if (!infiniteChallengeMode || LevelManager.GetLevelNum() < 12)
         {
             // Debug.Log("resetting everything");
             if (!LevelButtonsManager.GetInfiniteAttemptedAndLose() && LevelManager.GetLevelNum() == 12)
