@@ -22,7 +22,6 @@ TagManager:
   - Button4
   - Button5
   - Button8
-  - Button13
   - Button0
   - Button1
   - Button12
@@ -41,7 +40,13 @@ TagManager:
   - D10
   - D11
   - D12
-  - D13
+  - ActiveJ
+  - BackToMainButton
+  - CurrentScoreText
+  - HighestScoreText
+  - RecordsPanel
+  - InfiniteModePanel
+  - BetPctText
   layers:
   - Default
   - TransparentFX

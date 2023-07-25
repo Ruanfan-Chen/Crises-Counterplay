@@ -85,12 +85,13 @@ public class GameplayManager : MonoBehaviour
                     UIManager.m_completePanel.SetActive(true);
                 LevelButtonsManager.AddCompletedLevel();
                 LevelButtonsManager.updated = false;
+                Character script = m_character.GetComponent<Character>();
+                script.SetHealth(script.GetMaxHealth());
 
                 if (infiniteChallengeMode && LevelManager.GetLevelNum() == 12)
                 {
-                    Character script = m_character.GetComponent<Character>();
-                    script.SetHealth(script.GetMaxHealth());
-                    highestRecord = Math.Max(highestRecord, m_timer);
+
+                    // highestRecord = Math.Max(highestRecord, m_timer);
                     // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
                     // DisplayScores(m_timer);
                     m_googleSender.SendMatrix5(m_timer);
@@ -174,7 +175,7 @@ public class GameplayManager : MonoBehaviour
         else
         {
             // UIManager.m_infiniteModePanel.SetActive(true);
-            highestRecord = Math.Max(highestRecord, m_timer);
+            // highestRecord = Math.Max(highestRecord, m_timer);
             m_googleSender.SendMatrix5(m_timer);
             // Debug.Log("current record = "+ m_timer + ", Highest record = "+ highestRecord);
             DisplayScores(m_timer);
@@ -235,7 +236,7 @@ public class GameplayManager : MonoBehaviour
         UIManager.m_losePanel.SetActive(false);
         UIManager.m_infiniteModePanel.SetActive(false);
         UIManager.m_recordsPanel.SetActive(false);
-        Debug.Log("set to false: m_completePanel, m_losePanel, m_recordsPanel");
+        // Debug.Log("set to false: m_completePanel, m_losePanel, m_recordsPanel");
         UIManager.m_levelSelectionPanel.SetActive(true);
     }
 
@@ -259,14 +260,42 @@ public class GameplayManager : MonoBehaviour
     private static void DisplayScores(float currentScore)
     {
         UIManager.m_infiniteModePanel.SetActive(true);
+        List<float> scores = SendToGoogle.GetScores();
+        int countLessThanCurr = GetLessThanCurrCount(scores, currentScore);
+        // Debug.Log("countLessThanCurr = " + countLessThanCurr);
+        double betPct = (float)countLessThanCurr / scores.Count;
+        // Debug.Log("Wow, you have bet " + betPct * 100 + "% of players gloablly!");
+        highestRecord = scores[scores.Count - 1];
         UIManager.m_recordsPanel.SetActive(true);
         UIManager.m_currentRecordText = GameObject.FindWithTag("CurrentScoreText").GetComponent<TextMeshProUGUI>();
         UIManager.m_highestRecordText = GameObject.FindWithTag("HighestScoreText").GetComponent<TextMeshProUGUI>();
-        UIManager.UpdateScoresText(currentScore, 3);
+        UIManager.m_betPctText = GameObject.FindWithTag("BetPctText").GetComponent<TextMeshProUGUI>(); ;
+        UIManager.UpdateScoresText(currentScore, betPct, 1);
     }
 
     public static float GetHighestRecord()
     {
         return highestRecord;
+    }
+
+    private static int GetLessThanCurrCount(List<float> scores, float currentScore)
+    {
+        // Debug.Log("scores = " + scores);
+        int countLessThanCurr = 0;
+        for (int i = 0; i < scores.Count; i++)
+        {
+            // Debug.Log("s = " + scores[i]);
+            if (scores[i] >= currentScore)
+            {
+                return countLessThanCurr;
+            }
+            else
+            {
+                countLessThanCurr += 1;
+            }
+
+        }
+        return countLessThanCurr;
+
     }
 }

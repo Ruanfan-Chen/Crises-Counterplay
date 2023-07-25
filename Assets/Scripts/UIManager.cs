@@ -10,6 +10,7 @@ public static class UIManager
     public static TextMeshProUGUI m_timerText;
     public static TextMeshProUGUI m_currentRecordText;
     public static TextMeshProUGUI m_highestRecordText;
+    public static TextMeshProUGUI m_betPctText;
     public static GameObject m_gameplayPanel;
     public static GameObject m_shopPanel;
     public static GameObject m_completePanel;
@@ -25,10 +26,11 @@ public static class UIManager
         m_timerText.text = Mathf.Round(GameplayManager.getTimer()).ToString() + "s";
     }
 
-    public static void UpdateScoresText(float currentScore, int precision)
+    public static void UpdateScoresText(float currentScore, double betPct, int precision)
     {
         m_currentRecordText.text = RoundDecimal(currentScore, precision).ToString() + "s";
         m_highestRecordText.text = RoundDecimal(GameplayManager.GetHighestRecord(), precision).ToString() + "s";
+        m_betPctText.text = (RoundDecimal((float)betPct, 4) * 100).ToString() + "%";
     }
 
     public static void ClearShopPanel()
@@ -82,9 +84,10 @@ public static class UIManager
         }
     }
 
-    public static double RoundDecimal(float num, int precision){
+    public static double RoundDecimal(float num, int precision)
+    {
         double tmp = System.Math.Pow(10, precision);
-        return System.Math.Truncate(num * tmp) / tmp;  
+        return System.Math.Truncate(num * tmp) / tmp;
 
 
     }

@@ -1,5 +1,9 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
+using System.IO;
+using System.Net;
+using System.Text;
 using UnityEngine;
 using UnityEngine.Networking;
 public class SendToGoogle : MonoBehaviour
@@ -179,8 +183,26 @@ public class SendToGoogle : MonoBehaviour
             else
             {
                 Debug.Log("Form upload complete!");
+                Debug.Log(www.result);
             }
         }
+
+
+    }
+
+    public static List<float> GetScores()
+    {
+
+        string url = "https://csci-526-trinity.wl.r.appspot.com/getScores";//Paste ur url here  
+        WebRequest request = HttpWebRequest.Create(url);
+        WebResponse response = request.GetResponse();
+        StreamReader reader = new StreamReader(response.GetResponseStream());
+        string scores = reader.ReadToEnd();
+        // Debug.Log("raw scores = " + scores);
+        List<float> result = new List<float> { };
+        foreach (string s in scores.Split(","))
+            result.Add((float)Convert.ToDouble(s));
+        return result;
     }
 
 
