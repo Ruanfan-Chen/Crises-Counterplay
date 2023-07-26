@@ -97,12 +97,12 @@ public class LevelButtonsManager : MonoBehaviour
                     }
                     if (!advancable)
                     {
-                        Debug.Log("level " + levelNum + " cannot be played, deactivated");
+                        // Debug.Log("level " + levelNum + " cannot be played, deactivated");
                         DeactivateButton(levelNum, Color.white);
                     }
                     else
                     {
-                        Debug.Log("level " + levelNum + " can be played, activated");
+                        // Debug.Log("level " + levelNum + " can be played, activated");
                         ActivateButton(levelNum, Color.white);
                     }
 
@@ -112,7 +112,7 @@ public class LevelButtonsManager : MonoBehaviour
                 {
                     if (completed.Contains(levelNum))
                     {
-                        Debug.Log("level " + levelNum + " is in completed, deactivated to green");
+                        // Debug.Log("level " + levelNum + " is in completed, deactivated to green");
                         DeactivateButton(levelNum, Color.green);
                     }
 
@@ -131,13 +131,13 @@ public class LevelButtonsManager : MonoBehaviour
                 updated = true;
             }
 
-            else
-            {
-                DeactivateButton(12, Color.white);
-                // infiniteLevelAttemptedAndLose = true;
-                ShowDependencies(infLevelDependencies);
-                updated = true;
-            }
+            // else
+            // {
+            //     DeactivateButton(12, Color.white);
+            //     // infiniteLevelAttemptedAndLose = true;
+            //     ShowDependencies(infLevelDependencies);
+            //     updated = true;
+            // }
 
             if (GameplayManager.IsInInfiniteChallengeMode())
             {
@@ -147,7 +147,7 @@ public class LevelButtonsManager : MonoBehaviour
 
             if (LevelButtonsManager.completed.Contains(9) && LevelButtonsManager.completed.Contains(10) && LevelButtonsManager.completed.Contains(11))
             {
-                Debug.Log("reactivate 12");
+                // Debug.Log("reactivate 12");
                 infiniteLevelAttemptedAndLose = false;
                 ActivateButton(12, Color.white);
                 ShowDependencies(infLevelDependencies);
