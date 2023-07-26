@@ -125,7 +125,6 @@ public class LevelButtonsManager : MonoBehaviour
 
             if (!infiniteLevelAttemptedAndLose)
             {
-                ActivateButton(12, Color.white);
                 // infiniteLevelAttemptedAndLose = true;
                 HideDependencies(infLevelDependencies);
                 updated = true;
@@ -138,6 +137,7 @@ public class LevelButtonsManager : MonoBehaviour
                 ShowDependencies(infLevelDependencies);
                 updated = true;
             }
+            ActivateButton(12, Color.white);
 
             if (GameplayManager.IsInInfiniteChallengeMode())
             {
