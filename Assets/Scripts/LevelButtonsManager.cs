@@ -131,13 +131,13 @@ public class LevelButtonsManager : MonoBehaviour
                 updated = true;
             }
 
-            // else
-            // {
-            //     DeactivateButton(12, Color.white);
-            //     // infiniteLevelAttemptedAndLose = true;
-            //     ShowDependencies(infLevelDependencies);
-            //     updated = true;
-            // }
+            else
+            {
+                // DeactivateButton(12, Color.white);
+                // infiniteLevelAttemptedAndLose = true;
+                ShowDependencies(infLevelDependencies);
+                updated = true;
+            }
 
             if (GameplayManager.IsInInfiniteChallengeMode())
             {
